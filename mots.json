@@ -1,0 +1,3154 @@
+{
+  "facile": [
+    {
+      "mot": "Avion",
+      "interdits": [
+        "aile",
+        "vol",
+        "pilote",
+        "aéroport",
+        "ciel",
+        "moteur"
+      ]
+    },
+    {
+      "mot": "Chien",
+      "interdits": [
+        "aboyer",
+        "patte",
+        "croquette",
+        "laisse",
+        "chiot",
+        "fidèle"
+      ]
+    },
+    {
+      "mot": "Plage",
+      "interdits": [
+        "sable",
+        "mer",
+        "soleil",
+        "crème",
+        "maillot",
+        "vague"
+      ]
+    },
+    {
+      "mot": "Pizza",
+      "interdits": [
+        "fromage",
+        "tomate",
+        "pâte",
+        "four",
+        "italien",
+        "part"
+      ]
+    },
+    {
+      "mot": "Vélo",
+      "interdits": [
+        "roue",
+        "pédale",
+        "guidon",
+        "casque",
+        "piste",
+        "pneu"
+      ]
+    },
+    {
+      "mot": "Guitare",
+      "interdits": [
+        "corde",
+        "musique",
+        "jouer",
+        "rock",
+        "accord",
+        "concert"
+      ]
+    },
+    {
+      "mot": "École",
+      "interdits": [
+        "professeur",
+        "élève",
+        "cours",
+        "classe",
+        "devoir",
+        "cahier"
+      ]
+    },
+    {
+      "mot": "Cinéma",
+      "interdits": [
+        "film",
+        "salle",
+        "acteur",
+        "écran",
+        "pop-corn",
+        "bobine"
+      ]
+    },
+    {
+      "mot": "Téléphone",
+      "interdits": [
+        "appel",
+        "numéro",
+        "écran",
+        "sonnerie",
+        "message",
+        "portable"
+      ]
+    },
+    {
+      "mot": "Parapluie",
+      "interdits": [
+        "pluie",
+        "manche",
+        "ouvrir",
+        "sec",
+        "goutte",
+        "tempête"
+      ]
+    },
+    {
+      "mot": "Gâteau",
+      "interdits": [
+        "anniversaire",
+        "bougie",
+        "sucre",
+        "four",
+        "crème",
+        "dessert"
+      ]
+    },
+    {
+      "mot": "Football",
+      "interdits": [
+        "ballon",
+        "but",
+        "terrain",
+        "gardien",
+        "match",
+        "coupe"
+      ]
+    },
+    {
+      "mot": "Livre",
+      "interdits": [
+        "page",
+        "lire",
+        "auteur",
+        "histoire",
+        "bibliothèque",
+        "roman"
+      ]
+    },
+    {
+      "mot": "Restaurant",
+      "interdits": [
+        "menu",
+        "serveur",
+        "plat",
+        "addition",
+        "table",
+        "cuisine"
+      ]
+    },
+    {
+      "mot": "Voiture",
+      "interdits": [
+        "roue",
+        "moteur",
+        "conduire",
+        "route",
+        "volant",
+        "essence"
+      ]
+    },
+    {
+      "mot": "Piscine",
+      "interdits": [
+        "nager",
+        "eau",
+        "maillot",
+        "plongeon",
+        "bassin",
+        "chlorine"
+      ]
+    },
+    {
+      "mot": "Chocolat",
+      "interdits": [
+        "cacao",
+        "sucré",
+        "tablette",
+        "noir",
+        "fondant",
+        "pâques"
+      ]
+    },
+    {
+      "mot": "Lunettes",
+      "interdits": [
+        "voir",
+        "myopie",
+        "verre",
+        "monture",
+        "soleil",
+        "opticien"
+      ]
+    },
+    {
+      "mot": "Clé",
+      "interdits": [
+        "porte",
+        "serrure",
+        "ouvrir",
+        "trousseau",
+        "entrée",
+        "fermer"
+      ]
+    },
+    {
+      "mot": "Horloge",
+      "interdits": [
+        "heure",
+        "aiguille",
+        "minute",
+        "retard",
+        "réveil",
+        "temps"
+      ]
+    },
+    {
+      "mot": "Fleur",
+      "interdits": [
+        "pétale",
+        "jardin",
+        "parfum",
+        "rose",
+        "bouquet",
+        "pollen"
+      ]
+    },
+    {
+      "mot": "Fromage",
+      "interdits": [
+        "lait",
+        "vache",
+        "camembert",
+        "raclette",
+        "meule",
+        "affiné"
+      ]
+    },
+    {
+      "mot": "Canapé",
+      "interdits": [
+        "salon",
+        "assis",
+        "coussin",
+        "télé",
+        "détente",
+        "divan"
+      ]
+    },
+    {
+      "mot": "Valise",
+      "interdits": [
+        "voyage",
+        "bagage",
+        "roulette",
+        "aéroport",
+        "partir",
+        "ranger"
+      ]
+    },
+    {
+      "mot": "Bateau",
+      "interdits": [
+        "mer",
+        "voile",
+        "capitaine",
+        "navire",
+        "port",
+        "flotter"
+      ]
+    },
+    {
+      "mot": "Chapeau",
+      "interdits": [
+        "tête",
+        "casquette",
+        "soleil",
+        "porter",
+        "bord",
+        "chapeauter"
+      ]
+    },
+    {
+      "mot": "Café",
+      "interdits": [
+        "tasse",
+        "grain",
+        "expresso",
+        "matin",
+        "noir",
+        "barista"
+      ]
+    },
+    {
+      "mot": "Musée",
+      "interdits": [
+        "tableau",
+        "exposition",
+        "visite",
+        "art",
+        "sculpture",
+        "guide"
+      ]
+    },
+    {
+      "mot": "Jardin",
+      "interdits": [
+        "plante",
+        "fleur",
+        "arroser",
+        "pelouse",
+        "outil",
+        "potager"
+      ]
+    },
+    {
+      "mot": "Boulangerie",
+      "interdits": [
+        "pain",
+        "croissant",
+        "four",
+        "farine",
+        "viennoiserie",
+        "baguette"
+      ]
+    },
+    {
+      "mot": "Stylo",
+      "interdits": [
+        "écrire",
+        "encre",
+        "papier",
+        "bille",
+        "trait",
+        "crayon"
+      ]
+    },
+    {
+      "mot": "Miroir",
+      "interdits": [
+        "reflet",
+        "image",
+        "verre",
+        "regarder",
+        "salle de bain",
+        "face"
+      ]
+    },
+    {
+      "mot": "Escalier",
+      "interdits": [
+        "marche",
+        "monter",
+        "descendre",
+        "rampe",
+        "étage",
+        "corde"
+      ]
+    },
+    {
+      "mot": "Frigo",
+      "interdits": [
+        "froid",
+        "cuisine",
+        "conserver",
+        "glace",
+        "aliment",
+        "réfrigérateur"
+      ]
+    },
+    {
+      "mot": "Ballon",
+      "interdits": [
+        "jouer",
+        "rond",
+        "gonfler",
+        "foot",
+        "rebond",
+        "cuir"
+      ]
+    },
+    {
+      "mot": "Piano",
+      "interdits": [
+        "touche",
+        "note",
+        "musique",
+        "jouer",
+        "concert",
+        "classique"
+      ]
+    },
+    {
+      "mot": "Chat",
+      "interdits": [
+        "miauler",
+        "patte",
+        "griffer",
+        "litière",
+        "ronron",
+        "félin"
+      ]
+    },
+    {
+      "mot": "Table",
+      "interdits": [
+        "manger",
+        "bois",
+        "pied",
+        "cuisine",
+        "poser",
+        "assis"
+      ]
+    },
+    {
+      "mot": "Chaise",
+      "interdits": [
+        "assis",
+        "dossier",
+        "pied",
+        "table",
+        "bois",
+        "siège"
+      ]
+    },
+    {
+      "mot": "Lit",
+      "interdits": [
+        "dormir",
+        "oreiller",
+        "couette",
+        "chambre",
+        "nuit",
+        "matelas"
+      ]
+    },
+    {
+      "mot": "Douche",
+      "interdits": [
+        "eau",
+        "savon",
+        "salle de bain",
+        "mouiller",
+        "shampoing",
+        "serviette"
+      ]
+    },
+    {
+      "mot": "Savon",
+      "interdits": [
+        "mousser",
+        "laver",
+        "main",
+        "odeur",
+        "salle de bain",
+        "pain"
+      ]
+    },
+    {
+      "mot": "Télévision",
+      "interdits": [
+        "écran",
+        "zapper",
+        "canal",
+        "salon",
+        "regarder",
+        "série"
+      ]
+    },
+    {
+      "mot": "Ordinateur",
+      "interdits": [
+        "clavier",
+        "écran",
+        "souris",
+        "internet",
+        "travailler",
+        "bureau"
+      ]
+    },
+    {
+      "mot": "Sac",
+      "interdits": [
+        "porter",
+        "main",
+        "dos",
+        "ranger",
+        "courses",
+        "contenu"
+      ]
+    },
+    {
+      "mot": "Chaussure",
+      "interdits": [
+        "pied",
+        "lacets",
+        "marcher",
+        "semelle",
+        "paire",
+        "cuir"
+      ]
+    },
+    {
+      "mot": "Manteau",
+      "interdits": [
+        "hiver",
+        "froid",
+        "porter",
+        "bouton",
+        "capuche",
+        "veste"
+      ]
+    },
+    {
+      "mot": "Pantalon",
+      "interdits": [
+        "jambe",
+        "jean",
+        "porter",
+        "poche",
+        "ceinture",
+        "taille"
+      ]
+    },
+    {
+      "mot": "Chemise",
+      "interdits": [
+        "bouton",
+        "col",
+        "porter",
+        "travail",
+        "repasser",
+        "manche"
+      ]
+    },
+    {
+      "mot": "Montre",
+      "interdits": [
+        "heure",
+        "poignet",
+        "aiguille",
+        "retard",
+        "bracelet",
+        "temps"
+      ]
+    },
+    {
+      "mot": "Portefeuille",
+      "interdits": [
+        "argent",
+        "carte",
+        "poche",
+        "billet",
+        "cuir",
+        "payer"
+      ]
+    },
+    {
+      "mot": "Marché",
+      "interdits": [
+        "stand",
+        "légume",
+        "fruit",
+        "acheter",
+        "dimanche",
+        "marchander"
+      ]
+    },
+    {
+      "mot": "Supermarché",
+      "interdits": [
+        "caddie",
+        "rayon",
+        "caisse",
+        "courses",
+        "prix",
+        "promo"
+      ]
+    },
+    {
+      "mot": "Pharmacie",
+      "interdits": [
+        "médicament",
+        "ordonnance",
+        "malade",
+        "comprimé",
+        "pansement",
+        "pharmacien"
+      ]
+    },
+    {
+      "mot": "Banque",
+      "interdits": [
+        "argent",
+        "compte",
+        "carte",
+        "retirer",
+        "guichet",
+        "virement"
+      ]
+    },
+    {
+      "mot": "Gare",
+      "interdits": [
+        "train",
+        "quai",
+        "billet",
+        "voyage",
+        "retard",
+        "SNCF"
+      ]
+    },
+    {
+      "mot": "Bus",
+      "interdits": [
+        "arrêt",
+        "ticket",
+        "conducteur",
+        "ligne",
+        "passager",
+        "car"
+      ]
+    },
+    {
+      "mot": "Métro",
+      "interdits": [
+        "station",
+        "wagon",
+        "ticket",
+        "Paris",
+        "tunnel",
+        "rampe"
+      ]
+    },
+    {
+      "mot": "Avocat",
+      "interdits": [
+        "tribunal",
+        "défendre",
+        "loi",
+        "procès",
+        "client",
+        "justice"
+      ]
+    },
+    {
+      "mot": "Médecin",
+      "interdits": [
+        "malade",
+        "ordonnance",
+        "consultation",
+        "cabinet",
+        "soigner",
+        "docteur"
+      ]
+    },
+    {
+      "mot": "Dentiste",
+      "interdits": [
+        "dent",
+        "carie",
+        "brosse",
+        "douleur",
+        "cabinet",
+        "sourire"
+      ]
+    },
+    {
+      "mot": "Coiffeur",
+      "interdits": [
+        "cheveux",
+        "couper",
+        "couleur",
+        "salon",
+        "mèche",
+        "shampoing"
+      ]
+    },
+    {
+      "mot": "Bricolage",
+      "interdits": [
+        "marteau",
+        "vis",
+        "outil",
+        "réparer",
+        "mur",
+        "perceuse"
+      ]
+    },
+    {
+      "mot": "Jeu vidéo",
+      "interdits": [
+        "manette",
+        "console",
+        "jouer",
+        "niveau",
+        "écran",
+        "gamer"
+      ]
+    },
+    {
+      "mot": "Carte",
+      "interdits": [
+        "géographie",
+        "pays",
+        "ville",
+        "route",
+        "plan",
+        "Atlas"
+      ]
+    },
+    {
+      "mot": "Photo",
+      "interdits": [
+        "appareil",
+        "souvenir",
+        "sourire",
+        "cadrer",
+        "album",
+        "selfie"
+      ]
+    },
+    {
+      "mot": "Musique",
+      "interdits": [
+        "chanter",
+        "écouter",
+        "casque",
+        "playlist",
+        "concert",
+        "rythme"
+      ]
+    },
+    {
+      "mot": "Danse",
+      "interdits": [
+        "bouger",
+        "musique",
+        "pied",
+        "soirée",
+        "chorégraphie",
+        "salsa"
+      ]
+    },
+    {
+      "mot": "Fête",
+      "interdits": [
+        "anniversaire",
+        "invité",
+        "gâteau",
+        "musique",
+        "soirée",
+        "cadeau"
+      ]
+    },
+    {
+      "mot": "Cadeau",
+      "interdits": [
+        "anniversaire",
+        "papier",
+        "surprise",
+        "offrir",
+        "noël",
+        "ruban"
+      ]
+    },
+    {
+      "mot": "Noël",
+      "interdits": [
+        "sapin",
+        "cadeau",
+        "père",
+        "neige",
+        "décembre",
+        "cloche"
+      ]
+    },
+    {
+      "mot": "Vacances",
+      "interdits": [
+        "plage",
+        "soleil",
+        "partir",
+        "valise",
+        "repos",
+        "été"
+      ]
+    },
+    {
+      "mot": "Pluie",
+      "interdits": [
+        "nuage",
+        "parapluie",
+        "mouiller",
+        "goutte",
+        "orage",
+        "gris"
+      ]
+    },
+    {
+      "mot": "Neige",
+      "interdits": [
+        "hiver",
+        "froid",
+        "bonhomme",
+        "ski",
+        "blanc",
+        "flocon"
+      ]
+    },
+    {
+      "mot": "Soleil",
+      "interdits": [
+        "chaud",
+        "été",
+        "lunettes",
+        "plage",
+        "bronzé",
+        "ciel"
+      ]
+    },
+    {
+      "mot": "Vent",
+      "interdits": [
+        "souffler",
+        "fort",
+        "rafale",
+        "tempête",
+        "feuille",
+        "froid"
+      ]
+    },
+    {
+      "mot": "Orage",
+      "interdits": [
+        "tonnerre",
+        "éclair",
+        "pluie",
+        "nuage",
+        "peur",
+        "fort"
+      ]
+    },
+    {
+      "mot": "Feu",
+      "interdits": [
+        "brûler",
+        "chaud",
+        "flamme",
+        "cheminée",
+        "allumer",
+        "rouge"
+      ]
+    },
+    {
+      "mot": "Eau",
+      "interdits": [
+        "boire",
+        "verre",
+        "mouiller",
+        "pluie",
+        "rivière",
+        "liquide"
+      ]
+    },
+    {
+      "mot": "Pain",
+      "interdits": [
+        "boulangerie",
+        "farine",
+        "tartine",
+        "beurre",
+        "baguette",
+        "croûte"
+      ]
+    },
+    {
+      "mot": "Beurre",
+      "interdits": [
+        "tartine",
+        "pain",
+        "jaune",
+        "frigo",
+        "matière grasse",
+        "cuisson"
+      ]
+    },
+    {
+      "mot": "Œuf",
+      "interdits": [
+        "poule",
+        "coquille",
+        "jaune",
+        "blanc",
+        "omelette",
+        "casserole"
+      ]
+    },
+    {
+      "mot": "Poulet",
+      "interdits": [
+        "rôti",
+        "ferme",
+        "plume",
+        "cuisse",
+        "volaille",
+        "four"
+      ]
+    },
+    {
+      "mot": "Poisson",
+      "interdits": [
+        "mer",
+        "arête",
+        "pêche",
+        "aquarium",
+        "nageoire",
+        "filet"
+      ]
+    },
+    {
+      "mot": "Pomme",
+      "interdits": [
+        "fruit",
+        "rouge",
+        "verger",
+        "croquer",
+        "jus",
+        "tarte"
+      ]
+    },
+    {
+      "mot": "Banane",
+      "interdits": [
+        "jaune",
+        "fruit",
+        "singe",
+        "pelure",
+        "tropicale",
+        "smoothie"
+      ]
+    },
+    {
+      "mot": "Salade",
+      "interdits": [
+        "légume",
+        "verte",
+        "manger",
+        "assiette",
+        "tomate",
+        "crue"
+      ]
+    },
+    {
+      "mot": "Soupe",
+      "interdits": [
+        "chaud",
+        "bol",
+        "cuillère",
+        "légume",
+        "hiver",
+        "potage"
+      ]
+    },
+    {
+      "mot": "Glaces",
+      "interdits": [
+        "froid",
+        "été",
+        "cornet",
+        "vanille",
+        "chocolat",
+        "sucette"
+      ]
+    },
+    {
+      "mot": "Bonbon",
+      "interdits": [
+        "sucré",
+        "sucre",
+        "enfant",
+        "goûter",
+        "sucette",
+        "haribo"
+      ]
+    },
+    {
+      "mot": "Bière",
+      "interdits": [
+        "verre",
+        "blonde",
+        "brasserie",
+        "mousse",
+        "pression",
+        "apéro"
+      ]
+    },
+    {
+      "mot": "Vin",
+      "interdits": [
+        "raisin",
+        "verre",
+        "rouge",
+        "blanc",
+        "bouteille",
+        "cave"
+      ]
+    },
+    {
+      "mot": "Thé",
+      "interdits": [
+        "tasse",
+        "chaud",
+        "infusion",
+        "sachet",
+        "menthe",
+        "british"
+      ]
+    }
+  ],
+  "moyen": [
+    {
+      "mot": "Colocataire",
+      "interdits": [
+        "appart",
+        "loyer",
+        "partager",
+        "cuisine",
+        "chambre",
+        "vivre"
+      ]
+    },
+    {
+      "mot": "Embouteillage",
+      "interdits": [
+        "voiture",
+        "bouchon",
+        "route",
+        "retard",
+        "klaxon",
+        "autoroute"
+      ]
+    },
+    {
+      "mot": "Carton",
+      "interdits": [
+        "déménagement",
+        "déballer",
+        "scotch",
+        "ranger",
+        "boîte",
+        "empiler"
+      ]
+    },
+    {
+      "mot": "Déménagement",
+      "interdits": [
+        "carton",
+        "camion",
+        "nouveau",
+        "appart",
+        "porter",
+        "meuble"
+      ]
+    },
+    {
+      "mot": "Machine à laver",
+      "interdits": [
+        "linge",
+        "lessive",
+        "tambour",
+        "essorage",
+        "sale",
+        "propre"
+      ]
+    },
+    {
+      "mot": "Sèche-linge",
+      "interdits": [
+        "linge",
+        "mou",
+        "chaud",
+        "tambour",
+        "machine",
+        "sécher"
+      ]
+    },
+    {
+      "mot": "Aspirateur",
+      "interdits": [
+        "poussière",
+        "tapis",
+        "ménage",
+        "bruit",
+        "sol",
+        "nettoyer"
+      ]
+    },
+    {
+      "mot": "Fer à repasser",
+      "interdits": [
+        "chemise",
+        "planche",
+        "vapeur",
+        "pli",
+        "chaud",
+        "repasser"
+      ]
+    },
+    {
+      "mot": "Micro-ondes",
+      "interdits": [
+        "chauffer",
+        "plat",
+        "minute",
+        "cuisine",
+        "rayon",
+        "réchauffer"
+      ]
+    },
+    {
+      "mot": "Climatisation",
+      "interdits": [
+        "froid",
+        "chaud",
+        "été",
+        "bouton",
+        "ventilateur",
+        "température"
+      ]
+    },
+    {
+      "mot": "Radiateur",
+      "interdits": [
+        "chauffer",
+        "hiver",
+        "froid",
+        "eau chaude",
+        "bouton",
+        "chaleur"
+      ]
+    },
+    {
+      "mot": "Facture",
+      "interdits": [
+        "payer",
+        "EDF",
+        "montant",
+        "euros",
+        "reçu",
+        "abonnement"
+      ]
+    },
+    {
+      "mot": "Abonnement",
+      "interdits": [
+        "payer",
+        "mensuel",
+        "Netflix",
+        "résilier",
+        "contrat",
+        "forfait"
+      ]
+    },
+    {
+      "mot": "Panne",
+      "interdits": [
+        "cassé",
+        "réparer",
+        "voiture",
+        "tomber",
+        "garagiste",
+        "tomber en panne"
+      ]
+    },
+    {
+      "mot": "Garagiste",
+      "interdits": [
+        "voiture",
+        "réparer",
+        "moteur",
+        "pneu",
+        "facture",
+        "garage"
+      ]
+    },
+    {
+      "mot": "Permis",
+      "interdits": [
+        "conduire",
+        "auto-école",
+        "examen",
+        "voiture",
+        "code",
+        "pref"
+      ]
+    },
+    {
+      "mot": "Contrôle technique",
+      "interdits": [
+        "voiture",
+        "garage",
+        "vignette",
+        "révision",
+        "obligatoire",
+        "défaut"
+      ]
+    },
+    {
+      "mot": "Allergie",
+      "interdits": [
+        "éternuer",
+        "pollen",
+        "chat",
+        "rouge",
+        "médicament",
+        "réaction"
+      ]
+    },
+    {
+      "mot": "Rhume",
+      "interdits": [
+        "nez",
+        "toux",
+        "hiver",
+        "malade",
+        "mouchoir",
+        "gorge"
+      ]
+    },
+    {
+      "mot": "Grippe",
+      "interdits": [
+        "fièvre",
+        "toux",
+        "hiver",
+        "malade",
+        "lit",
+        "virus"
+      ]
+    },
+    {
+      "mot": "Rendez-vous",
+      "interdits": [
+        "agenda",
+        "heure",
+        "retard",
+        "docteur",
+        "planning",
+        "noter"
+      ]
+    },
+    {
+      "mot": "Réunion",
+      "interdits": [
+        "bureau",
+        "collègue",
+        "présentation",
+        "Teams",
+        "horaire",
+        "salle"
+      ]
+    },
+    {
+      "mot": "Télétravail",
+      "interdits": [
+        "maison",
+        "ordinateur",
+        "bureau",
+        "visio",
+        "pyjama",
+        "collègue"
+      ]
+    },
+    {
+      "mot": "Burn-out",
+      "interdits": [
+        "travail",
+        "fatigue",
+        "stress",
+        "repos",
+        "épuisement",
+        "bureau"
+      ]
+    },
+    {
+      "mot": "Procrastiner",
+      "interdits": [
+        "demain",
+        "retard",
+        "paresse",
+        "tâche",
+        "reporter",
+        "flemme"
+      ]
+    },
+    {
+      "mot": "Pique-nique",
+      "interdits": [
+        "herbe",
+        "panier",
+        "sandwich",
+        "parc",
+        "été",
+        "couverture"
+      ]
+    },
+    {
+      "mot": "Barbecue",
+      "interdits": [
+        "grill",
+        "viande",
+        "été",
+        "jardin",
+        "fumée",
+        "saucisse"
+      ]
+    },
+    {
+      "mot": "Camping",
+      "interdits": [
+        "tente",
+        "nature",
+        "feu",
+        "sac de couchage",
+        "forêt",
+        "étoile"
+      ]
+    },
+    {
+      "mot": "Randonnée",
+      "interdits": [
+        "marche",
+        "montagne",
+        "sac",
+        "sentier",
+        "chaussure",
+        "nature"
+      ]
+    },
+    {
+      "mot": "Parc d'attractions",
+      "interdits": [
+        "manège",
+        "file",
+        "ticket",
+        "adrénaline",
+        "montagnes russes",
+        "peur"
+      ]
+    },
+    {
+      "mot": "Salle de sport",
+      "interdits": [
+        "muscu",
+        "tapis",
+        "abonnement",
+        "coach",
+        "transpirer",
+        "haltère"
+      ]
+    },
+    {
+      "mot": "Piscine municipale",
+      "interdits": [
+        "nager",
+        "maillot",
+        "bassin",
+        "coupure",
+        "verre",
+        "surveillant"
+      ]
+    },
+    {
+      "mot": "Brocante",
+      "interdits": [
+        "vieux",
+        "marchander",
+        "dimanche",
+        "village",
+        "antiquité",
+        "stand"
+      ]
+    },
+    {
+      "mot": "Marché aux puces",
+      "interdits": [
+        "vieux",
+        "brocante",
+        "marchander",
+        "stand",
+        "trouvaille",
+        "vintage"
+      ]
+    },
+    {
+      "mot": "Soldes",
+      "interdits": [
+        "réduction",
+        "magasin",
+        "acheter",
+        "prix",
+        "janvier",
+        "juillet"
+      ]
+    },
+    {
+      "mot": "Black Friday",
+      "interdits": [
+        "promo",
+        "acheter",
+        "novembre",
+        "internet",
+        "réduction",
+        "file"
+      ]
+    },
+    {
+      "mot": "Livraison",
+      "interdits": [
+        "colis",
+        "Amazon",
+        "livreur",
+        "commander",
+        "boîte",
+        "attendre"
+      ]
+    },
+    {
+      "mot": "Colis",
+      "interdits": [
+        "livraison",
+        "carton",
+        "boîte",
+        "facteur",
+        "commander",
+        "suivre"
+      ]
+    },
+    {
+      "mot": "Code postal",
+      "interdits": [
+        "adresse",
+        "ville",
+        "courrier",
+        "lettre",
+        "chiffre",
+        "envoyer"
+      ]
+    },
+    {
+      "mot": "Carte d'identité",
+      "interdits": [
+        "administration",
+        "photo",
+        "passeport",
+        "pref",
+        "identité",
+        "officiel"
+      ]
+    },
+    {
+      "mot": "Passeport",
+      "interdits": [
+        "voyage",
+        "aéroport",
+        "douane",
+        "visa",
+        "identité",
+        "étranger"
+      ]
+    },
+    {
+      "mot": "Visa",
+      "interdits": [
+        "passeport",
+        "voyage",
+        "ambassade",
+        "autorisation",
+        "étranger",
+        "tampon"
+      ]
+    },
+    {
+      "mot": "Douane",
+      "interdits": [
+        "aéroport",
+        "déclarer",
+        "valise",
+        "frontière",
+        "contrôle",
+        "voyage"
+      ]
+    },
+    {
+      "mot": "Retard",
+      "interdits": [
+        "train",
+        "avion",
+        "heure",
+        "attendre",
+        "SNCF",
+        "annonce"
+      ]
+    },
+    {
+      "mot": "Grève",
+      "interdits": [
+        "manifestation",
+        "transport",
+        "syndicat",
+        "bloqué",
+        "pancarte",
+        "revendiquer"
+      ]
+    },
+    {
+      "mot": "Météo",
+      "interdits": [
+        "pluie",
+        "soleil",
+        "prévision",
+        "nuage",
+        "température",
+        "Météo France"
+      ]
+    },
+    {
+      "mot": "Météo France",
+      "interdits": [
+        "prévision",
+        "pluie",
+        "soleil",
+        "application",
+        "tempête",
+        "alerte"
+      ]
+    },
+    {
+      "mot": "Moustique",
+      "interdits": [
+        "piquer",
+        "été",
+        "grillon",
+        "répulsif",
+        "nuisible",
+        "piqûre"
+      ]
+    },
+    {
+      "mot": "Cafard",
+      "interdits": [
+        "cuisine",
+        "nuisible",
+        "nuit",
+        "insecte",
+        "produit",
+        "peur"
+      ]
+    },
+    {
+      "mot": "Punaise de lit",
+      "interdits": [
+        "piquer",
+        "matelas",
+        "hôtel",
+        "désinsectiser",
+        "nuit",
+        "démangeaison"
+      ]
+    },
+    {
+      "mot": "Désodorisant",
+      "interdits": [
+        "odeur",
+        "spray",
+        "salle de bain",
+        "parfum",
+        "masquer",
+        "aérosol"
+      ]
+    },
+    {
+      "mot": "Lessive",
+      "interdits": [
+        "linge",
+        "machine",
+        "odeur",
+        "propre",
+        "capsule",
+        "laver"
+      ]
+    },
+    {
+      "mot": "Adoucissant",
+      "interdits": [
+        "linge",
+        "odeur",
+        "doux",
+        "machine",
+        "parfum",
+        "tissu"
+      ]
+    },
+    {
+      "mot": "Éponge",
+      "interdits": [
+        "vaisselle",
+        "mouiller",
+        "ménage",
+        "absorber",
+        "cuisine",
+        "gratter"
+      ]
+    },
+    {
+      "mot": "Lave-vaisselle",
+      "interdits": [
+        "vaisselle",
+        "tablette",
+        "cuisine",
+        "rincer",
+        "programme",
+        "propre"
+      ]
+    },
+    {
+      "mot": "Four",
+      "interdits": [
+        "cuire",
+        "chaud",
+        "pizza",
+        "gâteau",
+        "thermostat",
+        "cuisine"
+      ]
+    },
+    {
+      "mot": "Plaque de cuisson",
+      "interdits": [
+        "feu",
+        "poêle",
+        "cuisine",
+        "induction",
+        "chaud",
+        "cuire"
+      ]
+    },
+    {
+      "mot": "Poêle",
+      "interdits": [
+        "cuire",
+        "cuisine",
+        "œuf",
+        "huile",
+        "chaud",
+        "manche"
+      ]
+    },
+    {
+      "mot": "Casserole",
+      "interdits": [
+        "eau",
+        "pâtes",
+        "cuisine",
+        "bouillir",
+        "manche",
+        "couvercle"
+      ]
+    },
+    {
+      "mot": "Mixeur",
+      "interdits": [
+        "soupe",
+        "smoothie",
+        "cuisine",
+        "lame",
+        "bruit",
+        "mixer"
+      ]
+    },
+    {
+      "mot": "Grille-pain",
+      "interdits": [
+        "pain",
+        "tartine",
+        "matin",
+        "brun",
+        "cuisine",
+        "chauffer"
+      ]
+    },
+    {
+      "mot": "Bouilloire",
+      "interdits": [
+        "eau",
+        "chaud",
+        "thé",
+        "électrique",
+        "vapeur",
+        "cuisine"
+      ]
+    },
+    {
+      "mot": "Congélateur",
+      "interdits": [
+        "froid",
+        "glace",
+        "surgelé",
+        "frigo",
+        "conserver",
+        "bac"
+      ]
+    },
+    {
+      "mot": "Placard",
+      "interdits": [
+        "ranger",
+        "cuisine",
+        "porte",
+        "étagère",
+        "vaisselle",
+        "tiroir"
+      ]
+    },
+    {
+      "mot": "Tiroir",
+      "interdits": [
+        "ranger",
+        "ouvrir",
+        "bureau",
+        "cuisine",
+        "chaussette",
+        "coulisser"
+      ]
+    },
+    {
+      "mot": "Rideau",
+      "interdits": [
+        "fenêtre",
+        "soleil",
+        "tissu",
+        "tirer",
+        "chambre",
+        "occultant"
+      ]
+    },
+    {
+      "mot": "Store",
+      "interdits": [
+        "fenêtre",
+        "soleil",
+        "baisser",
+        "jalouse",
+        "lumière",
+        "tirer"
+      ]
+    },
+    {
+      "mot": "Ampoule",
+      "interdits": [
+        "lumière",
+        "changer",
+        "lampe",
+        "électricité",
+        "griller",
+        "LED"
+      ]
+    },
+    {
+      "mot": "Prise électrique",
+      "interdits": [
+        "brancher",
+        "câble",
+        "mur",
+        "courant",
+        "chargeur",
+        "électricité"
+      ]
+    },
+    {
+      "mot": "Multiprise",
+      "interdits": [
+        "brancher",
+        "prise",
+        "câble",
+        "bureau",
+        "électricité",
+        "rallonge"
+      ]
+    },
+    {
+      "mot": "Rallonge",
+      "interdits": [
+        "câble",
+        "prise",
+        "long",
+        "électricité",
+        "brancher",
+        "mètre"
+      ]
+    },
+    {
+      "mot": "Chauffe-eau",
+      "interdits": [
+        "eau chaude",
+        "douche",
+        "ballon",
+        "salle de bain",
+        "électrique",
+        "gaz"
+      ]
+    },
+    {
+      "mot": "Fuite",
+      "interdits": [
+        "eau",
+        "robinet",
+        "tache",
+        "plombier",
+        "goutte",
+        "réparer"
+      ]
+    },
+    {
+      "mot": "Plombier",
+      "interdits": [
+        "fuite",
+        "eau",
+        "tuyau",
+        "réparer",
+        "robinet",
+        "facture"
+      ]
+    },
+    {
+      "mot": "Électricien",
+      "interdits": [
+        "prise",
+        "câble",
+        "lumière",
+        "réparer",
+        "courant",
+        "tableau"
+      ]
+    },
+    {
+      "mot": "Serrurier",
+      "interdits": [
+        "clé",
+        "porte",
+        "bloqué",
+        "cambriolage",
+        "ouvrir",
+        "nuit"
+      ]
+    },
+    {
+      "mot": "Déménageur",
+      "interdits": [
+        "carton",
+        "camion",
+        "meuble",
+        "porter",
+        "escalier",
+        "déménagement"
+      ]
+    },
+    {
+      "mot": "Baby-sitter",
+      "interdits": [
+        "enfant",
+        "soir",
+        "garder",
+        "parents",
+        "dodo",
+        "jeu"
+      ]
+    },
+    {
+      "mot": "Poubelle",
+      "interdits": [
+        "jeter",
+        "déchet",
+        "tri",
+        "sac",
+        "odeur",
+        "bac"
+      ]
+    },
+    {
+      "mot": "Tri sélectif",
+      "interdits": [
+        "poubelle",
+        "recyclage",
+        "verre",
+        "carton",
+        "jaune",
+        "vert"
+      ]
+    },
+    {
+      "mot": "Voisin",
+      "interdits": [
+        "mur",
+        "bruit",
+        "immeuble",
+        "étage",
+        "sonnette",
+        "voisinage"
+      ]
+    },
+    {
+      "mot": "Syndic",
+      "interdits": [
+        "immeuble",
+        "copropriété",
+        "charges",
+        "ascenseur",
+        "courrier",
+        "AG"
+      ]
+    },
+    {
+      "mot": "Ascenseur",
+      "interdits": [
+        "étage",
+        "immeuble",
+        "bouton",
+        "monter",
+        "descendre",
+        "panne"
+      ]
+    },
+    {
+      "mot": "Interphone",
+      "interdits": [
+        "sonner",
+        "immeuble",
+        "porte",
+        "visiteur",
+        "code",
+        "entrée"
+      ]
+    },
+    {
+      "mot": "Digicode",
+      "interdits": [
+        "code",
+        "porte",
+        "immeuble",
+        "chiffre",
+        "entrée",
+        "clavier"
+      ]
+    },
+    {
+      "mot": "Place de parking",
+      "interdits": [
+        "voiture",
+        "garer",
+        "sous-sol",
+        "numéro",
+        "payant",
+        "ticket"
+      ]
+    },
+    {
+      "mot": "Radar",
+      "interdits": [
+        "vitesse",
+        "route",
+        "flash",
+        "amende",
+        "contrôle",
+        "limitation"
+      ]
+    },
+    {
+      "mot": "Amende",
+      "interdits": [
+        "payer",
+        "police",
+        "contravention",
+        "euros",
+        "stationnement",
+        "excès"
+      ]
+    },
+    {
+      "mot": "Contravention",
+      "interdits": [
+        "amende",
+        "police",
+        "stationnement",
+        "payer",
+        "PV",
+        "voiture"
+      ]
+    },
+    {
+      "mot": "Fourrière",
+      "interdits": [
+        "voiture",
+        "enlevé",
+        "stationnement",
+        "récupérer",
+        "payer",
+        "panne"
+      ]
+    }
+  ],
+  "difficile": [
+    {
+      "mot": "Oreiller",
+      "interdits": [
+        "dormir",
+        "lit",
+        "tête",
+        "plume",
+        "couette",
+        "nuit"
+      ]
+    },
+    {
+      "mot": "Cintre",
+      "interdits": [
+        "placard",
+        "veste",
+        "vêtement",
+        "accrocher",
+        "boucle",
+        "armoire"
+      ]
+    },
+    {
+      "mot": "Détachant",
+      "interdits": [
+        "tache",
+        "linge",
+        "spray",
+        "lessive",
+        "vêtement",
+        "produit"
+      ]
+    },
+    {
+      "mot": "Bouchon",
+      "interdits": [
+        "bouteille",
+        "vin",
+        "tirer",
+        "liège",
+        "ouvrir",
+        "cork"
+      ]
+    },
+    {
+      "mot": "Tire-bouchon",
+      "interdits": [
+        "vin",
+        "bouteille",
+        "ouvrir",
+        "liège",
+        "tourner",
+        "bouchon"
+      ]
+    },
+    {
+      "mot": "Décapsuleur",
+      "interdits": [
+        "bière",
+        "capsule",
+        "ouvrir",
+        "bouteille",
+        "métal",
+        "apéro"
+      ]
+    },
+    {
+      "mot": "Économe",
+      "interdits": [
+        "légume",
+        "éplucher",
+        "cuisine",
+        "pomme de terre",
+        "lame",
+        "manche"
+      ]
+    },
+    {
+      "mot": "Râpe",
+      "interdits": [
+        "fromage",
+        "carotte",
+        "cuisine",
+        "trou",
+        "râper",
+        "métal"
+      ]
+    },
+    {
+      "mot": "Passoire",
+      "interdits": [
+        "pâtes",
+        "eau",
+        "égoutter",
+        "trou",
+        "cuisine",
+        "cuisson"
+      ]
+    },
+    {
+      "mot": "Spatule",
+      "interdits": [
+        "poêle",
+        "retourner",
+        "cuisine",
+        "crêpe",
+        "manche",
+        "silicone"
+      ]
+    },
+    {
+      "mot": "Louche",
+      "interdits": [
+        "soupe",
+        "servir",
+        "marmite",
+        "liquide",
+        "cuisine",
+        "manche"
+      ]
+    },
+    {
+      "mot": "Écumoire",
+      "interdits": [
+        "friture",
+        "égoutter",
+        "trou",
+        "marmite",
+        "cuisine",
+        "manche"
+      ]
+    },
+    {
+      "mot": "Rouleau papier",
+      "interdits": [
+        "toilette",
+        "Sopalin",
+        "dérouler",
+        "salle de bain",
+        "essuyer",
+        "carton"
+      ]
+    },
+    {
+      "mot": "Balai",
+      "interdits": [
+        "balayer",
+        "sol",
+        "poussière",
+        "manche",
+        "serpillière",
+        "ménage"
+      ]
+    },
+    {
+      "mot": "Serpillière",
+      "interdits": [
+        "sol",
+        "eau",
+        "mouiller",
+        "ménage",
+        "essorer",
+        "carrelage"
+      ]
+    },
+    {
+      "mot": "Seau",
+      "interdits": [
+        "eau",
+        "ménage",
+        "serpillière",
+        "verser",
+        "plastique",
+        "plein"
+      ]
+    },
+    {
+      "mot": "Chiffon",
+      "interdits": [
+        "essuyer",
+        "poussière",
+        "ménage",
+        "microfibre",
+        "propre",
+        "table"
+      ]
+    },
+    {
+      "mot": "Poubelle sous évier",
+      "interdits": [
+        "cuisine",
+        "jeter",
+        "bac",
+        "déchet",
+        "odeur",
+        "tri"
+      ]
+    },
+    {
+      "mot": "Tapis de bain",
+      "interdits": [
+        "salle de bain",
+        "pied",
+        "mou",
+        "douche",
+        "absorber",
+        "sol"
+      ]
+    },
+    {
+      "mot": "Porte-savon",
+      "interdits": [
+        "savon",
+        "salle de bain",
+        "lavabo",
+        "mousser",
+        "support",
+        "douche"
+      ]
+    },
+    {
+      "mot": "Porte-brosse à dents",
+      "interdits": [
+        "salle de bain",
+        "dent",
+        "lavabo",
+        "support",
+        "hygiène",
+        "mural"
+      ]
+    },
+    {
+      "mot": "Bonnet de douche",
+      "interdits": [
+        "cheveux",
+        "douche",
+        "plastique",
+        "mouiller",
+        "salle de bain",
+        "protéger"
+      ]
+    },
+    {
+      "mot": "Peignoir",
+      "interdits": [
+        "sortir",
+        "douche",
+        "salle de bain",
+        "tissu",
+        "ceinture",
+        "chaud"
+      ]
+    },
+    {
+      "mot": "Pantoufles",
+      "interdits": [
+        "pied",
+        "maison",
+        "confort",
+        "chaud",
+        "intérieur",
+        "chausser"
+      ]
+    },
+    {
+      "mot": "Chaussettes",
+      "interdits": [
+        "pied",
+        "laine",
+        "trou",
+        "paire",
+        "odeur",
+        "tiroir"
+      ]
+    },
+    {
+      "mot": "Soutien-gorge",
+      "interdits": [
+        "lingerie",
+        "armoire",
+        "bretelle",
+        "taille",
+        "laver",
+        "femme"
+      ]
+    },
+    {
+      "mot": "Caleçon",
+      "interdits": [
+        "sous-vêtement",
+        "homme",
+        "coton",
+        "laver",
+        "tiroir",
+        "slip"
+      ]
+    },
+    {
+      "mot": "Pyjama",
+      "interdits": [
+        "dormir",
+        "nuit",
+        "lit",
+        "pantalon",
+        "confort",
+        "chaud"
+      ]
+    },
+    {
+      "mot": "Gilet",
+      "interdits": [
+        "pull",
+        "sans manche",
+        "bouton",
+        "hiver",
+        "couche",
+        "tricot"
+      ]
+    },
+    {
+      "mot": "Écharpe",
+      "interdits": [
+        "cou",
+        "hiver",
+        "froid",
+        "laine",
+        "enrouler",
+        "gorge"
+      ]
+    },
+    {
+      "mot": "Gants",
+      "interdits": [
+        "main",
+        "hiver",
+        "froid",
+        "doigt",
+        "laine",
+        "paire"
+      ]
+    },
+    {
+      "mot": "Bottes",
+      "interdits": [
+        "pluie",
+        "pied",
+        "caoutchouc",
+        "boue",
+        "hiver",
+        "imperméable"
+      ]
+    },
+    {
+      "mot": "Sandales",
+      "interdits": [
+        "été",
+        "pied",
+        "orteil",
+        "plage",
+        "ouvert",
+        "lanière"
+      ]
+    },
+    {
+      "mot": "Tongs",
+      "interdits": [
+        "plage",
+        "pied",
+        "été",
+        "plastique",
+        "piscine",
+        "claquettes"
+      ]
+    },
+    {
+      "mot": "Ceinture",
+      "interdits": [
+        "pantalon",
+        "boucle",
+        "taille",
+        "cuir",
+        "serrer",
+        "trou"
+      ]
+    },
+    {
+      "mot": "Bouton",
+      "interdits": [
+        "chemise",
+        "coudre",
+        "trou",
+        "fermer",
+        "jean",
+        "couture"
+      ]
+    },
+    {
+      "mot": "Fermeture éclair",
+      "interdits": [
+        "zip",
+        "pantalon",
+        "veste",
+        "glisser",
+        "cassé",
+        "fermer"
+      ]
+    },
+    {
+      "mot": "Étiquette",
+      "interdits": [
+        "vêtement",
+        "taille",
+        "couper",
+        "marque",
+        "lavage",
+        "col"
+      ]
+    },
+    {
+      "mot": "Cintre à pantalon",
+      "interdits": [
+        "placard",
+        "pince",
+        "pantalon",
+        "accrocher",
+        "pli",
+        "armoire"
+      ]
+    },
+    {
+      "mot": "Boîte à chaussures",
+      "interdits": [
+        "ranger",
+        "carton",
+        "paire",
+        "placard",
+        "empiler",
+        "étiquette"
+      ]
+    },
+    {
+      "mot": "Patère",
+      "interdits": [
+        "manteau",
+        "mur",
+        "accrocher",
+        "entrée",
+        "crochet",
+        "chapeau"
+      ]
+    },
+    {
+      "mot": "Paillasson",
+      "interdits": [
+        "entrée",
+        "pied",
+        "porte",
+        "essuyer",
+        "boue",
+        "tapis"
+      ]
+    },
+    {
+      "mot": "Sonnette",
+      "interdits": [
+        "porte",
+        "sonner",
+        "visiteur",
+        "entrée",
+        "ding",
+        "interphone"
+      ]
+    },
+    {
+      "mot": "Judas",
+      "interdits": [
+        "porte",
+        "regarder",
+        "visiteur",
+        "trou",
+        "œil",
+        "sécurité"
+      ]
+    },
+    {
+      "mot": "Chaîne de sécurité",
+      "interdits": [
+        "porte",
+        "ouvrir",
+        "sécurité",
+        "visiteur",
+        "entrebâiller",
+        "maillon"
+      ]
+    },
+    {
+      "mot": "Verrou",
+      "interdits": [
+        "porte",
+        "nuit",
+        "sécurité",
+        "fermer",
+        "clé",
+        "sûreté"
+      ]
+    },
+    {
+      "mot": "Joint silicone",
+      "interdits": [
+        "salle de bain",
+        "lavabo",
+        "douche",
+        "étanchéité",
+        "moisissure",
+        "colle"
+      ]
+    },
+    {
+      "mot": "Moisissure",
+      "interdits": [
+        "humidité",
+        "mur",
+        "salle de bain",
+        "noir",
+        "nettoyer",
+        "tache"
+      ]
+    },
+    {
+      "mot": "Déboucheur",
+      "interdits": [
+        "évier",
+        "bouchon",
+        "ventouse",
+        "eau",
+        "canalisation",
+        "aspirer"
+      ]
+    },
+    {
+      "mot": "Ventouse",
+      "interdits": [
+        "déboucheur",
+        "évier",
+        "aspirer",
+        "caoutchouc",
+        "manche",
+        "bouchon"
+      ]
+    },
+    {
+      "mot": "Joint de robinet",
+      "interdits": [
+        "fuite",
+        "eau",
+        "goutte",
+        "changer",
+        "plombier",
+        "téflon"
+      ]
+    },
+    {
+      "mot": "Téflon",
+      "interdits": [
+        "plombier",
+        "robinet",
+        "filet",
+        "étanchéité",
+        "rouleau",
+        "ruban"
+      ]
+    },
+    {
+      "mot": "Disjoncteur",
+      "interdits": [
+        "électricité",
+        "tableau",
+        "coupure",
+        "sauter",
+        "courant",
+        "fusible"
+      ]
+    },
+    {
+      "mot": "Fusible",
+      "interdits": [
+        "électricité",
+        "griller",
+        "tableau",
+        "remplacer",
+        "courant",
+        "disjoncteur"
+      ]
+    },
+    {
+      "mot": "Piles",
+      "interdits": [
+        "télécommande",
+        "tournevis",
+        "appareil",
+        "AA",
+        "remplacer",
+        "chargeur"
+      ]
+    },
+    {
+      "mot": "Télécommande",
+      "interdits": [
+        "télé",
+        "zapper",
+        "pile",
+        "bouton",
+        "canal",
+        "salon"
+      ]
+    },
+    {
+      "mot": "Box internet",
+      "interdits": [
+        "wifi",
+        "fibre",
+        "clignoter",
+        "orange",
+        "débit",
+        "routeur"
+      ]
+    },
+    {
+      "mot": "Mot de passe",
+      "interdits": [
+        "oublier",
+        "connexion",
+        "compte",
+        "sécurité",
+        "lettre",
+        "chiffre"
+      ]
+    },
+    {
+      "mot": "Captcha",
+      "interdits": [
+        "robot",
+        "image",
+        "valider",
+        "internet",
+        "case",
+        "vérifier"
+      ]
+    },
+    {
+      "mot": "Mise à jour",
+      "interdits": [
+        "téléphone",
+        "ordinateur",
+        "redémarrer",
+        "logiciel",
+        "attendre",
+        "version"
+      ]
+    },
+    {
+      "mot": "Sauvegarde",
+      "interdits": [
+        "ordinateur",
+        "cloud",
+        "copie",
+        "perdre",
+        "disque",
+        "fichier"
+      ]
+    },
+    {
+      "mot": "Corbeille",
+      "interdits": [
+        "ordinateur",
+        "supprimer",
+        "récupérer",
+        "fichier",
+        "vider",
+        "icône"
+      ]
+    },
+    {
+      "mot": "Raccourci clavier",
+      "interdits": [
+        "copier",
+        "coller",
+        "Ctrl",
+        "ordinateur",
+        "toucher",
+        "gagner"
+      ]
+    },
+    {
+      "mot": "Capture d'écran",
+      "interdits": [
+        "téléphone",
+        "ordinateur",
+        "image",
+        "enregistrer",
+        "bouton",
+        "partager"
+      ]
+    },
+    {
+      "mot": "Story Instagram",
+      "interdits": [
+        "photo",
+        "24h",
+        "réseau",
+        "filtre",
+        "ami",
+        "vertical"
+      ]
+    },
+    {
+      "mot": "Notification",
+      "interdits": [
+        "téléphone",
+        "bip",
+        "message",
+        "application",
+        "badge",
+        "désactiver"
+      ]
+    },
+    {
+      "mot": "Forfait mobile",
+      "interdits": [
+        "data",
+        "SMS",
+        "opérateur",
+        "payer",
+        "giga",
+        "abonnement"
+      ]
+    },
+    {
+      "mot": "Roaming",
+      "interdits": [
+        "étranger",
+        "forfait",
+        "data",
+        "voyage",
+        "cher",
+        "opérateur"
+      ]
+    },
+    {
+      "mot": "Ticket resto",
+      "interdits": [
+        "déjeuner",
+        "restaurant",
+        "carte",
+        "employeur",
+        "payer",
+        "cantine"
+      ]
+    },
+    {
+      "mot": "Ticket de caisse",
+      "interdits": [
+        "supermarché",
+        "payer",
+        "rendre",
+        "monnaie",
+        "courses",
+        "garantie"
+      ]
+    },
+    {
+      "mot": "Carte fidélité",
+      "interdits": [
+        "magasin",
+        "point",
+        "scanner",
+        "réduction",
+        "trou",
+        "portefeuille"
+      ]
+    },
+    {
+      "mot": "Ticket de métro",
+      "interdits": [
+        "valider",
+        "station",
+        "composteur",
+        "voyage",
+        "perdre",
+        "recharge"
+      ]
+    },
+    {
+      "mot": "Composteur",
+      "interdits": [
+        "métro",
+        "ticket",
+        "valider",
+        "passage",
+        "trou",
+        "tampon"
+      ]
+    },
+    {
+      "mot": "Badge entreprise",
+      "interdits": [
+        "bureau",
+        "scanner",
+        "accès",
+        "photo",
+        "collier",
+        "employé"
+      ]
+    },
+    {
+      "mot": "Machine à café",
+      "interdits": [
+        "bureau",
+        "capsule",
+        "expresso",
+        "pause",
+        "tasse",
+        "grain"
+      ]
+    },
+    {
+      "mot": "Fontaine à eau",
+      "interdits": [
+        "bureau",
+        "verre",
+        "fraîche",
+        "gourde",
+        "remplir",
+        "fraîcheur"
+      ]
+    },
+    {
+      "mot": "Micro-ondes bureau",
+      "interdits": [
+        "réchauffer",
+        "tupperware",
+        "odeur",
+        "pause",
+        "pop-corn",
+        "plastique"
+      ]
+    },
+    {
+      "mot": "Tupperware",
+      "interdits": [
+        "ranger",
+        "frigo",
+        "couvert",
+        "repas",
+        "plastique",
+        "micro-ondes"
+      ]
+    },
+    {
+      "mot": "Gourde",
+      "interdits": [
+        "eau",
+        "sport",
+        "remplir",
+        "bureau",
+        "plastique",
+        "bouchon"
+      ]
+    },
+    {
+      "mot": "Thermos",
+      "interdits": [
+        "café",
+        "chaud",
+        "isotherme",
+        "bureau",
+        "gourde",
+        "voyage"
+      ]
+    },
+    {
+      "mot": "Coussin lumbar",
+      "interdits": [
+        "dos",
+        "bureau",
+        "chaise",
+        "confort",
+        "siège",
+        "ergonomie"
+      ]
+    },
+    {
+      "mot": "Casque antibruit",
+      "interdits": [
+        "bureau",
+        "concentrer",
+        "open space",
+        "oreille",
+        "musique",
+        "silence"
+      ]
+    },
+    {
+      "mot": "Post-it",
+      "interdits": [
+        "bureau",
+        "coller",
+        "note",
+        "jaune",
+        "rappel",
+        "feuille"
+      ]
+    },
+    {
+      "mot": "Agrafeuse",
+      "interdits": [
+        "bureau",
+        "feuille",
+        "agrafe",
+        "papier",
+        "clouer",
+        "tiroir"
+      ]
+    },
+    {
+      "mot": "Perforatrice",
+      "interdits": [
+        "bureau",
+        "trou",
+        "classeur",
+        "feuille",
+        "rond",
+        "papier"
+      ]
+    },
+    {
+      "mot": "Classeur",
+      "interdits": [
+        "bureau",
+        "ranger",
+        "feuille",
+        "dos",
+        "étiquette",
+        "étagère"
+      ]
+    },
+    {
+      "mot": "Chemise cartonnée",
+      "interdits": [
+        "bureau",
+        "ranger",
+        "document",
+        "dossier",
+        "étiquette",
+        "carton"
+      ]
+    },
+    {
+      "mot": "Tampon encreur",
+      "interdits": [
+        "bureau",
+        "encre",
+        "tamponner",
+        "date",
+        "administratif",
+        "violet"
+      ]
+    },
+    {
+      "mot": "Correcteur",
+      "interdits": [
+        "faute",
+        "blanc",
+        "stylo",
+        "gomme",
+        "papier",
+        "erreur"
+      ]
+    },
+    {
+      "mot": "Surligneur",
+      "interdits": [
+        "jaune",
+        "marquer",
+        "texte",
+        "stylo",
+        "réviser",
+        "fluo"
+      ]
+    },
+    {
+      "mot": "Règle",
+      "interdits": [
+        "mesurer",
+        "trait",
+        "centimètre",
+        "école",
+        "bureau",
+        "plastique"
+      ]
+    },
+    {
+      "mot": "Équerre",
+      "interdits": [
+        "angle",
+        "dessin",
+        "école",
+        "géométrie",
+        "triangle",
+        "mesurer"
+      ]
+    },
+    {
+      "mot": "Compas",
+      "interdits": [
+        "cercle",
+        "école",
+        "géométrie",
+        "pointe",
+        "tracer",
+        "équerre"
+      ]
+    },
+    {
+      "mot": "Trousse",
+      "interdits": [
+        "école",
+        "stylo",
+        "crayon",
+        "gomme",
+        "fermeture",
+        "trou"
+      ]
+    },
+    {
+      "mot": "Cartable",
+      "interdits": [
+        "école",
+        "dos",
+        "cahier",
+        "enfant",
+        "lourd",
+        "bretelle"
+      ]
+    },
+    {
+      "mot": "Sac à dos",
+      "interdits": [
+        "dos",
+        "bretelle",
+        "randonnée",
+        "école",
+        "porter",
+        "poche"
+      ]
+    },
+    {
+      "mot": "Porte-documents",
+      "interdits": [
+        "bureau",
+        "document",
+        "zip",
+        "réunion",
+        "cuir",
+        "manche"
+      ]
+    },
+    {
+      "mot": "Parapluie compact",
+      "interdits": [
+        "pluie",
+        "poche",
+        "plier",
+        "petit",
+        "sac",
+        "manche"
+      ]
+    },
+    {
+      "mot": "Anti-moustique",
+      "interdits": [
+        "été",
+        "spray",
+        "piquer",
+        "odeur",
+        "nuisible",
+        "répulsif"
+      ]
+    },
+    {
+      "mot": "Crème solaire",
+      "interdits": [
+        "soleil",
+        "plage",
+        "brûler",
+        "SPF",
+        "été",
+        "peau"
+      ]
+    },
+    {
+      "mot": "Après-soleil",
+      "interdits": [
+        "brûler",
+        "plage",
+        "aloès",
+        "rouge",
+        "peau",
+        "apaiser"
+      ]
+    },
+    {
+      "mot": "Pansement",
+      "interdits": [
+        "blessure",
+        "doigt",
+        "couper",
+        "pharmacie",
+        "protéger",
+        "bobo"
+      ]
+    },
+    {
+      "mot": "Bétadine",
+      "interdits": [
+        "blessure",
+        "jaune",
+        "désinfecter",
+        "pharmacie",
+        "coton",
+        "bobo"
+      ]
+    }
+  ]
+}
