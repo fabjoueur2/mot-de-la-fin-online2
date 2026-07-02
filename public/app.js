@@ -173,7 +173,11 @@ function renderGame(s) {
   $('round-badge').className = `round-badge ${isR1 ? 'r1' : 'r2'}`;
 
   let counterText = `Carte ${s.cardsThisRound} — ${team?.name || ''} · chrono équipe : ${formatTime(s.timeLeft)}`;
-  if (s.masterName) {
+  if (s.awaitingMasterStart) {
+    counterText = s.isMaster
+      ? `C'est à vous, ${team?.name || ''} — appuyez sur Démarrer quand le Devineur est prêt`
+      : `En attente du Maître (${s.masterName || team?.name || '…'})`;
+  } else if (s.masterName) {
     const guessers = s.guesserNames?.length ? s.guesserNames.join(', ') : '…';
     counterText = `Carte ${s.cardsThisRound} — ${s.masterName} (Maître) → ${guessers}`;
   }
@@ -189,6 +193,13 @@ function renderGame(s) {
   else if (s.timeLeft <= 20) timerEl.classList.add('warning');
 
   renderScores('scores-game', s.teams, s.currentTeamIndex, s.teamTimers);
+
+  const startTurnSection = $('start-turn-section');
+  const showStartBtn = s.awaitingMasterStart && s.isMaster;
+  startTurnSection.style.display = showStartBtn ? 'block' : 'none';
+  if (showStartBtn) {
+    startTurnSection.querySelector('.start-turn-hint').style.display = 'block';
+  }
 
   const wordBox = $('word-box');
   const forbiddenSection = $('forbidden-section');
@@ -213,12 +224,30 @@ function renderGame(s) {
     } else {
       forbiddenSection.style.display = 'none';
     }
+  } else if (s.awaitingMasterStart && s.isGuesser) {
+    wordBox.classList.add('waiting');
+    wordBox.classList.remove('guesser-view');
+    $('word-text').textContent = '⏳ En attente — le Maître va démarrer quand vous êtes prêt à deviner';
+    $('word-diff').textContent = '';
+    forbiddenSection.style.display = 'none';
+  } else if (s.awaitingMasterStart && s.isMaster) {
+    wordBox.classList.add('waiting');
+    wordBox.classList.remove('guesser-view');
+    $('word-text').textContent = '👑 Prêt ? Le mot apparaîtra après « Démarrer »';
+    $('word-diff').textContent = '';
+    forbiddenSection.style.display = 'none';
   } else if (s.isGuesser) {
     wordBox.classList.remove('waiting');
     wordBox.classList.add('guesser-view');
     $('word-text').textContent = isR1
       ? '🎯 Vous êtes le DEVINEUR — ne regardez pas l\'écran du Maître !'
       : '🎯 Vous êtes le DEVINEUR — écoutez les descriptions !';
+    $('word-diff').textContent = '';
+    forbiddenSection.style.display = 'none';
+  } else if (s.awaitingMasterStart) {
+    wordBox.classList.add('waiting');
+    wordBox.classList.remove('guesser-view');
+    $('word-text').textContent = `⏳ ${team?.name || 'Une équipe'} — en attente du Maître`;
     $('word-diff').textContent = '';
     forbiddenSection.style.display = 'none';
   } else {
@@ -232,7 +261,7 @@ function renderGame(s) {
   $('r1-controls').style.display = isR1 ? 'block' : 'none';
   $('r2-controls').style.display = isR2 ? 'block' : 'none';
 
-  const showControls = s.isMaster && s.card;
+  const showControls = s.isMaster && s.card && !s.awaitingMasterStart;
   $('active-team-controls').style.display = showControls && isR1 ? 'flex' : 'none';
   $('active-team-controls-r2').style.display = showControls && isR2 ? 'flex' : 'none';
 
@@ -242,14 +271,18 @@ function renderGame(s) {
     spec.innerHTML = '⚠️ Vous êtes seul dans votre équipe — il faut au moins un <strong>Maître</strong> et un <strong>Devineur</strong> !';
   } else if (s.isGuesser) {
     spec.style.display = 'block';
-    spec.innerHTML = isR1
-      ? `<strong>${s.masterName}</strong> vous donne des indices (un mot à la fois). Devinez à voix haute — visio conseillée !`
-      : `<strong>${s.masterName}</strong> décrit le mot. Devinez sans voir la carte !`;
+    spec.innerHTML = s.awaitingMasterStart
+      ? 'Préparez-vous à deviner — le Maître lancera le chrono quand vous serez prêt.'
+      : isR1
+        ? `<strong>${s.masterName}</strong> vous donne des indices (un mot à la fois). Devinez à voix haute — visio conseillée !`
+        : `<strong>${s.masterName}</strong> décrit le mot. Devinez sans voir la carte !`;
   } else if (s.isMaster) {
     spec.style.display = 'block';
-    spec.innerHTML = isR1
-      ? 'Vous êtes le <strong>Maître</strong> pour toute la partie — seul vous voyez le mot. Donnez <strong>un mot</strong> à la fois !'
-      : 'Vous êtes le <strong>Maître</strong> pour toute la partie — seul vous voyez le mot et les mots interdits.';
+    spec.innerHTML = s.awaitingMasterStart
+      ? 'Quand votre Devineur est prêt, cliquez sur <strong>Démarrer</strong> pour lancer le chrono et révéler le mot.'
+      : isR1
+        ? 'Vous êtes le <strong>Maître</strong> pour toute la partie — seul vous voyez le mot. Donnez <strong>un mot</strong> à la fois !'
+        : 'Vous êtes le <strong>Maître</strong> pour toute la partie — seul vous voyez le mot et les mots interdits.';
   } else if (s.role === 'spectator') {
     spec.style.display = 'block';
     spec.innerHTML = isR1
@@ -261,6 +294,7 @@ function renderGame(s) {
 
   if (isR1) updateClueTracker(s.currentClue);
   $('btn-pause').textContent = s.timerPaused ? '▶ Reprendre' : '⏸ Pause';
+  $('host-timer-controls').style.display = s.isHost && !s.awaitingMasterStart ? 'flex' : 'none';
 }
 
 function renderEnd(s) {
@@ -385,6 +419,7 @@ $('btn-start-game').addEventListener('click', () => {
 $('btn-round2').addEventListener('click', () => socket.emit('start-round2'));
 $('btn-replay').addEventListener('click', () => socket.emit('back-to-lobby'));
 
+$('btn-start-turn').addEventListener('click', () => socket.emit('start-turn'));
 $('btn-clue').addEventListener('click', () => socket.emit('clue-given'));
 $('btn-found').addEventListener('click', () => socket.emit('card-found'));
 $('btn-fail').addEventListener('click', () => socket.emit('card-fail'));

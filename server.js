@@ -111,6 +111,7 @@ function createRoom(hostSocketId, playerName) {
     timerPaused: false,
     timerRemaining: 60,
     teamTimeRemaining: {},
+    awaitingMasterStart: false,
     masterPlayerId: null,
     teamMasters: {}
   };
@@ -274,6 +275,13 @@ function getTeamsWithTimeRemaining(room) {
     );
 }
 
+function enterAwaitingMasterStart(room) {
+  room.awaitingMasterStart = true;
+  room.currentCard = null;
+  room.currentClue = 0;
+  room.timerEndAt = null;
+}
+
 function advanceToNextTeam(room) {
   saveCurrentTeamTime(room);
   room.timerEndAt = null;
@@ -281,21 +289,27 @@ function advanceToNextTeam(room) {
   const eligible = getTeamsWithTimeRemaining(room);
   if (eligible.length === 0) return false;
 
-  // Une seule équipe encore en jeu : elle enchaîne les cartes jusqu'à 0
   if (eligible.length === 1) {
     room.currentTeamIndex = eligible[0];
-    startTeamTimer(room, eligible[0]);
-    applyCurrentTeamMaster(room);
-    return true;
+  } else {
+    const curPos = eligible.indexOf(room.currentTeamIndex);
+    const nextPos = curPos === -1 ? 0 : (curPos + 1) % eligible.length;
+    room.currentTeamIndex = eligible[nextPos];
   }
 
-  // Plusieurs équipes : alternance uniquement entre celles qui ont du temps
-  const curPos = eligible.indexOf(room.currentTeamIndex);
-  const nextPos = curPos === -1 ? 0 : (curPos + 1) % eligible.length;
-  room.currentTeamIndex = eligible[nextPos];
-  startTeamTimer(room, room.currentTeamIndex);
   applyCurrentTeamMaster(room);
+  enterAwaitingMasterStart(room);
   return true;
+}
+
+function startCurrentTurn(room) {
+  if (!isPlayingPhase(room.phase) || !room.awaitingMasterStart) return false;
+  if (getTeamTimeLeft(room, room.currentTeamIndex) <= 0) {
+    return onCurrentTeamTimeExpired(room);
+  }
+  room.awaitingMasterStart = false;
+  loadNextCard(room);
+  return startTeamTimer(room, room.currentTeamIndex);
 }
 
 function findFirstTeamWithTime(room, fromIndex = 0) {
@@ -334,7 +348,6 @@ function onCurrentTeamTimeExpired(room) {
     finishRound(room);
     return true;
   }
-  loadNextCard(room);
   return true;
 }
 
@@ -352,8 +365,8 @@ function beginRound(room) {
   initTeamTimers(room);
   room.cardsThisRound = 0;
   room.currentTeamIndex = findFirstTeamWithTime(room, 0);
-  startTeamTimer(room, room.currentTeamIndex);
-  loadNextCard(room);
+  applyCurrentTeamMaster(room);
+  enterAwaitingMasterStart(room);
 }
 
 function startRound1(room) {
@@ -381,6 +394,7 @@ function resetToLobby(room) {
   room.timerEndAt = null;
   room.timerPaused = false;
   room.teamTimeRemaining = {};
+  room.awaitingMasterStart = false;
   room.usedWords.clear();
   room.deck = [];
   room.deckIndex = 0;
@@ -393,6 +407,7 @@ function finishRound(room) {
   room.masterPlayerId = null;
   room.timerEndAt = null;
   room.timerPaused = false;
+  room.awaitingMasterStart = false;
   if (room.phase === 'round1') {
     room.phase = 'transition';
   } else if (room.phase === 'round2') {
@@ -407,6 +422,7 @@ function nextTeamIndex(room) {
 
 function resolveCard(room, points) {
   if (!isPlayingPhase(room.phase)) return false;
+  if (room.awaitingMasterStart) return false;
   if (getTeamTimeLeft(room, room.currentTeamIndex) <= 0) return false;
   room.teams[room.currentTeamIndex].score += points;
   saveCurrentTeamTime(room);
@@ -431,7 +447,6 @@ function resolveCard(room, points) {
     finishRound(room);
     return true;
   }
-  loadNextCard(room);
   return true;
 }
 
@@ -472,6 +487,7 @@ function sanitizeRoom(room, viewerSocketId) {
     timeLeft: timeLeft(room),
     teamTimers: getAllTeamTimers(room),
     timerPaused: room.timerPaused,
+    awaitingMasterStart: !!room.awaitingMasterStart,
     card: showCard ? {
       mot: room.currentCard.mot,
       interdits: room.currentCard.interdits,
@@ -529,7 +545,12 @@ function leaveRoom(socket) {
 
 setInterval(() => {
   for (const room of rooms.values()) {
-    if (isPlayingPhase(room.phase) && !room.timerPaused && room.timerEndAt) {
+    if (
+      isPlayingPhase(room.phase) &&
+      !room.awaitingMasterStart &&
+      !room.timerPaused &&
+      room.timerEndAt
+    ) {
       if (timeLeft(room) <= 0) {
         onCurrentTeamTimeExpired(room);
       }
@@ -657,10 +678,19 @@ io.on('connection', (socket) => {
     broadcastRoom(room);
   });
 
+  socket.on('start-turn', () => {
+    const room = rooms.get(socketToRoom.get(socket.id));
+    if (!room || !isPlayingPhase(room.phase)) return;
+    if (!isMaster(room, socket.id)) return;
+    if (!startCurrentTurn(room)) return;
+    broadcastRoom(room);
+  });
+
   socket.on('clue-given', () => {
     const room = rooms.get(socketToRoom.get(socket.id));
     if (!room || room.phase !== 'round1') return;
     if (!isMaster(room, socket.id)) return;
+    if (room.awaitingMasterStart) return;
     if (room.currentClue < 3) room.currentClue++;
     broadcastRoom(room);
   });
@@ -669,6 +699,7 @@ io.on('connection', (socket) => {
     const room = rooms.get(socketToRoom.get(socket.id));
     if (!room || !isPlayingPhase(room.phase)) return;
     if (!isMaster(room, socket.id)) return;
+    if (room.awaitingMasterStart) return;
 
     let pts = 0;
     if (room.phase === 'round1') {
@@ -684,6 +715,7 @@ io.on('connection', (socket) => {
     const room = rooms.get(socketToRoom.get(socket.id));
     if (!room || !isPlayingPhase(room.phase)) return;
     if (!isMaster(room, socket.id)) return;
+    if (room.awaitingMasterStart) return;
     resolveCard(room, 0);
     broadcastRoom(room);
   });

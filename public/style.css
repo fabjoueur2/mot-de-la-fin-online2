@@ -157,6 +157,21 @@ input:focus, select:focus { outline: none; border-color: var(--accent4); }
 .timer-display.danger { color: var(--accent); animation: pulse .5s infinite alternate; }
 @keyframes pulse { to { opacity: .6; } }
 
+.start-turn-section {
+  text-align: center;
+  margin: 16px 0 20px;
+}
+.start-turn-section .btn {
+  font-size: 1.15rem;
+  padding: 14px 36px;
+}
+.start-turn-hint {
+  color: var(--muted);
+  font-size: .85rem;
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
 .round-badge {
   display: inline-block; padding: 5px 12px; border-radius: 20px;
   font-size: .75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 10px;
