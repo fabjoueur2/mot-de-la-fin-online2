@@ -264,6 +264,9 @@ input:focus, select:focus { outline: none; border-color: var(--accent4); }
 }
 .btn-nav {
   flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 10px 14px;
   border: 2px solid rgba(255,255,255,.1);
   border-radius: 10px;
@@ -274,9 +277,21 @@ input:focus, select:focus { outline: none; border-color: var(--accent4); }
   font-weight: 600;
   cursor: pointer;
   transition: color .2s, border-color .2s, background .2s;
+  gap: 6px;
 }
 .btn-nav-salon:hover { color: var(--accent2); border-color: var(--accent2); }
 .btn-nav-menu:hover { color: var(--text); border-color: var(--accent4); }
+.btn-nav .icon-exit,
+.btn .icon-exit {
+  width: 1.1em;
+  height: 1.1em;
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 
 .role-btns { display: flex; gap: 10px; margin-bottom: 8px; }
 .role-btn {
