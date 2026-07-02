@@ -52,16 +52,22 @@ function getPlayerName() {
   return ($('player-name').value || 'Joueur').trim().slice(0, 20) || 'Joueur';
 }
 
-function renderScores(containerId, teams, currentTeamIndex) {
+function renderScores(containerId, teams, currentTeamIndex, teamTimers) {
   const el = $(containerId);
   const cols = Math.min(teams.length, 4);
   el.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-  el.innerHTML = teams.map((t, i) => `
+  el.innerHTML = teams.map((t, i) => {
+    const timerHtml = teamTimers
+      ? `<div class="team-timer" style="font-family:'JetBrains Mono',monospace;font-size:.8rem;color:${i === currentTeamIndex ? 'var(--accent2)' : 'var(--muted)'};margin-top:6px;">⏱ ${formatTime(teamTimers[i] ?? 0)}</div>`
+      : '';
+    return `
     <div class="score-box${i === currentTeamIndex ? ' active-team' : ''}" style="border:2px solid ${t.color}33">
       <div class="team-name">${t.name}${i === currentTeamIndex ? ' ▶' : ''}</div>
       <div class="pts" style="color:${t.color}">${t.score}</div>
+      ${timerHtml}
     </div>
-  `).join('');
+  `;
+  }).join('');
 }
 
 function updateClueTracker(clue) {
@@ -166,10 +172,10 @@ function renderGame(s) {
   $('round-badge').textContent = isR1 ? 'Manche 1 — Le Maître mot' : 'Manche 2 — Mots interdits';
   $('round-badge').className = `round-badge ${isR1 ? 'r1' : 'r2'}`;
 
-  let counterText = `Carte ${s.cardsThisRound} — ${team?.name || ''} · ⏱ ${formatTime(s.timeLeft)}`;
+  let counterText = `Carte ${s.cardsThisRound} — ${team?.name || ''} · chrono équipe : ${formatTime(s.timeLeft)}`;
   if (s.masterName) {
     const guessers = s.guesserNames?.length ? s.guesserNames.join(', ') : '…';
-    counterText = `Carte ${s.cardsThisRound} — ${s.masterName} (Maître) → ${guessers} · ⏱ ${formatTime(s.timeLeft)}`;
+    counterText = `Carte ${s.cardsThisRound} — ${s.masterName} (Maître) → ${guessers}`;
   }
   $('game-counter').textContent = counterText;
 
@@ -182,7 +188,7 @@ function renderGame(s) {
   if (s.timeLeft <= 10) timerEl.classList.add('danger');
   else if (s.timeLeft <= 20) timerEl.classList.add('warning');
 
-  renderScores('scores-game', s.teams, s.currentTeamIndex);
+  renderScores('scores-game', s.teams, s.currentTeamIndex, s.teamTimers);
 
   const wordBox = $('word-box');
   const forbiddenSection = $('forbidden-section');
@@ -265,7 +271,7 @@ function renderEnd(s) {
     ? `${winners[0].name} remporte la partie !`
     : `Égalité : ${winners.map(w => w.name).join(', ')}`;
   $('end-subtitle').textContent = s.teams.map(t => `${t.name} : ${t.score} pts`).join(' · ');
-  renderScores('scores-final', s.teams, -1);
+  renderScores('scores-final', s.teams, -1, null);
 }
 
 function applyState(s) {
@@ -280,7 +286,7 @@ function applyState(s) {
     renderGame(s);
   } else if (s.phase === 'transition') {
     showScreen('screen-transition');
-    renderScores('scores-transition', s.teams, s.currentTeamIndex);
+    renderScores('scores-transition', s.teams, s.currentTeamIndex, s.teamTimers);
     $('btn-round2').style.display = s.isHost ? 'inline-flex' : 'none';
     $('wait-host-r2').style.display = s.isHost ? 'none' : 'block';
   } else if (s.phase === 'end') {
