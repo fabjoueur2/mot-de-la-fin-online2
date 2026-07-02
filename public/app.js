@@ -134,12 +134,17 @@ function renderGame(s) {
   const isR1 = s.phase === 'round1';
   const isR2 = s.phase === 'round2';
   const team = s.teams[s.currentTeamIndex];
+  const roleLabel = { maitre: '👑 Maître', devineur: '🎯 Devineur', spectator: '👀 Spectateur' };
 
   $('round-badge').textContent = isR1 ? 'Manche 1 — Le Maître mot' : 'Manche 2 — Mots interdits';
   $('round-badge').className = `round-badge ${isR1 ? 'r1' : 'r2'}`;
 
-  $('game-counter').textContent =
-    `Carte ${s.cardsThisRound} — ${team?.name || ''} joue · ⏱ ${formatTime(s.timeLeft)}`;
+  let counterText = `Carte ${s.cardsThisRound} — ${team?.name || ''} · ⏱ ${formatTime(s.timeLeft)}`;
+  if (s.masterName) {
+    const guessers = s.guesserNames?.length ? s.guesserNames.join(', ') : '…';
+    counterText = `Carte ${s.cardsThisRound} — ${s.masterName} (Maître) → ${guessers} · ⏱ ${formatTime(s.timeLeft)}`;
+  }
+  $('game-counter').textContent = counterText;
 
   const duration = s.settings.timerDuration;
   const pct = duration ? (s.timeLeft / duration) * 100 : 0;
@@ -154,9 +159,14 @@ function renderGame(s) {
 
   const wordBox = $('word-box');
   const forbiddenSection = $('forbidden-section');
+  const roleBadge = $('role-badge');
+  if (roleBadge) {
+    roleBadge.textContent = roleLabel[s.role] || '';
+    roleBadge.style.display = s.role ? 'inline-block' : 'none';
+  }
 
-  if (s.card) {
-    wordBox.classList.remove('waiting');
+  if (s.card && s.isMaster) {
+    wordBox.classList.remove('waiting', 'guesser-view');
     $('word-text').textContent = s.card.mot;
     const diffEl = $('word-diff');
     diffEl.textContent = s.card.difficulty;
@@ -170,32 +180,48 @@ function renderGame(s) {
     } else {
       forbiddenSection.style.display = 'none';
     }
+  } else if (s.isGuesser) {
+    wordBox.classList.remove('waiting');
+    wordBox.classList.add('guesser-view');
+    $('word-text').textContent = isR1
+      ? '🎯 Vous êtes le DEVINEUR — ne regardez pas l\'écran du Maître !'
+      : '🎯 Vous êtes le DEVINEUR — écoutez les descriptions !';
+    $('word-diff').textContent = '';
+    forbiddenSection.style.display = 'none';
   } else {
     wordBox.classList.add('waiting');
-    $('word-text').textContent = s.isYourTeamTurn
-      ? 'Chargement de la carte…'
-      : `👀 ${team?.name || 'Une équipe'} joue — regardez le chrono !`;
+    wordBox.classList.remove('guesser-view');
+    $('word-text').textContent = `👀 ${team?.name || 'Une équipe'} joue — regardez le chrono !`;
+    $('word-diff').textContent = '';
     forbiddenSection.style.display = 'none';
   }
 
   $('r1-controls').style.display = isR1 ? 'block' : 'none';
   $('r2-controls').style.display = isR2 ? 'block' : 'none';
 
-  const showControls = s.isYourTeamTurn && s.card;
+  const showControls = s.isMaster && s.card;
   $('active-team-controls').style.display = showControls && isR1 ? 'flex' : 'none';
   $('active-team-controls-r2').style.display = showControls && isR2 ? 'flex' : 'none';
 
   const spec = $('spectator-msg');
-  if (!s.isYourTeamTurn && (isR1 || isR2)) {
+  if (s.soloTeam && (s.isMaster || s.isGuesser)) {
+    spec.style.display = 'block';
+    spec.innerHTML = '⚠️ Vous êtes seul dans votre équipe — il faut au moins un <strong>Maître</strong> et un <strong>Devineur</strong> !';
+  } else if (s.isGuesser) {
     spec.style.display = 'block';
     spec.innerHTML = isR1
-      ? `<strong>${team?.name}</strong> donne les indices. Discutez en visio avec votre équipe si vous n'êtes pas dans la même pièce !`
-      : `<strong>${team?.name}</strong> décrit le mot sans utiliser les mots interdits.`;
-  } else if (s.isYourTeamTurn && s.card) {
+      ? `<strong>${s.masterName}</strong> vous donne des indices (un mot à la fois). Devinez à voix haute — visio conseillée !`
+      : `<strong>${s.masterName}</strong> décrit le mot. Devinez sans voir la carte !`;
+  } else if (s.isMaster) {
     spec.style.display = 'block';
     spec.innerHTML = isR1
-      ? 'Vous voyez le mot — dites <strong>un seul mot</strong> à la fois à vos coéquipiers (visio conseillée) !'
-      : 'Décrivez le mot sans prononcer les mots interdits !';
+      ? 'Vous êtes le <strong>Maître</strong> — seul vous voyez le mot. Donnez <strong>un mot</strong> à la fois à vos devineurs !'
+      : 'Vous êtes le <strong>Maître</strong> — seul vous voyez le mot et les mots interdits. Décrivez sans les prononcer !';
+  } else if (s.role === 'spectator') {
+    spec.style.display = 'block';
+    spec.innerHTML = isR1
+      ? `<strong>${team?.name}</strong> joue : ${s.masterName || '…'} fait deviner à ${s.guesserNames?.join(', ') || '…'}.`
+      : `<strong>${team?.name}</strong> joue : ${s.masterName || '…'} décrit le mot.`;
   } else {
     spec.style.display = 'none';
   }

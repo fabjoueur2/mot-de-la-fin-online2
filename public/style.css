@@ -164,6 +164,28 @@ input:focus, select:focus { outline: none; border-color: var(--accent4); }
 .round-badge.r1 { background: rgba(255,107,107,.2); color: var(--round1); }
 .round-badge.r2 { background: rgba(77,150,255,.2); color: var(--round2); }
 
+.role-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: .75rem;
+  font-weight: 700;
+  background: rgba(255,217,61,.15);
+  color: var(--accent2);
+  vertical-align: middle;
+}
+
+.word-reveal.guesser-view {
+  background: rgba(77,150,255,.08);
+  border: 2px dashed rgba(77,150,255,.3);
+}
+.word-reveal.guesser-view .word {
+  font-size: clamp(1rem, 4vw, 1.3rem);
+  color: var(--accent4);
+  font-weight: 700;
+}
+
 .word-reveal {
   text-align: center; padding: 28px 14px;
   background: var(--surface2); border-radius: 14px; margin: 14px 0;

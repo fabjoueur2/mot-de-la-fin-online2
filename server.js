@@ -108,7 +108,9 @@ function createRoom(hostSocketId, playerName) {
     deckIndex: 0,
     timerEndAt: null,
     timerPaused: false,
-    timerRemaining: 60
+    timerRemaining: 60,
+    masterPlayerId: null,
+    masterRotation: {}
   };
   rooms.set(code, room);
   return room;
@@ -118,8 +120,43 @@ function getPlayer(room, socketId) {
   return room.players.find(p => p.id === socketId);
 }
 
+function getTeamPlayers(room, teamIndex) {
+  return room.players.filter(p => p.teamIndex === teamIndex);
+}
+
 function isHost(room, socketId) {
   return room.hostId === socketId;
+}
+
+function isMaster(room, socketId) {
+  return room.masterPlayerId === socketId;
+}
+
+/** Choisit le maître pour la carte en cours et fait tourner le rôle à la prochaine carte de cette équipe. */
+function selectMasterForCard(room, teamIndex) {
+  const teamPlayers = getTeamPlayers(room, teamIndex);
+  if (!teamPlayers.length) return null;
+  if (teamPlayers.length === 1) return teamPlayers[0].id;
+
+  if (!room.masterRotation) room.masterRotation = {};
+  const idx = room.masterRotation[teamIndex] || 0;
+  const masterId = teamPlayers[idx % teamPlayers.length].id;
+  room.masterRotation[teamIndex] = (idx + 1) % teamPlayers.length;
+  return masterId;
+}
+
+function ensureValidMaster(room) {
+  if (!isPlayingPhase(room.phase)) return;
+  const teamPlayers = getTeamPlayers(room, room.currentTeamIndex);
+  if (!teamPlayers.length) {
+    room.masterPlayerId = null;
+    return;
+  }
+  const master = room.players.find(p => p.id === room.masterPlayerId);
+  const stillValid = master && master.teamIndex === room.currentTeamIndex;
+  if (!stillValid) {
+    room.masterPlayerId = teamPlayers[0].id;
+  }
 }
 
 function isPlayingPhase(phase) {
@@ -164,6 +201,7 @@ function loadNextCard(room) {
   room.currentCard = pickCard(room);
   room.currentClue = 0;
   room.cardsThisRound++;
+  room.masterPlayerId = selectMasterForCard(room, room.currentTeamIndex);
 }
 
 function startRound1(room) {
@@ -212,7 +250,18 @@ function resolveCard(room, points) {
 function sanitizeRoom(room, viewerSocketId) {
   const player = getPlayer(room, viewerSocketId);
   const onActiveTeam = player && player.teamIndex === room.currentTeamIndex;
-  const showCard = onActiveTeam && room.currentCard && isPlayingPhase(room.phase);
+  const playing = isPlayingPhase(room.phase);
+  const viewerIsMaster = playing && player && player.id === room.masterPlayerId;
+  const showCard = viewerIsMaster && room.currentCard;
+
+  const teamPlayers = playing ? getTeamPlayers(room, room.currentTeamIndex) : [];
+  const masterPlayer = room.players.find(p => p.id === room.masterPlayerId);
+  const guessers = teamPlayers.filter(p => p.id !== room.masterPlayerId);
+
+  let role = 'spectator';
+  if (playing && onActiveTeam) {
+    role = viewerIsMaster ? 'maitre' : 'devineur';
+  }
 
   return {
     code: room.code,
@@ -223,7 +272,8 @@ function sanitizeRoom(room, viewerSocketId) {
       id: p.id,
       name: p.name,
       teamIndex: p.teamIndex,
-      isYou: p.id === viewerSocketId
+      isYou: p.id === viewerSocketId,
+      isMaster: playing && p.id === room.masterPlayerId
     })),
     teams: room.teams,
     settings: room.settings,
@@ -237,7 +287,13 @@ function sanitizeRoom(room, viewerSocketId) {
       interdits: room.currentCard.interdits,
       difficulty: room.currentCard.difficulty
     } : null,
+    role,
+    isMaster: viewerIsMaster,
+    isGuesser: playing && onActiveTeam && !viewerIsMaster,
     isYourTeamTurn: onActiveTeam,
+    masterName: masterPlayer?.name || null,
+    guesserNames: guessers.map(p => p.name),
+    soloTeam: playing && teamPlayers.length === 1,
     round: room.phase === 'round2' || room.phase === 'end' ? 2 : room.phase === 'round1' ? 1 : 0
   };
 }
@@ -277,6 +333,7 @@ function leaveRoom(socket) {
     room.hostId = room.players[0].id;
   }
 
+  ensureValidMaster(room);
   broadcastRoom(room);
 }
 
@@ -393,8 +450,7 @@ io.on('connection', (socket) => {
   socket.on('clue-given', () => {
     const room = rooms.get(socketToRoom.get(socket.id));
     if (!room || room.phase !== 'round1') return;
-    const player = getPlayer(room, socket.id);
-    if (!player || player.teamIndex !== room.currentTeamIndex) return;
+    if (!isMaster(room, socket.id)) return;
     if (room.currentClue < 3) room.currentClue++;
     broadcastRoom(room);
   });
@@ -402,8 +458,7 @@ io.on('connection', (socket) => {
   socket.on('card-found', () => {
     const room = rooms.get(socketToRoom.get(socket.id));
     if (!room || !isPlayingPhase(room.phase)) return;
-    const player = getPlayer(room, socket.id);
-    if (!player || player.teamIndex !== room.currentTeamIndex) return;
+    if (!isMaster(room, socket.id)) return;
 
     let pts = 0;
     if (room.phase === 'round1') {
@@ -418,8 +473,7 @@ io.on('connection', (socket) => {
   socket.on('card-fail', () => {
     const room = rooms.get(socketToRoom.get(socket.id));
     if (!room || !isPlayingPhase(room.phase)) return;
-    const player = getPlayer(room, socket.id);
-    if (!player || player.teamIndex !== room.currentTeamIndex) return;
+    if (!isMaster(room, socket.id)) return;
     resolveCard(room, 0);
     broadcastRoom(room);
   });
@@ -444,6 +498,8 @@ io.on('connection', (socket) => {
     if (!room || !isHost(room, socket.id)) return;
     room.phase = 'lobby';
     room.currentCard = null;
+    room.masterPlayerId = null;
+    room.masterRotation = {};
     room.teams.forEach(t => { t.score = 0; });
     room.timerEndAt = null;
     broadcastRoom(room);
