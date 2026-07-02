@@ -264,23 +264,38 @@ function teamHasActivePlayers(room, teamIndex) {
   return getTeamPlayers(room, teamIndex).length > 0;
 }
 
+/** Équipes qui ont encore du temps et au moins un joueur actif. */
+function getTeamsWithTimeRemaining(room) {
+  return room.teams
+    .map((_, i) => i)
+    .filter(
+      i =>
+        (room.teamTimeRemaining[i] ?? 0) > 0 && teamHasActivePlayers(room, i)
+    );
+}
+
 function advanceToNextTeam(room) {
   saveCurrentTeamTime(room);
   room.timerEndAt = null;
-  const start = room.currentTeamIndex;
-  let next = nextTeamIndex(room);
-  for (let i = 0; i < room.teams.length; i++) {
-    const rem = room.teamTimeRemaining[next] ?? 0;
-    if (rem > 0 && teamHasActivePlayers(room, next)) {
-      room.currentTeamIndex = next;
-      startTeamTimer(room, next);
-      applyCurrentTeamMaster(room);
-      return true;
-    }
-    next = (next + 1) % room.teams.length;
-    if (next === start) break;
+
+  const eligible = getTeamsWithTimeRemaining(room);
+  if (eligible.length === 0) return false;
+
+  // Une seule équipe encore en jeu : elle enchaîne les cartes jusqu'à 0
+  if (eligible.length === 1) {
+    room.currentTeamIndex = eligible[0];
+    startTeamTimer(room, eligible[0]);
+    applyCurrentTeamMaster(room);
+    return true;
   }
-  return false;
+
+  // Plusieurs équipes : alternance uniquement entre celles qui ont du temps
+  const curPos = eligible.indexOf(room.currentTeamIndex);
+  const nextPos = curPos === -1 ? 0 : (curPos + 1) % eligible.length;
+  room.currentTeamIndex = eligible[nextPos];
+  startTeamTimer(room, room.currentTeamIndex);
+  applyCurrentTeamMaster(room);
+  return true;
 }
 
 function findFirstTeamWithTime(room, fromIndex = 0) {
@@ -396,6 +411,22 @@ function resolveCard(room, points) {
   room.teams[room.currentTeamIndex].score += points;
   saveCurrentTeamTime(room);
   room.timerEndAt = null;
+
+  const eligible = getTeamsWithTimeRemaining(room);
+  if (eligible.length === 0) {
+    finishRound(room);
+    return true;
+  }
+
+  // Dernière équipe avec du temps : enchaîner sans alterner
+  if (eligible.length === 1) {
+    room.currentTeamIndex = eligible[0];
+    startTeamTimer(room, eligible[0]);
+    applyCurrentTeamMaster(room);
+    loadNextCard(room);
+    return true;
+  }
+
   if (!advanceToNextTeam(room)) {
     finishRound(room);
     return true;
