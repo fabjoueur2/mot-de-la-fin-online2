@@ -90,7 +90,8 @@ function createRoom(hostSocketId, playerName) {
     players: [{
       id: playerId,
       name: playerName.slice(0, 20),
-      teamIndex: 0
+      teamIndex: 0,
+      role: 'devineur'
     }],
     teams: createTeams(2),
     settings: {
@@ -110,7 +111,6 @@ function createRoom(hostSocketId, playerName) {
     timerPaused: false,
     timerRemaining: 60,
     masterPlayerId: null,
-    masterRotation: {},
     teamMasters: {}
   };
   rooms.set(code, room);
@@ -133,27 +133,41 @@ function isMaster(room, socketId) {
   return room.masterPlayerId === socketId;
 }
 
-/** Attribue un maître fixe par équipe pour toute la partie (manches 1 + 2). */
-function assignTeamMasters(room) {
-  if (!room.masterRotation) room.masterRotation = {};
+/** Construit les maîtres d'équipe à partir des rôles choisis manuellement. */
+function buildTeamMastersFromRoles(room) {
   room.teamMasters = {};
   for (let i = 0; i < room.teams.length; i++) {
-    const teamPlayers = getTeamPlayers(room, i);
-    if (!teamPlayers.length) continue;
-    const idx = room.masterRotation[i] || 0;
-    room.teamMasters[i] = teamPlayers[idx % teamPlayers.length].id;
+    const master = getTeamPlayers(room, i).find(p => p.role === 'maitre');
+    if (master) room.teamMasters[i] = master.id;
   }
 }
 
-/** Fait tourner le maître de chaque équipe — appelé après les 2 manches. */
-function rotateTeamMasters(room) {
-  if (!room.masterRotation) room.masterRotation = {};
-  for (let i = 0; i < room.teams.length; i++) {
+function validateTeamsForStart(room) {
+  const activeTeams = new Set(room.players.map(p => p.teamIndex));
+  for (const i of activeTeams) {
     const teamPlayers = getTeamPlayers(room, i);
-    if (teamPlayers.length > 1) {
-      room.masterRotation[i] = ((room.masterRotation[i] || 0) + 1) % teamPlayers.length;
+    if (!teamPlayers.length) continue;
+    const teamName = room.teams[i]?.name || `Équipe ${i + 1}`;
+    const masters = teamPlayers.filter(p => p.role === 'maitre');
+    if (masters.length === 0) {
+      return { ok: false, msg: `${teamName} : choisissez un Maître avant de lancer.` };
+    }
+    if (masters.length > 1) {
+      return { ok: false, msg: `${teamName} : un seul Maître autorisé.` };
     }
   }
+  return { ok: true };
+}
+
+function demoteOtherMasters(room, teamIndex, exceptPlayerId) {
+  getTeamPlayers(room, teamIndex).forEach(p => {
+    if (p.id !== exceptPlayerId && p.role === 'maitre') p.role = 'devineur';
+  });
+}
+
+function resolveTeamMasterConflict(room, player) {
+  if (player.role !== 'maitre') return;
+  demoteOtherMasters(room, player.teamIndex, player.id);
 }
 
 function applyCurrentTeamMaster(room) {
@@ -171,7 +185,16 @@ function ensureValidMaster(room) {
     const currentId = room.teamMasters[i];
     const stillValid = currentId && teamPlayers.some(p => p.id === currentId);
     if (!stillValid) {
-      room.teamMasters[i] = teamPlayers[0].id;
+      const maitre = teamPlayers.find(p => p.role === 'maitre');
+      if (maitre) {
+        room.teamMasters[i] = maitre.id;
+      } else if (isPlayingPhase(room.phase) && teamPlayers.length > 0) {
+        teamPlayers.forEach(p => { p.role = 'devineur'; });
+        teamPlayers[0].role = 'maitre';
+        room.teamMasters[i] = teamPlayers[0].id;
+      } else {
+        delete room.teamMasters[i];
+      }
     }
   }
   if (isPlayingPhase(room.phase)) {
@@ -229,7 +252,7 @@ function startRound1(room) {
   room.currentTeamIndex = 0;
   room.cardsThisRound = 0;
   room.usedWords.clear();
-  assignTeamMasters(room);
+  buildTeamMastersFromRoles(room);
   buildDeck(room);
   startRoundTimer(room);
   loadNextCard(room);
@@ -253,7 +276,6 @@ function finishRound(room) {
     room.phase = 'transition';
   } else if (room.phase === 'round2') {
     room.phase = 'end';
-    rotateTeamMasters(room);
   }
 }
 
@@ -295,8 +317,9 @@ function sanitizeRoom(room, viewerSocketId) {
       id: p.id,
       name: p.name,
       teamIndex: p.teamIndex,
+      role: p.role || 'devineur',
       isYou: p.id === viewerSocketId,
-      isMaster: playing && p.id === (room.teamMasters?.[p.teamIndex] ?? null)
+      isTeamMaster: p.role === 'maitre'
     })),
     teams: room.teams,
     settings: room.settings,
@@ -396,7 +419,8 @@ io.on('connection', (socket) => {
       room.players.push({
         id: socket.id,
         name,
-        teamIndex: 0
+        teamIndex: 0,
+        role: 'devineur'
       });
     } else {
       existing.name = name;
@@ -443,6 +467,18 @@ io.on('connection', (socket) => {
     if (!player) return;
     const idx = Math.min(room.teams.length - 1, Math.max(0, parseInt(teamIndex) || 0));
     player.teamIndex = idx;
+    resolveTeamMasterConflict(room, player);
+    broadcastRoom(room);
+  });
+
+  socket.on('set-role', ({ role }) => {
+    const room = rooms.get(socketToRoom.get(socket.id));
+    if (!room || room.phase !== 'lobby') return;
+    if (role !== 'maitre' && role !== 'devineur') return;
+    const player = getPlayer(room, socket.id);
+    if (!player) return;
+    player.role = role;
+    if (role === 'maitre') demoteOtherMasters(room, player.teamIndex, player.id);
     broadcastRoom(room);
   });
 
@@ -452,6 +488,7 @@ io.on('connection', (socket) => {
     const target = room.players.find(p => p.id === playerId);
     if (!target) return;
     target.teamIndex = Math.min(room.teams.length - 1, Math.max(0, parseInt(teamIndex) || 0));
+    resolveTeamMasterConflict(room, target);
     broadcastRoom(room);
   });
 
@@ -459,6 +496,12 @@ io.on('connection', (socket) => {
     const room = rooms.get(socketToRoom.get(socket.id));
     if (!room || !isHost(room, socket.id) || room.phase !== 'lobby') return;
     if (room.players.length < 1) return;
+    const check = validateTeamsForStart(room);
+    if (!check.ok) {
+      socket.emit('error-msg', check.msg);
+      return;
+    }
+    buildTeamMastersFromRoles(room);
     startRound1(room);
     broadcastRoom(room);
   });
@@ -526,6 +569,11 @@ io.on('connection', (socket) => {
     room.teams.forEach(t => { t.score = 0; });
     room.timerEndAt = null;
     broadcastRoom(room);
+  });
+
+  socket.on('leave-room', () => {
+    leaveRoom(socket);
+    socket.emit('left-room');
   });
 
   socket.on('disconnect', () => leaveRoom(socket));

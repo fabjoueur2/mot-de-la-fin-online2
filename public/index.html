@@ -18,6 +18,7 @@
     </header>
 
     <div id="connection-status" class="connection-status">Connexion…</div>
+    <button type="button" id="btn-menu" class="btn-menu" style="display:none;">← Menu principal</button>
 
     <!-- ACCUEIL -->
     <div id="screen-home" class="screen active">
@@ -38,7 +39,7 @@
       </div>
       <div class="card">
         <div class="rules-reminder">
-          <strong>Comme StopotS :</strong> créez une salle, partagez le code à vos amis. Dans chaque équipe : un <strong>Maître</strong> (voit le mot) et un ou des <strong>Devineur(s)</strong>. Le Maître reste le même pendant les 2 manches, puis le rôle alterne à la partie suivante.
+          <strong>Comme StopotS :</strong> créez une salle, partagez le code. Chaque joueur choisit son rôle : <strong>Maître</strong> (voit le mot) ou <strong>Devineur</strong> — un seul Maître par équipe !
         </div>
       </div>
     </div>
@@ -60,6 +61,12 @@
         <ul class="players-list" id="players-list"></ul>
         <label>Votre équipe</label>
         <select id="my-team-select"></select>
+        <label>Votre rôle</label>
+        <div class="role-btns" id="role-btns">
+          <button type="button" class="role-btn" data-role="maitre">👑 Maître</button>
+          <button type="button" class="role-btn active" data-role="devineur">🎯 Devineur</button>
+        </div>
+        <p class="role-hint">Un seul Maître par équipe. Le Maître voit le mot, le Devineur devine à l'oral.</p>
       </div>
 
       <div class="card" id="host-settings">
@@ -162,6 +169,7 @@
         <p id="end-subtitle" style="color:var(--muted);margin-bottom:18px;"></p>
         <div class="scores" id="scores-final"></div>
         <button class="btn btn-primary" id="btn-replay" style="margin-top:18px;">🔄 Nouvelle partie</button>
+        <button class="btn btn-secondary" id="btn-replay-menu" style="margin-top:10px;">← Menu principal</button>
       </div>
     </div>
 

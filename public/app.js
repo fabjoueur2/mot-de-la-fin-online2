@@ -8,6 +8,18 @@ const $ = (id) => document.getElementById(id);
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   $(id).classList.add('active');
+  const inRoom = id !== 'screen-home';
+  $('btn-menu').style.display = inRoom ? 'block' : 'none';
+}
+
+function leaveToMenu() {
+  socket.emit('leave-room');
+  state = null;
+  showScreen('screen-home');
+}
+
+function roleLabel(role) {
+  return role === 'maitre' ? '👑 Maître' : '🎯 Devineur';
 }
 
 function showToast(msg) {
@@ -99,11 +111,16 @@ function renderLobby(s) {
   const me = s.players.find(p => p.isYou);
   if (me) myTeam.value = me.teamIndex;
 
+  document.querySelectorAll('.role-btn').forEach(btn => {
+    btn.classList.toggle('active', me && btn.dataset.role === (me.role || 'devineur'));
+  });
+
   const list = $('players-list');
   list.innerHTML = s.players.map(p => `
     <li>
       <span>
         <span class="name">${p.name}</span>
+        <span class="player-role-tag ${p.role || 'devineur'}">${roleLabel(p.role || 'devineur')}</span>
         ${p.isYou ? '<span class="you"> (vous)</span>' : ''}
         ${p.id === s.hostId ? ' 👑' : ''}
       </span>
@@ -276,6 +293,11 @@ socket.on('disconnect', () => {
 
 socket.on('room-state', applyState);
 
+socket.on('left-room', () => {
+  state = null;
+  showScreen('screen-home');
+});
+
 socket.on('error-msg', (msg) => showToast(msg));
 
 // UI events
@@ -316,6 +338,15 @@ $('btn-copy-link').addEventListener('click', async () => {
 $('my-team-select').addEventListener('change', () => {
   socket.emit('set-team', { teamIndex: parseInt($('my-team-select').value) });
 });
+
+document.querySelectorAll('.role-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    socket.emit('set-role', { role: btn.dataset.role });
+  });
+});
+
+$('btn-menu').addEventListener('click', leaveToMenu);
+$('btn-replay-menu').addEventListener('click', leaveToMenu);
 
 $('set-team-count').addEventListener('change', pushSettings);
 $('set-timer').addEventListener('change', pushSettings);
