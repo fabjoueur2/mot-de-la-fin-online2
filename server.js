@@ -110,7 +110,8 @@ function createRoom(hostSocketId, playerName) {
     timerPaused: false,
     timerRemaining: 60,
     masterPlayerId: null,
-    masterRotation: {}
+    masterRotation: {},
+    teamMasters: {}
   };
   rooms.set(code, room);
   return room;
@@ -132,30 +133,49 @@ function isMaster(room, socketId) {
   return room.masterPlayerId === socketId;
 }
 
-/** Choisit le maître pour la carte en cours et fait tourner le rôle à la prochaine carte de cette équipe. */
-function selectMasterForCard(room, teamIndex) {
-  const teamPlayers = getTeamPlayers(room, teamIndex);
-  if (!teamPlayers.length) return null;
-  if (teamPlayers.length === 1) return teamPlayers[0].id;
-
+/** Attribue un maître fixe par équipe pour toute la partie (manches 1 + 2). */
+function assignTeamMasters(room) {
   if (!room.masterRotation) room.masterRotation = {};
-  const idx = room.masterRotation[teamIndex] || 0;
-  const masterId = teamPlayers[idx % teamPlayers.length].id;
-  room.masterRotation[teamIndex] = (idx + 1) % teamPlayers.length;
-  return masterId;
+  room.teamMasters = {};
+  for (let i = 0; i < room.teams.length; i++) {
+    const teamPlayers = getTeamPlayers(room, i);
+    if (!teamPlayers.length) continue;
+    const idx = room.masterRotation[i] || 0;
+    room.teamMasters[i] = teamPlayers[idx % teamPlayers.length].id;
+  }
+}
+
+/** Fait tourner le maître de chaque équipe — appelé après les 2 manches. */
+function rotateTeamMasters(room) {
+  if (!room.masterRotation) room.masterRotation = {};
+  for (let i = 0; i < room.teams.length; i++) {
+    const teamPlayers = getTeamPlayers(room, i);
+    if (teamPlayers.length > 1) {
+      room.masterRotation[i] = ((room.masterRotation[i] || 0) + 1) % teamPlayers.length;
+    }
+  }
+}
+
+function applyCurrentTeamMaster(room) {
+  room.masterPlayerId = room.teamMasters?.[room.currentTeamIndex] ?? null;
 }
 
 function ensureValidMaster(room) {
-  if (!isPlayingPhase(room.phase)) return;
-  const teamPlayers = getTeamPlayers(room, room.currentTeamIndex);
-  if (!teamPlayers.length) {
-    room.masterPlayerId = null;
-    return;
+  if (!room.teamMasters) room.teamMasters = {};
+  for (let i = 0; i < room.teams.length; i++) {
+    const teamPlayers = getTeamPlayers(room, i);
+    if (!teamPlayers.length) {
+      delete room.teamMasters[i];
+      continue;
+    }
+    const currentId = room.teamMasters[i];
+    const stillValid = currentId && teamPlayers.some(p => p.id === currentId);
+    if (!stillValid) {
+      room.teamMasters[i] = teamPlayers[0].id;
+    }
   }
-  const master = room.players.find(p => p.id === room.masterPlayerId);
-  const stillValid = master && master.teamIndex === room.currentTeamIndex;
-  if (!stillValid) {
-    room.masterPlayerId = teamPlayers[0].id;
+  if (isPlayingPhase(room.phase)) {
+    applyCurrentTeamMaster(room);
   }
 }
 
@@ -201,7 +221,7 @@ function loadNextCard(room) {
   room.currentCard = pickCard(room);
   room.currentClue = 0;
   room.cardsThisRound++;
-  room.masterPlayerId = selectMasterForCard(room, room.currentTeamIndex);
+  applyCurrentTeamMaster(room);
 }
 
 function startRound1(room) {
@@ -209,6 +229,7 @@ function startRound1(room) {
   room.currentTeamIndex = 0;
   room.cardsThisRound = 0;
   room.usedWords.clear();
+  assignTeamMasters(room);
   buildDeck(room);
   startRoundTimer(room);
   loadNextCard(room);
@@ -225,12 +246,14 @@ function startRound2(room) {
 
 function finishRound(room) {
   room.currentCard = null;
+  room.masterPlayerId = null;
   room.timerEndAt = null;
   room.timerPaused = false;
   if (room.phase === 'round1') {
     room.phase = 'transition';
   } else if (room.phase === 'round2') {
     room.phase = 'end';
+    rotateTeamMasters(room);
   }
 }
 
@@ -273,7 +296,7 @@ function sanitizeRoom(room, viewerSocketId) {
       name: p.name,
       teamIndex: p.teamIndex,
       isYou: p.id === viewerSocketId,
-      isMaster: playing && p.id === room.masterPlayerId
+      isMaster: playing && p.id === (room.teamMasters?.[p.teamIndex] ?? null)
     })),
     teams: room.teams,
     settings: room.settings,
@@ -499,7 +522,7 @@ io.on('connection', (socket) => {
     room.phase = 'lobby';
     room.currentCard = null;
     room.masterPlayerId = null;
-    room.masterRotation = {};
+    room.teamMasters = {};
     room.teams.forEach(t => { t.score = 0; });
     room.timerEndAt = null;
     broadcastRoom(room);

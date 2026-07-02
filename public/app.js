@@ -215,8 +215,8 @@ function renderGame(s) {
   } else if (s.isMaster) {
     spec.style.display = 'block';
     spec.innerHTML = isR1
-      ? 'Vous êtes le <strong>Maître</strong> — seul vous voyez le mot. Donnez <strong>un mot</strong> à la fois à vos devineurs !'
-      : 'Vous êtes le <strong>Maître</strong> — seul vous voyez le mot et les mots interdits. Décrivez sans les prononcer !';
+      ? 'Vous êtes le <strong>Maître</strong> pour toute la partie — seul vous voyez le mot. Donnez <strong>un mot</strong> à la fois !'
+      : 'Vous êtes le <strong>Maître</strong> pour toute la partie — seul vous voyez le mot et les mots interdits.';
   } else if (s.role === 'spectator') {
     spec.style.display = 'block';
     spec.innerHTML = isR1
