@@ -9,13 +9,23 @@ function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   $(id).classList.add('active');
   const inRoom = id !== 'screen-home';
-  $('btn-menu').style.display = inRoom ? 'block' : 'none';
+  const inLobby = id === 'screen-lobby';
+  $('room-nav').style.display = inRoom ? 'flex' : 'none';
+  $('btn-salon').style.display = inRoom && !inLobby ? 'block' : 'none';
 }
 
 function leaveToMenu() {
   socket.emit('leave-room');
   state = null;
   showScreen('screen-home');
+}
+
+function backToSalon() {
+  if (!state?.isHost) {
+    showToast('Seul l\'hôte peut ramener tout le monde au salon.');
+    return;
+  }
+  socket.emit('back-to-lobby');
 }
 
 function roleLabel(role) {
@@ -346,6 +356,7 @@ document.querySelectorAll('.role-btn').forEach(btn => {
 });
 
 $('btn-menu').addEventListener('click', leaveToMenu);
+$('btn-salon').addEventListener('click', backToSalon);
 $('btn-replay-menu').addEventListener('click', leaveToMenu);
 
 $('set-team-count').addEventListener('change', pushSettings);

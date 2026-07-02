@@ -256,6 +256,28 @@ input:focus, select:focus { outline: none; border-color: var(--accent4); }
 }
 .btn-menu:hover { color: var(--text); border-color: var(--accent4); }
 
+.room-nav {
+  display: flex;
+  gap: 10px;
+  max-width: 760px;
+  margin: 0 auto 14px;
+}
+.btn-nav {
+  flex: 1;
+  padding: 10px 14px;
+  border: 2px solid rgba(255,255,255,.1);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--muted);
+  font-family: inherit;
+  font-size: .88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color .2s, border-color .2s, background .2s;
+}
+.btn-nav-salon:hover { color: var(--accent2); border-color: var(--accent2); }
+.btn-nav-menu:hover { color: var(--text); border-color: var(--accent4); }
+
 .role-btns { display: flex; gap: 10px; margin-bottom: 8px; }
 .role-btn {
   flex: 1;

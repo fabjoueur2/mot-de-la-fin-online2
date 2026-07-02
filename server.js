@@ -267,6 +267,22 @@ function startRound2(room) {
   loadNextCard(room);
 }
 
+function resetToLobby(room) {
+  room.phase = 'lobby';
+  room.currentCard = null;
+  room.masterPlayerId = null;
+  room.teamMasters = {};
+  room.currentTeamIndex = 0;
+  room.currentClue = 0;
+  room.cardsThisRound = 0;
+  room.timerEndAt = null;
+  room.timerPaused = false;
+  room.usedWords.clear();
+  room.deck = [];
+  room.deckIndex = 0;
+  room.teams.forEach(t => { t.score = 0; });
+}
+
 function finishRound(room) {
   room.currentCard = null;
   room.masterPlayerId = null;
@@ -562,12 +578,7 @@ io.on('connection', (socket) => {
   socket.on('back-to-lobby', () => {
     const room = rooms.get(socketToRoom.get(socket.id));
     if (!room || !isHost(room, socket.id)) return;
-    room.phase = 'lobby';
-    room.currentCard = null;
-    room.masterPlayerId = null;
-    room.teamMasters = {};
-    room.teams.forEach(t => { t.score = 0; });
-    room.timerEndAt = null;
+    resetToLobby(room);
     broadcastRoom(room);
   });
 
