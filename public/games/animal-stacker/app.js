@@ -14,6 +14,7 @@ let dropAnim = null;
 let pendingState = null;
 let lastAnimatedDropId = null;
 let heldDisplayWorld = null;
+let awaitingServerRoundEnd = false;
 const DROP_FREEZE_MS = 2000;
 const ROT_STEP = Math.PI / 8;
 
@@ -81,6 +82,7 @@ function clientXToWorld(clientX) {
 
 function clearHeldDisplay() {
   heldDisplayWorld = null;
+  awaitingServerRoundEnd = false;
 }
 
 function clearLiveSimulation() {
@@ -136,7 +138,7 @@ function drawScene() {
   if (state.phase !== 'playing') return;
   const w = state.world;
 
-  if (heldDisplayWorld && state.stackSettling) {
+  if (heldDisplayWorld && (state.stackSettling || awaitingServerRoundEnd)) {
     drawAnimatedScene(heldDisplayWorld);
   } else {
     drawBackgroundAndPlatform(w);
@@ -227,11 +229,15 @@ function animationTick() {
     dropAnim.settledCount = 0;
   }
 
-  const fallenDone = expectFallen && droppedFallen
+  const fallenDone = (expectFallen || dropAnim.visualFall) && droppedFallen
     && (dropAnim.settledCount >= 4 || dropped.position.y > simWorld.worldCfg.fallY - 50);
-  const placedDone = !expectFallen && dropped
+  const placedDone = !expectFallen && !dropAnim.visualFall && dropped
     && window.AnimalPhysics.isBodyLanded(dropped)
     && dropAnim.frame > 24;
+
+  if (droppedFallen && !expectFallen && dropAnim.frame > 20) {
+    dropAnim.visualFall = true;
+  }
 
   if (fallenDone || placedDone) {
     window.AnimalPhysics.freezeWorldBodies(simWorld);
@@ -245,6 +251,7 @@ function animationTick() {
 function finishDropAnimation() {
   const next = pendingState;
   const simWorld = dropAnim?.simWorld;
+  const visualFall = dropAnim?.visualFall;
   dropAnim = null;
   pendingState = null;
   if (!next) return;
@@ -253,10 +260,24 @@ function finishDropAnimation() {
     window.AnimalPhysics?.freezeWorldBodies(simWorld);
   }
 
-  if (next.phase === 'end') {
-    clearHeldDisplay();
+  const roundLost = next.phase === 'end' || next.lastDrop?.fallen || visualFall;
+
+  if (roundLost) {
+    awaitingServerRoundEnd = next.phase !== 'end';
+    if (next.phase !== 'end') {
+      heldDisplayWorld = simWorld;
+    }
     state = next;
-    applyStateAfterAnimation(next);
+    if (next.phase === 'end') {
+      clearHeldDisplay();
+      applyStateAfterAnimation(next);
+    } else {
+      showScreen('screen-game');
+      renderTeamPills(next);
+      $('turn-bar').textContent = 'Chute !';
+      setGameControlsLocked(true);
+      drawScene();
+    }
     return;
   }
 
@@ -438,7 +459,7 @@ function renderEnd(s) {
 function applyState(s) {
   if (!s) return;
 
-  if (!s.stackSettling) {
+  if (!s.stackSettling && !awaitingServerRoundEnd) {
     heldDisplayWorld = null;
   }
 
@@ -601,7 +622,7 @@ canvas.addEventListener('pointerup', () => {
 });
 
 window.addEventListener('resize', () => {
-  if (state?.phase === 'playing' || dropAnim || heldDisplayWorld) drawScene();
+  if (state?.phase === 'playing' || dropAnim || heldDisplayWorld || awaitingServerRoundEnd) drawScene();
 });
 
 const urlParams = new URLSearchParams(location.search);

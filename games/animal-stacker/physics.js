@@ -161,13 +161,14 @@ function dropAnimalOnWorld(world, typeId, x, angle, difficulty = 'normal') {
   world.animalBodies.push(body);
 
   let fallen = false;
-  // Courte simulation pour détecter une chute immédiate — le règlement complet se fait dans onTick.
-  for (let i = 0; i < 120; i++) {
+  // Simulation initiale pour détecter une chute au drop (le règlement continue dans onTick).
+  for (let i = 0; i < 240; i++) {
     Engine.update(world.engine, 1000 / 60);
     if (world.animalBodies.some(b => isBodyFallen(b, worldCfg))) {
       fallen = true;
       break;
     }
+    if (i > 24 && isBodyLanded(body)) break;
   }
 
   const sync = syncStackFromWorld(world);

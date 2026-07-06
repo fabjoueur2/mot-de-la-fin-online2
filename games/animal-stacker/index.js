@@ -356,6 +356,22 @@ function getRoom(ctx, socket) {
   return room;
 }
 
+function resolveSettlingCollapse(room) {
+  const dropperTeam = room.currentTeamIndex === 0 ? 1 : 0;
+  room.dropCounter += 1;
+  room.lastDrop = {
+    id: room.dropCounter,
+    type: null,
+    x: 0,
+    angle: 0,
+    fallen: true,
+    stackBefore: room.stack.map(p => ({ ...p })),
+    collapse: true
+  };
+  room._physicsFreezeAt = null;
+  resolveRoundLoss(room, dropperTeam);
+}
+
 function onTick(room) {
   if (room.phase !== 'playing' || !room._liveWorld) return false;
 
@@ -366,23 +382,17 @@ function onTick(room) {
     stepWorld(world, 30);
 
     if (world.animalBodies.some(b => isBodyFallen(b, worldCfg))) {
-      const loserTeamIndex = room.currentTeamIndex === 0 ? 1 : 0;
-      room.dropCounter += 1;
-      room.lastDrop = {
-        id: room.dropCounter,
-        type: null,
-        x: 0,
-        angle: 0,
-        fallen: true,
-        stackBefore: room.stack.map(p => ({ ...p })),
-        collapse: true
-      };
-      resolveRoundLoss(room, loserTeamIndex);
+      resolveSettlingCollapse(room);
       return true;
     }
   }
 
   if (room._physicsFreezeAt && Date.now() >= room._physicsFreezeAt) {
+    const sync = syncStackFromWorld(world);
+    if (sync.hasFallen) {
+      resolveSettlingCollapse(room);
+      return true;
+    }
     const frozenStack = freezeWorld(world);
     if (frozenStack) room.stack = frozenStack;
     room._physicsFreezeAt = null;
