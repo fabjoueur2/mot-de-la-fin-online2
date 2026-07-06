@@ -10,6 +10,10 @@ const ctx = canvas.getContext('2d');
 let localAimX = 200;
 let localAimAngle = 0;
 let dragging = false;
+let dropAnim = null;
+let pendingState = null;
+let lastAnimatedDropId = null;
+const ROT_STEP = Math.PI / 8;
 
 const DIFFICULTY_HINTS = {
   facile: 'Plateforme large, gravité douce — idéal pour débuter.',
@@ -73,9 +77,20 @@ function clientXToWorld(clientX) {
   return Math.max(w.minX, Math.min(w.maxX, x));
 }
 
-function drawScene() {
-  if (!state || state.phase !== 'playing') return;
-  const w = state.world;
+function isInputLocked() {
+  return Boolean(dropAnim);
+}
+
+function setGameControlsLocked(locked) {
+  const disabled = locked || !state?.canControl;
+  $('btn-drop').disabled = disabled;
+  $('btn-rotate-left').disabled = disabled;
+  $('btn-rotate-right').disabled = disabled;
+  const wheel = $('rotate-wheel');
+  if (wheel) wheel.classList.toggle('locked', disabled);
+}
+
+function drawBackgroundAndPlatform(w) {
   ctx.fillStyle = '#5bc0eb';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -89,19 +104,41 @@ function drawScene() {
   ctx.strokeStyle = '#1a1a1a';
   ctx.lineWidth = 3;
   ctx.strokeRect(px - pw / 2, py - ph / 2, pw, ph);
+}
+
+function drawAnimatedScene(simWorld) {
+  const w = simWorld.worldCfg;
+  drawBackgroundAndPlatform(w);
+  simWorld.animalBodies.forEach((body) => {
+    const fallen = window.AnimalPhysics.isBodyFallen(body, w);
+    drawAnimal(ctx, body.label, body.position.x, body.position.y, body.angle, fallen ? 0.85 : 1);
+  });
+}
+
+function drawScene() {
+  if (!state) return;
+
+  if (dropAnim) {
+    drawAnimatedScene(dropAnim.simWorld);
+    return;
+  }
+
+  if (state.phase !== 'playing') return;
+  const w = state.world;
+  drawBackgroundAndPlatform(w);
 
   (state.stack || []).forEach(piece => {
     drawAnimal(ctx, piece.type, piece.x, piece.y, piece.angle, 1);
   });
 
-  if (state.currentAnimal && state.phase === 'playing') {
+  if (state.currentAnimal) {
     const ax = state.canControl ? localAimX : state.aimX;
     const aa = state.canControl ? localAimAngle : state.aimAngle;
     const dropY = w.dropY || 100;
     drawAnimal(ctx, state.currentAnimal.type, ax, dropY, aa, state.canControl ? 0.95 : 0.7);
 
     if (state.canControl) {
-      ctx.strokeStyle = 'rgba(255,255,255,.6)';
+      ctx.strokeStyle = 'rgba(255,255,255,.45)';
       ctx.lineWidth = 2;
       ctx.setLineDash([4, 6]);
       ctx.beginPath();
@@ -110,6 +147,100 @@ function drawScene() {
       ctx.setLineDash([]);
     }
   }
+}
+
+function startDropAnimation(s) {
+  if (!window.AnimalPhysics) {
+    state = s;
+    applyStateAfterAnimation(s);
+    return;
+  }
+
+  const ld = s.lastDrop;
+  const difficulty = s.settings?.difficulty || 'normal';
+  const simWorld = window.AnimalPhysics.createDropSimulation(
+    ld.stackBefore,
+    ld.type,
+    ld.x,
+    ld.angle,
+    difficulty
+  );
+
+  dropAnim = {
+    simWorld,
+    pendingState: s,
+    frame: 0,
+    settledCount: 0,
+    expectFallen: ld.fallen
+  };
+
+  state = { ...s, animating: true };
+  showScreen('screen-game');
+  renderTeamPills(s);
+  $('hud-score').textContent = String(ld.stackBefore?.length ?? 0);
+  $('turn-bar').textContent = ld.fallen ? 'Chute !' : 'Placement…';
+  setGameControlsLocked(true);
+  requestAnimationFrame(animationTick);
+}
+
+function animationTick() {
+  if (!dropAnim) return;
+
+  const { simWorld, expectFallen } = dropAnim;
+  window.AnimalPhysics.stepSimulation(simWorld);
+  dropAnim.frame += 1;
+  drawAnimatedScene(simWorld);
+
+  const dropped = simWorld.droppedBody;
+  const droppedFallen = dropped && window.AnimalPhysics.isBodyFallen(dropped, simWorld.worldCfg);
+  const moving = window.AnimalPhysics.isWorldMoving(simWorld.engine);
+
+  if (!moving && dropAnim.frame > 24) {
+    dropAnim.settledCount += 1;
+  } else {
+    dropAnim.settledCount = 0;
+  }
+
+  const fallenDone = expectFallen && droppedFallen
+    && (dropAnim.settledCount >= 4 || dropped.position.y > simWorld.worldCfg.fallY - 50);
+  const placedDone = !expectFallen && dropAnim.settledCount >= 10;
+  const timeout = dropAnim.frame > 480;
+
+  if (fallenDone || placedDone || timeout) {
+    finishDropAnimation();
+    return;
+  }
+
+  requestAnimationFrame(animationTick);
+}
+
+function finishDropAnimation() {
+  const next = pendingState;
+  dropAnim = null;
+  pendingState = null;
+  if (!next) return;
+  state = next;
+  applyStateAfterAnimation(next);
+}
+
+function applyStateAfterAnimation(s) {
+  if (s.phase === 'lobby') {
+    showScreen('screen-lobby');
+    renderLobby(s);
+  } else if (s.phase === 'playing') {
+    showScreen('screen-game');
+    renderGame(s);
+  } else if (s.phase === 'end') {
+    showScreen('screen-end');
+    renderEnd(s);
+  }
+}
+
+function rotateAnimal(direction) {
+  if (!state?.canControl || isInputLocked()) return;
+  localAimAngle += direction === 'left' ? -ROT_STEP : ROT_STEP;
+  socket.emit('as-rotate', { direction });
+  drawScene();
 }
 
 function syncAimFromState() {
@@ -197,20 +328,22 @@ function renderGame(s) {
   $('hud-score').textContent = String(s.stackHeight ?? s.stack?.length ?? 0);
 
   const team = s.teams[s.currentTeamIndex];
+  const wheel = $('rotate-wheel');
   if (s.canControl) {
     $('turn-bar').textContent = `À vous ! — ${s.currentAnimal?.name || 'Animal'}`;
-    $('btn-drop').disabled = false;
     $('rotate-hint').style.display = 'block';
+    if (wheel) wheel.style.display = 'flex';
   } else if (s.isYourTeamTurn) {
     $('turn-bar').textContent = `Tour de ${team?.name} — un coéquipier joue`;
-    $('btn-drop').disabled = true;
     $('rotate-hint').style.display = 'none';
+    if (wheel) wheel.style.display = 'none';
   } else {
     $('turn-bar').textContent = `Tour de ${team?.name}…`;
-    $('btn-drop').disabled = true;
     $('rotate-hint').style.display = 'none';
+    if (wheel) wheel.style.display = 'none';
   }
 
+  setGameControlsLocked(isInputLocked());
   syncAimFromState();
   drawScene();
 }
@@ -261,8 +394,24 @@ function renderEnd(s) {
 }
 
 function applyState(s) {
-  state = s;
   if (!s) return;
+
+  if (s.phase === 'lobby') {
+    lastAnimatedDropId = null;
+  } else if (lastAnimatedDropId === null) {
+    lastAnimatedDropId = s.lastDrop?.id || 0;
+  } else if (
+    s.lastDrop?.id > lastAnimatedDropId
+    && Array.isArray(s.lastDrop.stackBefore)
+    && window.AnimalPhysics
+  ) {
+    lastAnimatedDropId = s.lastDrop.id;
+    pendingState = s;
+    startDropAnimation(s);
+    return;
+  }
+
+  state = s;
 
   if (s.phase === 'lobby') {
     showScreen('screen-lobby');
@@ -354,10 +503,15 @@ $('btn-replay-menu').addEventListener('click', leaveToMenu);
 $('btn-exit-game').addEventListener('click', leaveToMenu);
 
 $('btn-drop').addEventListener('click', () => {
-  if (!state?.canControl) return;
+  if (!state?.canControl || isInputLocked()) return;
   socket.emit('as-update-aim', { x: localAimX, angle: localAimAngle });
+  setGameControlsLocked(true);
+  $('turn-bar').textContent = 'Chute en cours…';
   socket.emit('as-drop');
 });
+
+$('btn-rotate-left').addEventListener('click', () => rotateAnimal('left'));
+$('btn-rotate-right').addEventListener('click', () => rotateAnimal('right'));
 
 function emitAim() {
   if (!state?.canControl) return;
@@ -365,7 +519,7 @@ function emitAim() {
 }
 
 canvas.addEventListener('pointerdown', (e) => {
-  if (!state?.canControl) return;
+  if (!state?.canControl || isInputLocked()) return;
   dragging = true;
   canvas.setPointerCapture(e.pointerId);
   localAimX = clientXToWorld(e.clientX);
@@ -373,7 +527,7 @@ canvas.addEventListener('pointerdown', (e) => {
 });
 
 canvas.addEventListener('pointermove', (e) => {
-  if (!dragging || !state?.canControl) return;
+  if (!dragging || !state?.canControl || isInputLocked()) return;
   localAimX = clientXToWorld(e.clientX);
   drawScene();
 });
@@ -381,24 +535,12 @@ canvas.addEventListener('pointermove', (e) => {
 canvas.addEventListener('pointerup', () => {
   if (!dragging) return;
   dragging = false;
-  emitAim();
+  if (!isInputLocked()) emitAim();
 });
 
-canvas.addEventListener('click', (e) => {
-  if (!state?.canControl) return;
-  if (dragging) return;
-  const dropY = state.world?.dropY || 100;
-  const rect = canvas.getBoundingClientRect();
-  const cx = (e.clientX - rect.left) / rect.width * canvas.width;
-  const cy = (e.clientY - rect.top) / rect.height * canvas.height;
-  if (Math.hypot(cx - localAimX, cy - dropY) < 55) {
-    localAimAngle += Math.PI / 8;
-    socket.emit('as-rotate');
-    drawScene();
-  }
+window.addEventListener('resize', () => {
+  if (state?.phase === 'playing' || dropAnim) drawScene();
 });
-
-window.addEventListener('resize', () => { if (state?.phase === 'playing') drawScene(); });
 
 const urlParams = new URLSearchParams(location.search);
 const roomFromUrl = urlParams.get('room');

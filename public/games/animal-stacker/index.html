@@ -114,7 +114,22 @@
         </div>
         <div class="as-turn-bar" id="turn-bar">…</div>
         <canvas id="game-canvas" width="400" height="420"></canvas>
-        <p class="as-rotate-hint" id="rotate-hint">Glissez ↔ pour déplacer · Cliquez l'animal pour pivoter</p>
+        <div class="as-controls-row">
+          <div class="as-rotate-wheel" id="rotate-wheel">
+            <button type="button" class="as-wheel-side left" id="btn-rotate-left" aria-label="Pivoter à gauche">
+              <span class="as-wheel-arrow">↺</span>
+              <span class="as-wheel-label">Gauche</span>
+            </button>
+            <div class="as-wheel-center" aria-hidden="true">
+              <span class="as-wheel-icon">⟳</span>
+            </div>
+            <button type="button" class="as-wheel-side right" id="btn-rotate-right" aria-label="Pivoter à droite">
+              <span class="as-wheel-arrow">↻</span>
+              <span class="as-wheel-label">Droite</span>
+            </button>
+          </div>
+        </div>
+        <p class="as-rotate-hint" id="rotate-hint">Glissez ↔ pour déplacer · Roue pour pivoter</p>
         <button type="button" class="as-drop-btn" id="btn-drop" disabled>DROP</button>
       </div>
     </div>
@@ -134,8 +149,10 @@
     </div>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.20.0/matter.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
   <script src="animals-render.js"></script>
+  <script src="physics-client.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

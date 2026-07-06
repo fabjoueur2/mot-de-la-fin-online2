@@ -143,6 +143,108 @@ body.as-game {
   padding: 0 12px 8px;
 }
 
+.as-controls-row {
+  display: flex;
+  justify-content: center;
+  padding: 4px 16px 0;
+  position: relative;
+}
+
+.as-rotate-wheel {
+  display: flex;
+  align-items: stretch;
+  width: min(100%, 280px);
+  height: 72px;
+  border-radius: 999px;
+  overflow: hidden;
+  border: 3px solid rgba(255,255,255,.85);
+  box-shadow: 0 4px 14px rgba(0,0,0,.15);
+  background: rgba(255,255,255,.2);
+}
+
+.as-rotate-wheel.locked {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.as-wheel-side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border: none;
+  background: rgba(255,255,255,.92);
+  color: var(--as-text);
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.12s, transform 0.1s;
+  padding: 8px 4px;
+}
+
+.as-wheel-side.left {
+  border-right: 2px solid rgba(0,0,0,.08);
+  border-radius: 999px 0 0 999px;
+}
+
+.as-wheel-side.right {
+  border-left: 2px solid rgba(0,0,0,.08);
+  border-radius: 0 999px 999px 0;
+}
+
+.as-wheel-side:hover:not(:disabled) {
+  background: #fff;
+}
+
+.as-wheel-side:active:not(:disabled) {
+  transform: scale(0.97);
+  background: #e8f4fc;
+}
+
+.as-wheel-side:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.as-wheel-arrow {
+  font-size: 1.5rem;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.as-wheel-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--as-muted);
+}
+
+.as-wheel-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 52px;
+  height: 52px;
+  margin-top: 10px;
+  border-radius: 50%;
+  background: var(--as-btn);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,.2);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.as-wheel-icon {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
 .as-team-pills {
   display: flex;
   gap: 8px;

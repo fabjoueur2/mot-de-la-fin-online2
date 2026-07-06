@@ -40,6 +40,7 @@ function createInitialRoomState({ hostSocketId, playerName, code }) {
     winnerTeamIndex: null,
     loserTeamIndex: null,
     lastDrop: null,
+    dropCounter: 0,
     settings: { ...DEFAULT_SETTINGS },
     roundNumber: 0,
     matchOver: false,
@@ -97,6 +98,7 @@ function startGame(room) {
   room.roundNumber = 1;
   room.matchOver = false;
   room.matchWinnerTeamIndex = null;
+  room.dropCounter = 0;
   room.teams.forEach(t => { t.score = 0; });
   beginRound(room);
   return { ok: true };
@@ -115,6 +117,7 @@ function resetToLobby(room) {
   room.roundNumber = 0;
   room.matchOver = false;
   room.matchWinnerTeamIndex = null;
+  room.dropCounter = 0;
   room.teams.forEach(t => { t.score = 0; });
 }
 
@@ -176,10 +179,11 @@ function registerHandlers(io, ctx) {
       broadcastRoom(room);
     });
 
-    socket.on('as-rotate', () => {
+    socket.on('as-rotate', ({ direction } = {}) => {
       const room = getRoom(ctx, socket);
       if (!room || !onActiveTeam(room, socket.id)) return;
-      room.aimAngle += Math.PI / 8;
+      const step = Math.PI / 8;
+      room.aimAngle += direction === 'left' ? -step : step;
       broadcastRoom(room);
     });
 
@@ -190,13 +194,17 @@ function registerHandlers(io, ctx) {
 
       const typeId = room.currentAnimal.type;
       const difficulty = room.settings?.difficulty || 'normal';
+      const stackBefore = room.stack.map(p => ({ ...p }));
       const result = dropAnimal(room.stack, typeId, room.aimX, room.aimAngle, difficulty);
 
+      room.dropCounter += 1;
       room.lastDrop = {
+        id: room.dropCounter,
         type: typeId,
         x: room.aimX,
         angle: room.aimAngle,
-        fallen: result.fallen
+        fallen: result.fallen,
+        stackBefore
       };
 
       if (result.fallen) {
