@@ -113,7 +113,7 @@
           <button type="button" class="as-hud-badge right exit-btn" id="btn-exit-game">EXIT</button>
         </div>
         <div class="as-turn-bar" id="turn-bar">…</div>
-        <canvas id="game-canvas" width="400" height="420"></canvas>
+        <canvas id="game-canvas" width="520" height="580"></canvas>
         <div class="as-controls-row">
           <div class="as-rotate-wheel" id="rotate-wheel">
             <button type="button" class="as-wheel-side left" id="btn-rotate-left" aria-label="Pivoter à gauche">
@@ -149,8 +149,10 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/poly-decomp@0.3.0/build/decomp.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.20.0/matter.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
+  <script src="world-config-client.js"></script>
   <script src="animals-client.js"></script>
   <script src="animals-render.js"></script>
   <script src="physics-client.js"></script>

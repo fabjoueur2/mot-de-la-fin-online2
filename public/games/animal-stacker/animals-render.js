@@ -57,7 +57,12 @@ function drawAnimal(ctx, type, x, y, angle, alpha = 1) {
     ctx.strokeStyle = '#1a1a1a';
     ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.roundRect(-def.width / 2, -def.height / 2, def.width, def.height, def.chamfer || 8);
+    const r = def.chamfer || 8;
+    if (ctx.roundRect) {
+      ctx.roundRect(-def.width / 2, -def.height / 2, def.width, def.height, r);
+    } else {
+      ctx.rect(-def.width / 2, -def.height / 2, def.width, def.height);
+    }
     ctx.fill();
     ctx.stroke();
   }

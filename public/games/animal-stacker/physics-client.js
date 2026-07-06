@@ -3,74 +3,40 @@
   const Matter = global.Matter;
   if (!Matter) return;
 
-  const { Engine, World, Bodies, Body, Composite } = Matter;
-
-  const ANIMAL_TYPES = (typeof window !== 'undefined' && window.ANIMAL_TYPES)
-    ? Object.fromEntries(window.ANIMAL_TYPES.map(a => [a.id, {
-      width: a.width,
-      height: a.height,
-      chamfer: a.chamfer
-    }]))
-    : {};
-
-  const DIFFICULTY_PRESETS = {
-    facile: {
-      gravity: 0.85,
-      platformWidth: 285,
-      sideMargin: 48,
-      platformFriction: 0.95,
-      platformRestitution: 0.03,
-      bodyFriction: 0.92,
-      bodyRestitution: 0.04
-    },
-    normal: {
-      gravity: 1.15,
-      platformWidth: 260,
-      sideMargin: 35,
-      platformFriction: 0.9,
-      platformRestitution: 0.05,
-      bodyFriction: 0.85,
-      bodyRestitution: 0.08
-    },
-    corse: {
-      gravity: 1.45,
-      platformWidth: 215,
-      sideMargin: 22,
-      platformFriction: 0.78,
-      platformRestitution: 0.1,
-      bodyFriction: 0.72,
-      bodyRestitution: 0.14
-    }
-  };
+  const { Engine, World, Bodies, Body, Composite, Vertices, Vector, Common } = Matter;
+  if (global.decomp) Common.setDecomp(global.decomp);
+  const cfg = global.AS_WORLD_CONFIG || { BASE_WORLD: {}, DIFFICULTY_PRESETS: {} };
+  const BASE = cfg.BASE_WORLD;
 
   function getDifficultyConfig(difficulty) {
-    return DIFFICULTY_PRESETS[difficulty] || DIFFICULTY_PRESETS.normal;
+    return cfg.DIFFICULTY_PRESETS[difficulty] || cfg.DIFFICULTY_PRESETS.normal;
   }
 
   function getWorldForDifficulty(difficulty = 'normal') {
-    const cfg = getDifficultyConfig(difficulty);
-    const half = cfg.platformWidth / 2;
-    const margin = 25;
+    const preset = getDifficultyConfig(difficulty);
+    const half = preset.platformWidth / 2;
+    const margin = BASE.aimMargin || 32;
     return {
-      width: 400,
-      height: 420,
-      platform: { x: 200, y: 368, width: cfg.platformWidth, height: 16 },
-      dropY: 100,
-      minX: 200 - half + margin,
-      maxX: 200 + half - margin,
-      fallY: 420,
-      sideMargin: cfg.sideMargin,
+      width: BASE.width,
+      height: BASE.height,
+      platform: {
+        x: BASE.platformX,
+        y: BASE.platformY,
+        width: preset.platformWidth,
+        height: BASE.platformHeight
+      },
+      dropY: BASE.dropY,
+      minX: BASE.platformX - half + margin,
+      maxX: BASE.platformX + half - margin,
+      fallY: BASE.fallY,
+      sideMargin: preset.sideMargin,
       difficulty
     };
   }
 
   function getAnimalType(id) {
-    if (ANIMAL_TYPES[id]) return ANIMAL_TYPES[id];
-    const fallback = window.ANIMAL_TYPES && window.ANIMAL_TYPES[0];
-    if (fallback) {
-      return { width: fallback.width, height: fallback.height, chamfer: fallback.chamfer };
-    }
-    return { width: 52, height: 36, chamfer: 8 };
+    if (global.getAnimalType) return global.getAnimalType(id);
+    return { width: 72, height: 72, chamfer: 8, vertices: null };
   }
 
   function createPhysicsWorld(difficulty) {
@@ -93,11 +59,17 @@
       }
     );
 
-    const ground = Bodies.rectangle(200, 450, 500, 40, {
-      isStatic: true,
-      isSensor: true,
-      label: 'void'
-    });
+    const ground = Bodies.rectangle(
+      worldCfg.platform.x,
+      worldCfg.fallY + 40,
+      worldCfg.width + 120,
+      40,
+      {
+        isStatic: true,
+        isSensor: true,
+        label: 'void'
+      }
+    );
 
     World.add(engine.world, [platform, ground]);
     return { engine, animalBodies: [], worldCfg };
@@ -106,14 +78,27 @@
   function createAnimalBody(typeId, x, y, angle, difficulty) {
     const def = getAnimalType(typeId);
     const physCfg = getDifficultyConfig(difficulty);
-    const body = Bodies.rectangle(x, y, def.width, def.height, {
-      chamfer: { radius: def.chamfer },
+    const bodyOpts = {
       friction: physCfg.bodyFriction,
       frictionStatic: Math.min(0.98, physCfg.bodyFriction + 0.05),
       restitution: physCfg.bodyRestitution,
       density: 0.002,
       label: typeId
-    });
+    };
+
+    let body;
+    if (def.vertices && def.vertices.length >= 3) {
+      const verts = def.vertices.map((v) => ({ x: v.x, y: v.y }));
+      const centre = Vertices.centre(verts);
+      const centered = Vertices.translate(verts, Vector.neg(centre));
+      body = Bodies.fromVertices(x, y, [centered], bodyOpts, true);
+    } else {
+      body = Bodies.rectangle(x, y, def.width, def.height, {
+        ...bodyOpts,
+        chamfer: { radius: def.chamfer || 8 }
+      });
+    }
+
     Body.setAngle(body, angle);
     return body;
   }

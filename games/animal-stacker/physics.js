@@ -1,76 +1,11 @@
 const Matter = require('matter-js');
+const decomp = require('poly-decomp');
 const { getAnimalType } = require('./animals');
+const { BASE_WORLD, getDifficultyConfig, getWorldForDifficulty } = require('./world-config');
 
-const { Engine, World, Bodies, Body, Composite } = Matter;
+Matter.Common.setDecomp(decomp);
 
-const BASE_WORLD = {
-  width: 400,
-  height: 420,
-  platformY: 368,
-  platformHeight: 16,
-  platformX: 200,
-  dropY: 100,
-  fallY: 420
-};
-
-const DIFFICULTY_PRESETS = {
-  facile: {
-    label: 'Facile',
-    gravity: 0.85,
-    platformWidth: 285,
-    sideMargin: 48,
-    platformFriction: 0.95,
-    platformRestitution: 0.03,
-    bodyFriction: 0.92,
-    bodyRestitution: 0.04
-  },
-  normal: {
-    label: 'Normal',
-    gravity: 1.15,
-    platformWidth: 260,
-    sideMargin: 35,
-    platformFriction: 0.9,
-    platformRestitution: 0.05,
-    bodyFriction: 0.85,
-    bodyRestitution: 0.08
-  },
-  corse: {
-    label: 'Corsé',
-    gravity: 1.45,
-    platformWidth: 215,
-    sideMargin: 22,
-    platformFriction: 0.78,
-    platformRestitution: 0.1,
-    bodyFriction: 0.72,
-    bodyRestitution: 0.14
-  }
-};
-
-function getDifficultyConfig(difficulty) {
-  return DIFFICULTY_PRESETS[difficulty] || DIFFICULTY_PRESETS.normal;
-}
-
-function getWorldForDifficulty(difficulty = 'normal') {
-  const cfg = getDifficultyConfig(difficulty);
-  const half = cfg.platformWidth / 2;
-  const margin = 25;
-  return {
-    width: BASE_WORLD.width,
-    height: BASE_WORLD.height,
-    platform: {
-      x: BASE_WORLD.platformX,
-      y: BASE_WORLD.platformY,
-      width: cfg.platformWidth,
-      height: BASE_WORLD.platformHeight
-    },
-    dropY: BASE_WORLD.dropY,
-    minX: BASE_WORLD.platformX - half + margin,
-    maxX: BASE_WORLD.platformX + half - margin,
-    fallY: BASE_WORLD.fallY,
-    sideMargin: cfg.sideMargin,
-    difficulty
-  };
-}
+const { Engine, World, Bodies, Body, Composite, Vertices, Vector } = Matter;
 
 const WORLD = getWorldForDifficulty('normal');
 
@@ -94,11 +29,17 @@ function createPhysicsWorld(difficulty = 'normal') {
     }
   );
 
-  const ground = Bodies.rectangle(200, 450, 500, 40, {
-    isStatic: true,
-    isSensor: true,
-    label: 'void'
-  });
+  const ground = Bodies.rectangle(
+    worldCfg.platform.x,
+    worldCfg.fallY + 40,
+    worldCfg.width + 120,
+    40,
+    {
+      isStatic: true,
+      isSensor: true,
+      label: 'void'
+    }
+  );
 
   World.add(engine.world, [platform, ground]);
   return { engine, platform, animalBodies: [] };
@@ -107,14 +48,27 @@ function createPhysicsWorld(difficulty = 'normal') {
 function createAnimalBody(typeId, x, y, angle, difficulty = 'normal') {
   const def = getAnimalType(typeId);
   const physCfg = getDifficultyConfig(difficulty);
-  const body = Bodies.rectangle(x, y, def.width, def.height, {
-    chamfer: { radius: def.chamfer },
+  const bodyOpts = {
     friction: physCfg.bodyFriction,
     frictionStatic: Math.min(0.98, physCfg.bodyFriction + 0.05),
     restitution: physCfg.bodyRestitution,
     density: 0.002,
     label: typeId
-  });
+  };
+
+  let body;
+  if (def.vertices && def.vertices.length >= 3) {
+    const verts = def.vertices.map((v) => ({ x: v.x, y: v.y }));
+    const centre = Vertices.centre(verts);
+    const centered = Vertices.translate(verts, Vector.neg(centre));
+    body = Bodies.fromVertices(x, y, [centered], bodyOpts, true);
+  } else {
+    body = Bodies.rectangle(x, y, def.width, def.height, {
+      ...bodyOpts,
+      chamfer: { radius: def.chamfer || 8 }
+    });
+  }
+
   Body.setAngle(body, angle);
   return body;
 }
@@ -221,7 +175,6 @@ function dropAnimal(stack, typeId, x, angle, difficulty = 'normal') {
 module.exports = {
   WORLD,
   BASE_WORLD,
-  DIFFICULTY_PRESETS,
   getDifficultyConfig,
   getWorldForDifficulty,
   createPhysicsWorld,
@@ -231,5 +184,6 @@ module.exports = {
   stepWorld,
   syncStackFromWorld,
   serializeStack,
-  isBodyFallen
+  isBodyFallen,
+  createAnimalBody
 };

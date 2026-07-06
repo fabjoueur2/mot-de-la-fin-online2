@@ -40,7 +40,7 @@ function createInitialRoomState({ hostSocketId, playerName, code }) {
     stack: [],
     currentTeamIndex: 0,
     currentAnimal: null,
-    aimX: 200,
+    aimX: 260,
     aimAngle: 0,
     turnCount: 0,
     usedAnimalIds: [],

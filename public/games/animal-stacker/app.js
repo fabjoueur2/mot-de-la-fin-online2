@@ -7,7 +7,7 @@ const $ = (id) => document.getElementById(id);
 const canvas = $('game-canvas');
 const ctx = canvas.getContext('2d');
 
-let localAimX = 200;
+let localAimX = 260;
 let localAimAngle = 0;
 let dragging = false;
 let dropAnim = null;
@@ -300,7 +300,7 @@ function rotateAnimal(direction) {
 
 function syncAimFromState() {
   if (!state) return;
-  localAimX = state.aimX ?? 200;
+  localAimX = state.aimX ?? 260;
   localAimAngle = state.aimAngle ?? 0;
 }
 

@@ -12,8 +12,9 @@ const SRC_DIR = path.join(ROOT, '..', 'freepixel-animals');
 const SPRITES_DIR = path.join(ROOT, 'public', 'games', 'animal-stacker', 'sprites');
 const SERVER_ANIMALS = path.join(ROOT, 'games', 'animal-stacker', 'animals.js');
 const CLIENT_ANIMALS = path.join(ROOT, 'public', 'games', 'animal-stacker', 'animals-client.js');
+const { extractSilhouetteVertices } = require('./png-silhouette');
+const { MAX_ANIMAL_DIM } = require('../games/animal-stacker/world-config');
 
-const MAX_DIM = 56;
 const SPRITE_URL_PREFIX = '/games/animal-stacker/sprites/';
 
 const FRENCH = {
@@ -76,11 +77,10 @@ function slugToName(slug) {
 }
 
 function scaleDims(w, h) {
-  const scale = MAX_DIM / Math.max(w, h);
-  const width = Math.max(28, Math.round(w * scale));
-  const height = Math.max(28, Math.round(h * scale));
-  const chamfer = Math.min(14, Math.round(Math.min(width, height) * 0.22));
-  return { width, height, chamfer };
+  const scale = MAX_ANIMAL_DIM / Math.max(w, h);
+  const width = Math.max(32, Math.round(w * scale));
+  const height = Math.max(32, Math.round(h * scale));
+  return { width, height };
 }
 
 function fetchJson(url) {
@@ -155,20 +155,26 @@ async function ensureSprites() {
 }
 
 function buildManifest(files) {
-  return files.map((filename) => {
+  let withVertices = 0;
+  const animals = files.map((filename) => {
     const filePath = path.join(SPRITES_DIR, filename);
+    const buffer = fs.readFileSync(filePath);
     const { width: pw, height: ph } = readPngSize(filePath);
-    const { width, height, chamfer } = scaleDims(pw, ph);
+    const { width, height } = scaleDims(pw, ph);
     const id = fileToId(filename);
+    const vertices = extractSilhouetteVertices(buffer, width, height);
+    if (vertices) withVertices += 1;
     return {
       id,
       name: slugToName(id),
       sprite: SPRITE_URL_PREFIX + filename,
       width,
       height,
-      chamfer
+      ...(vertices ? { vertices } : {})
     };
   });
+  console.log(`Silhouettes: ${withVertices}/${animals.length}`);
+  return animals;
 }
 
 function writeServerModule(animals) {
