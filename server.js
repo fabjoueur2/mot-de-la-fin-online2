@@ -5,13 +5,15 @@ const path = require('path');
 
 const { listGames, getGame } = require('./games/registry');
 const motDeLaFin = require('./games/mot-de-la-fin');
+const animalStacker = require('./games/animal-stacker');
 
 const PORT = process.env.PORT || 3000;
 const CODE_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 
 /** Moteurs de jeu enregistrés — ajouter ici chaque nouveau jeu */
 const gameEngines = {
-  [motDeLaFin.id]: motDeLaFin
+  [motDeLaFin.id]: motDeLaFin,
+  [animalStacker.id]: animalStacker
 };
 
 const app = express();

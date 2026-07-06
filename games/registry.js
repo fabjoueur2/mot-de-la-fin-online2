@@ -18,15 +18,15 @@ const GAMES = [
     status: 'available'
   },
   {
-    id: 'bientot-1',
-    name: 'Prochain jeu',
-    tagline: 'Un nouveau jeu arrive bientôt sur la plateforme…',
-    icon: '🎲',
-    color: '#4d96ff',
-    players: '—',
-    duration: '—',
-    path: null,
-    status: 'coming-soon'
+    id: 'animal-stacker',
+    name: 'Animal Stacker',
+    tagline: 'Empilez les animaux sans rien faire tomber — 2 équipes',
+    icon: '🦊',
+    color: '#5bc0eb',
+    players: 'Illimité · 2 équipes',
+    duration: '5–15 min',
+    path: '/games/animal-stacker/',
+    status: 'available'
   }
 ];
 

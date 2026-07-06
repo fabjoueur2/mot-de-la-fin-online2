@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Animal Stacker — En ligne</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="as-game">
+  <div class="as-app">
+    <header class="as-header">
+      <a href="/" class="back-to-hub">← Jeux</a>
+      <h1>ANIMAL STACKER</h1>
+      <p>Empilez les animaux — ne faites rien tomber !</p>
+    </header>
+
+    <div id="connection-status" class="connection-status" style="margin-bottom:8px;">Connexion…</div>
+
+    <div id="room-nav" class="room-nav" style="display:none;">
+      <button type="button" id="btn-salon" class="btn-nav btn-nav-salon">🛋️ Retour au salon</button>
+      <button type="button" id="btn-menu" class="btn-nav btn-nav-menu">Quitter</button>
+    </div>
+
+    <!-- ACCUEIL -->
+    <div id="screen-home" class="screen active">
+      <div class="as-card">
+        <h2>👋 Bienvenue</h2>
+        <label>Votre pseudo</label>
+        <input type="text" id="player-name" placeholder="Ex : Marie" maxlength="20">
+        <div class="row" style="margin-top:8px;">
+          <button class="btn btn-primary as-mode-btn blue" id="btn-create">🏠 Créer une salle</button>
+          <button class="btn btn-secondary" id="btn-show-join">🔗 Rejoindre</button>
+        </div>
+      </div>
+      <div class="as-card" id="join-panel" style="display:none;">
+        <h2>🔗 Rejoindre</h2>
+        <label>Code (6 caractères)</label>
+        <input type="text" id="join-code" maxlength="6" style="text-transform:uppercase;letter-spacing:4px;font-weight:700;">
+        <button class="btn btn-blue as-mode-btn blue" id="btn-join">Entrer</button>
+      </div>
+      <div class="as-card">
+        <p style="color:var(--as-muted);font-size:.9rem;line-height:1.5;">
+          <strong>2 équipes</strong> s'affrontent. À tour de rôle, déplacez et faites pivoter un animal, puis appuyez sur <strong>DROP</strong>.
+          Si un animal tombe, votre équipe perd !
+        </p>
+      </div>
+    </div>
+
+    <!-- LOBBY -->
+    <div id="screen-lobby" class="screen">
+      <div class="as-card">
+        <h2>🛋️ Salon</h2>
+        <div class="room-code-box">
+          <div class="label">Code</div>
+          <div class="code" id="lobby-code">------</div>
+          <div class="copy-row">
+            <button class="btn btn-secondary btn-sm" id="btn-copy-code">📋 Code</button>
+            <button class="btn btn-secondary btn-sm" id="btn-copy-link">🔗 Lien</button>
+          </div>
+        </div>
+        <label>Joueurs</label>
+        <ul class="players-list" id="players-list"></ul>
+        <label>Votre équipe</label>
+        <select id="my-team-select">
+          <option value="0">Équipe 1</option>
+          <option value="1">Équipe 2</option>
+        </select>
+      </div>
+      <div class="as-card" id="host-settings">
+        <h2>⚙️ Paramètres hôte</h2>
+        <div class="row">
+          <div>
+            <label>Équipe 1</label>
+            <input type="text" id="team-name-0" maxlength="20" value="Équipe 1">
+          </div>
+          <div>
+            <label>Équipe 2</label>
+            <input type="text" id="team-name-1" maxlength="20" value="Équipe 2">
+          </div>
+        </div>
+        <label style="margin-top:12px;">Difficulté physique</label>
+        <div class="as-difficulty-btns" id="difficulty-btns">
+          <button type="button" class="as-diff-btn" data-difficulty="facile">Facile</button>
+          <button type="button" class="as-diff-btn active" data-difficulty="normal">Normal</button>
+          <button type="button" class="as-diff-btn" data-difficulty="corse">Corsé</button>
+        </div>
+        <p class="as-setting-hint" id="difficulty-hint">Plateforme standard, gravité équilibrée.</p>
+        <label style="margin-top:12px;">Manches à gagner</label>
+        <div class="as-rounds-btns" id="rounds-btns">
+          <button type="button" class="as-round-btn" data-rounds="1">1</button>
+          <button type="button" class="as-round-btn active" data-rounds="3">3</button>
+          <button type="button" class="as-round-btn" data-rounds="5">5</button>
+          <button type="button" class="as-round-btn" data-rounds="7">7</button>
+        </div>
+        <p class="as-setting-hint">Première équipe à atteindre ce score remporte la partie.</p>
+        <button class="btn btn-primary as-mode-btn teal" id="btn-start-game" style="margin-top:8px;">▶ Lancer la partie</button>
+      </div>
+      <div class="as-card" id="guest-wait" style="display:none;text-align:center;">
+        <p style="color:var(--as-muted);">En attente de l'hôte…</p>
+      </div>
+    </div>
+
+    <!-- JEU -->
+    <div id="screen-game" class="screen">
+      <div class="as-team-pills" id="team-pills"></div>
+      <div class="as-game-wrap">
+        <div class="as-hud">
+          <div class="as-hud-badge score" id="hud-score">0</div>
+          <button type="button" class="as-hud-badge right exit-btn" id="btn-exit-game">EXIT</button>
+        </div>
+        <div class="as-turn-bar" id="turn-bar">…</div>
+        <canvas id="game-canvas" width="400" height="420"></canvas>
+        <p class="as-rotate-hint" id="rotate-hint">Glissez ↔ pour déplacer · Cliquez l'animal pour pivoter</p>
+        <button type="button" class="as-drop-btn" id="btn-drop" disabled>DROP</button>
+      </div>
+    </div>
+
+    <!-- FIN -->
+    <div id="screen-end" class="screen">
+      <div class="as-card" style="text-align:center;">
+        <div class="as-end-trophy" id="end-trophy">🏆</div>
+        <h2 id="end-title"></h2>
+        <p id="end-subtitle" style="color:var(--as-muted);margin:12px 0 20px;"></p>
+        <div id="scores-end" class="as-team-pills"></div>
+        <p id="end-match-info" class="as-setting-hint" style="margin-top:12px;"></p>
+        <button class="btn btn-primary as-mode-btn teal" id="btn-next-round" style="margin-top:16px;display:none;">▶ Manche suivante</button>
+        <button class="btn btn-primary as-mode-btn teal" id="btn-replay" style="margin-top:16px;display:none;">🔄 Nouvelle partie</button>
+        <button class="btn btn-secondary" id="btn-replay-menu" style="margin-top:10px;">← Tous les jeux</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="animals-render.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
