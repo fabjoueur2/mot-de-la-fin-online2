@@ -3,188 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mot de la fin — En ligne</title>
+  <title>Soirée Jeux — Jouez en ligne entre amis</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <div class="app">
+  <div class="app app-hub">
     <header>
-      <h1>Mot de la fin</h1>
-      <p>Jouez à distance avec vos amis, partout dans le monde</p>
+      <h1>Soirée Jeux</h1>
+      <p>Choisissez un jeu et jouez à distance avec vos amis</p>
       <span class="badge-online">● Multijoueur en ligne</span>
     </header>
 
-    <div id="connection-status" class="connection-status">Connexion…</div>
-    <div id="room-nav" class="room-nav" style="display:none;">
-      <button type="button" id="btn-salon" class="btn-nav btn-nav-salon">🛋️ Retour au salon</button>
-      <button type="button" id="btn-menu" class="btn-nav btn-nav-menu"><svg class="icon-exit" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg> Quitter le salon</button>
+    <div id="games-grid" class="games-grid">
+      <p class="games-loading">Chargement des jeux…</p>
     </div>
 
-    <!-- ACCUEIL -->
-    <div id="screen-home" class="screen active">
-      <div class="card">
-        <h2>👋 Bienvenue</h2>
-        <label>Votre pseudo</label>
-        <input type="text" id="player-name" placeholder="Ex : Marie" maxlength="20" value="">
-        <div class="row" style="margin-top: 8px;">
-          <button class="btn btn-primary" id="btn-create">🏠 Créer une salle</button>
-          <button class="btn btn-secondary" id="btn-show-join">🔗 Rejoindre</button>
-        </div>
-      </div>
-      <div class="card" id="join-panel" style="display:none;">
-        <h2>🔗 Rejoindre une salle</h2>
-        <label>Code de la salle (6 caractères)</label>
-        <input type="text" id="join-code" placeholder="Ex : AB3K9P" maxlength="6" style="text-transform:uppercase; letter-spacing:4px; font-family:'JetBrains Mono',monospace; font-weight:700;">
-        <button class="btn btn-blue" id="btn-join">Entrer dans la salle</button>
-      </div>
-      <div class="card">
-        <div class="rules-reminder">
-          <strong>Comme StopotS :</strong> créez une salle, partagez le code. Chaque joueur choisit son rôle : <strong>Maître</strong> (voit le mot) ou <strong>Devineur</strong> — un seul Maître par équipe !
-        </div>
-      </div>
-    </div>
-
-    <!-- LOBBY -->
-    <div id="screen-lobby" class="screen">
-      <div class="card">
-        <h2>🛋️ Salon d'attente</h2>
-        <div class="room-code-box">
-          <div class="label">Code de la salle</div>
-          <div class="code" id="lobby-code">------</div>
-          <div class="share-hint">Envoyez ce code à vos amis pour qu'ils rejoignent</div>
-          <div class="copy-row">
-            <button class="btn btn-secondary btn-sm" id="btn-copy-code">📋 Copier le code</button>
-            <button class="btn btn-secondary btn-sm" id="btn-copy-link">🔗 Copier le lien</button>
-          </div>
-        </div>
-        <label>Joueurs connectés</label>
-        <ul class="players-list" id="players-list"></ul>
-        <label>Votre équipe</label>
-        <select id="my-team-select"></select>
-        <label>Votre rôle</label>
-        <div class="role-btns" id="role-btns">
-          <button type="button" class="role-btn" data-role="maitre">👑 Maître</button>
-          <button type="button" class="role-btn active" data-role="devineur">🎯 Devineur</button>
-        </div>
-        <p class="role-hint">Un seul Maître par équipe. Le Maître voit le mot, le Devineur devine à l'oral.</p>
-      </div>
-
-      <div class="card" id="host-settings">
-        <h2>⚙️ Paramètres (hôte)</h2>
-        <div class="row">
-          <div>
-            <label>Nombre d'équipes</label>
-            <input type="number" id="set-team-count" value="2" min="1" max="8">
-          </div>
-          <div>
-            <label>Durée / équipe / manche (sec)</label>
-            <input type="number" id="set-timer" value="60" min="15" max="180" step="5">
-          </div>
-        </div>
-        <label>Noms des équipes</label>
-        <div id="team-names-host" class="team-names-grid"></div>
-        <label>Difficulté</label>
-        <div class="difficulty-btns" id="diff-btns">
-          <button class="diff-btn active" data-diff="mixte">🎲 Mixte</button>
-          <button class="diff-btn" data-diff="facile">🟢 Facile</button>
-          <button class="diff-btn" data-diff="moyen">🟡 Moyen</button>
-          <button class="diff-btn" data-diff="difficile">🔴 Corsé</button>
-        </div>
-        <button class="btn btn-primary" id="btn-start-game">🎮 Lancer la partie</button>
-      </div>
-
-      <div class="card" id="guest-wait" style="display:none; text-align:center;">
-        <p style="color:var(--muted); padding: 12px 0;">En attente que l'hôte lance la partie…</p>
-      </div>
-    </div>
-
-    <!-- JEU -->
-    <div id="screen-game" class="screen">
-      <div class="scores" id="scores-game"></div>
-      <div class="card">
-        <span class="round-badge" id="round-badge">Manche 1</span>
-        <span class="role-badge" id="role-badge" style="display:none;"></span>
-        <div id="game-counter" style="text-align:center;color:var(--muted);font-size:.85rem;margin-bottom:10px;"></div>
-
-        <div class="timer-bar"><div class="timer-fill" id="timer-fill"></div></div>
-        <div class="timer-display" id="timer-display">01:00</div>
-
-        <div id="start-turn-section" class="start-turn-section" style="display:none;">
-          <button class="btn btn-primary" id="btn-start-turn">▶ Démarrer</button>
-          <p class="start-turn-hint">Le chrono et le mot apparaîtront quand le Maître est prêt.</p>
-        </div>
-
-        <div class="word-reveal" id="word-box">
-          <div class="label">Mot à faire deviner <span class="diff-tag" id="word-diff"></span></div>
-          <div class="word" id="word-text">…</div>
-        </div>
-
-        <div id="forbidden-section" style="display:none;">
-          <div class="label" style="margin-bottom:8px;">🚫 Mots interdits</div>
-          <div class="forbidden-list" id="forbidden-list"></div>
-        </div>
-
-        <div id="r1-controls">
-          <div class="clue-tracker" id="clue-tracker">
-            <div class="clue-dot" data-clue="1"><div class="num">1<sup>er</sup></div><div class="pts">3 pts</div></div>
-            <div class="clue-dot" data-clue="2"><div class="num">2<sup>e</sup></div><div class="pts">2 pts</div></div>
-            <div class="clue-dot" data-clue="3"><div class="num">3<sup>e</sup></div><div class="pts">1 pt</div></div>
-          </div>
-          <div class="btn-group" id="active-team-controls" style="margin-bottom:10px;">
-            <button class="btn btn-secondary btn-sm" id="btn-clue">➡️ Indice donné</button>
-            <button class="btn btn-success btn-sm" id="btn-found">✅ Trouvé !</button>
-            <button class="btn btn-danger btn-sm" id="btn-fail">❌ Raté</button>
-          </div>
-        </div>
-
-        <div id="r2-controls" style="display:none;">
-          <div class="btn-group" id="active-team-controls-r2" style="margin-bottom:10px;">
-            <button class="btn btn-success" id="btn-found-r2">✅ Trouvé ! (+2 pts)</button>
-            <button class="btn btn-danger" id="btn-fail-r2">🚫 Mot interdit / Raté</button>
-          </div>
-        </div>
-
-        <div id="spectator-msg" class="rules-reminder" style="display:none;"></div>
-
-        <div class="btn-group" id="host-timer-controls">
-          <button class="btn btn-secondary btn-sm" id="btn-pause">⏸ Pause</button>
-          <button class="btn btn-secondary btn-sm" id="btn-reset-timer">🔄 Reset chrono</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- TRANSITION -->
-    <div id="screen-transition" class="screen">
-      <div class="scores" id="scores-transition"></div>
-      <div class="card" style="text-align:center;">
-        <h2>🏁 Fin de la manche 1 !</h2>
-        <p style="color:var(--muted);margin:14px 0 20px;line-height:1.6;">
-          Place à la <strong style="color:var(--round2);">manche 2 — Mots interdits</strong>
-        </p>
-        <button class="btn btn-blue" id="btn-round2">▶️ Manche 2</button>
-        <p id="wait-host-r2" style="color:var(--muted);margin-top:14px;font-size:.9rem;display:none;">En attente de l'hôte…</p>
-      </div>
-    </div>
-
-    <!-- FIN -->
-    <div id="screen-end" class="screen">
-      <div class="card final-winner">
-        <div class="trophy" id="end-trophy">🏆</div>
-        <h2 id="end-title"></h2>
-        <p id="end-subtitle" style="color:var(--muted);margin-bottom:18px;"></p>
-        <div class="scores" id="scores-final"></div>
-        <button class="btn btn-primary" id="btn-replay" style="margin-top:18px;">🔄 Nouvelle partie</button>
-        <button class="btn btn-secondary" id="btn-replay-menu" style="margin-top:10px;"><svg class="icon-exit" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg> Quitter le salon</button>
-      </div>
-    </div>
-
-    <footer>Mot de la fin — En ligne · Bon jeu !</footer>
+    <footer>Créez une salle, partagez le code — comme StopotS</footer>
   </div>
 
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="/app.js"></script>
+  <script src="/hub.js"></script>
 </body>
 </html>

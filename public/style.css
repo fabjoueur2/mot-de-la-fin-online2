@@ -357,3 +357,98 @@ input:focus, select:focus { outline: none; border-color: var(--accent4); }
 .final-winner .trophy { font-size: 3.5rem; margin-bottom: 10px; }
 
 footer { text-align: center; margin-top: 28px; color: var(--muted); font-size: .78rem; }
+
+/* ——— Hub sélection de jeux ——— */
+.app-hub { max-width: 900px; }
+.back-to-hub {
+  display: inline-block;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: .85rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  transition: color .15s;
+}
+.back-to-hub:hover { color: var(--accent2); }
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+.games-loading, .games-error {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--muted);
+  padding: 40px 20px;
+}
+
+.game-card {
+  display: block;
+  background: var(--surface);
+  border: 2px solid rgba(255,255,255,.06);
+  border-radius: var(--radius);
+  padding: 22px;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: var(--shadow);
+  transition: transform .15s, border-color .15s, box-shadow .15s;
+  position: relative;
+}
+.game-card:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--game-color) 50%, transparent);
+  box-shadow: 0 12px 40px rgba(0,0,0,.45);
+}
+.game-card-disabled {
+  opacity: .55;
+  cursor: not-allowed;
+  filter: grayscale(.3);
+}
+.game-card-icon {
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--game-color) 18%, transparent);
+}
+.game-card-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+.game-card-tagline {
+  color: var(--muted);
+  font-size: .9rem;
+  line-height: 1.45;
+  margin-bottom: 14px;
+  min-height: 2.9em;
+}
+.game-card-meta {
+  display: flex;
+  gap: 12px;
+  font-size: .78rem;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.game-card-tag {
+  display: inline-block;
+  font-size: .7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+.game-card-tag.available {
+  background: rgba(107,203,119,.15);
+  color: var(--accent3);
+}
+.game-card-tag.soon {
+  background: rgba(255,255,255,.06);
+  color: var(--muted);
+}

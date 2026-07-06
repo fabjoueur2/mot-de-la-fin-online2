@@ -1,3 +1,5 @@
+const GAME_ID = 'mot-de-la-fin';
+const GAME_PATH = '/games/mot-de-la-fin/';
 const socket = io({ transports: ['websocket', 'polling'] });
 
 let state = null;
@@ -17,7 +19,7 @@ function showScreen(id) {
 function leaveToMenu() {
   socket.emit('leave-room');
   state = null;
-  showScreen('screen-home');
+  window.location.href = '/';
 }
 
 function backToSalon() {
@@ -345,7 +347,7 @@ socket.on('room-state', applyState);
 
 socket.on('left-room', () => {
   state = null;
-  showScreen('screen-home');
+  window.location.href = '/';
 });
 
 socket.on('error-msg', (msg) => showToast(msg));
@@ -356,7 +358,7 @@ $('btn-show-join').addEventListener('click', () => {
 });
 
 $('btn-create').addEventListener('click', () => {
-  socket.emit('create-room', { playerName: getPlayerName() });
+  socket.emit('create-room', { playerName: getPlayerName(), gameId: GAME_ID });
 });
 
 $('btn-join').addEventListener('click', () => {
@@ -365,7 +367,7 @@ $('btn-join').addEventListener('click', () => {
     showToast('Entrez un code de salle valide');
     return;
   }
-  socket.emit('join-room', { code, playerName: getPlayerName() });
+  socket.emit('join-room', { code, playerName: getPlayerName(), gameId: GAME_ID });
 });
 
 $('join-code').addEventListener('keydown', (e) => {
@@ -380,7 +382,7 @@ $('btn-copy-code').addEventListener('click', async () => {
 
 $('btn-copy-link').addEventListener('click', async () => {
   if (!state?.code) return;
-  const url = `${location.origin}?room=${state.code}`;
+  const url = `${location.origin}${GAME_PATH}?room=${state.code}`;
   await navigator.clipboard.writeText(url);
   showToast('Lien copié !');
 });
