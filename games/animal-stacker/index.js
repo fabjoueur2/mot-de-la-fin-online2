@@ -4,6 +4,7 @@ const {
   rebuildWorldFromStack,
   dropAnimalOnWorld,
   stepWorld,
+  freezeWorld,
   syncStackFromWorld,
   isBodyFallen
 } = require('./physics');
@@ -74,6 +75,7 @@ function onActiveTeam(room, socketId) {
 
 function clearLivePhysics(room) {
   room._liveWorld = null;
+  room._physicsFreezeAt = null;
 }
 
 function ensureLiveWorld(room) {
@@ -257,6 +259,8 @@ function registerHandlers(io, ctx) {
       }
 
       room.stack = result.stack;
+      room._liveWorld.frozen = false;
+      room._physicsFreezeAt = Date.now() + 2000;
       room.turnCount += 1;
       room.currentTeamIndex = room.currentTeamIndex === 0 ? 1 : 0;
       pickNextAnimal(room);
@@ -358,23 +362,34 @@ function onTick(room) {
   const worldCfg = world.worldCfg;
   const prevStack = JSON.stringify(room.stack);
 
-  stepWorld(world, 30);
+  if (!world.frozen) {
+    stepWorld(world, 30);
 
-  if (world.animalBodies.some(b => isBodyFallen(b, worldCfg))) {
-    const loserTeamIndex = room.currentTeamIndex === 0 ? 1 : 0;
-    room.dropCounter += 1;
-    room.lastDrop = {
-      id: room.dropCounter,
-      type: null,
-      x: 0,
-      angle: 0,
-      fallen: true,
-      stackBefore: room.stack.map(p => ({ ...p })),
-      collapse: true
-    };
-    resolveRoundLoss(room, loserTeamIndex);
+    if (world.animalBodies.some(b => isBodyFallen(b, worldCfg))) {
+      const loserTeamIndex = room.currentTeamIndex === 0 ? 1 : 0;
+      room.dropCounter += 1;
+      room.lastDrop = {
+        id: room.dropCounter,
+        type: null,
+        x: 0,
+        angle: 0,
+        fallen: true,
+        stackBefore: room.stack.map(p => ({ ...p })),
+        collapse: true
+      };
+      resolveRoundLoss(room, loserTeamIndex);
+      return true;
+    }
+  }
+
+  if (room._physicsFreezeAt && Date.now() >= room._physicsFreezeAt) {
+    const frozenStack = freezeWorld(world);
+    if (frozenStack) room.stack = frozenStack;
+    room._physicsFreezeAt = null;
     return true;
   }
+
+  if (world.frozen) return false;
 
   const sync = syncStackFromWorld(world);
   room.stack = sync.stack;

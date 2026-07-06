@@ -3,7 +3,7 @@
   const Matter = global.Matter;
   if (!Matter) return;
 
-  const { Engine, World, Bodies, Body, Composite, Vertices, Vector, Common } = Matter;
+  const { Engine, World, Bodies, Body, Composite, Vertices, Vector, Common, Sleeping } = Matter;
   if (global.decomp) Common.setDecomp(global.decomp);
   const cfg = global.AS_WORLD_CONFIG || { BASE_WORLD: {}, DIFFICULTY_PRESETS: {} };
   const BASE = cfg.BASE_WORLD;
@@ -163,7 +163,18 @@
   }
 
   function stepSimulation(world) {
+    if (!world || world.frozen) return;
     Engine.update(world.engine, 1000 / 60);
+  }
+
+  function freezeWorldBodies(world) {
+    if (!world || world.frozen) return;
+    for (const body of world.animalBodies) {
+      Body.setVelocity(body, { x: 0, y: 0 });
+      Body.setAngularVelocity(body, 0);
+      Sleeping.set(body, true);
+    }
+    world.frozen = true;
   }
 
   global.AnimalPhysics = {
@@ -171,8 +182,10 @@
     createDropSimulation,
     createWorldFromStack,
     stepSimulation,
+    freezeWorldBodies,
     isWorldMoving,
     isBodyFallen,
-    isBodyLanded
+    isBodyLanded,
+    DROP_FREEZE_MS: 2000
   };
 })(typeof window !== 'undefined' ? window : global);

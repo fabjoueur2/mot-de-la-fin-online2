@@ -15,6 +15,7 @@ let pendingState = null;
 let lastAnimatedDropId = null;
 let liveSimWorld = null;
 let liveLoopId = null;
+const DROP_FREEZE_MS = 2000;
 const ROT_STEP = Math.PI / 8;
 
 const DIFFICULTY_HINTS = {
@@ -87,9 +88,16 @@ function stopLivePhysicsLoop() {
 }
 
 function startLivePhysicsLoop() {
-  if (liveLoopId || !liveSimWorld) return;
+  if (liveLoopId || !liveSimWorld || liveSimWorld.frozen) return;
+  const freezeAt = performance.now() + DROP_FREEZE_MS;
   const tick = () => {
     if (!liveSimWorld || dropAnim || state?.phase !== 'playing') {
+      liveLoopId = null;
+      return;
+    }
+    if (performance.now() >= freezeAt || liveSimWorld.frozen) {
+      window.AnimalPhysics.freezeWorldBodies(liveSimWorld);
+      drawScene();
       liveLoopId = null;
       return;
     }
@@ -213,7 +221,8 @@ function startDropAnimation(s) {
     pendingState: s,
     frame: 0,
     settledCount: 0,
-    expectFallen: ld.fallen
+    expectFallen: ld.fallen,
+    startedAt: performance.now()
   };
 
   state = { ...s, animating: true };
@@ -229,6 +238,15 @@ function animationTick() {
   if (!dropAnim) return;
 
   const { simWorld, expectFallen } = dropAnim;
+  const elapsed = performance.now() - dropAnim.startedAt;
+
+  if (elapsed >= DROP_FREEZE_MS) {
+    window.AnimalPhysics.freezeWorldBodies(simWorld);
+    drawAnimatedScene(simWorld);
+    finishDropAnimation();
+    return;
+  }
+
   window.AnimalPhysics.stepSimulation(simWorld);
   dropAnim.frame += 1;
   drawAnimatedScene(simWorld);
@@ -248,9 +266,9 @@ function animationTick() {
   const placedDone = !expectFallen && dropped
     && window.AnimalPhysics.isBodyLanded(dropped)
     && dropAnim.frame > 24;
-  const timeout = dropAnim.frame > 480;
 
-  if (fallenDone || placedDone || timeout) {
+  if (fallenDone || placedDone) {
+    window.AnimalPhysics.freezeWorldBodies(simWorld);
     finishDropAnimation();
     return;
   }
@@ -265,6 +283,10 @@ function finishDropAnimation() {
   pendingState = null;
   if (!next) return;
 
+  if (simWorld && !simWorld.frozen) {
+    window.AnimalPhysics?.freezeWorldBodies(simWorld);
+  }
+
   if (next.phase === 'end') {
     clearLiveSimulation();
     state = next;
@@ -275,7 +297,6 @@ function finishDropAnimation() {
   liveSimWorld = simWorld;
   state = next;
   applyStateAfterAnimation(next);
-  startLivePhysicsLoop();
 }
 
 function applyStateAfterAnimation(s) {
@@ -477,6 +498,12 @@ function applyState(s) {
   }
 
   if (s.phase === 'playing' && liveSimWorld && !dropAnim) {
+    const difficulty = s.settings?.difficulty || 'normal';
+    const stackChanged = JSON.stringify(s.stack) !== JSON.stringify(state?.stack);
+    if (liveSimWorld.frozen && stackChanged) {
+      liveSimWorld = window.AnimalPhysics.createWorldFromStack(s.stack, difficulty);
+      window.AnimalPhysics.freezeWorldBodies(liveSimWorld);
+    }
     state = s;
     showScreen('screen-game');
     renderGame(s);

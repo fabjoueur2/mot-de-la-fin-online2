@@ -5,7 +5,7 @@ const { BASE_WORLD, getDifficultyConfig, getWorldForDifficulty } = require('./wo
 
 Matter.Common.setDecomp(decomp);
 
-const { Engine, World, Bodies, Body, Composite, Vertices, Vector } = Matter;
+const { Engine, World, Bodies, Body, Composite, Vertices, Vector, Sleeping } = Matter;
 
 const WORLD = getWorldForDifficulty('normal');
 
@@ -125,9 +125,21 @@ function isBodyLanded(body) {
 }
 
 function stepWorld(world, steps = 1) {
+  if (!world || world.frozen) return;
   for (let i = 0; i < steps; i++) {
     Engine.update(world.engine, 1000 / 60);
   }
+}
+
+function freezeWorld(world) {
+  if (!world || world.frozen) return null;
+  for (const body of world.animalBodies) {
+    Body.setVelocity(body, { x: 0, y: 0 });
+    Body.setAngularVelocity(body, 0);
+    Sleeping.set(body, true);
+  }
+  world.frozen = true;
+  return syncStackFromWorld(world).stack;
 }
 
 function syncStackFromWorld(world) {
@@ -182,6 +194,7 @@ module.exports = {
   dropAnimal,
   dropAnimalOnWorld,
   stepWorld,
+  freezeWorld,
   syncStackFromWorld,
   serializeStack,
   isBodyFallen,
