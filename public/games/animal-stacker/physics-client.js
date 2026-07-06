@@ -5,20 +5,13 @@
 
   const { Engine, World, Bodies, Body, Composite } = Matter;
 
-  const ANIMAL_TYPES = {
-    bird: { width: 52, height: 36, chamfer: 6 },
-    hedgehog: { width: 48, height: 32, chamfer: 10 },
-    fox: { width: 58, height: 34, chamfer: 8 },
-    penguin: { width: 40, height: 50, chamfer: 8 },
-    frog: { width: 54, height: 38, chamfer: 12 },
-    pig: { width: 50, height: 44, chamfer: 14 },
-    rabbit: { width: 44, height: 52, chamfer: 8 },
-    cat: { width: 48, height: 40, chamfer: 10 },
-    sheep: { width: 56, height: 46, chamfer: 16 },
-    owl: { width: 46, height: 48, chamfer: 10 },
-    turtle: { width: 58, height: 36, chamfer: 12 },
-    koala: { width: 50, height: 46, chamfer: 12 }
-  };
+  const ANIMAL_TYPES = (typeof window !== 'undefined' && window.ANIMAL_TYPES)
+    ? Object.fromEntries(window.ANIMAL_TYPES.map(a => [a.id, {
+      width: a.width,
+      height: a.height,
+      chamfer: a.chamfer
+    }]))
+    : {};
 
   const DIFFICULTY_PRESETS = {
     facile: {
@@ -72,7 +65,12 @@
   }
 
   function getAnimalType(id) {
-    return ANIMAL_TYPES[id] || ANIMAL_TYPES.bird;
+    if (ANIMAL_TYPES[id]) return ANIMAL_TYPES[id];
+    const fallback = window.ANIMAL_TYPES && window.ANIMAL_TYPES[0];
+    if (fallback) {
+      return { width: fallback.width, height: fallback.height, chamfer: fallback.chamfer };
+    }
+    return { width: 52, height: 36, chamfer: 8 };
   }
 
   function createPhysicsWorld(difficulty) {

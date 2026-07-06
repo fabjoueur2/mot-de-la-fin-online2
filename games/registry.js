@@ -20,7 +20,7 @@ const GAMES = [
   {
     id: 'animal-stacker',
     name: 'Animal Stacker',
-    tagline: 'Empilez les animaux sans rien faire tomber — 2 équipes',
+    tagline: 'Empilez 100 animaux pixel art sans rien faire tomber — 2 équipes',
     icon: '🦊',
     color: '#5bc0eb',
     players: 'Illimité · 2 équipes',

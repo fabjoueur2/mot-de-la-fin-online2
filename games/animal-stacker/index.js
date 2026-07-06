@@ -108,7 +108,7 @@ function resolveRoundLoss(room, loserTeamIndex) {
 function pickNextAnimal(room) {
   const animal = pickRandomAnimal(room.usedAnimalIds);
   room.usedAnimalIds.push(animal.id);
-  if (room.usedAnimalIds.length >= 8) {
+  if (room.usedAnimalIds.length >= 80) {
     room.usedAnimalIds = [animal.id];
   }
   room.currentAnimal = { type: animal.id, name: animal.name };

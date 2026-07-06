@@ -517,6 +517,8 @@ function pushTeamNames() {
 }
 
 // Socket
+preloadAnimalSprites();
+
 socket.on('connect', () => {
   $('connection-status').textContent = '● Connecté';
   $('connection-status').classList.remove('offline');

@@ -1,5 +1,5 @@
-/** Animaux — sprites FreePixel (généré par scripts/sync-animal-sprites.js) */
-const ANIMAL_TYPES = [
+/** Manifeste client — sprites FreePixel (généré) */
+window.ANIMAL_TYPES = [
   {
     "id": "anglerfish-deep-sea-glowing-lure",
     "name": "Baudroie",
@@ -802,14 +802,6 @@ const ANIMAL_TYPES = [
   }
 ];
 
-function getAnimalType(id) {
-  return ANIMAL_TYPES.find(a => a.id === id) || ANIMAL_TYPES[0];
-}
-
-function pickRandomAnimal(usedIds = []) {
-  const pool = ANIMAL_TYPES.filter(a => !usedIds.includes(a.id));
-  const source = pool.length ? pool : ANIMAL_TYPES;
-  return source[Math.floor(Math.random() * source.length)];
-}
-
-module.exports = { ANIMAL_TYPES, getAnimalType, pickRandomAnimal };
+window.getAnimalType = function getAnimalType(id) {
+  return window.ANIMAL_TYPES.find(a => a.id === id) || window.ANIMAL_TYPES[0];
+};
