@@ -169,6 +169,7 @@ function sanitizeRoom(room, viewerSocketId) {
   const player = getPlayer(room, viewerSocketId);
   const active = onActiveTeam(room, viewerSocketId);
   const world = getWorldForDifficulty(room.settings?.difficulty || 'normal');
+  const liveStack = room._liveWorld ? syncStackFromWorld(room._liveWorld).stack : null;
 
   return {
     gameId: room.gameId,
@@ -184,6 +185,7 @@ function sanitizeRoom(room, viewerSocketId) {
     })),
     teams: room.teams,
     stack: room.stack,
+    stackSettling: Boolean(room._physicsFreezeAt),
     currentTeamIndex: room.currentTeamIndex,
     currentAnimal: room.currentAnimal,
     aimX: room.aimX,
@@ -199,7 +201,7 @@ function sanitizeRoom(room, viewerSocketId) {
     canControl: active,
     isYourTeamTurn: player && player.teamIndex === room.currentTeamIndex && room.phase === 'playing',
     world,
-    stackHeight: room.stack.length
+    stackHeight: liveStack ? liveStack.length : room.stack.length
   };
 }
 
@@ -258,7 +260,6 @@ function registerHandlers(io, ctx) {
         return;
       }
 
-      room.stack = result.stack;
       room._liveWorld.frozen = false;
       room._physicsFreezeAt = Date.now() + 2000;
       room.turnCount += 1;
@@ -360,7 +361,6 @@ function onTick(room) {
 
   const world = room._liveWorld;
   const worldCfg = world.worldCfg;
-  const prevStack = JSON.stringify(room.stack);
 
   if (!world.frozen) {
     stepWorld(world, 30);
@@ -389,11 +389,7 @@ function onTick(room) {
     return true;
   }
 
-  if (world.frozen) return false;
-
-  const sync = syncStackFromWorld(world);
-  room.stack = sync.stack;
-  return JSON.stringify(room.stack) !== prevStack;
+  return false;
 }
 
 module.exports = {

@@ -13,8 +13,7 @@ let dragging = false;
 let dropAnim = null;
 let pendingState = null;
 let lastAnimatedDropId = null;
-let liveSimWorld = null;
-let liveLoopId = null;
+let heldDisplayWorld = null;
 const DROP_FREEZE_MS = 2000;
 const ROT_STEP = Math.PI / 8;
 
@@ -80,44 +79,12 @@ function clientXToWorld(clientX) {
   return Math.max(w.minX, Math.min(w.maxX, x));
 }
 
-function stopLivePhysicsLoop() {
-  if (liveLoopId) {
-    cancelAnimationFrame(liveLoopId);
-    liveLoopId = null;
-  }
-}
-
-function startLivePhysicsLoop() {
-  if (liveLoopId || !liveSimWorld || liveSimWorld.frozen) return;
-  const freezeAt = performance.now() + DROP_FREEZE_MS;
-  const tick = () => {
-    if (!liveSimWorld || dropAnim || state?.phase !== 'playing') {
-      liveLoopId = null;
-      return;
-    }
-    if (performance.now() >= freezeAt || liveSimWorld.frozen) {
-      window.AnimalPhysics.freezeWorldBodies(liveSimWorld);
-      drawScene();
-      liveLoopId = null;
-      return;
-    }
-    window.AnimalPhysics.stepSimulation(liveSimWorld);
-    drawScene();
-    liveLoopId = requestAnimationFrame(tick);
-  };
-  liveLoopId = requestAnimationFrame(tick);
-}
-
-function ensureLiveSimFromStack(s) {
-  if (liveSimWorld || !window.AnimalPhysics || s.phase !== 'playing') return;
-  const difficulty = s.settings?.difficulty || 'normal';
-  liveSimWorld = window.AnimalPhysics.createWorldFromStack(s.stack, difficulty);
-  startLivePhysicsLoop();
+function clearHeldDisplay() {
+  heldDisplayWorld = null;
 }
 
 function clearLiveSimulation() {
-  stopLivePhysicsLoop();
-  liveSimWorld = null;
+  clearHeldDisplay();
 }
 
 function isInputLocked() {
@@ -169,8 +136,8 @@ function drawScene() {
   if (state.phase !== 'playing') return;
   const w = state.world;
 
-  if (liveSimWorld) {
-    drawAnimatedScene(liveSimWorld);
+  if (heldDisplayWorld && state.stackSettling) {
+    drawAnimatedScene(heldDisplayWorld);
   } else {
     drawBackgroundAndPlatform(w);
     (state.stack || []).forEach(piece => {
@@ -203,8 +170,7 @@ function startDropAnimation(s) {
     return;
   }
 
-  stopLivePhysicsLoop();
-  liveSimWorld = null;
+  clearHeldDisplay();
 
   const ld = s.lastDrop;
   const difficulty = s.settings?.difficulty || 'normal';
@@ -288,13 +254,13 @@ function finishDropAnimation() {
   }
 
   if (next.phase === 'end') {
-    clearLiveSimulation();
+    clearHeldDisplay();
     state = next;
     applyStateAfterAnimation(next);
     return;
   }
 
-  liveSimWorld = simWorld;
+  heldDisplayWorld = simWorld;
   state = next;
   applyStateAfterAnimation(next);
 }
@@ -472,8 +438,12 @@ function renderEnd(s) {
 function applyState(s) {
   if (!s) return;
 
+  if (!s.stackSettling) {
+    heldDisplayWorld = null;
+  }
+
   if (s.phase === 'lobby') {
-    clearLiveSimulation();
+    clearHeldDisplay();
     lastAnimatedDropId = null;
   }
 
@@ -488,7 +458,7 @@ function applyState(s) {
     lastAnimatedDropId = s.lastDrop.id;
     pendingState = s;
     if (s.lastDrop.collapse) {
-      clearLiveSimulation();
+      clearHeldDisplay();
       state = s;
       applyStateAfterAnimation(s);
       return;
@@ -497,29 +467,8 @@ function applyState(s) {
     return;
   }
 
-  if (s.phase === 'playing' && liveSimWorld && !dropAnim) {
-    const difficulty = s.settings?.difficulty || 'normal';
-    const stackChanged = JSON.stringify(s.stack) !== JSON.stringify(state?.stack);
-    if (liveSimWorld.frozen && stackChanged) {
-      liveSimWorld = window.AnimalPhysics.createWorldFromStack(s.stack, difficulty);
-      window.AnimalPhysics.freezeWorldBodies(liveSimWorld);
-    }
-    state = s;
-    showScreen('screen-game');
-    renderGame(s);
-    return;
-  }
-
-  if (s.phase === 'playing' && !liveSimWorld && !dropAnim) {
-    state = s;
-    ensureLiveSimFromStack(s);
-    showScreen('screen-game');
-    renderGame(s);
-    return;
-  }
-
   if (s.phase === 'end') {
-    clearLiveSimulation();
+    clearHeldDisplay();
   }
 
   state = s;
@@ -652,7 +601,7 @@ canvas.addEventListener('pointerup', () => {
 });
 
 window.addEventListener('resize', () => {
-  if (state?.phase === 'playing' || dropAnim || liveSimWorld) drawScene();
+  if (state?.phase === 'playing' || dropAnim || heldDisplayWorld) drawScene();
 });
 
 const urlParams = new URLSearchParams(location.search);
