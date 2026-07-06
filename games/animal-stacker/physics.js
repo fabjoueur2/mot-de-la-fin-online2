@@ -149,7 +149,7 @@ function serializeStack(animalBodies) {
   }));
 }
 
-function rebuildWorldFromStack(stack, difficulty = 'normal') {
+function rebuildWorldFromStack(stack, difficulty = 'normal', { settle = true } = {}) {
   const worldCfg = getWorldForDifficulty(difficulty);
   const world = createPhysicsWorld(difficulty);
   for (const piece of stack) {
@@ -157,31 +157,65 @@ function rebuildWorldFromStack(stack, difficulty = 'normal') {
     World.add(world.engine.world, body);
     world.animalBodies.push(body);
   }
-  simulateUntilSettled(world.engine, 120);
+  if (settle && stack.length > 0) {
+    simulateUntilSettled(world.engine, 120);
+  }
   world.worldCfg = worldCfg;
   return world;
 }
 
-function dropAnimal(stack, typeId, x, angle, difficulty = 'normal') {
-  const worldCfg = getWorldForDifficulty(difficulty);
-  const world = rebuildWorldFromStack(stack, difficulty);
+function isBodyLanded(body) {
+  return Math.abs(body.velocity.y) < 0.45
+    && Math.abs(body.velocity.x) < 0.45
+    && Math.abs(body.angularVelocity) < 0.05;
+}
+
+function stepWorld(world, steps = 1) {
+  for (let i = 0; i < steps; i++) {
+    Engine.update(world.engine, 1000 / 60);
+  }
+}
+
+function syncStackFromWorld(world) {
+  const worldCfg = world.worldCfg || WORLD;
+  const alive = world.animalBodies.filter(b => !isBodyFallen(b, worldCfg));
+  const fallen = world.animalBodies.filter(b => isBodyFallen(b, worldCfg));
+  return {
+    stack: serializeStack(alive),
+    fallen,
+    hasFallen: fallen.length > 0
+  };
+}
+
+function dropAnimalOnWorld(world, typeId, x, angle, difficulty = 'normal') {
+  const worldCfg = world.worldCfg || getWorldForDifficulty(difficulty);
   const clampedX = Math.max(worldCfg.minX, Math.min(worldCfg.maxX, x));
   const body = createAnimalBody(typeId, clampedX, worldCfg.dropY, angle, difficulty);
   World.add(world.engine.world, body);
   world.animalBodies.push(body);
-  simulateUntilSettled(world.engine);
 
-  const fallen = world.animalBodies.filter(b => isBodyFallen(b, worldCfg));
-  const newStack = serializeStack(
-    world.animalBodies.filter(b => !isBodyFallen(b, worldCfg))
-  );
+  let fallen = false;
+  for (let i = 0; i < 480; i++) {
+    Engine.update(world.engine, 1000 / 60);
+    if (world.animalBodies.some(b => isBodyFallen(b, worldCfg))) {
+      fallen = true;
+      break;
+    }
+    if (i > 24 && isBodyLanded(body)) break;
+  }
 
+  const sync = syncStackFromWorld(world);
   return {
-    fallen: fallen.length > 0,
-    fallenCount: fallen.length,
-    stack: newStack,
-    droppedId: world.animalBodies.length - 1
+    fallen: fallen || sync.hasFallen,
+    fallenCount: sync.fallen.length,
+    stack: sync.stack,
+    world
   };
+}
+
+function dropAnimal(stack, typeId, x, angle, difficulty = 'normal') {
+  const world = rebuildWorldFromStack(stack, difficulty);
+  return dropAnimalOnWorld(world, typeId, x, angle, difficulty);
 }
 
 module.exports = {
@@ -191,7 +225,11 @@ module.exports = {
   getDifficultyConfig,
   getWorldForDifficulty,
   createPhysicsWorld,
+  rebuildWorldFromStack,
   dropAnimal,
+  dropAnimalOnWorld,
+  stepWorld,
+  syncStackFromWorld,
   serializeStack,
   isBodyFallen
 };

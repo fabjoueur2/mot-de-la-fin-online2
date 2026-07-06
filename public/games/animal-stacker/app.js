@@ -13,6 +13,8 @@ let dragging = false;
 let dropAnim = null;
 let pendingState = null;
 let lastAnimatedDropId = null;
+let liveSimWorld = null;
+let liveLoopId = null;
 const ROT_STEP = Math.PI / 8;
 
 const DIFFICULTY_HINTS = {
@@ -77,6 +79,39 @@ function clientXToWorld(clientX) {
   return Math.max(w.minX, Math.min(w.maxX, x));
 }
 
+function stopLivePhysicsLoop() {
+  if (liveLoopId) {
+    cancelAnimationFrame(liveLoopId);
+    liveLoopId = null;
+  }
+}
+
+function startLivePhysicsLoop() {
+  if (liveLoopId || !liveSimWorld) return;
+  const tick = () => {
+    if (!liveSimWorld || dropAnim || state?.phase !== 'playing') {
+      liveLoopId = null;
+      return;
+    }
+    window.AnimalPhysics.stepSimulation(liveSimWorld);
+    drawScene();
+    liveLoopId = requestAnimationFrame(tick);
+  };
+  liveLoopId = requestAnimationFrame(tick);
+}
+
+function ensureLiveSimFromStack(s) {
+  if (liveSimWorld || !window.AnimalPhysics || s.phase !== 'playing') return;
+  const difficulty = s.settings?.difficulty || 'normal';
+  liveSimWorld = window.AnimalPhysics.createWorldFromStack(s.stack, difficulty);
+  startLivePhysicsLoop();
+}
+
+function clearLiveSimulation() {
+  stopLivePhysicsLoop();
+  liveSimWorld = null;
+}
+
 function isInputLocked() {
   return Boolean(dropAnim);
 }
@@ -125,11 +160,15 @@ function drawScene() {
 
   if (state.phase !== 'playing') return;
   const w = state.world;
-  drawBackgroundAndPlatform(w);
 
-  (state.stack || []).forEach(piece => {
-    drawAnimal(ctx, piece.type, piece.x, piece.y, piece.angle, 1);
-  });
+  if (liveSimWorld) {
+    drawAnimatedScene(liveSimWorld);
+  } else {
+    drawBackgroundAndPlatform(w);
+    (state.stack || []).forEach(piece => {
+      drawAnimal(ctx, piece.type, piece.x, piece.y, piece.angle, 1);
+    });
+  }
 
   if (state.currentAnimal) {
     const ax = state.canControl ? localAimX : state.aimX;
@@ -155,6 +194,9 @@ function startDropAnimation(s) {
     applyStateAfterAnimation(s);
     return;
   }
+
+  stopLivePhysicsLoop();
+  liveSimWorld = null;
 
   const ld = s.lastDrop;
   const difficulty = s.settings?.difficulty || 'normal';
@@ -203,7 +245,9 @@ function animationTick() {
 
   const fallenDone = expectFallen && droppedFallen
     && (dropAnim.settledCount >= 4 || dropped.position.y > simWorld.worldCfg.fallY - 50);
-  const placedDone = !expectFallen && dropAnim.settledCount >= 10;
+  const placedDone = !expectFallen && dropped
+    && window.AnimalPhysics.isBodyLanded(dropped)
+    && dropAnim.frame > 24;
   const timeout = dropAnim.frame > 480;
 
   if (fallenDone || placedDone || timeout) {
@@ -216,11 +260,22 @@ function animationTick() {
 
 function finishDropAnimation() {
   const next = pendingState;
+  const simWorld = dropAnim?.simWorld;
   dropAnim = null;
   pendingState = null;
   if (!next) return;
+
+  if (next.phase === 'end') {
+    clearLiveSimulation();
+    state = next;
+    applyStateAfterAnimation(next);
+    return;
+  }
+
+  liveSimWorld = simWorld;
   state = next;
   applyStateAfterAnimation(next);
+  startLivePhysicsLoop();
 }
 
 function applyStateAfterAnimation(s) {
@@ -397,18 +452,47 @@ function applyState(s) {
   if (!s) return;
 
   if (s.phase === 'lobby') {
+    clearLiveSimulation();
     lastAnimatedDropId = null;
-  } else if (lastAnimatedDropId === null) {
-    lastAnimatedDropId = s.lastDrop?.id || 0;
-  } else if (
-    s.lastDrop?.id > lastAnimatedDropId
+  }
+
+  const isNewDrop = s.lastDrop?.id
+    && (lastAnimatedDropId === null ? false : s.lastDrop.id > lastAnimatedDropId)
     && Array.isArray(s.lastDrop.stackBefore)
-    && window.AnimalPhysics
-  ) {
+    && window.AnimalPhysics;
+
+  if (s.phase !== 'lobby' && lastAnimatedDropId === null) {
+    lastAnimatedDropId = s.lastDrop?.id || 0;
+  } else if (isNewDrop) {
     lastAnimatedDropId = s.lastDrop.id;
     pendingState = s;
+    if (s.lastDrop.collapse) {
+      clearLiveSimulation();
+      state = s;
+      applyStateAfterAnimation(s);
+      return;
+    }
     startDropAnimation(s);
     return;
+  }
+
+  if (s.phase === 'playing' && liveSimWorld && !dropAnim) {
+    state = s;
+    showScreen('screen-game');
+    renderGame(s);
+    return;
+  }
+
+  if (s.phase === 'playing' && !liveSimWorld && !dropAnim) {
+    state = s;
+    ensureLiveSimFromStack(s);
+    showScreen('screen-game');
+    renderGame(s);
+    return;
+  }
+
+  if (s.phase === 'end') {
+    clearLiveSimulation();
   }
 
   state = s;
@@ -539,7 +623,7 @@ canvas.addEventListener('pointerup', () => {
 });
 
 window.addEventListener('resize', () => {
-  if (state?.phase === 'playing' || dropAnim) drawScene();
+  if (state?.phase === 'playing' || dropAnim || liveSimWorld) drawScene();
 });
 
 const urlParams = new URLSearchParams(location.search);

@@ -1,5 +1,12 @@
-const { pickRandomAnimal, getAnimalType } = require('./animals');
-const { getWorldForDifficulty } = require('./physics');
+const { pickRandomAnimal } = require('./animals');
+const {
+  getWorldForDifficulty,
+  rebuildWorldFromStack,
+  dropAnimalOnWorld,
+  stepWorld,
+  syncStackFromWorld,
+  isBodyFallen
+} = require('./physics');
 
 const GAME_ID = 'animal-stacker';
 const TEAM_COLORS = ['#4d96ff', '#ff6b6b'];
@@ -65,6 +72,39 @@ function onActiveTeam(room, socketId) {
   return p && p.teamIndex === room.currentTeamIndex && room.phase === 'playing';
 }
 
+function clearLivePhysics(room) {
+  room._liveWorld = null;
+}
+
+function ensureLiveWorld(room) {
+  if (room._liveWorld) return room._liveWorld;
+  const difficulty = room.settings?.difficulty || 'normal';
+  room._liveWorld = rebuildWorldFromStack(room.stack, difficulty, { settle: false });
+  return room._liveWorld;
+}
+
+function stackFromLiveWorld(room) {
+  if (!room._liveWorld) return room.stack.map(p => ({ ...p }));
+  return syncStackFromWorld(room._liveWorld).stack;
+}
+
+function resolveRoundLoss(room, loserTeamIndex) {
+  room.loserTeamIndex = loserTeamIndex;
+  room.winnerTeamIndex = loserTeamIndex === 0 ? 1 : 0;
+  room.teams[room.winnerTeamIndex].score += 1;
+  const roundsToWin = room.settings?.roundsToWin || 1;
+  if (room.teams[room.winnerTeamIndex].score >= roundsToWin) {
+    room.matchOver = true;
+    room.matchWinnerTeamIndex = room.winnerTeamIndex;
+  }
+  room.phase = 'end';
+  room.currentAnimal = null;
+  if (room._liveWorld) {
+    room.stack = syncStackFromWorld(room._liveWorld).stack;
+  }
+  clearLivePhysics(room);
+}
+
 function pickNextAnimal(room) {
   const animal = pickRandomAnimal(room.usedAnimalIds);
   room.usedAnimalIds.push(animal.id);
@@ -78,6 +118,7 @@ function pickNextAnimal(room) {
 }
 
 function beginRound(room) {
+  clearLivePhysics(room);
   room.stack = [];
   room.turnCount = 0;
   room.usedAnimalIds = [];
@@ -105,6 +146,7 @@ function startGame(room) {
 }
 
 function resetToLobby(room) {
+  clearLivePhysics(room);
   room.phase = 'lobby';
   room.stack = [];
   room.currentAnimal = null;
@@ -167,7 +209,6 @@ function ensureValidTeams(room) {
 
 function registerHandlers(io, ctx) {
   const { broadcastRoom } = ctx;
-  const { dropAnimal } = require('./physics');
 
   io.on('connection', (socket) => {
     socket.on('as-update-aim', ({ x, angle }) => {
@@ -194,8 +235,10 @@ function registerHandlers(io, ctx) {
 
       const typeId = room.currentAnimal.type;
       const difficulty = room.settings?.difficulty || 'normal';
-      const stackBefore = room.stack.map(p => ({ ...p }));
-      const result = dropAnimal(room.stack, typeId, room.aimX, room.aimAngle, difficulty);
+      const world = ensureLiveWorld(room);
+      const stackBefore = stackFromLiveWorld(room);
+      const result = dropAnimalOnWorld(world, typeId, room.aimX, room.aimAngle, difficulty);
+      room._liveWorld = result.world;
 
       room.dropCounter += 1;
       room.lastDrop = {
@@ -208,17 +251,7 @@ function registerHandlers(io, ctx) {
       };
 
       if (result.fallen) {
-        room.loserTeamIndex = room.currentTeamIndex;
-        room.winnerTeamIndex = room.currentTeamIndex === 0 ? 1 : 0;
-        room.teams[room.winnerTeamIndex].score += 1;
-        const roundsToWin = room.settings?.roundsToWin || 1;
-        if (room.teams[room.winnerTeamIndex].score >= roundsToWin) {
-          room.matchOver = true;
-          room.matchWinnerTeamIndex = room.winnerTeamIndex;
-        }
-        room.phase = 'end';
-        room.stack = result.stack;
-        room.currentAnimal = null;
+        resolveRoundLoss(room, room.currentTeamIndex);
         broadcastRoom(room);
         return;
       }
@@ -318,8 +351,34 @@ function getRoom(ctx, socket) {
   return room;
 }
 
-function onTick() {
-  return false;
+function onTick(room) {
+  if (room.phase !== 'playing' || !room._liveWorld) return false;
+
+  const world = room._liveWorld;
+  const worldCfg = world.worldCfg;
+  const prevStack = JSON.stringify(room.stack);
+
+  stepWorld(world, 30);
+
+  if (world.animalBodies.some(b => isBodyFallen(b, worldCfg))) {
+    const loserTeamIndex = room.currentTeamIndex === 0 ? 1 : 0;
+    room.dropCounter += 1;
+    room.lastDrop = {
+      id: room.dropCounter,
+      type: null,
+      x: 0,
+      angle: 0,
+      fallen: true,
+      stackBefore: room.stack.map(p => ({ ...p })),
+      collapse: true
+    };
+    resolveRoundLoss(room, loserTeamIndex);
+    return true;
+  }
+
+  const sync = syncStackFromWorld(world);
+  room.stack = sync.stack;
+  return JSON.stringify(room.stack) !== prevStack;
 }
 
 module.exports = {

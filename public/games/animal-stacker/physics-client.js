@@ -145,26 +145,38 @@
     return false;
   }
 
-  function rebuildWorldFromStack(stack, difficulty) {
+  function isBodyLanded(body) {
+    return Math.abs(body.velocity.y) < 0.45
+      && Math.abs(body.velocity.x) < 0.45
+      && Math.abs(body.angularVelocity) < 0.05;
+  }
+
+  function rebuildWorldFromStack(stack, difficulty, { settle = true } = {}) {
     const world = createPhysicsWorld(difficulty);
-    for (const piece of stack) {
+    for (const piece of stack || []) {
       const body = createAnimalBody(piece.type, piece.x, piece.y, piece.angle, difficulty);
       World.add(world.engine.world, body);
       world.animalBodies.push(body);
     }
-    simulateUntilSettled(world.engine, 120);
+    if (settle && stack && stack.length > 0) {
+      simulateUntilSettled(world.engine, 120);
+    }
     return world;
   }
 
   function createDropSimulation(stackBefore, typeId, x, angle, difficulty) {
     const worldCfg = getWorldForDifficulty(difficulty);
-    const world = rebuildWorldFromStack(stackBefore || [], difficulty);
+    const world = rebuildWorldFromStack(stackBefore || [], difficulty, { settle: false });
     const clampedX = Math.max(worldCfg.minX, Math.min(worldCfg.maxX, x));
     const dropped = createAnimalBody(typeId, clampedX, worldCfg.dropY, angle, difficulty);
     World.add(world.engine.world, dropped);
     world.animalBodies.push(dropped);
     world.droppedBody = dropped;
     return world;
+  }
+
+  function createWorldFromStack(stack, difficulty) {
+    return rebuildWorldFromStack(stack || [], difficulty, { settle: false });
   }
 
   function stepSimulation(world) {
@@ -174,8 +186,10 @@
   global.AnimalPhysics = {
     getWorldForDifficulty,
     createDropSimulation,
+    createWorldFromStack,
     stepSimulation,
     isWorldMoving,
-    isBodyFallen
+    isBodyFallen,
+    isBodyLanded
   };
 })(typeof window !== 'undefined' ? window : global);
