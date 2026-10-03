@@ -8,12 +8,15 @@ Matter.Common.setDecomp(decomp);
 const { Engine, World, Bodies, Body, Composite, Vertices, Vector, Sleeping } = Matter;
 
 const WORLD = getWorldForDifficulty('normal');
+const SETTLE_VEL = 0.18;
+const SETTLE_ANG_VEL = 0.04;
 
 function createPhysicsWorld(difficulty = 'normal') {
   const worldCfg = getWorldForDifficulty(difficulty);
   const physCfg = getDifficultyConfig(difficulty);
-  const engine = Engine.create();
+  const engine = Engine.create({ enableSleeping: true });
   engine.gravity.y = physCfg.gravity;
+  engine.timing.timeScale = 1;
 
   const platform = Bodies.rectangle(
     worldCfg.platform.x,
@@ -42,7 +45,7 @@ function createPhysicsWorld(difficulty = 'normal') {
   );
 
   World.add(engine.world, [platform, ground]);
-  return { engine, platform, animalBodies: [] };
+  return { engine, platform, animalBodies: [], worldCfg, frozen: false };
 }
 
 function createAnimalBody(typeId, x, y, angle, difficulty = 'normal') {
@@ -53,6 +56,8 @@ function createAnimalBody(typeId, x, y, angle, difficulty = 'normal') {
     frictionStatic: Math.min(0.98, physCfg.bodyFriction + 0.05),
     restitution: physCfg.bodyRestitution,
     density: 0.002,
+    frictionAir: 0.012,
+    sleepThreshold: 28,
     label: typeId
   };
 
@@ -78,7 +83,9 @@ function simulateUntilSettled(engine, maxSteps = 400) {
     Engine.update(engine, 1000 / 60);
     const moving = Composite.allBodies(engine.world).some(b => {
       if (b.isStatic) return false;
-      return Math.abs(b.velocity.x) > 0.15 || Math.abs(b.velocity.y) > 0.15 || Math.abs(b.angularVelocity) > 0.05;
+      return Math.abs(b.velocity.x) > SETTLE_VEL
+        || Math.abs(b.velocity.y) > SETTLE_VEL
+        || Math.abs(b.angularVelocity) > SETTLE_ANG_VEL;
     });
     if (!moving && i > 30) break;
   }
@@ -103,6 +110,19 @@ function serializeStack(animalBodies) {
   }));
 }
 
+/** Poses compactes pour le stream client (inclut les corps en train de tomber). */
+function serializePoses(world) {
+  const worldCfg = world.worldCfg || WORLD;
+  return world.animalBodies.map((b, i) => ({
+    id: i,
+    type: b.label,
+    x: Math.round(b.position.x * 10) / 10,
+    y: Math.round(b.position.y * 10) / 10,
+    angle: Math.round(b.angle * 1000) / 1000,
+    fallen: isBodyFallen(b, worldCfg) ? 1 : 0
+  }));
+}
+
 function rebuildWorldFromStack(stack, difficulty = 'normal', { settle = true } = {}) {
   const worldCfg = getWorldForDifficulty(difficulty);
   const world = createPhysicsWorld(difficulty);
@@ -122,6 +142,20 @@ function isBodyLanded(body) {
   return Math.abs(body.velocity.y) < 0.45
     && Math.abs(body.velocity.x) < 0.45
     && Math.abs(body.angularVelocity) < 0.05;
+}
+
+function isWorldMoving(world) {
+  if (!world?.engine) return false;
+  return Composite.allBodies(world.engine.world).some((b) => {
+    if (b.isStatic) return false;
+    return Math.abs(b.velocity.x) > SETTLE_VEL
+      || Math.abs(b.velocity.y) > SETTLE_VEL
+      || Math.abs(b.angularVelocity) > SETTLE_ANG_VEL;
+  });
+}
+
+function isWorldSettled(world) {
+  return !isWorldMoving(world);
 }
 
 function stepWorld(world, steps = 1) {
@@ -153,24 +187,34 @@ function syncStackFromWorld(world) {
   };
 }
 
-function dropAnimalOnWorld(world, typeId, x, angle, difficulty = 'normal') {
+/** Ajoute un animal sans simuler — la chute est streamée ensuite. */
+function spawnAnimalOnWorld(world, typeId, x, angle, difficulty = 'normal') {
   const worldCfg = world.worldCfg || getWorldForDifficulty(difficulty);
   const clampedX = Math.max(worldCfg.minX, Math.min(worldCfg.maxX, x));
+  world.frozen = false;
+  for (const body of world.animalBodies) {
+    Sleeping.set(body, false);
+  }
   const body = createAnimalBody(typeId, clampedX, worldCfg.dropY, angle, difficulty);
   World.add(world.engine.world, body);
   world.animalBodies.push(body);
+  world.droppedBody = body;
+  return { body, world };
+}
 
+/** @deprecated Préférer spawnAnimalOnWorld + stream. Conservé pour compat. */
+function dropAnimalOnWorld(world, typeId, x, angle, difficulty = 'normal') {
+  spawnAnimalOnWorld(world, typeId, x, angle, difficulty);
+  const worldCfg = world.worldCfg || getWorldForDifficulty(difficulty);
   let fallen = false;
-  // Simulation initiale pour détecter une chute au drop (le règlement continue dans onTick).
   for (let i = 0; i < 240; i++) {
     Engine.update(world.engine, 1000 / 60);
     if (world.animalBodies.some(b => isBodyFallen(b, worldCfg))) {
       fallen = true;
       break;
     }
-    if (i > 24 && isBodyLanded(body)) break;
+    if (i > 24 && isBodyLanded(world.droppedBody)) break;
   }
-
   const sync = syncStackFromWorld(world);
   return {
     fallen: fallen || sync.hasFallen,
@@ -194,10 +238,15 @@ module.exports = {
   rebuildWorldFromStack,
   dropAnimal,
   dropAnimalOnWorld,
+  spawnAnimalOnWorld,
   stepWorld,
   freezeWorld,
   syncStackFromWorld,
   serializeStack,
+  serializePoses,
   isBodyFallen,
+  isBodyLanded,
+  isWorldMoving,
+  isWorldSettled,
   createAnimalBody
 };

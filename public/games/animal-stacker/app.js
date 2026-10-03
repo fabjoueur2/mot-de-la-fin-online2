@@ -10,13 +10,18 @@ const ctx = canvas.getContext('2d');
 let localAimX = 260;
 let localAimAngle = 0;
 let dragging = false;
-let dropAnim = null;
-let pendingState = null;
-let lastAnimatedDropId = null;
-let heldDisplayWorld = null;
-let awaitingServerRoundEnd = false;
-const DROP_FREEZE_MS = 2000;
 const ROT_STEP = Math.PI / 8;
+
+/** Buffer de frames serveur + rendu interpolé */
+let poseBuffer = [];
+let renderPoses = [];
+let physicsStreaming = false;
+let endLerp = null;
+let rafId = null;
+let lastDropId = 0;
+const RENDER_DELAY_MS = 70;
+const END_LERP_MS = 140;
+const MAX_POSE_BUFFER = 24;
 
 const DIFFICULTY_HINTS = {
   facile: 'Plateforme large, gravité douce — idéal pour débuter.',
@@ -48,6 +53,7 @@ function getPlayerName() {
 }
 
 function leaveToMenu() {
+  stopRenderLoop();
   socket.emit('leave-room');
   state = null;
   window.location.href = '/';
@@ -61,18 +67,6 @@ function backToSalon() {
   socket.emit('as-back-to-lobby');
 }
 
-function worldToCanvas(x, y) {
-  const rect = canvas.getBoundingClientRect();
-  const scaleX = canvas.width / rect.width;
-  const scaleY = canvas.height / rect.height;
-  return {
-    x: (x / canvas.width) * rect.width,
-    y: (y / canvas.height) * rect.height,
-    scaleX,
-    scaleY
-  };
-}
-
 function clientXToWorld(clientX) {
   const rect = canvas.getBoundingClientRect();
   const x = (clientX - rect.left) / rect.width * canvas.width;
@@ -80,17 +74,8 @@ function clientXToWorld(clientX) {
   return Math.max(w.minX, Math.min(w.maxX, x));
 }
 
-function clearHeldDisplay() {
-  heldDisplayWorld = null;
-  awaitingServerRoundEnd = false;
-}
-
-function clearLiveSimulation() {
-  clearHeldDisplay();
-}
-
 function isInputLocked() {
-  return Boolean(dropAnim);
+  return physicsStreaming || Boolean(endLerp);
 }
 
 function setGameControlsLocked(locked) {
@@ -100,6 +85,129 @@ function setGameControlsLocked(locked) {
   $('btn-rotate-right').disabled = disabled;
   const wheel = $('rotate-wheel');
   if (wheel) wheel.classList.toggle('locked', disabled);
+}
+
+function lerp(a, b, t) {
+  return a + (b - a) * t;
+}
+
+function lerpAngle(a, b, t) {
+  let diff = b - a;
+  while (diff > Math.PI) diff -= Math.PI * 2;
+  while (diff < -Math.PI) diff += Math.PI * 2;
+  return a + diff * t;
+}
+
+function poseKey(p) {
+  return `${p.type}|${p.id ?? ''}`;
+}
+
+function lerpPoseLists(fromList, toList, t) {
+  const fromMap = new Map((fromList || []).map(p => [poseKey(p), p]));
+  const toMap = new Map((toList || []).map(p => [poseKey(p), p]));
+  const keys = new Set([...fromMap.keys(), ...toMap.keys()]);
+  const out = [];
+  for (const key of keys) {
+    const a = fromMap.get(key);
+    const b = toMap.get(key);
+    if (a && b) {
+      out.push({
+        id: b.id ?? a.id,
+        type: b.type,
+        x: lerp(a.x, b.x, t),
+        y: lerp(a.y, b.y, t),
+        angle: lerpAngle(a.angle, b.angle, t),
+        fallen: b.fallen || a.fallen ? 1 : 0
+      });
+    } else if (b && t > 0.5) {
+      out.push({ ...b });
+    } else if (a && t < 0.5) {
+      out.push({ ...a });
+    } else if (b) {
+      out.push({ ...b });
+    }
+  }
+  return out;
+}
+
+function clearPoseStream() {
+  poseBuffer = [];
+  endLerp = null;
+  physicsStreaming = false;
+}
+
+function pushPoseFrame(poses) {
+  poseBuffer.push({
+    t: performance.now(),
+    poses: (poses || []).map(p => ({ ...p }))
+  });
+  while (poseBuffer.length > MAX_POSE_BUFFER) poseBuffer.shift();
+}
+
+function updateInterpolatedPoses() {
+  if (endLerp) {
+    const u = Math.min(1, (performance.now() - endLerp.start) / endLerp.duration);
+    const eased = u * u * (3 - 2 * u);
+    renderPoses = lerpPoseLists(endLerp.from, endLerp.to, eased);
+    if (u >= 1) {
+      renderPoses = endLerp.to.map(p => ({ ...p }));
+      endLerp = null;
+      physicsStreaming = false;
+      poseBuffer = [];
+      if (state?.phase === 'end') {
+        stopRenderLoop();
+        showScreen('screen-end');
+        renderEnd(state);
+      } else if (state?.phase === 'playing') {
+        setGameControlsLocked(false);
+        renderGame(state);
+      }
+    }
+    return;
+  }
+
+  if (!physicsStreaming) {
+    renderPoses = (state?.stack || []).map(p => ({ ...p, fallen: 0 }));
+    return;
+  }
+
+  if (poseBuffer.length === 0) return;
+  if (poseBuffer.length === 1) {
+    renderPoses = poseBuffer[0].poses;
+    return;
+  }
+
+  const targetT = performance.now() - RENDER_DELAY_MS;
+  while (poseBuffer.length >= 2 && poseBuffer[1].t <= targetT) {
+    poseBuffer.shift();
+  }
+
+  if (poseBuffer.length === 1) {
+    renderPoses = poseBuffer[0].poses;
+    return;
+  }
+
+  const a = poseBuffer[0];
+  const b = poseBuffer[1];
+  const span = Math.max(1, b.t - a.t);
+  const u = Math.max(0, Math.min(1, (targetT - a.t) / span));
+  renderPoses = lerpPoseLists(a.poses, b.poses, u);
+}
+
+function startRenderLoop() {
+  if (rafId) return;
+  const loop = () => {
+    rafId = requestAnimationFrame(loop);
+    if (!state || state.phase !== 'playing') return;
+    updateInterpolatedPoses();
+    drawScene();
+  };
+  rafId = requestAnimationFrame(loop);
+}
+
+function stopRenderLoop() {
+  if (rafId) cancelAnimationFrame(rafId);
+  rafId = null;
 }
 
 function drawBackgroundAndPlatform(w) {
@@ -118,36 +226,18 @@ function drawBackgroundAndPlatform(w) {
   ctx.strokeRect(px - pw / 2, py - ph / 2, pw, ph);
 }
 
-function drawAnimatedScene(simWorld) {
-  const w = simWorld.worldCfg;
-  drawBackgroundAndPlatform(w);
-  simWorld.animalBodies.forEach((body) => {
-    const fallen = window.AnimalPhysics.isBodyFallen(body, w);
-    drawAnimal(ctx, body.label, body.position.x, body.position.y, body.angle, fallen ? 0.85 : 1);
-  });
-}
-
 function drawScene() {
-  if (!state) return;
-
-  if (dropAnim) {
-    drawAnimatedScene(dropAnim.simWorld);
-    return;
-  }
-
-  if (state.phase !== 'playing') return;
+  if (!state || state.phase !== 'playing') return;
   const w = state.world;
+  drawBackgroundAndPlatform(w);
 
-  if (heldDisplayWorld && (state.stackSettling || awaitingServerRoundEnd)) {
-    drawAnimatedScene(heldDisplayWorld);
-  } else {
-    drawBackgroundAndPlatform(w);
-    (state.stack || []).forEach(piece => {
-      drawAnimal(ctx, piece.type, piece.x, piece.y, piece.angle, 1);
-    });
-  }
+  const poses = renderPoses.length ? renderPoses : (state.stack || []);
+  poses.forEach((piece) => {
+    const alpha = piece.fallen ? 0.85 : 1;
+    drawAnimal(ctx, piece.type, piece.x, piece.y, piece.angle, alpha);
+  });
 
-  if (state.currentAnimal) {
+  if (state.currentAnimal && !physicsStreaming && !endLerp) {
     const ax = state.canControl ? localAimX : state.aimX;
     const aa = state.canControl ? localAimAngle : state.aimAngle;
     const dropY = w.dropY || 100;
@@ -165,137 +255,35 @@ function drawScene() {
   }
 }
 
-function startDropAnimation(s) {
-  if (!window.AnimalPhysics) {
-    state = s;
-    applyStateAfterAnimation(s);
-    return;
-  }
-
-  clearHeldDisplay();
-
-  const ld = s.lastDrop;
-  const difficulty = s.settings?.difficulty || 'normal';
-  const simWorld = window.AnimalPhysics.createDropSimulation(
-    ld.stackBefore,
-    ld.type,
-    ld.x,
-    ld.angle,
-    difficulty
-  );
-
-  dropAnim = {
-    simWorld,
-    pendingState: s,
-    frame: 0,
-    settledCount: 0,
-    expectFallen: ld.fallen,
-    startedAt: performance.now()
-  };
-
-  state = { ...s, animating: true };
-  showScreen('screen-game');
-  renderTeamPills(s);
-  $('hud-score').textContent = String(ld.stackBefore?.length ?? 0);
-  $('turn-bar').textContent = ld.fallen ? 'Chute !' : 'Placement…';
+function beginPhysicsStream(dropId) {
+  physicsStreaming = true;
+  endLerp = null;
+  poseBuffer = [];
+  lastDropId = dropId || lastDropId;
   setGameControlsLocked(true);
-  requestAnimationFrame(animationTick);
+  if (state) {
+    $('turn-bar').textContent = 'Chute en cours…';
+    $('hud-score').textContent = String(state.stackHeight ?? state.stack?.length ?? 0);
+  }
+  startRenderLoop();
 }
 
-function animationTick() {
-  if (!dropAnim) return;
+function finishPhysicsStream({ fallen, stack }) {
+  const finalStack = (stack || state?.stack || []).map(p => ({ ...p, fallen: 0 }));
+  const from = renderPoses.length
+    ? renderPoses.map(p => ({ ...p }))
+    : finalStack.map(p => ({ ...p }));
 
-  const { simWorld, expectFallen } = dropAnim;
-  const elapsed = performance.now() - dropAnim.startedAt;
+  endLerp = {
+    from,
+    to: finalStack,
+    start: performance.now(),
+    duration: END_LERP_MS
+  };
+  poseBuffer = [];
 
-  if (elapsed >= DROP_FREEZE_MS) {
-    window.AnimalPhysics.freezeWorldBodies(simWorld);
-    drawAnimatedScene(simWorld);
-    finishDropAnimation();
-    return;
-  }
-
-  window.AnimalPhysics.stepSimulation(simWorld);
-  dropAnim.frame += 1;
-  drawAnimatedScene(simWorld);
-
-  const dropped = simWorld.droppedBody;
-  const droppedFallen = dropped && window.AnimalPhysics.isBodyFallen(dropped, simWorld.worldCfg);
-  const moving = window.AnimalPhysics.isWorldMoving(simWorld.engine);
-
-  if (!moving && dropAnim.frame > 24) {
-    dropAnim.settledCount += 1;
-  } else {
-    dropAnim.settledCount = 0;
-  }
-
-  const fallenDone = (expectFallen || dropAnim.visualFall) && droppedFallen
-    && (dropAnim.settledCount >= 4 || dropped.position.y > simWorld.worldCfg.fallY - 50);
-  const placedDone = !expectFallen && !dropAnim.visualFall && dropped
-    && window.AnimalPhysics.isBodyLanded(dropped)
-    && dropAnim.frame > 24;
-
-  if (droppedFallen && !expectFallen && dropAnim.frame > 20) {
-    dropAnim.visualFall = true;
-  }
-
-  if (fallenDone || placedDone) {
-    window.AnimalPhysics.freezeWorldBodies(simWorld);
-    finishDropAnimation();
-    return;
-  }
-
-  requestAnimationFrame(animationTick);
-}
-
-function finishDropAnimation() {
-  const next = pendingState;
-  const simWorld = dropAnim?.simWorld;
-  const visualFall = dropAnim?.visualFall;
-  dropAnim = null;
-  pendingState = null;
-  if (!next) return;
-
-  if (simWorld && !simWorld.frozen) {
-    window.AnimalPhysics?.freezeWorldBodies(simWorld);
-  }
-
-  const roundLost = next.phase === 'end' || next.lastDrop?.fallen || visualFall;
-
-  if (roundLost) {
-    awaitingServerRoundEnd = next.phase !== 'end';
-    if (next.phase !== 'end') {
-      heldDisplayWorld = simWorld;
-    }
-    state = next;
-    if (next.phase === 'end') {
-      clearHeldDisplay();
-      applyStateAfterAnimation(next);
-    } else {
-      showScreen('screen-game');
-      renderTeamPills(next);
-      $('turn-bar').textContent = 'Chute !';
-      setGameControlsLocked(true);
-      drawScene();
-    }
-    return;
-  }
-
-  heldDisplayWorld = simWorld;
-  state = next;
-  applyStateAfterAnimation(next);
-}
-
-function applyStateAfterAnimation(s) {
-  if (s.phase === 'lobby') {
-    showScreen('screen-lobby');
-    renderLobby(s);
-  } else if (s.phase === 'playing') {
-    showScreen('screen-game');
-    renderGame(s);
-  } else if (s.phase === 'end') {
-    showScreen('screen-end');
-    renderEnd(s);
+  if (fallen) {
+    $('turn-bar').textContent = 'Chute !';
   }
 }
 
@@ -303,11 +291,11 @@ function rotateAnimal(direction) {
   if (!state?.canControl || isInputLocked()) return;
   localAimAngle += direction === 'left' ? -ROT_STEP : ROT_STEP;
   socket.emit('as-rotate', { direction });
-  drawScene();
 }
 
 function syncAimFromState() {
   if (!state) return;
+  if (state.canControl && !isInputLocked()) return;
   localAimX = state.aimX ?? 260;
   localAimAngle = state.aimAngle ?? 0;
 }
@@ -333,6 +321,8 @@ function syncSettingsUI(s) {
 }
 
 function renderLobby(s) {
+  stopRenderLoop();
+  clearPoseStream();
   $('lobby-code').textContent = s.code;
   $('host-settings').style.display = s.isHost ? 'block' : 'none';
   $('guest-wait').style.display = s.isHost ? 'none' : 'block';
@@ -392,7 +382,11 @@ function renderGame(s) {
 
   const team = s.teams[s.currentTeamIndex];
   const wheel = $('rotate-wheel');
-  if (s.canControl) {
+  if (physicsStreaming || endLerp) {
+    $('turn-bar').textContent = s.lastDrop?.fallen ? 'Chute !' : 'Chute en cours…';
+    $('rotate-hint').style.display = 'none';
+    if (wheel) wheel.style.display = 'none';
+  } else if (s.canControl) {
     $('turn-bar').textContent = `À vous ! — ${s.currentAnimal?.name || 'Animal'}`;
     $('rotate-hint').style.display = 'block';
     if (wheel) wheel.style.display = 'flex';
@@ -407,11 +401,18 @@ function renderGame(s) {
   }
 
   setGameControlsLocked(isInputLocked());
-  syncAimFromState();
-  drawScene();
+  if (!s.canControl || isInputLocked()) syncAimFromState();
+  else if (localAimX == null) syncAimFromState();
+
+  if (!physicsStreaming && !endLerp) {
+    renderPoses = (s.stack || []).map(p => ({ ...p, fallen: 0 }));
+  }
+  startRenderLoop();
 }
 
 function renderEnd(s) {
+  stopRenderLoop();
+  clearPoseStream();
   const roundsToWin = s.settings?.roundsToWin ?? 1;
   const roundWinner = s.teams[s.winnerTeamIndex];
 
@@ -459,38 +460,16 @@ function renderEnd(s) {
 function applyState(s) {
   if (!s) return;
 
-  if (!s.stackSettling && !awaitingServerRoundEnd) {
-    heldDisplayWorld = null;
-  }
-
   if (s.phase === 'lobby') {
-    clearHeldDisplay();
-    lastAnimatedDropId = null;
+    clearPoseStream();
+    lastDropId = 0;
   }
 
-  const isNewDrop = s.lastDrop?.id
-    && (lastAnimatedDropId === null ? false : s.lastDrop.id > lastAnimatedDropId)
-    && Array.isArray(s.lastDrop.stackBefore)
-    && window.AnimalPhysics;
-
-  if (s.phase !== 'lobby' && lastAnimatedDropId === null) {
-    lastAnimatedDropId = s.lastDrop?.id || 0;
-  } else if (isNewDrop) {
-    lastAnimatedDropId = s.lastDrop.id;
-    pendingState = s;
-    if (s.lastDrop.collapse) {
-      clearHeldDisplay();
-      state = s;
-      applyStateAfterAnimation(s);
-      return;
-    }
-    startDropAnimation(s);
-    return;
+  if (s.physicsStreaming && !physicsStreaming) {
+    beginPhysicsStream(s.lastDrop?.id);
   }
 
-  if (s.phase === 'end') {
-    clearHeldDisplay();
-  }
+  if (s.lastDrop?.id) lastDropId = Math.max(lastDropId, s.lastDrop.id);
 
   state = s;
 
@@ -501,8 +480,17 @@ function applyState(s) {
     showScreen('screen-game');
     renderGame(s);
   } else if (s.phase === 'end') {
-    showScreen('screen-end');
-    renderEnd(s);
+    // Laisser finir le lerp éventuel avant l'écran de fin
+    if (!physicsStreaming && !endLerp) {
+      showScreen('screen-end');
+      renderEnd(s);
+    } else {
+      showScreen('screen-game');
+      renderTeamPills(s);
+      $('turn-bar').textContent = 'Chute !';
+      setGameControlsLocked(true);
+      startRenderLoop();
+    }
   }
 }
 
@@ -527,6 +515,58 @@ socket.on('disconnect', () => {
 socket.on('room-state', applyState);
 socket.on('left-room', () => { window.location.href = '/'; });
 socket.on('error-msg', showToast);
+
+socket.on('as-drop-started', (payload) => {
+  if (!payload) return;
+  beginPhysicsStream(payload.dropId);
+  if (state) {
+    state = {
+      ...state,
+      physicsStreaming: true,
+      stackSettling: true,
+      currentAnimal: null,
+      lastDrop: {
+        id: payload.dropId,
+        type: payload.type,
+        x: payload.x,
+        angle: payload.angle,
+        fallen: false,
+        stackBefore: payload.stackBefore || state.stack
+      }
+    };
+    renderTeamPills(state);
+  }
+});
+
+socket.on('as-physics-frame', (frame) => {
+  if (!frame || !Array.isArray(frame.poses)) return;
+  if (frame.dropId && lastDropId && frame.dropId < lastDropId) return;
+  if (!physicsStreaming) beginPhysicsStream(frame.dropId);
+  pushPoseFrame(frame.poses);
+  if (state) {
+    $('hud-score').textContent = String(frame.poses.filter(p => !p.fallen).length);
+  }
+});
+
+socket.on('as-physics-end', (payload) => {
+  if (!payload) return;
+  if (payload.stack && state) {
+    state = {
+      ...state,
+      stack: payload.stack,
+      stackSettling: false,
+      physicsStreaming: false,
+      stackHeight: payload.stack.length
+    };
+    if (payload.fallen && state.lastDrop) {
+      state.lastDrop = { ...state.lastDrop, fallen: true };
+    }
+  }
+  finishPhysicsStream({
+    fallen: Boolean(payload.fallen),
+    stack: payload.stack
+  });
+});
 
 // UI
 $('btn-show-join').addEventListener('click', () => { $('join-panel').style.display = 'block'; });
@@ -597,7 +637,7 @@ $('btn-rotate-left').addEventListener('click', () => rotateAnimal('left'));
 $('btn-rotate-right').addEventListener('click', () => rotateAnimal('right'));
 
 function emitAim() {
-  if (!state?.canControl) return;
+  if (!state?.canControl || isInputLocked()) return;
   socket.emit('as-update-aim', { x: localAimX, angle: localAimAngle });
 }
 
@@ -606,13 +646,11 @@ canvas.addEventListener('pointerdown', (e) => {
   dragging = true;
   canvas.setPointerCapture(e.pointerId);
   localAimX = clientXToWorld(e.clientX);
-  drawScene();
 });
 
 canvas.addEventListener('pointermove', (e) => {
   if (!dragging || !state?.canControl || isInputLocked()) return;
   localAimX = clientXToWorld(e.clientX);
-  drawScene();
 });
 
 canvas.addEventListener('pointerup', () => {
@@ -622,7 +660,7 @@ canvas.addEventListener('pointerup', () => {
 });
 
 window.addEventListener('resize', () => {
-  if (state?.phase === 'playing' || dropAnim || heldDisplayWorld || awaitingServerRoundEnd) drawScene();
+  if (state?.phase === 'playing') drawScene();
 });
 
 const urlParams = new URLSearchParams(location.search);

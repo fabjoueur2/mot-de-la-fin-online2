@@ -2,17 +2,24 @@ const { pickRandomAnimal } = require('./animals');
 const {
   getWorldForDifficulty,
   rebuildWorldFromStack,
-  dropAnimalOnWorld,
+  spawnAnimalOnWorld,
   stepWorld,
   freezeWorld,
   syncStackFromWorld,
-  isBodyFallen
+  serializePoses,
+  isWorldSettled
 } = require('./physics');
 
 const GAME_ID = 'animal-stacker';
 const TEAM_COLORS = ['#4d96ff', '#ff6b6b'];
 const VALID_DIFFICULTIES = ['facile', 'normal', 'corse'];
 const VALID_ROUNDS_TO_WIN = [1, 3, 5, 7];
+
+/** Stream physique ~20 Hz (3 steps Matter @ 60 Hz ≈ 50 ms de sim). */
+const PHYSICS_TICK_MS = 50;
+const PHYSICS_STEPS_PER_TICK = 3;
+const SETTLE_TIMEOUT_MS = 2500;
+const STABLE_TICKS_NEEDED = 8;
 
 const DEFAULT_SETTINGS = {
   difficulty: 'normal',
@@ -70,12 +77,19 @@ function isHost(room, socketId) {
 
 function onActiveTeam(room, socketId) {
   const p = getPlayer(room, socketId);
-  return p && p.teamIndex === room.currentTeamIndex && room.phase === 'playing';
+  return p
+    && p.teamIndex === room.currentTeamIndex
+    && room.phase === 'playing'
+    && !room._physicsStreaming;
 }
 
 function clearLivePhysics(room) {
   room._liveWorld = null;
   room._physicsFreezeAt = null;
+  room._physicsStreaming = false;
+  room._physicsStartedAt = null;
+  room._settleStableTicks = 0;
+  room._droppingTeamIndex = null;
 }
 
 function ensureLiveWorld(room) {
@@ -167,6 +181,7 @@ function resetToLobby(room) {
 
 function sanitizeRoom(room, viewerSocketId) {
   const player = getPlayer(room, viewerSocketId);
+  const streaming = Boolean(room._physicsStreaming);
   const active = onActiveTeam(room, viewerSocketId);
   const world = getWorldForDifficulty(room.settings?.difficulty || 'normal');
   const liveStack = room._liveWorld ? syncStackFromWorld(room._liveWorld).stack : null;
@@ -185,9 +200,10 @@ function sanitizeRoom(room, viewerSocketId) {
     })),
     teams: room.teams,
     stack: room.stack,
-    stackSettling: Boolean(room._physicsFreezeAt),
+    stackSettling: streaming,
+    physicsStreaming: streaming,
     currentTeamIndex: room.currentTeamIndex,
-    currentAnimal: room.currentAnimal,
+    currentAnimal: streaming ? null : room.currentAnimal,
     aimX: room.aimX,
     aimAngle: room.aimAngle,
     turnCount: room.turnCount,
@@ -199,7 +215,10 @@ function sanitizeRoom(room, viewerSocketId) {
     matchOver: room.matchOver,
     matchWinnerTeamIndex: room.matchWinnerTeamIndex,
     canControl: active,
-    isYourTeamTurn: player && player.teamIndex === room.currentTeamIndex && room.phase === 'playing',
+    isYourTeamTurn: player
+      && player.teamIndex === room.currentTeamIndex
+      && room.phase === 'playing'
+      && !streaming,
     world,
     stackHeight: liveStack ? liveStack.length : room.stack.length
   };
@@ -211,8 +230,101 @@ function ensureValidTeams(room) {
   });
 }
 
+function emitPhysicsFrame(io, room) {
+  if (!room._liveWorld || !room.lastDrop) return;
+  const poses = serializePoses(room._liveWorld);
+  const sync = syncStackFromWorld(room._liveWorld);
+  io.to(room.code).emit('as-physics-frame', {
+    dropId: room.lastDrop.id,
+    t: Date.now(),
+    poses,
+    fallen: sync.hasFallen
+  });
+}
+
+function endPhysicsStream(io, ctx, room, { fallen }) {
+  const dropId = room.lastDrop?.id;
+  const droppingTeam = room._droppingTeamIndex ?? room.currentTeamIndex;
+
+  room._physicsStreaming = false;
+  room._physicsFreezeAt = null;
+  room._physicsStartedAt = null;
+  room._settleStableTicks = 0;
+
+  if (fallen) {
+    if (room.lastDrop) room.lastDrop.fallen = true;
+    resolveRoundLoss(room, droppingTeam);
+    io.to(room.code).emit('as-physics-end', {
+      dropId,
+      fallen: true,
+      stack: room.stack,
+      phase: room.phase
+    });
+    ctx.broadcastRoom(room);
+    return;
+  }
+
+  const world = room._liveWorld;
+  const frozenStack = world ? freezeWorld(world) : room.stack;
+  if (frozenStack) room.stack = frozenStack;
+
+  room.turnCount += 1;
+  room.currentTeamIndex = room.currentTeamIndex === 0 ? 1 : 0;
+  pickNextAnimal(room);
+  room._droppingTeamIndex = null;
+
+  io.to(room.code).emit('as-physics-end', {
+    dropId,
+    fallen: false,
+    stack: room.stack,
+    phase: room.phase
+  });
+  ctx.broadcastRoom(room);
+}
+
+function tickPhysicsStream(io, ctx, room) {
+  if (!room._physicsStreaming || !room._liveWorld || room.phase !== 'playing') return;
+
+  const world = room._liveWorld;
+  stepWorld(world, PHYSICS_STEPS_PER_TICK);
+
+  const sync = syncStackFromWorld(world);
+  emitPhysicsFrame(io, room);
+
+  if (sync.hasFallen) {
+    endPhysicsStream(io, ctx, room, { fallen: true });
+    return;
+  }
+
+  if (isWorldSettled(world)) {
+    room._settleStableTicks = (room._settleStableTicks || 0) + 1;
+  } else {
+    room._settleStableTicks = 0;
+  }
+
+  const elapsed = Date.now() - (room._physicsStartedAt || Date.now());
+  const timedOut = elapsed >= SETTLE_TIMEOUT_MS;
+  if (room._settleStableTicks >= STABLE_TICKS_NEEDED || timedOut) {
+    const finalSync = syncStackFromWorld(world);
+    if (finalSync.hasFallen) {
+      endPhysicsStream(io, ctx, room, { fallen: true });
+      return;
+    }
+    endPhysicsStream(io, ctx, room, { fallen: false });
+  }
+}
+
 function registerHandlers(io, ctx) {
   const { broadcastRoom } = ctx;
+
+  if (!global.__asPhysicsInterval) {
+    global.__asPhysicsInterval = setInterval(() => {
+      for (const room of ctx.rooms.values()) {
+        if (room.gameId !== GAME_ID) continue;
+        if (room._physicsStreaming) tickPhysicsStream(io, ctx, room);
+      }
+    }, PHYSICS_TICK_MS);
+  }
 
   io.on('connection', (socket) => {
     socket.on('as-update-aim', ({ x, angle }) => {
@@ -235,37 +347,44 @@ function registerHandlers(io, ctx) {
     socket.on('as-drop', () => {
       const room = getRoom(ctx, socket);
       if (!room || room.phase !== 'playing' || !onActiveTeam(room, socket.id)) return;
-      if (!room.currentAnimal) return;
+      if (!room.currentAnimal || room._physicsStreaming) return;
 
       const typeId = room.currentAnimal.type;
       const difficulty = room.settings?.difficulty || 'normal';
       const world = ensureLiveWorld(room);
       const stackBefore = stackFromLiveWorld(room);
-      const result = dropAnimalOnWorld(world, typeId, room.aimX, room.aimAngle, difficulty);
-      room._liveWorld = result.world;
+      const aimX = room.aimX;
+      const aimAngle = room.aimAngle;
+
+      spawnAnimalOnWorld(world, typeId, aimX, aimAngle, difficulty);
+      room._liveWorld = world;
 
       room.dropCounter += 1;
       room.lastDrop = {
         id: room.dropCounter,
         type: typeId,
-        x: room.aimX,
-        angle: room.aimAngle,
-        fallen: result.fallen,
+        x: aimX,
+        angle: aimAngle,
+        fallen: false,
         stackBefore
       };
 
-      if (result.fallen) {
-        resolveRoundLoss(room, room.currentTeamIndex);
-        broadcastRoom(room);
-        return;
-      }
+      room._droppingTeamIndex = room.currentTeamIndex;
+      room._physicsStreaming = true;
+      room._physicsStartedAt = Date.now();
+      room._settleStableTicks = 0;
+      room._physicsFreezeAt = null;
+      room.currentAnimal = null;
 
-      room._liveWorld.frozen = false;
-      room._physicsFreezeAt = Date.now() + 2000;
-      room.turnCount += 1;
-      room.currentTeamIndex = room.currentTeamIndex === 0 ? 1 : 0;
-      pickNextAnimal(room);
       broadcastRoom(room);
+      io.to(room.code).emit('as-drop-started', {
+        dropId: room.lastDrop.id,
+        type: typeId,
+        x: aimX,
+        angle: aimAngle,
+        stackBefore
+      });
+      emitPhysicsFrame(io, room);
     });
 
     socket.on('as-start-game', () => {
@@ -356,49 +475,8 @@ function getRoom(ctx, socket) {
   return room;
 }
 
-function resolveSettlingCollapse(room) {
-  const dropperTeam = room.currentTeamIndex === 0 ? 1 : 0;
-  room.dropCounter += 1;
-  room.lastDrop = {
-    id: room.dropCounter,
-    type: null,
-    x: 0,
-    angle: 0,
-    fallen: true,
-    stackBefore: room.stack.map(p => ({ ...p })),
-    collapse: true
-  };
-  room._physicsFreezeAt = null;
-  resolveRoundLoss(room, dropperTeam);
-}
-
-function onTick(room) {
-  if (room.phase !== 'playing' || !room._liveWorld) return false;
-
-  const world = room._liveWorld;
-  const worldCfg = world.worldCfg;
-
-  if (!world.frozen) {
-    stepWorld(world, 30);
-
-    if (world.animalBodies.some(b => isBodyFallen(b, worldCfg))) {
-      resolveSettlingCollapse(room);
-      return true;
-    }
-  }
-
-  if (room._physicsFreezeAt && Date.now() >= room._physicsFreezeAt) {
-    const sync = syncStackFromWorld(world);
-    if (sync.hasFallen) {
-      resolveSettlingCollapse(room);
-      return true;
-    }
-    const frozenStack = freezeWorld(world);
-    if (frozenStack) room.stack = frozenStack;
-    room._physicsFreezeAt = null;
-    return true;
-  }
-
+/** Physique AS gérée par le tick 20 Hz dédié — plus de settle sur le tick 2 Hz. */
+function onTick() {
   return false;
 }
 
