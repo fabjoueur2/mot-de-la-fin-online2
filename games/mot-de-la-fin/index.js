@@ -84,6 +84,8 @@ function createInitialRoomState({ hostSocketId, playerName, code }) {
     timerRemaining: 60,
     teamTimeRemaining: {},
     awaitingMasterStart: false,
+    timeExpiredPending: false,
+    expiredCardScored: false,
     masterPlayerId: null,
     teamMasters: {}
   };
@@ -245,7 +247,13 @@ function getTeamsWithTimeRemaining(room) {
     );
 }
 
+function clearTimeUpState(room) {
+  room.timeExpiredPending = false;
+  room.expiredCardScored = false;
+}
+
 function enterAwaitingMasterStart(room) {
+  clearTimeUpState(room);
   room.awaitingMasterStart = true;
   room.currentCard = null;
   room.currentClue = 0;
@@ -293,7 +301,7 @@ function findFirstTeamWithTime(room, fromIndex = 0) {
 }
 
 function pauseRoundTimer(room) {
-  if (!isPlayingPhase(room.phase) || room.timerPaused) return;
+  if (!isPlayingPhase(room.phase) || room.timerPaused || room.timeExpiredPending) return;
   room.timerRemaining = timeLeft(room);
   room.teamTimeRemaining[room.currentTeamIndex] = room.timerRemaining;
   room.timerPaused = true;
@@ -306,8 +314,43 @@ function resumeRoundTimer(room) {
 }
 
 function resetRoundTimer(room) {
+  clearTimeUpState(room);
   room.teamTimeRemaining[room.currentTeamIndex] = room.settings.timerDuration;
   startTeamTimer(room, room.currentTeamIndex);
+}
+
+/** Manche 1 : le chrono est à 0, mais le Maître peut encore noter le mot en cours. */
+function freezeRound1ForScoring(room) {
+  room.teamTimeRemaining[room.currentTeamIndex] = 0;
+  room.timerRemaining = 0;
+  room.timerEndAt = null;
+  room.timerPaused = false;
+  room.timeExpiredPending = true;
+}
+
+function round1TimeIsUp(room) {
+  return room.phase === 'round1' && (
+    room.timeExpiredPending ||
+    getTeamTimeLeft(room, room.currentTeamIndex) <= 0
+  );
+}
+
+function scoreExpiredCard(room) {
+  if (room.expiredCardScored) return false;
+  const pts = room.currentClue === 0 ? 3 : room.currentClue === 1 ? 2 : 1;
+  room.teams[room.currentTeamIndex].score += pts;
+  room.expiredCardScored = true;
+  return true;
+}
+
+function closeExpiredTurn(room) {
+  if (!room.timeExpiredPending || room.phase !== 'round1') return false;
+  room.teamTimeRemaining[room.currentTeamIndex] = 0;
+  room.timerEndAt = null;
+  room.timerPaused = false;
+  clearTimeUpState(room);
+  if (!advanceToNextTeam(room)) finishRound(room);
+  return true;
 }
 
 function onCurrentTeamTimeExpired(room) {
@@ -365,6 +408,7 @@ function resetToLobby(room) {
   room.timerPaused = false;
   room.teamTimeRemaining = {};
   room.awaitingMasterStart = false;
+  clearTimeUpState(room);
   room.usedWords.clear();
   room.deck = [];
   room.deckIndex = 0;
@@ -373,6 +417,7 @@ function resetToLobby(room) {
 
 function finishRound(room) {
   saveCurrentTeamTime(room);
+  clearTimeUpState(room);
   room.currentCard = null;
   room.masterPlayerId = null;
   room.timerEndAt = null;
@@ -459,6 +504,8 @@ function sanitizeRoom(room, viewerSocketId) {
     teamTimers: getAllTeamTimers(room),
     timerPaused: room.timerPaused,
     awaitingMasterStart: !!room.awaitingMasterStart,
+    timeExpiredPending: !!room.timeExpiredPending,
+    expiredCardScored: !!room.expiredCardScored,
     card: showCard ? {
       mot: room.currentCard.mot,
       interdits: room.currentCard.interdits,
@@ -491,6 +538,10 @@ function onTick(room) {
     return false;
   }
   if (timeLeft(room) <= 0) {
+    if (room.phase === 'round1' && room.currentCard) {
+      freezeRound1ForScoring(room);
+      return true;
+    }
     onCurrentTeamTimeExpired(room);
     return true;
   }
@@ -597,7 +648,7 @@ function registerHandlers(io, ctx) {
       const room = getRoom(ctx, socket);
       if (!room || room.phase !== 'round1') return;
       if (!isMaster(room, socket.id)) return;
-      if (room.awaitingMasterStart) return;
+      if (room.awaitingMasterStart || room.expiredCardScored) return;
       if (room.currentClue < 3) room.currentClue++;
       broadcastRoom(room);
     });
@@ -607,6 +658,13 @@ function registerHandlers(io, ctx) {
       if (!room || !isPlayingPhase(room.phase)) return;
       if (!isMaster(room, socket.id)) return;
       if (room.awaitingMasterStart) return;
+
+      if (room.phase === 'round1' && round1TimeIsUp(room)) {
+        if (!room.timeExpiredPending) freezeRound1ForScoring(room);
+        scoreExpiredCard(room);
+        broadcastRoom(room);
+        return;
+      }
 
       let pts = 0;
       if (room.phase === 'round1') {
@@ -622,8 +680,21 @@ function registerHandlers(io, ctx) {
       const room = getRoom(ctx, socket);
       if (!room || !isPlayingPhase(room.phase)) return;
       if (!isMaster(room, socket.id)) return;
-      if (room.awaitingMasterStart) return;
+      if (room.awaitingMasterStart || room.timeExpiredPending) return;
       resolveCard(room, 0);
+      broadcastRoom(room);
+    });
+
+    socket.on('turn-done', () => {
+      const room = getRoom(ctx, socket);
+      if (!room || room.phase !== 'round1') return;
+      if (!isMaster(room, socket.id)) return;
+      if (room.awaitingMasterStart) return;
+      if (!room.timeExpiredPending) {
+        if (!round1TimeIsUp(room) || !room.currentCard) return;
+        freezeRound1ForScoring(room);
+      }
+      closeExpiredTurn(room);
       broadcastRoom(room);
     });
 

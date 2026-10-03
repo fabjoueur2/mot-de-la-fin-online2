@@ -174,8 +174,13 @@ function renderGame(s) {
   $('round-badge').textContent = isR1 ? 'Manche 1 — Le Maître mot' : 'Manche 2 — Mots interdits';
   $('round-badge').className = `round-badge ${isR1 ? 'r1' : 'r2'}`;
 
+  const timeUp = !!s.timeExpiredPending;
+  const lastWordScored = !!s.expiredCardScored;
+
   let counterText = `Carte ${s.cardsThisRound} — ${team?.name || ''} · chrono équipe : ${formatTime(s.timeLeft)}`;
-  if (s.awaitingMasterStart) {
+  if (timeUp) {
+    counterText = `Temps écoulé — ${s.masterName || 'le Maître'} valide le dernier mot`;
+  } else if (s.awaitingMasterStart) {
     counterText = s.isMaster
       ? `C'est à vous, ${team?.name || ''} — appuyez sur Démarrer quand le Devineur est prêt`
       : `En attente du Maître (${s.masterName || team?.name || '…'})`;
@@ -189,9 +194,9 @@ function renderGame(s) {
   const pct = duration ? (s.timeLeft / duration) * 100 : 0;
   $('timer-fill').style.width = pct + '%';
   const timerEl = $('timer-display');
-  timerEl.textContent = formatTime(s.timeLeft);
+  timerEl.textContent = timeUp ? '00:00' : formatTime(s.timeLeft);
   timerEl.classList.remove('warning', 'danger');
-  if (s.timeLeft <= 10) timerEl.classList.add('danger');
+  if (timeUp || s.timeLeft <= 10) timerEl.classList.add('danger');
   else if (s.timeLeft <= 20) timerEl.classList.add('warning');
 
   renderScores('scores-game', s.teams, s.currentTeamIndex, s.teamTimers);
@@ -264,8 +269,21 @@ function renderGame(s) {
   $('r2-controls').style.display = isR2 ? 'block' : 'none';
 
   const showControls = s.isMaster && s.card && !s.awaitingMasterStart;
-  $('active-team-controls').style.display = showControls && isR1 ? 'flex' : 'none';
+  const showScoreControls = showControls && isR1 && !(timeUp && lastWordScored);
+  $('active-team-controls').style.display = showScoreControls ? 'flex' : 'none';
+  $('btn-fail').style.display = timeUp ? 'none' : '';
   $('active-team-controls-r2').style.display = showControls && isR2 ? 'flex' : 'none';
+
+  const turnDoneBtn = $('btn-turn-done');
+  const timeUpHint = $('time-up-hint');
+  const showTurnDone = showControls && isR1 && timeUp;
+  turnDoneBtn.style.display = showTurnDone ? 'block' : 'none';
+  timeUpHint.style.display = showTurnDone ? 'block' : 'none';
+  if (showTurnDone) {
+    timeUpHint.textContent = lastWordScored
+      ? 'Points du dernier mot ajoutés. Cliquez sur C’est terminé pour passer la main.'
+      : 'Temps écoulé. Cliquez sur Trouvé ! pour ajouter les points du dernier mot, puis sur C’est terminé.';
+  }
 
   const spec = $('spectator-msg');
   if (s.soloTeam && (s.isMaster || s.isGuesser)) {
@@ -275,19 +293,25 @@ function renderGame(s) {
     spec.style.display = 'block';
     spec.innerHTML = s.awaitingMasterStart
       ? 'Préparez-vous à deviner — le Maître lancera le chrono quand vous serez prêt.'
-      : isR1
+      : timeUp
+        ? 'Temps écoulé. Le Maître note les points du dernier mot avant de passer la main.'
+        : isR1
         ? `<strong>${s.masterName}</strong> vous donne des indices (un mot à la fois). Devinez à voix haute — visio conseillée !`
         : `<strong>${s.masterName}</strong> décrit le mot. Devinez sans voir la carte !`;
   } else if (s.isMaster) {
     spec.style.display = 'block';
-    spec.innerHTML = s.awaitingMasterStart
+    spec.innerHTML = timeUp
+      ? 'Le chrono est à zéro. Le mot reste affiché le temps de noter les points, puis cliquez sur <strong>C’est terminé</strong>.'
+      : s.awaitingMasterStart
       ? 'Quand votre Devineur est prêt, cliquez sur <strong>Démarrer</strong> pour lancer le chrono et révéler le mot.'
       : isR1
         ? 'Vous êtes le <strong>Maître</strong> pour toute la partie — seul vous voyez le mot. Donnez <strong>un mot</strong> à la fois !'
         : 'Vous êtes le <strong>Maître</strong> pour toute la partie — seul vous voyez le mot et les mots interdits.';
   } else if (s.role === 'spectator') {
     spec.style.display = 'block';
-    spec.innerHTML = isR1
+    spec.innerHTML = timeUp
+      ? `Temps écoulé — ${s.masterName || 'le Maître'} valide le dernier mot de <strong>${team?.name || 'l’équipe'}</strong>.`
+      : isR1
       ? `<strong>${team?.name}</strong> joue : ${s.masterName || '…'} fait deviner à ${s.guesserNames?.join(', ') || '…'}.`
       : `<strong>${team?.name}</strong> joue : ${s.masterName || '…'} décrit le mot.`;
   } else {
@@ -296,7 +320,7 @@ function renderGame(s) {
 
   if (isR1) updateClueTracker(s.currentClue);
   $('btn-pause').textContent = s.timerPaused ? '▶ Reprendre' : '⏸ Pause';
-  $('host-timer-controls').style.display = s.isHost && !s.awaitingMasterStart ? 'flex' : 'none';
+  $('host-timer-controls').style.display = s.isHost && !s.awaitingMasterStart && !timeUp ? 'flex' : 'none';
 }
 
 function renderEnd(s) {
@@ -425,6 +449,7 @@ $('btn-start-turn').addEventListener('click', () => socket.emit('start-turn'));
 $('btn-clue').addEventListener('click', () => socket.emit('clue-given'));
 $('btn-found').addEventListener('click', () => socket.emit('card-found'));
 $('btn-fail').addEventListener('click', () => socket.emit('card-fail'));
+$('btn-turn-done').addEventListener('click', () => socket.emit('turn-done'));
 $('btn-found-r2').addEventListener('click', () => socket.emit('card-found'));
 $('btn-fail-r2').addEventListener('click', () => socket.emit('card-fail'));
 $('btn-pause').addEventListener('click', () => socket.emit('pause-timer'));

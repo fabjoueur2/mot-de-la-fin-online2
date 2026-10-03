@@ -171,6 +171,14 @@ input:focus, select:focus { outline: none; border-color: var(--accent4); }
   margin-top: 10px;
   line-height: 1.5;
 }
+.time-up-hint {
+  text-align: center;
+  color: var(--accent2);
+  font-size: .9rem;
+  margin: 4px 0 10px;
+  line-height: 1.45;
+}
+#btn-turn-done { width: 100%; }
 
 .round-badge {
   display: inline-block; padding: 5px 12px; border-radius: 20px;
