@@ -4,6 +4,13 @@ const socket = io({ transports: ['websocket', 'polling'] });
 
 let state = null;
 let selectedDifficulty = 'mixte';
+let timerAnimId = null;
+let smoothTimer = {
+  endsAt: null,
+  durationMs: 60000,
+  frozenPct: 100,
+  running: false
+};
 
 const $ = (id) => document.getElementById(id);
 
@@ -48,6 +55,105 @@ function formatTime(s) {
   const m = Math.floor(s / 60);
   const sec = s % 60;
   return `${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+}
+
+/** Vert (#6bcb77) → jaune (#ffd93d) → rouge (#ff6b6b) selon le temps restant. */
+function timerFillColor(pct) {
+  const t = 1 - Math.max(0, Math.min(100, pct)) / 100;
+  const stops = [
+    [0, [107, 203, 119]],
+    [0.5, [255, 217, 61]],
+    [1, [255, 107, 107]]
+  ];
+  let from = stops[0];
+  let to = stops[stops.length - 1];
+  for (let i = 0; i < stops.length - 1; i++) {
+    if (t >= stops[i][0] && t <= stops[i + 1][0]) {
+      from = stops[i];
+      to = stops[i + 1];
+      break;
+    }
+  }
+  const span = to[0] - from[0] || 1;
+  const u = (t - from[0]) / span;
+  const rgb = from[1].map((c, i) => Math.round(c + (to[1][i] - c) * u));
+  return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+}
+
+function applyTimerFill(pct) {
+  const fill = $('timer-fill');
+  if (!fill) return;
+  const safe = Math.max(0, Math.min(100, pct));
+  fill.style.width = `${safe}%`;
+  fill.style.backgroundColor = timerFillColor(safe);
+}
+
+function stopSmoothTimer() {
+  if (timerAnimId) {
+    cancelAnimationFrame(timerAnimId);
+    timerAnimId = null;
+  }
+  smoothTimer.running = false;
+}
+
+function tickSmoothTimer() {
+  timerAnimId = null;
+  if (!smoothTimer.running) return;
+
+  let pct = smoothTimer.frozenPct;
+  if (smoothTimer.endsAt != null && smoothTimer.durationMs > 0) {
+    const leftMs = Math.max(0, smoothTimer.endsAt - Date.now());
+    pct = (leftMs / smoothTimer.durationMs) * 100;
+  }
+  applyTimerFill(pct);
+
+  if (smoothTimer.endsAt != null && pct > 0) {
+    timerAnimId = requestAnimationFrame(tickSmoothTimer);
+  } else {
+    smoothTimer.running = false;
+  }
+}
+
+function syncSmoothTimer(s) {
+  const duration = s.settings?.timerDuration || 60;
+  smoothTimer.durationMs = duration * 1000;
+
+  const playing = s.phase === 'round1' || s.phase === 'round2';
+  const shouldRun =
+    playing &&
+    !s.awaitingMasterStart &&
+    !s.timerPaused &&
+    !s.timeExpiredPending &&
+    typeof s.timeLeftMs === 'number';
+
+  stopSmoothTimer();
+
+  if (!playing) {
+    applyTimerFill(100);
+    return;
+  }
+
+  if (s.timeExpiredPending) {
+    smoothTimer.endsAt = null;
+    smoothTimer.frozenPct = 0;
+    applyTimerFill(0);
+    return;
+  }
+
+  if (shouldRun) {
+    smoothTimer.endsAt = Date.now() + Math.max(0, s.timeLeftMs);
+    smoothTimer.frozenPct = (Math.max(0, s.timeLeftMs) / smoothTimer.durationMs) * 100;
+    smoothTimer.running = true;
+    tickSmoothTimer();
+    return;
+  }
+
+  const leftMs = typeof s.timeLeftMs === 'number'
+    ? s.timeLeftMs
+    : (s.timeLeft || 0) * 1000;
+  smoothTimer.endsAt = null;
+  smoothTimer.frozenPct = duration ? (leftMs / smoothTimer.durationMs) * 100 : 0;
+  applyTimerFill(smoothTimer.frozenPct);
 }
 
 function getPlayerName() {
@@ -190,9 +296,7 @@ function renderGame(s) {
   }
   $('game-counter').textContent = counterText;
 
-  const duration = s.settings.timerDuration;
-  const pct = duration ? (s.timeLeft / duration) * 100 : 0;
-  $('timer-fill').style.width = pct + '%';
+  syncSmoothTimer(s);
   const timerEl = $('timer-display');
   timerEl.textContent = timeUp ? '00:00' : formatTime(s.timeLeft);
   timerEl.classList.remove('warning', 'danger');
@@ -226,7 +330,7 @@ function renderGame(s) {
     if (isR2) {
       forbiddenSection.style.display = 'block';
       $('forbidden-list').innerHTML = s.card.interdits.map(w =>
-        `<span class="forbidden-tag">🚫 ${w}</span>`
+        `<span class="forbidden-tag">${w}</span>`
       ).join('');
     } else {
       forbiddenSection.style.display = 'none';
@@ -336,20 +440,26 @@ function renderEnd(s) {
 
 function applyState(s) {
   state = s;
-  if (!s) return;
+  if (!s) {
+    stopSmoothTimer();
+    return;
+  }
 
   if (s.phase === 'lobby') {
+    stopSmoothTimer();
     showScreen('screen-lobby');
     renderLobby(s);
   } else if (s.phase === 'round1' || s.phase === 'round2') {
     showScreen('screen-game');
     renderGame(s);
   } else if (s.phase === 'transition') {
+    stopSmoothTimer();
     showScreen('screen-transition');
     renderScores('scores-transition', s.teams, s.currentTeamIndex, s.teamTimers);
     $('btn-round2').style.display = s.isHost ? 'inline-flex' : 'none';
     $('wait-host-r2').style.display = s.isHost ? 'none' : 'block';
   } else if (s.phase === 'end') {
+    stopSmoothTimer();
     showScreen('screen-end');
     renderEnd(s);
     $('btn-replay').style.display = s.isHost ? 'inline-flex' : 'none';

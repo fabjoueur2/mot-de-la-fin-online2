@@ -229,6 +229,25 @@ function timeLeft(room) {
   return getTeamTimeLeft(room, room.currentTeamIndex);
 }
 
+/** Temps restant précis (ms) pour animer la barre côté client. */
+function timeLeftMs(room) {
+  if (!isPlayingPhase(room.phase)) {
+    return Math.max(0, (room.teamTimeRemaining?.[room.currentTeamIndex] ?? 0) * 1000);
+  }
+  if (room.timeExpiredPending) return 0;
+  if (
+    room.timerEndAt &&
+    !room.timerPaused &&
+    !room.awaitingMasterStart
+  ) {
+    return Math.max(0, room.timerEndAt - Date.now());
+  }
+  if (room.timerPaused) {
+    return Math.max(0, (room.timerRemaining ?? 0) * 1000);
+  }
+  return Math.max(0, (room.teamTimeRemaining?.[room.currentTeamIndex] ?? 0) * 1000);
+}
+
 function getAllTeamTimers(room) {
   return room.teams.map((_, i) => getTeamTimeLeft(room, i));
 }
@@ -501,6 +520,7 @@ function sanitizeRoom(room, viewerSocketId) {
     currentClue: room.currentClue,
     cardsThisRound: room.cardsThisRound,
     timeLeft: timeLeft(room),
+    timeLeftMs: timeLeftMs(room),
     teamTimers: getAllTeamTimers(room),
     timerPaused: room.timerPaused,
     awaitingMasterStart: !!room.awaitingMasterStart,
