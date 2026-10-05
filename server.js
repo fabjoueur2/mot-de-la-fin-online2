@@ -6,6 +6,7 @@ const path = require('path');
 const { listGames, getGame } = require('./games/registry');
 const motDeLaFin = require('./games/mot-de-la-fin');
 const animalStacker = require('./games/animal-stacker');
+const quiDitMieux = require('./games/qui-dit-mieux');
 
 const PORT = process.env.PORT || 3000;
 const CODE_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -13,7 +14,8 @@ const CODE_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 /** Moteurs de jeu enregistrés — ajouter ici chaque nouveau jeu */
 const gameEngines = {
   [motDeLaFin.id]: motDeLaFin,
-  [animalStacker.id]: animalStacker
+  [animalStacker.id]: animalStacker,
+  [quiDitMieux.id]: quiDitMieux
 };
 
 const app = express();
@@ -98,10 +100,13 @@ setInterval(() => {
     const changed = engine.onTick(room);
     if (changed) broadcastRoom(room);
     else if (
-      (room.phase === 'round1' || room.phase === 'round2') &&
-      !room.awaitingMasterStart &&
-      !room.timerPaused &&
-      room.timerEndAt
+      (
+        ((room.phase === 'round1' || room.phase === 'round2') &&
+          !room.awaitingMasterStart &&
+          !room.timerPaused &&
+          room.timerEndAt)
+        || (room.phase === 'bidding' && room.auctionEndsAt)
+      )
     ) {
       broadcastRoom(room);
     }
@@ -155,7 +160,8 @@ io.on('connection', (socket) => {
         id: socket.id,
         name,
         teamIndex: 0,
-        role: 'devineur'
+        role: 'devineur',
+        score: 0
       });
     } else {
       existing.name = name;

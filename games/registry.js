@@ -27,6 +27,17 @@ const GAMES = [
     duration: '5–15 min',
     path: '/games/animal-stacker/',
     status: 'available'
+  },
+  {
+    id: 'qui-dit-mieux',
+    name: 'Qui dit mieux',
+    tagline: 'Enchères vocales sur Discord : qui ose le plus gros défi ?',
+    icon: '📣',
+    color: '#ffd93d',
+    players: '3–16 joueurs',
+    duration: '15–40 min',
+    path: '/games/qui-dit-mieux/',
+    status: 'available'
   }
 ];
 

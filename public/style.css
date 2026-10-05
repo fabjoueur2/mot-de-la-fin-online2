@@ -181,6 +181,48 @@ input:focus, select:focus { outline: none; border-color: var(--accent4); }
 }
 #btn-turn-done { width: 100%; }
 
+.mic-assist {
+  margin: 0 0 14px;
+  padding: 12px 12px 10px;
+  background: rgba(77, 150, 255, .08);
+  border: 1px solid rgba(77, 150, 255, .28);
+  border-radius: 12px;
+}
+.mic-assist-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.mic-status {
+  font-size: .85rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+.mic-status.listening { color: var(--accent3); }
+.mic-status.denied,
+.mic-status.error,
+.mic-status.unsupported { color: var(--accent); }
+.mic-status.off { color: var(--muted); }
+.mic-transcript {
+  min-height: 1.2em;
+  margin: 8px 0 0;
+  font-size: .9rem;
+  color: var(--text);
+  font-style: italic;
+  word-break: break-word;
+}
+.mic-hint {
+  margin: 6px 0 0;
+  font-size: .75rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+#btn-mic-toggle.mic-on {
+  border-color: rgba(107, 203, 119, .55);
+  color: var(--accent3);
+}
+
 .round-badge {
   display: inline-block; padding: 5px 12px; border-radius: 20px;
   font-size: .75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 10px;
@@ -488,3 +530,93 @@ footer { text-align: center; margin-top: 28px; color: var(--muted); font-size: .
   background: rgba(255,255,255,.06);
   color: var(--muted);
 }
+
+/* —— Qui dit mieux —— */
+.muted-inline { color: var(--muted); font-weight: 500; font-size: .9rem; }
+.qdm-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  gap: 12px;
+}
+.qdm-round {
+  font-weight: 700;
+  color: var(--accent2);
+  font-family: 'JetBrains Mono', monospace;
+}
+.qdm-timer {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.qdm-timer-urgent { color: var(--accent); }
+.qdm-challenge-card { text-align: center; border-color: rgba(255,217,61,.25); }
+.qdm-challenge-text {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.35;
+  margin: 10px 0 6px;
+}
+.qdm-unit { color: var(--accent2); font-weight: 600; margin: 0; }
+.qdm-opener { color: var(--muted); margin-bottom: 12px; }
+.qdm-bid-display {
+  background: var(--surface2);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  margin-bottom: 14px;
+}
+.qdm-bid-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: var(--accent2);
+  line-height: 1.1;
+}
+.qdm-bid-holder { color: var(--muted); margin-top: 4px; }
+.qdm-bid-controls { align-items: center; gap: 8px; margin-bottom: 12px; }
+.qdm-bid-controls input { margin-bottom: 0 !important; }
+.qdm-bid-history { max-height: 160px; overflow: auto; }
+.qdm-action-promise {
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 8px 0 12px;
+}
+.qdm-vote-q { font-weight: 600; margin-bottom: 12px; text-align: center; }
+.qdm-vote-tally {
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+.qdm-result-ok { border-color: rgba(107,203,119,.4); }
+.qdm-result-ko { border-color: rgba(255,107,107,.4); }
+.qdm-rank { color: var(--muted); margin-right: 4px; }
+.qdm-score {
+  float: right;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  color: var(--accent2);
+}
+.qdm-badge {
+  display: inline-block;
+  font-size: .65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  padding: 2px 7px;
+  border-radius: 10px;
+  background: rgba(255,255,255,.08);
+  color: var(--muted);
+  margin-left: 4px;
+  vertical-align: middle;
+}
+.qdm-badge-opener { background: rgba(255,217,61,.18); color: var(--accent2); }
+.qdm-badge-challenger { background: rgba(255,107,107,.18); color: var(--accent); }
+.qdm-badge-me { background: rgba(107,203,119,.18); color: var(--accent3); }
+.qdm-end-trophy { font-size: 3rem; margin-bottom: 8px; }
+.players-list li { overflow: hidden; }
+

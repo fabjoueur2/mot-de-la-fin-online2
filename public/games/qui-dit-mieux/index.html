@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Qui dit mieux — En ligne</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="app">
+    <header>
+      <a href="/" class="back-to-hub">← Tous les jeux</a>
+      <h1>Qui dit mieux</h1>
+      <p>Enchères, défis vocaux sur Discord, vote du groupe</p>
+      <span class="badge-online">● Multijoueur en ligne</span>
+    </header>
+
+    <div id="connection-status" class="connection-status">Connexion…</div>
+    <div id="room-nav" class="room-nav" style="display:none;">
+      <button type="button" id="btn-salon" class="btn-nav btn-nav-salon">🛋️ Retour au salon</button>
+      <button type="button" id="btn-menu" class="btn-nav btn-nav-menu"><svg class="icon-exit" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg> Quitter le salon</button>
+    </div>
+
+    <!-- ACCUEIL -->
+    <div id="screen-home" class="screen active">
+      <div class="card">
+        <h2>👋 Bienvenue</h2>
+        <label>Votre pseudo</label>
+        <input type="text" id="player-name" placeholder="Ex : Alex" maxlength="20" value="">
+        <div class="row" style="margin-top: 8px;">
+          <button class="btn btn-primary" id="btn-create">🏠 Créer une salle</button>
+          <button class="btn btn-secondary" id="btn-show-join">🔗 Rejoindre</button>
+        </div>
+      </div>
+      <div class="card" id="join-panel" style="display:none;">
+        <h2>🔗 Rejoindre une salle</h2>
+        <label>Code de la salle (6 caractères)</label>
+        <input type="text" id="join-code" placeholder="Ex : AB3K9P" maxlength="6" style="text-transform:uppercase; letter-spacing:4px; font-family:'JetBrains Mono',monospace; font-weight:700;">
+        <button class="btn btn-blue" id="btn-join">Entrer dans la salle</button>
+      </div>
+      <div class="card">
+        <div class="rules-reminder">
+          <strong>Comment ça marche :</strong> enchères numériques sur un défi, le plus haut doit le tenir <strong>en vocal Discord</strong>, puis le groupe vote. Réussi = points = nombre de joueurs. Raté = 1 pt pour chaque autre.
+        </div>
+      </div>
+    </div>
+
+    <!-- LOBBY -->
+    <div id="screen-lobby" class="screen">
+      <div class="card">
+        <h2>🛋️ Salon d'attente</h2>
+        <div class="room-code-box">
+          <div class="label">Code de la salle</div>
+          <div class="code" id="lobby-code">------</div>
+          <div class="share-hint">Partagez ce code + restez en vocal Discord</div>
+          <div class="copy-row">
+            <button class="btn btn-secondary btn-sm" id="btn-copy-code">📋 Copier le code</button>
+            <button class="btn btn-secondary btn-sm" id="btn-copy-link">🔗 Copier le lien</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>👥 Joueurs <span id="lobby-player-count" class="muted-inline"></span></h2>
+        <ul id="lobby-players" class="players-list"></ul>
+        <p id="lobby-min-hint" class="share-hint"></p>
+      </div>
+
+      <div class="card" id="host-settings">
+        <h2>⚙️ Réglages (hôte)</h2>
+        <label>Durée des enchères (secondes)</label>
+        <select id="set-bid-duration">
+          <option value="15">15 s</option>
+          <option value="20">20 s</option>
+          <option value="30" selected>30 s</option>
+          <option value="45">45 s</option>
+          <option value="60">60 s</option>
+          <option value="90">90 s</option>
+        </select>
+        <label>Nombre de manches</label>
+        <select id="set-round-count">
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="8" selected>8</option>
+          <option value="10">10</option>
+          <option value="12">12</option>
+          <option value="15">15</option>
+        </select>
+        <button class="btn btn-primary" id="btn-start-game" style="width:100%;margin-top:12px;">🚀 Lancer la partie</button>
+      </div>
+      <div class="card" id="guest-wait" style="display:none;">
+        <p class="share-hint">En attente que l'hôte lance la partie…</p>
+      </div>
+    </div>
+
+    <!-- JEU -->
+    <div id="screen-game" class="screen">
+      <div class="qdm-topbar">
+        <div class="qdm-round" id="game-round">Manche 1 / 8</div>
+        <div class="qdm-timer" id="game-timer">—</div>
+      </div>
+
+      <div class="card qdm-challenge-card">
+        <div class="label">DÉFI</div>
+        <p class="qdm-challenge-text" id="challenge-text">—</p>
+        <p class="qdm-unit" id="challenge-unit"></p>
+      </div>
+
+      <div class="card" id="panel-bidding">
+        <h2>💰 Enchères</h2>
+        <p class="qdm-opener" id="bidding-opener"></p>
+        <div class="qdm-bid-display">
+          <div class="label">Enchère courante</div>
+          <div class="qdm-bid-value" id="current-bid">—</div>
+          <div class="qdm-bid-holder" id="current-bidder">Personne</div>
+        </div>
+        <div class="qdm-bid-controls row">
+          <button class="btn btn-secondary" id="btn-bid-plus1">+1</button>
+          <input type="number" id="bid-input" min="1" max="9999" placeholder="Montant" style="flex:1;margin-bottom:0;">
+          <button class="btn btn-primary" id="btn-place-bid">Surenchérir</button>
+        </div>
+        <ul id="bid-history" class="players-list qdm-bid-history"></ul>
+      </div>
+
+      <div class="card" id="panel-action" style="display:none;">
+        <h2>🎤 Action</h2>
+        <p class="qdm-action-promise" id="action-promise"></p>
+        <p class="share-hint" id="action-hint">Performance en vocal Discord — pas de micro in-app.</p>
+        <button class="btn btn-blue" id="btn-go-vote" style="width:100%;margin-top:12px;display:none;">Passer au vote</button>
+      </div>
+
+      <div class="card" id="panel-voting" style="display:none;">
+        <h2>🗳️ Vote</h2>
+        <p id="vote-question" class="qdm-vote-q"></p>
+        <div class="qdm-vote-tally" id="vote-tally"></div>
+        <div class="row" id="vote-buttons">
+          <button class="btn btn-success" id="btn-vote-yes">✅ Réussi</button>
+          <button class="btn btn-danger" id="btn-vote-no">❌ Raté</button>
+        </div>
+        <p class="share-hint" id="vote-waiting" style="display:none;">Vote enregistré — en attente des autres…</p>
+        <button class="btn btn-secondary btn-sm" id="btn-force-resolve" style="display:none;margin-top:10px;">Forcer le décompte (hôte)</button>
+      </div>
+
+      <div class="card" id="panel-last-result" style="display:none;">
+        <p id="last-result-text"></p>
+      </div>
+
+      <div class="card">
+        <h2>🏆 Scores</h2>
+        <ul id="live-scores" class="players-list"></ul>
+      </div>
+    </div>
+
+    <!-- FIN -->
+    <div id="screen-end" class="screen">
+      <div class="card" style="text-align:center;">
+        <div class="qdm-end-trophy" id="end-trophy">🏆</div>
+        <h2 id="end-title">Fin de partie</h2>
+        <p id="end-subtitle" class="share-hint"></p>
+        <ul id="final-scores" class="players-list" style="text-align:left;margin-top:16px;"></ul>
+        <div class="row" style="margin-top:16px;justify-content:center;">
+          <button class="btn btn-primary" id="btn-rematch" style="display:none;">🔁 Rejouer</button>
+          <button class="btn btn-secondary" id="btn-end-lobby" style="display:none;">🛋️ Salon</button>
+          <button class="btn btn-secondary" id="btn-replay-menu">Quitter</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
