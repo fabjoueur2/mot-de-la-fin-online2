@@ -98,9 +98,12 @@
 
     <!-- JEU -->
     <div id="screen-game" class="screen">
-      <div class="qdm-topbar">
-        <div class="qdm-round" id="game-round">Manche 1 / 8</div>
-        <div class="qdm-timer" id="game-timer">—</div>
+      <div class="qdm-timer-block">
+        <div class="qdm-topbar">
+          <div class="qdm-round" id="game-round">Manche 1 / 8</div>
+          <div class="timer-display qdm-timer" id="game-timer">00:30</div>
+        </div>
+        <div class="timer-bar"><div class="timer-fill" id="qdm-timer-fill"></div></div>
       </div>
 
       <div class="card qdm-challenge-card">
@@ -171,6 +174,6 @@
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
-  <script src="app.js"></script>
+  <script src="app.js?v=2"></script>
 </body>
 </html>

@@ -537,21 +537,21 @@ footer { text-align: center; margin-top: 28px; color: var(--muted); font-size: .
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   gap: 12px;
+}
+.qdm-timer-block { margin-bottom: 12px; }
+.qdm-timer-block .timer-bar { margin-bottom: 0; }
+.qdm-timer-block .timer-display {
+  font-size: 1.6rem;
+  margin: 0;
+  text-align: right;
 }
 .qdm-round {
   font-weight: 700;
   color: var(--accent2);
   font-family: 'JetBrains Mono', monospace;
 }
-.qdm-timer {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: var(--text);
-}
-.qdm-timer-urgent { color: var(--accent); }
 .qdm-challenge-card { text-align: center; border-color: rgba(255,217,61,.25); }
 .qdm-challenge-text {
   font-size: 1.25rem;

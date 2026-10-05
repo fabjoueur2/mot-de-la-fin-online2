@@ -3,7 +3,13 @@ const GAME_PATH = '/games/qui-dit-mieux/';
 const socket = io({ transports: ['websocket', 'polling'] });
 
 let state = null;
-let timerRaf = null;
+let timerAnimId = null;
+let smoothTimer = {
+  endsAt: null,
+  durationMs: 30000,
+  frozenPct: 100,
+  running: false
+};
 
 const $ = (id) => document.getElementById(id);
 
@@ -31,7 +37,7 @@ function getPlayerName() {
 }
 
 function leaveToMenu() {
-  stopTimerAnim();
+  stopSmoothTimer();
   socket.emit('leave-room');
   state = null;
   window.location.href = '/';
@@ -60,24 +66,103 @@ function formatMmSs(ms) {
   return `${String(m).padStart(2, '0')}:${String(r).padStart(2, '0')}`;
 }
 
-function stopTimerAnim() {
-  if (timerRaf) {
-    cancelAnimationFrame(timerRaf);
-    timerRaf = null;
+/** Vert → jaune → rouge selon le % restant (comme Mot de la fin). */
+function timerFillColor(pct) {
+  const t = 1 - Math.max(0, Math.min(100, pct)) / 100;
+  const stops = [
+    [0, [107, 203, 119]],
+    [0.5, [255, 217, 61]],
+    [1, [255, 107, 107]]
+  ];
+  let from = stops[0];
+  let to = stops[stops.length - 1];
+  for (let i = 0; i < stops.length - 1; i++) {
+    if (t >= stops[i][0] && t <= stops[i + 1][0]) {
+      from = stops[i];
+      to = stops[i + 1];
+      break;
+    }
+  }
+  const span = to[0] - from[0] || 1;
+  const u = (t - from[0]) / span;
+  const rgb = from[1].map((c, i) => Math.round(c + (to[1][i] - c) * u));
+  return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+}
+
+function applyTimerFill(pct) {
+  const fill = $('qdm-timer-fill');
+  if (!fill) return;
+  const safe = Math.max(0, Math.min(100, pct));
+  fill.style.width = `${safe}%`;
+  fill.style.backgroundColor = timerFillColor(safe);
+}
+
+function updateTimerDisplay(leftMs) {
+  const el = $('game-timer');
+  if (!el) return;
+  el.textContent = formatMmSs(leftMs);
+  el.classList.toggle('warning', leftMs > 0 && leftMs <= 10000);
+  el.classList.toggle('danger', leftMs <= 5000);
+}
+
+function stopSmoothTimer() {
+  if (timerAnimId) {
+    cancelAnimationFrame(timerAnimId);
+    timerAnimId = null;
+  }
+  smoothTimer.running = false;
+}
+
+function tickSmoothTimer() {
+  timerAnimId = null;
+  if (!smoothTimer.running) return;
+
+  let leftMs = 0;
+  let pct = smoothTimer.frozenPct;
+  if (smoothTimer.endsAt != null && smoothTimer.durationMs > 0) {
+    leftMs = Math.max(0, smoothTimer.endsAt - Date.now());
+    pct = (leftMs / smoothTimer.durationMs) * 100;
+  }
+
+  applyTimerFill(pct);
+  updateTimerDisplay(leftMs);
+
+  if (smoothTimer.endsAt != null && pct > 0) {
+    timerAnimId = requestAnimationFrame(tickSmoothTimer);
+  } else {
+    smoothTimer.running = false;
   }
 }
 
-function tickTimer() {
-  const el = $('game-timer');
-  if (!state || state.phase !== 'bidding' || !state.auctionEndsAt) {
-    if (el) el.textContent = '—';
-    stopTimerAnim();
+/**
+ * Recale le chrono local sur le remaining serveur (évite le décalage d'horloge
+ * qui affichait 00:00 alors que le serveur avait encore du temps).
+ */
+function syncSmoothTimer(s) {
+  const durationSec = s.settings?.bidDurationSec || 30;
+  smoothTimer.durationMs = durationSec * 1000;
+
+  stopSmoothTimer();
+
+  if (s.phase !== 'bidding') {
+    applyTimerFill(s.phase === 'lobby' ? 100 : 0);
+    updateTimerDisplay(0);
+    $('game-timer')?.classList.remove('warning', 'danger');
     return;
   }
-  const left = state.auctionEndsAt - Date.now();
-  el.textContent = formatMmSs(left);
-  el.classList.toggle('qdm-timer-urgent', left <= 5000);
-  timerRaf = requestAnimationFrame(tickTimer);
+
+  const leftMs = typeof s.auctionRemainingMs === 'number'
+    ? Math.max(0, s.auctionRemainingMs)
+    : (s.auctionEndsAt ? Math.max(0, s.auctionEndsAt - Date.now()) : 0);
+
+  smoothTimer.endsAt = Date.now() + leftMs;
+  smoothTimer.frozenPct = smoothTimer.durationMs
+    ? (leftMs / smoothTimer.durationMs) * 100
+    : 0;
+  smoothTimer.running = leftMs > 0;
+  applyTimerFill(smoothTimer.frozenPct);
+  updateTimerDisplay(leftMs);
+  if (smoothTimer.running) tickSmoothTimer();
 }
 
 function renderScores(listEl, players) {
@@ -151,6 +236,8 @@ function renderGame(s) {
     lastRes.style.display = 'none';
   }
 
+  syncSmoothTimer(s);
+
   if (s.phase === 'bidding') {
     $('bidding-opener').textContent = `Ouvreur de la manche : ${s.openerName}`;
     $('current-bid').textContent = s.currentBid > 0 ? String(s.currentBid) : '—';
@@ -165,12 +252,6 @@ function renderGame(s) {
     $('bid-history').innerHTML = (s.bids || []).slice().reverse().slice(0, 8).map((b) =>
       `<li><strong>${escapeHtml(b.name)}</strong> → <span class="qdm-score">${b.value}</span></li>`
     ).join('') || '<li class="share-hint">Aucune enchère pour l\'instant</li>';
-    stopTimerAnim();
-    tickTimer();
-  } else {
-    stopTimerAnim();
-    $('game-timer').textContent = '—';
-    $('game-timer').classList.remove('qdm-timer-urgent');
   }
 
   if (s.phase === 'action') {
@@ -216,19 +297,19 @@ function renderEnd(s) {
 function applyState(s) {
   state = s;
   if (!s) {
-    stopTimerAnim();
+    stopSmoothTimer();
     return;
   }
 
   if (s.phase === 'lobby') {
-    stopTimerAnim();
+    stopSmoothTimer();
     showScreen('screen-lobby');
     renderLobby(s);
   } else if (s.phase === 'bidding' || s.phase === 'action' || s.phase === 'voting') {
     showScreen('screen-game');
     renderGame(s);
   } else if (s.phase === 'end') {
-    stopTimerAnim();
+    stopSmoothTimer();
     showScreen('screen-end');
     renderEnd(s);
   }
