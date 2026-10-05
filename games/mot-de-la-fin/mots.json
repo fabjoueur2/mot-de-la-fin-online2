@@ -84,7 +84,6 @@
         "salle",
         "acteur",
         "écran",
-        "pop-corn",
         "bobine"
       ]
     },
@@ -348,7 +347,6 @@
         "image",
         "verre",
         "regarder",
-        "salle de bain",
         "face"
       ]
     },
@@ -445,7 +443,6 @@
       "interdits": [
         "eau",
         "savon",
-        "salle de bain",
         "mouiller",
         "shampoing",
         "serviette"
@@ -458,7 +455,6 @@
         "laver",
         "main",
         "odeur",
-        "salle de bain",
         "pain"
       ]
     },
@@ -613,7 +609,7 @@
         "billet",
         "voyage",
         "retard",
-        "SNCF"
+        "sncf"
       ]
     },
     {
@@ -633,7 +629,7 @@
         "station",
         "wagon",
         "ticket",
-        "Paris",
+        "paris",
         "tunnel",
         "rampe"
       ]
@@ -694,17 +690,6 @@
       ]
     },
     {
-      "mot": "Jeu vidéo",
-      "interdits": [
-        "manette",
-        "console",
-        "jouer",
-        "niveau",
-        "écran",
-        "gamer"
-      ]
-    },
-    {
       "mot": "Carte",
       "interdits": [
         "géographie",
@@ -712,7 +697,7 @@
         "ville",
         "route",
         "plan",
-        "Atlas"
+        "atlas"
       ]
     },
     {
@@ -887,7 +872,6 @@
         "pain",
         "jaune",
         "frigo",
-        "matière grasse",
         "cuisson"
       ]
     },
@@ -1022,6 +1006,3445 @@
         "menthe",
         "british"
       ]
+    },
+    {
+      "mot": "Carotte",
+      "interdits": [
+        "orange",
+        "légume",
+        "lapin",
+        "râpé",
+        "vitamine",
+        "racine"
+      ]
+    },
+    {
+      "mot": "Tomate",
+      "interdits": [
+        "rouge",
+        "salade",
+        "sauce",
+        "légume",
+        "jardin",
+        "ketchup"
+      ]
+    },
+    {
+      "mot": "Poire",
+      "interdits": [
+        "fruit",
+        "vert",
+        "juteux",
+        "arbre",
+        "confiture",
+        "williams"
+      ]
+    },
+    {
+      "mot": "Raisin",
+      "interdits": [
+        "grappe",
+        "vin",
+        "violet",
+        "fruit",
+        "pépin",
+        "vigne"
+      ]
+    },
+    {
+      "mot": "Fraise",
+      "interdits": [
+        "rouge",
+        "fruit",
+        "sucré",
+        "panier",
+        "jambe",
+        "été"
+      ]
+    },
+    {
+      "mot": "Cerise",
+      "interdits": [
+        "rouge",
+        "noyau",
+        "arbre",
+        "fruit",
+        "clafoutis",
+        "guigne"
+      ]
+    },
+    {
+      "mot": "Orange",
+      "interdits": [
+        "fruit",
+        "jus",
+        "agrume",
+        "pelure",
+        "vitamine",
+        "ronde"
+      ]
+    },
+    {
+      "mot": "Citron",
+      "interdits": [
+        "acide",
+        "jaune",
+        "agrume",
+        "jus",
+        "presse",
+        "zeste"
+      ]
+    },
+    {
+      "mot": "Melon",
+      "interdits": [
+        "été",
+        "orange",
+        "fruit",
+        "sucré",
+        "graine",
+        "pastèque"
+      ]
+    },
+    {
+      "mot": "Pastèque",
+      "interdits": [
+        "été",
+        "rouge",
+        "graine",
+        "fruit",
+        "tranche",
+        "jus"
+      ]
+    },
+    {
+      "mot": "Ananas",
+      "interdits": [
+        "tropical",
+        "fruit",
+        "couronne",
+        "jus",
+        "acide",
+        "tranche"
+      ]
+    },
+    {
+      "mot": "Kiwi",
+      "interdits": [
+        "vert",
+        "fruit",
+        "poilu",
+        "acide",
+        "graine",
+        "nouvelle"
+      ]
+    },
+    {
+      "mot": "Mangue",
+      "interdits": [
+        "tropical",
+        "fruit",
+        "jaune",
+        "sucré",
+        "noyau",
+        "smoothie"
+      ]
+    },
+    {
+      "mot": "Lait",
+      "interdits": [
+        "vache",
+        "blanc",
+        "boire",
+        "bol",
+        "chocolat",
+        "bouteille"
+      ]
+    },
+    {
+      "mot": "Sucre",
+      "interdits": [
+        "doux",
+        "blanc",
+        "café",
+        "grain",
+        "piment",
+        "sucré"
+      ]
+    },
+    {
+      "mot": "Sel",
+      "interdits": [
+        "cuisine",
+        "blanc",
+        "poivre",
+        "salé",
+        "mer",
+        "salière"
+      ]
+    },
+    {
+      "mot": "Poivre",
+      "interdits": [
+        "sel",
+        "épice",
+        "noir",
+        "moulin",
+        "piquant",
+        "grains"
+      ]
+    },
+    {
+      "mot": "Riz",
+      "interdits": [
+        "blanc",
+        "grain",
+        "asie",
+        "bol",
+        "cuit",
+        "pâtes"
+      ]
+    },
+    {
+      "mot": "Pâtes",
+      "interdits": [
+        "italien",
+        "spaghetti",
+        "sauce",
+        "blanches",
+        "farine",
+        "plat"
+      ]
+    },
+    {
+      "mot": "Steak",
+      "interdits": [
+        "viande",
+        "bœuf",
+        "grill",
+        "sang",
+        "assiette",
+        "fourchette"
+      ]
+    },
+    {
+      "mot": "Crevette",
+      "interdits": [
+        "mer",
+        "rose",
+        "coquillage",
+        "cocktail",
+        "queue",
+        "crustacé"
+      ]
+    },
+    {
+      "mot": "Glace",
+      "interdits": [
+        "froid",
+        "été",
+        "cornet",
+        "sucré",
+        "vanille",
+        "dessert"
+      ]
+    },
+    {
+      "mot": "Biscuit",
+      "interdits": [
+        "goûter",
+        "sucré",
+        "croquant",
+        "paquet",
+        "thé",
+        "cookie"
+      ]
+    },
+    {
+      "mot": "Yaourt",
+      "interdits": [
+        "lait",
+        "pot",
+        "sucré",
+        "nature",
+        "cuillère",
+        "frigo"
+      ]
+    },
+    {
+      "mot": "Miel",
+      "interdits": [
+        "abeille",
+        "doux",
+        "pot",
+        "ruche",
+        "sucré",
+        "cuillère"
+      ]
+    },
+    {
+      "mot": "Confiture",
+      "interdits": [
+        "fruit",
+        "pot",
+        "tartine",
+        "sucré",
+        "fraise",
+        "matin"
+      ]
+    },
+    {
+      "mot": "Moutarde",
+      "interdits": [
+        "jaune",
+        "sauce",
+        "piquant",
+        "dijon",
+        "pot",
+        "saucisse"
+      ]
+    },
+    {
+      "mot": "Ketchup",
+      "interdits": [
+        "tomate",
+        "rouge",
+        "sauce",
+        "frite",
+        "bouteille",
+        "sucré"
+      ]
+    },
+    {
+      "mot": "Mayonnaise",
+      "interdits": [
+        "œuf",
+        "sauce",
+        "blanche",
+        "frite",
+        "pot",
+        "huile"
+      ]
+    },
+    {
+      "mot": "Frite",
+      "interdits": [
+        "pomme",
+        "huile",
+        "sel",
+        "ketchup",
+        "croustillant",
+        "patate"
+      ]
+    },
+    {
+      "mot": "Hamburger",
+      "interdits": [
+        "pain",
+        "viande",
+        "fastfood",
+        "fromage",
+        "ketchup",
+        "steak"
+      ]
+    },
+    {
+      "mot": "Sandwich",
+      "interdits": [
+        "pain",
+        "jambon",
+        "beurre",
+        "déjeuner",
+        "tranche",
+        "manger"
+      ]
+    },
+    {
+      "mot": "Jambon",
+      "interdits": [
+        "cochon",
+        "tranche",
+        "sandwich",
+        "rose",
+        "charcuterie",
+        "sel"
+      ]
+    },
+    {
+      "mot": "Saucisse",
+      "interdits": [
+        "cochon",
+        "grill",
+        "moutarde",
+        "barbecue",
+        "chair",
+        "boyau"
+      ]
+    },
+    {
+      "mot": "Oiseau",
+      "interdits": [
+        "vol",
+        "aile",
+        "plume",
+        "nid",
+        "bec",
+        "ciel"
+      ]
+    },
+    {
+      "mot": "Cheval",
+      "interdits": [
+        "galop",
+        "ferme",
+        "selle",
+        "crinière",
+        "écurie",
+        "cavalier"
+      ]
+    },
+    {
+      "mot": "Vache",
+      "interdits": [
+        "lait",
+        "ferme",
+        "meuh",
+        "pré",
+        "fromage",
+        "corne"
+      ]
+    },
+    {
+      "mot": "Cochon",
+      "interdits": [
+        "ferme",
+        "rose",
+        "grognement",
+        "jambon",
+        "boue",
+        "truie"
+      ]
+    },
+    {
+      "mot": "Mouton",
+      "interdits": [
+        "laine",
+        "ferme",
+        "bêler",
+        "pré",
+        "troupeau",
+        "agneau"
+      ]
+    },
+    {
+      "mot": "Poule",
+      "interdits": [
+        "œuf",
+        "ferme",
+        "plume",
+        "coq",
+        "glousser",
+        "basse"
+      ]
+    },
+    {
+      "mot": "Canard",
+      "interdits": [
+        "étang",
+        "coin",
+        "plume",
+        "nage",
+        "bec",
+        "foie"
+      ]
+    },
+    {
+      "mot": "Lapin",
+      "interdits": [
+        "carotte",
+        "oreille",
+        "sauter",
+        "poil",
+        "terrier",
+        "pâques"
+      ]
+    },
+    {
+      "mot": "Souris",
+      "interdits": [
+        "fromage",
+        "petit",
+        "chat",
+        "grignoter",
+        "queue",
+        "rongeur"
+      ]
+    },
+    {
+      "mot": "Éléphant",
+      "interdits": [
+        "trompe",
+        "afrique",
+        "gris",
+        "ivoire",
+        "gros",
+        "savane"
+      ]
+    },
+    {
+      "mot": "Lion",
+      "interdits": [
+        "rugir",
+        "afrique",
+        "crinière",
+        "roi",
+        "savane",
+        "félin"
+      ]
+    },
+    {
+      "mot": "Tigre",
+      "interdits": [
+        "rayure",
+        "félin",
+        "jungle",
+        "orange",
+        "rugir",
+        "asie"
+      ]
+    },
+    {
+      "mot": "Ours",
+      "interdits": [
+        "forêt",
+        "miel",
+        "poil",
+        "hiver",
+        "grotte",
+        "brun"
+      ]
+    },
+    {
+      "mot": "Loup",
+      "interdits": [
+        "hurler",
+        "forêt",
+        "meute",
+        "chien",
+        "plein",
+        "fable"
+      ]
+    },
+    {
+      "mot": "Renard",
+      "interdits": [
+        "roux",
+        "forêt",
+        "rusé",
+        "queue",
+        "poule",
+        "goupil"
+      ]
+    },
+    {
+      "mot": "Cerf",
+      "interdits": [
+        "bois",
+        "forêt",
+        "chasse",
+        "biche",
+        "ramure"
+      ]
+    },
+    {
+      "mot": "Singe",
+      "interdits": [
+        "banane",
+        "arbre",
+        "grimpe",
+        "zoo",
+        "queue",
+        "primates"
+      ]
+    },
+    {
+      "mot": "Dauphin",
+      "interdits": [
+        "mer",
+        "intelligent",
+        "nage",
+        "sauter",
+        "mammifère",
+        "océan"
+      ]
+    },
+    {
+      "mot": "Baleine",
+      "interdits": [
+        "mer",
+        "énorme",
+        "souffle",
+        "océan",
+        "mammifère",
+        "bleu"
+      ]
+    },
+    {
+      "mot": "Requin",
+      "interdits": [
+        "mer",
+        "dent",
+        "danger",
+        "nage",
+        "aileron",
+        "attaque"
+      ]
+    },
+    {
+      "mot": "Tortue",
+      "interdits": [
+        "carapace",
+        "lent",
+        "nage",
+        "âge",
+        "terre",
+        "mer"
+      ]
+    },
+    {
+      "mot": "Grenouille",
+      "interdits": [
+        "étang",
+        "sauter",
+        "vert",
+        "crapaud",
+        "croasser",
+        "mare"
+      ]
+    },
+    {
+      "mot": "Serpent",
+      "interdits": [
+        "ramper",
+        "venin",
+        "peau",
+        "siffler",
+        "reptile",
+        "morsure"
+      ]
+    },
+    {
+      "mot": "Abeille",
+      "interdits": [
+        "miel",
+        "piqûre",
+        "ruche",
+        "fleur",
+        "bourdon",
+        "essaim"
+      ]
+    },
+    {
+      "mot": "Papillon",
+      "interdits": [
+        "aile",
+        "fleur",
+        "chenille",
+        "vol",
+        "couleur",
+        "insecte"
+      ]
+    },
+    {
+      "mot": "Fourmi",
+      "interdits": [
+        "colonie",
+        "petit",
+        "travail",
+        "insecte",
+        "file",
+        "pique"
+      ]
+    },
+    {
+      "mot": "Araignée",
+      "interdits": [
+        "toile",
+        "huit",
+        "patte",
+        "venin",
+        "plafond",
+        "insecte"
+      ]
+    },
+    {
+      "mot": "Escargot",
+      "interdits": [
+        "coquille",
+        "lent",
+        "bave",
+        "jardin",
+        "pluie",
+        "antenne"
+      ]
+    },
+    {
+      "mot": "Maison",
+      "interdits": [
+        "habiter",
+        "toit",
+        "porte",
+        "fenêtre",
+        "mur",
+        "foyer"
+      ]
+    },
+    {
+      "mot": "Appartement",
+      "interdits": [
+        "immeuble",
+        "louer",
+        "étage",
+        "porte",
+        "voisin",
+        "studio"
+      ]
+    },
+    {
+      "mot": "Porte",
+      "interdits": [
+        "ouvrir",
+        "fermer",
+        "clé",
+        "entrée",
+        "poignée",
+        "seuil"
+      ]
+    },
+    {
+      "mot": "Fenêtre",
+      "interdits": [
+        "verre",
+        "ouvrir",
+        "vue",
+        "rideau",
+        "volet",
+        "cadre"
+      ]
+    },
+    {
+      "mot": "Mur",
+      "interdits": [
+        "brique",
+        "peinture",
+        "maison",
+        "cloison",
+        "plâtre",
+        "solide"
+      ]
+    },
+    {
+      "mot": "Toit",
+      "interdits": [
+        "maison",
+        "tuile",
+        "pluie",
+        "cheminée",
+        "combles",
+        "couvrir"
+      ]
+    },
+    {
+      "mot": "Cuisine",
+      "interdits": [
+        "cuisiner",
+        "four",
+        "frigo",
+        "plat",
+        "manger",
+        "évier"
+      ]
+    },
+    {
+      "mot": "Salon",
+      "interdits": [
+        "canapé",
+        "télé",
+        "table",
+        "recevoir",
+        "pièce",
+        "fauteuil"
+      ]
+    },
+    {
+      "mot": "Chambre",
+      "interdits": [
+        "dormir",
+        "lit",
+        "armoire",
+        "nuit",
+        "oreiller",
+        "repos"
+      ]
+    },
+    {
+      "mot": "Bureau",
+      "interdits": [
+        "travail",
+        "chaise",
+        "ordinateur",
+        "table",
+        "écrire",
+        "lampe"
+      ]
+    },
+    {
+      "mot": "Balcon",
+      "interdits": [
+        "extérieur",
+        "étage",
+        "vue",
+        "plante",
+        "railing",
+        "appart"
+      ]
+    },
+    {
+      "mot": "Cave",
+      "interdits": [
+        "sous",
+        "vin",
+        "sombre",
+        "humidité",
+        "escalier",
+        "stockage"
+      ]
+    },
+    {
+      "mot": "Grenier",
+      "interdits": [
+        "haut",
+        "toit",
+        "carton",
+        "poussière",
+        "souvenir",
+        "combles"
+      ]
+    },
+    {
+      "mot": "Garage",
+      "interdits": [
+        "voiture",
+        "porte",
+        "outils",
+        "box",
+        "stationner",
+        "atelier"
+      ]
+    },
+    {
+      "mot": "Armoire",
+      "interdits": [
+        "vêtement",
+        "ranger",
+        "porte",
+        "penderie",
+        "meuble",
+        "tiroir"
+      ]
+    },
+    {
+      "mot": "Lampe",
+      "interdits": [
+        "lumière",
+        "ampoule",
+        "allumer",
+        "abat",
+        "électricité",
+        "veille"
+      ]
+    },
+    {
+      "mot": "Tapis",
+      "interdits": [
+        "sol",
+        "pied",
+        "tissu",
+        "salon",
+        "doux",
+        "moquette"
+      ]
+    },
+    {
+      "mot": "Couverture",
+      "interdits": [
+        "chaud",
+        "lit",
+        "nuit",
+        "laine",
+        "dormir",
+        "plaid"
+      ]
+    },
+    {
+      "mot": "Drap",
+      "interdits": [
+        "lit",
+        "blanc",
+        "dormir",
+        "matelas",
+        "changer",
+        "drapeau"
+      ]
+    },
+    {
+      "mot": "Serviette",
+      "interdits": [
+        "sécher",
+        "bain",
+        "douche",
+        "tissu",
+        "main",
+        "plage"
+      ]
+    },
+    {
+      "mot": "Shampoing",
+      "interdits": [
+        "cheveux",
+        "laver",
+        "douche",
+        "mousse",
+        "bouteille",
+        "rinçage"
+      ]
+    },
+    {
+      "mot": "Brosse",
+      "interdits": [
+        "cheveux",
+        "dents",
+        "peigner",
+        "poil",
+        "nettoyer",
+        "manches"
+      ]
+    },
+    {
+      "mot": "Peigne",
+      "interdits": [
+        "cheveux",
+        "démêler",
+        "coiffure",
+        "dent",
+        "brosse",
+        "tête"
+      ]
+    },
+    {
+      "mot": "Ciseaux",
+      "interdits": [
+        "couper",
+        "lame",
+        "papier",
+        "cheveux",
+        "paire",
+        "couture"
+      ]
+    },
+    {
+      "mot": "Aiguille",
+      "interdits": [
+        "coudre",
+        "fil",
+        "piqûre",
+        "métal",
+        "trou",
+        "couture"
+      ]
+    },
+    {
+      "mot": "Fil",
+      "interdits": [
+        "coudre",
+        "bobine",
+        "tissu",
+        "aiguille",
+        "nouer",
+        "couture"
+      ]
+    },
+    {
+      "mot": "Fermeture",
+      "interdits": [
+        "zip",
+        "vêtement",
+        "glisser",
+        "veste",
+        "pantalon",
+        "ouvrir"
+      ]
+    },
+    {
+      "mot": "Chaussette",
+      "interdits": [
+        "pied",
+        "paire",
+        "chaussure",
+        "laine",
+        "orteil",
+        "bas"
+      ]
+    },
+    {
+      "mot": "Botte",
+      "interdits": [
+        "pied",
+        "pluie",
+        "cuir",
+        "talon",
+        "chaussure",
+        "monter"
+      ]
+    },
+    {
+      "mot": "Sandale",
+      "interdits": [
+        "été",
+        "pied",
+        "ouverte",
+        "plage",
+        "tong",
+        "bride"
+      ]
+    },
+    {
+      "mot": "Jean",
+      "interdits": [
+        "bleu",
+        "pantalon",
+        "denim",
+        "poche",
+        "vêtement",
+        "casual"
+      ]
+    },
+    {
+      "mot": "Short",
+      "interdits": [
+        "été",
+        "jambe",
+        "court",
+        "sport",
+        "plage",
+        "pantalon"
+      ]
+    },
+    {
+      "mot": "Jupe",
+      "interdits": [
+        "femme",
+        "jambe",
+        "robe",
+        "tissu",
+        "vêtement",
+        "taille"
+      ]
+    },
+    {
+      "mot": "Robe",
+      "interdits": [
+        "femme",
+        "vêtement",
+        "soirée",
+        "tissu",
+        "longue",
+        "habiller"
+      ]
+    },
+    {
+      "mot": "Pull",
+      "interdits": [
+        "hiver",
+        "laine",
+        "chaud",
+        "manche",
+        "tricot",
+        "couvrir"
+      ]
+    },
+    {
+      "mot": "Veste",
+      "interdits": [
+        "dessus",
+        "froid",
+        "manche",
+        "fermeture",
+        "poche",
+        "manteau"
+      ]
+    },
+    {
+      "mot": "Gant",
+      "interdits": [
+        "main",
+        "hiver",
+        "froid",
+        "doigt",
+        "paire",
+        "laine"
+      ]
+    },
+    {
+      "mot": "Bonnet",
+      "interdits": [
+        "tête",
+        "hiver",
+        "froid",
+        "laine",
+        "oreille",
+        "chaud"
+      ]
+    },
+    {
+      "mot": "Casquette",
+      "interdits": [
+        "tête",
+        "soleil",
+        "visière",
+        "sport",
+        "baseball",
+        "été"
+      ]
+    },
+    {
+      "mot": "Serrure",
+      "interdits": [
+        "porte",
+        "clé",
+        "fermer",
+        "cadenas",
+        "sécurité",
+        "entrer"
+      ]
+    },
+    {
+      "mot": "Cadenas",
+      "interdits": [
+        "clé",
+        "fermer",
+        "vélo",
+        "sécurité",
+        "métal",
+        "chaîne"
+      ]
+    },
+    {
+      "mot": "Argent",
+      "interdits": [
+        "euro",
+        "payer",
+        "billets",
+        "pièce",
+        "banque",
+        "riche"
+      ]
+    },
+    {
+      "mot": "Pièce",
+      "interdits": [
+        "monnaie",
+        "métal",
+        "centime",
+        "portefeuille",
+        "rond",
+        "payer"
+      ]
+    },
+    {
+      "mot": "Billet",
+      "interdits": [
+        "argent",
+        "papier",
+        "euro",
+        "banque",
+        "portefeuille",
+        "payer"
+      ]
+    },
+    {
+      "mot": "Magasin",
+      "interdits": [
+        "acheter",
+        "vitrine",
+        "caisse",
+        "rayon",
+        "commerce",
+        "client"
+      ]
+    },
+    {
+      "mot": "Hôpital",
+      "interdits": [
+        "malade",
+        "docteur",
+        "urgence",
+        "lit",
+        "soigner",
+        "infirmière"
+      ]
+    },
+    {
+      "mot": "Docteur",
+      "interdits": [
+        "médecin",
+        "malade",
+        "ordonnance",
+        "blouse",
+        "stéthoscope",
+        "soigner"
+      ]
+    },
+    {
+      "mot": "Professeur",
+      "interdits": [
+        "école",
+        "enseigner",
+        "classe",
+        "tableau",
+        "élève",
+        "cours"
+      ]
+    },
+    {
+      "mot": "Élève",
+      "interdits": [
+        "école",
+        "apprendre",
+        "cahier",
+        "classe",
+        "devoir",
+        "enfant"
+      ]
+    },
+    {
+      "mot": "Cahier",
+      "interdits": [
+        "écrire",
+        "école",
+        "page",
+        "ligne",
+        "stylo",
+        "couverture"
+      ]
+    },
+    {
+      "mot": "Crayon",
+      "interdits": [
+        "écrire",
+        "mine",
+        "gomme",
+        "papier",
+        "dessin",
+        "bois"
+      ]
+    },
+    {
+      "mot": "Gomme",
+      "interdits": [
+        "effacer",
+        "crayon",
+        "erreur",
+        "caoutchouc",
+        "école",
+        "trace"
+      ]
+    },
+    {
+      "mot": "Tableau",
+      "interdits": [
+        "classe",
+        "craie",
+        "écrire",
+        "noir",
+        "professeur",
+        "effacer"
+      ]
+    },
+    {
+      "mot": "Craie",
+      "interdits": [
+        "tableau",
+        "écrire",
+        "blanc",
+        "école",
+        "poussière",
+        "couleur"
+      ]
+    },
+    {
+      "mot": "Récréation",
+      "interdits": [
+        "école",
+        "jouer",
+        "pause",
+        "cour",
+        "enfant",
+        "sonnerie"
+      ]
+    },
+    {
+      "mot": "Cantine",
+      "interdits": [
+        "école",
+        "manger",
+        "plateau",
+        "midi",
+        "élève",
+        "repas"
+      ]
+    },
+    {
+      "mot": "Bibliothèque",
+      "interdits": [
+        "livre",
+        "lire",
+        "silence",
+        "emprunt",
+        "rayon",
+        "savoir"
+      ]
+    },
+    {
+      "mot": "Théâtre",
+      "interdits": [
+        "scène",
+        "acteur",
+        "rideau",
+        "pièce",
+        "spectacle",
+        "public"
+      ]
+    },
+    {
+      "mot": "Concert",
+      "interdits": [
+        "musique",
+        "scène",
+        "chanteur",
+        "public",
+        "billet",
+        "live"
+      ]
+    },
+    {
+      "mot": "Chanson",
+      "interdits": [
+        "musique",
+        "parole",
+        "chanter",
+        "refrain",
+        "mélodie",
+        "artiste"
+      ]
+    },
+    {
+      "mot": "Radio",
+      "interdits": [
+        "écouter",
+        "antenne",
+        "fréquence",
+        "musique",
+        "animateur",
+        "onde"
+      ]
+    },
+    {
+      "mot": "Film",
+      "interdits": [
+        "cinéma",
+        "acteur",
+        "histoire",
+        "écran",
+        "réalisateur",
+        "scène"
+      ]
+    },
+    {
+      "mot": "Appareil",
+      "interdits": [
+        "photo",
+        "numérique",
+        "objectif",
+        "flash",
+        "cliché",
+        "batterie"
+      ]
+    },
+    {
+      "mot": "Clavier",
+      "interdits": [
+        "touche",
+        "ordinateur",
+        "écrire",
+        "lettre",
+        "souris",
+        "tape"
+      ]
+    },
+    {
+      "mot": "Écran",
+      "interdits": [
+        "ordinateur",
+        "télé",
+        "image",
+        "pixel",
+        "afficher",
+        "moniteur"
+      ]
+    },
+    {
+      "mot": "Internet",
+      "interdits": [
+        "web",
+        "réseau",
+        "connecter",
+        "site",
+        "wifi",
+        "navigateur"
+      ]
+    },
+    {
+      "mot": "Message",
+      "interdits": [
+        "texte",
+        "envoyer",
+        "sms",
+        "écrire",
+        "répondre",
+        "chat"
+      ]
+    },
+    {
+      "mot": "Batterie",
+      "interdits": [
+        "charge",
+        "énergie",
+        "téléphone",
+        "pile",
+        "autonomie",
+        "électrique"
+      ]
+    },
+    {
+      "mot": "Chargeur",
+      "interdits": [
+        "batterie",
+        "prise",
+        "téléphone",
+        "cable",
+        "électricité",
+        "brancher"
+      ]
+    },
+    {
+      "mot": "Cable",
+      "interdits": [
+        "brancher",
+        "électricité",
+        "prise",
+        "fil",
+        "usb",
+        "connecter"
+      ]
+    },
+    {
+      "mot": "Prise",
+      "interdits": [
+        "électricité",
+        "brancher",
+        "mur",
+        "courant",
+        "fiche",
+        "voltage"
+      ]
+    },
+    {
+      "mot": "Interrupteur",
+      "interdits": [
+        "lumière",
+        "allumer",
+        "éteindre",
+        "mur",
+        "bouton",
+        "courant"
+      ]
+    },
+    {
+      "mot": "Fer",
+      "interdits": [
+        "repasser",
+        "linge",
+        "vapeur",
+        "pli",
+        "chemise",
+        "chaud"
+      ]
+    },
+    {
+      "mot": "Torchon",
+      "interdits": [
+        "essuyer",
+        "cuisine",
+        "tissu",
+        "vaisselle",
+        "sec",
+        "linge"
+      ]
+    },
+    {
+      "mot": "Assiette",
+      "interdits": [
+        "manger",
+        "rond",
+        "table",
+        "vaisselle",
+        "plat",
+        "repas"
+      ]
+    },
+    {
+      "mot": "Bol",
+      "interdits": [
+        "soupe",
+        "céréales",
+        "rond",
+        "manger",
+        "petit",
+        "contenu"
+      ]
+    },
+    {
+      "mot": "Verre",
+      "interdits": [
+        "boire",
+        "eau",
+        "transparent",
+        "table",
+        "cassable",
+        "vin"
+      ]
+    },
+    {
+      "mot": "Tasse",
+      "interdits": [
+        "café",
+        "thé",
+        "anse",
+        "boire",
+        "chaud",
+        "petit"
+      ]
+    },
+    {
+      "mot": "Couteau",
+      "interdits": [
+        "couper",
+        "lame",
+        "tranchant",
+        "cuisine",
+        "fourchette",
+        "métal"
+      ]
+    },
+    {
+      "mot": "Fourchette",
+      "interdits": [
+        "piquer",
+        "dents",
+        "manger",
+        "table",
+        "couteau",
+        "métal"
+      ]
+    },
+    {
+      "mot": "Cuillère",
+      "interdits": [
+        "soupe",
+        "manger",
+        "rond",
+        "thé",
+        "métal",
+        "bol"
+      ]
+    },
+    {
+      "mot": "Couvercle",
+      "interdits": [
+        "casserole",
+        "fermer",
+        "vapeur",
+        "poignée",
+        "pot",
+        "couvrir"
+      ]
+    },
+    {
+      "mot": "Planche",
+      "interdits": [
+        "couper",
+        "bois",
+        "cuisine",
+        "couteau",
+        "légume",
+        "surface"
+      ]
+    },
+    {
+      "mot": "Entonnoir",
+      "interdits": [
+        "verser",
+        "liquide",
+        "trou",
+        "cuisine",
+        "bouteille",
+        "remplir"
+      ]
+    },
+    {
+      "mot": "Bouteille",
+      "interdits": [
+        "verre",
+        "liquide",
+        "bouchon",
+        "eau",
+        "vin",
+        "plastique"
+      ]
+    },
+    {
+      "mot": "Boîte",
+      "interdits": [
+        "ranger",
+        "carton",
+        "couvercle",
+        "contenir",
+        "métal",
+        "emballage"
+      ]
+    },
+    {
+      "mot": "Papier",
+      "interdits": [
+        "écrire",
+        "feuille",
+        "blanc",
+        "imprimante",
+        "recyclage",
+        "cahier"
+      ]
+    },
+    {
+      "mot": "Enveloppe",
+      "interdits": [
+        "lettre",
+        "courrier",
+        "timbre",
+        "fermer",
+        "adresse",
+        "poste"
+      ]
+    },
+    {
+      "mot": "Timbre",
+      "interdits": [
+        "lettre",
+        "poste",
+        "coller",
+        "affranchir",
+        "collection",
+        "enveloppe"
+      ]
+    },
+    {
+      "mot": "Lettre",
+      "interdits": [
+        "écrire",
+        "courrier",
+        "poste",
+        "enveloppe",
+        "message",
+        "papier"
+      ]
+    },
+    {
+      "mot": "Reçu",
+      "interdits": [
+        "preuve",
+        "achat",
+        "caisse",
+        "ticket",
+        "payer",
+        "magasin"
+      ]
+    },
+    {
+      "mot": "Ticket",
+      "interdits": [
+        "cinéma",
+        "métro",
+        "entrée",
+        "billet",
+        "contrôle",
+        "queue"
+      ]
+    },
+    {
+      "mot": "Identité",
+      "interdits": [
+        "carte",
+        "nom",
+        "photo",
+        "âge",
+        "officielle",
+        "pièce"
+      ]
+    },
+    {
+      "mot": "Moto",
+      "interdits": [
+        "deux",
+        "roue",
+        "casque",
+        "vitesse",
+        "guidon",
+        "moteur"
+      ]
+    },
+    {
+      "mot": "Train",
+      "interdits": [
+        "rail",
+        "gare",
+        "wagon",
+        "voyage",
+        "billet",
+        "locomotive"
+      ]
+    },
+    {
+      "mot": "Hélicoptère",
+      "interdits": [
+        "hélice",
+        "voler",
+        "secours",
+        "hover",
+        "pilote",
+        "rotor"
+      ]
+    },
+    {
+      "mot": "Camion",
+      "interdits": [
+        "transport",
+        "route",
+        "cargaison",
+        "gros",
+        "chauffeur",
+        "benne"
+      ]
+    },
+    {
+      "mot": "Tracteur",
+      "interdits": [
+        "ferme",
+        "champ",
+        "agriculteur",
+        "roue",
+        "labour",
+        "engin"
+      ]
+    },
+    {
+      "mot": "Ambulance",
+      "interdits": [
+        "urgence",
+        "hôpital",
+        "sirène",
+        "secours",
+        "malade",
+        "blanc"
+      ]
+    },
+    {
+      "mot": "Pompier",
+      "interdits": [
+        "feu",
+        "incendie",
+        "camion",
+        "eau",
+        "casque",
+        "sauver"
+      ]
+    },
+    {
+      "mot": "Police",
+      "interdits": [
+        "ordre",
+        "agent",
+        "sirène",
+        "amende",
+        "loi",
+        "commissariat"
+      ]
+    },
+    {
+      "mot": "Soldat",
+      "interdits": [
+        "armée",
+        "guerre",
+        "uniforme",
+        "combat",
+        "caserne",
+        "défense"
+      ]
+    },
+    {
+      "mot": "Roi",
+      "interdits": [
+        "couronne",
+        "reine",
+        "château",
+        "trône",
+        "royaume",
+        "pouvoir"
+      ]
+    },
+    {
+      "mot": "Reine",
+      "interdits": [
+        "couronne",
+        "roi",
+        "château",
+        "trône",
+        "royaume",
+        "majesté"
+      ]
+    },
+    {
+      "mot": "Prince",
+      "interdits": [
+        "roi",
+        "château",
+        "héritier",
+        "couronne",
+        "royal",
+        "fils"
+      ]
+    },
+    {
+      "mot": "Princesse",
+      "interdits": [
+        "roi",
+        "château",
+        "couronne",
+        "conte",
+        "robe",
+        "fille"
+      ]
+    },
+    {
+      "mot": "Château",
+      "interdits": [
+        "roi",
+        "tour",
+        "pierre",
+        "moyenâge",
+        "fort",
+        "donjon"
+      ]
+    },
+    {
+      "mot": "Dragon",
+      "interdits": [
+        "feu",
+        "aile",
+        "légende",
+        "écaille",
+        "mythe",
+        "souffle"
+      ]
+    },
+    {
+      "mot": "Fée",
+      "interdits": [
+        "magie",
+        "aile",
+        "baguette",
+        "conte",
+        "poussière",
+        "souhaite"
+      ]
+    },
+    {
+      "mot": "Sorcière",
+      "interdits": [
+        "balai",
+        "magie",
+        "chaudron",
+        "sort",
+        "chapeau",
+        "halloween"
+      ]
+    },
+    {
+      "mot": "Fantôme",
+      "interdits": [
+        "peur",
+        "blanc",
+        "esprit",
+        "maison",
+        "hanter",
+        "transparent"
+      ]
+    },
+    {
+      "mot": "Monstre",
+      "interdits": [
+        "peur",
+        "hideux",
+        "conte",
+        "effrayer",
+        "créature",
+        "nuit"
+      ]
+    },
+    {
+      "mot": "Pirate",
+      "interdits": [
+        "bateau",
+        "trésor",
+        "épée",
+        "île",
+        "bandana",
+        "abordage"
+      ]
+    },
+    {
+      "mot": "Trésor",
+      "interdits": [
+        "coffre",
+        "pirate",
+        "carte",
+        "riche",
+        "bijou"
+      ]
+    },
+    {
+      "mot": "Épée",
+      "interdits": [
+        "lame",
+        "combat",
+        "chevalier",
+        "métal",
+        "duel",
+        "arme"
+      ]
+    },
+    {
+      "mot": "Bouclier",
+      "interdits": [
+        "protéger",
+        "combat",
+        "chevalier",
+        "défense",
+        "rond",
+        "arme"
+      ]
+    },
+    {
+      "mot": "Arc",
+      "interdits": [
+        "flèche",
+        "tirer",
+        "corde",
+        "cible",
+        "archer",
+        "arme"
+      ]
+    },
+    {
+      "mot": "Flèche",
+      "interdits": [
+        "arc",
+        "tirer",
+        "pointe",
+        "cible",
+        "voler",
+        "carquois"
+      ]
+    },
+    {
+      "mot": "Bombe",
+      "interdits": [
+        "explosion",
+        "danger",
+        "guerre",
+        "détonateur",
+        "détruit",
+        "mèche"
+      ]
+    },
+    {
+      "mot": "Fusil",
+      "interdits": [
+        "tirer",
+        "balle",
+        "chasse",
+        "arme",
+        "canon",
+        "détente"
+      ]
+    },
+    {
+      "mot": "Boule",
+      "interdits": [
+        "rond",
+        "jouer",
+        "lancer",
+        "forme",
+        "sphère",
+        "balle"
+      ]
+    },
+    {
+      "mot": "Foot",
+      "interdits": [
+        "ballon",
+        "but",
+        "équipe",
+        "terrain",
+        "gardien",
+        "match"
+      ]
+    },
+    {
+      "mot": "Basket",
+      "interdits": [
+        "panier",
+        "ballon",
+        "dunk",
+        "équipe",
+        "terrain",
+        "match"
+      ]
+    },
+    {
+      "mot": "Tennis",
+      "interdits": [
+        "raquette",
+        "balle",
+        "filet",
+        "court",
+        "service",
+        "set"
+      ]
+    },
+    {
+      "mot": "Natation",
+      "interdits": [
+        "eau",
+        "nager",
+        "piscine",
+        "brasse",
+        "longueur",
+        "maillot"
+      ]
+    },
+    {
+      "mot": "Course",
+      "interdits": [
+        "courir",
+        "vitesse",
+        "piste",
+        "marathon",
+        "chrono",
+        "sprint"
+      ]
+    },
+    {
+      "mot": "Ski",
+      "interdits": [
+        "neige",
+        "montagne",
+        "glisse",
+        "bâton",
+        "piste",
+        "hiver"
+      ]
+    },
+    {
+      "mot": "Surf",
+      "interdits": [
+        "vague",
+        "planche",
+        "mer",
+        "océan",
+        "équilib",
+        "plage"
+      ]
+    },
+    {
+      "mot": "Golf",
+      "interdits": [
+        "balle",
+        "club",
+        "trou",
+        "green",
+        "parcours",
+        "swing"
+      ]
+    },
+    {
+      "mot": "Boxe",
+      "interdits": [
+        "coup",
+        "gant",
+        "ring",
+        "combat",
+        "poing",
+        "match"
+      ]
+    },
+    {
+      "mot": "Judo",
+      "interdits": [
+        "tapis",
+        "ceinture",
+        "japon",
+        "projection",
+        "kimono",
+        "combat"
+      ]
+    },
+    {
+      "mot": "Yoga",
+      "interdits": [
+        "souplesse",
+        "respiration",
+        "tapis",
+        "zen",
+        "posture",
+        "calme"
+      ]
+    },
+    {
+      "mot": "Gym",
+      "interdits": [
+        "sport",
+        "musculation",
+        "salle",
+        "exercice",
+        "forme",
+        "haltère"
+      ]
+    },
+    {
+      "mot": "Mer",
+      "interdits": [
+        "eau",
+        "vague",
+        "sel",
+        "océan",
+        "bateau",
+        "plage"
+      ]
+    },
+    {
+      "mot": "Océan",
+      "interdits": [
+        "mer",
+        "vaste",
+        "vague",
+        "profondeur",
+        "bateau",
+        "bleu"
+      ]
+    },
+    {
+      "mot": "Lac",
+      "interdits": [
+        "eau",
+        "doux",
+        "barque",
+        "montagne",
+        "nager",
+        "rive"
+      ]
+    },
+    {
+      "mot": "Rivière",
+      "interdits": [
+        "eau",
+        "courant",
+        "pont",
+        "poisson",
+        "berge",
+        "fleuve"
+      ]
+    },
+    {
+      "mot": "Fleuve",
+      "interdits": [
+        "eau",
+        "large",
+        "embouchure",
+        "ville",
+        "bateau",
+        "courant"
+      ]
+    },
+    {
+      "mot": "Montagne",
+      "interdits": [
+        "haut",
+        "sommet",
+        "neige",
+        "escalade",
+        "vallée",
+        "altitude"
+      ]
+    },
+    {
+      "mot": "Vallée",
+      "interdits": [
+        "montagne",
+        "bas",
+        "rivière",
+        "vert",
+        "paysage",
+        "creux"
+      ]
+    },
+    {
+      "mot": "Forêt",
+      "interdits": [
+        "arbre",
+        "bois",
+        "ombre",
+        "animal",
+        "chemin",
+        "vert"
+      ]
+    },
+    {
+      "mot": "Arbre",
+      "interdits": [
+        "feuille",
+        "tronc",
+        "racine",
+        "bois",
+        "forêt",
+        "branche"
+      ]
+    },
+    {
+      "mot": "Feuille",
+      "interdits": [
+        "arbre",
+        "vert",
+        "automne",
+        "veine",
+        "chute",
+        "plante"
+      ]
+    },
+    {
+      "mot": "Rose",
+      "interdits": [
+        "fleur",
+        "épine",
+        "rouge",
+        "amour",
+        "pétale",
+        "bouquet"
+      ]
+    },
+    {
+      "mot": "Tulipe",
+      "interdits": [
+        "fleur",
+        "hollande",
+        "printemps",
+        "bulbe",
+        "jardin",
+        "pétale"
+      ]
+    },
+    {
+      "mot": "Herbe",
+      "interdits": [
+        "vert",
+        "pelouse",
+        "pousse",
+        "jardin",
+        "tondre",
+        "pré"
+      ]
+    },
+    {
+      "mot": "Pelouse",
+      "interdits": [
+        "herbe",
+        "jardin",
+        "tondre",
+        "vert",
+        "gazon",
+        "picnic"
+      ]
+    },
+    {
+      "mot": "Pierre",
+      "interdits": [
+        "dur",
+        "rocher",
+        "caillou",
+        "solide",
+        "minerai",
+        "minéral"
+      ]
+    },
+    {
+      "mot": "Sable",
+      "interdits": [
+        "plage",
+        "grain",
+        "désert",
+        "château",
+        "fin",
+        "mer"
+      ]
+    },
+    {
+      "mot": "Désert",
+      "interdits": [
+        "sable",
+        "chaud",
+        "sec",
+        "oasis",
+        "dune",
+        "chameau"
+      ]
+    },
+    {
+      "mot": "Nuage",
+      "interdits": [
+        "ciel",
+        "blanc",
+        "pluie",
+        "gris",
+        "fluffy",
+        "ombre"
+      ]
+    },
+    {
+      "mot": "Éclair",
+      "interdits": [
+        "orage",
+        "lumière",
+        "ciel",
+        "foudre",
+        "flash",
+        "danger"
+      ]
+    },
+    {
+      "mot": "Tonnerre",
+      "interdits": [
+        "orage",
+        "bruit",
+        "ciel",
+        "peur",
+        "grondement",
+        "éclair"
+      ]
+    },
+    {
+      "mot": "Tempête",
+      "interdits": [
+        "vent",
+        "fort",
+        "pluie",
+        "danger",
+        "mer",
+        "dégât"
+      ]
+    },
+    {
+      "mot": "Lune",
+      "interdits": [
+        "nuit",
+        "ciel",
+        "croissant",
+        "étoile",
+        "pleine",
+        "satellite"
+      ]
+    },
+    {
+      "mot": "Étoile",
+      "interdits": [
+        "ciel",
+        "nuit",
+        "briller",
+        "espace",
+        "constellation",
+        "lointain"
+      ]
+    },
+    {
+      "mot": "Ciel",
+      "interdits": [
+        "bleu",
+        "nuage",
+        "haut",
+        "avion",
+        "étoile",
+        "atmosphère"
+      ]
+    },
+    {
+      "mot": "Saison",
+      "interdits": [
+        "année",
+        "hiver",
+        "été",
+        "printemps",
+        "automne",
+        "cycle"
+      ]
+    },
+    {
+      "mot": "Printemps",
+      "interdits": [
+        "fleur",
+        "saison",
+        "doux",
+        "bourgeon",
+        "avril",
+        "renouveau"
+      ]
+    },
+    {
+      "mot": "Été",
+      "interdits": [
+        "chaud",
+        "soleil",
+        "vacances",
+        "plage",
+        "saison",
+        "juillet"
+      ]
+    },
+    {
+      "mot": "Automne",
+      "interdits": [
+        "feuille",
+        "tomber",
+        "saison",
+        "orange",
+        "rentrée",
+        "froid"
+      ]
+    },
+    {
+      "mot": "Hiver",
+      "interdits": [
+        "froid",
+        "neige",
+        "saison",
+        "manteau",
+        "décembre",
+        "glace"
+      ]
+    },
+    {
+      "mot": "Matin",
+      "interdits": [
+        "réveil",
+        "jour",
+        "petit",
+        "café",
+        "aube",
+        "début"
+      ]
+    },
+    {
+      "mot": "Midi",
+      "interdits": [
+        "déjeuner",
+        "soleil",
+        "heure",
+        "douze",
+        "pause",
+        "jour"
+      ]
+    },
+    {
+      "mot": "Soir",
+      "interdits": [
+        "nuit",
+        "dîner",
+        "coucher",
+        "fin",
+        "crépuscule",
+        "journée"
+      ]
+    },
+    {
+      "mot": "Nuit",
+      "interdits": [
+        "noir",
+        "dormir",
+        "lune",
+        "étoile",
+        "obscurité",
+        "sommeil"
+      ]
+    },
+    {
+      "mot": "Heure",
+      "interdits": [
+        "temps",
+        "montre",
+        "minute",
+        "horloge",
+        "passer",
+        "soixante"
+      ]
+    },
+    {
+      "mot": "Minute",
+      "interdits": [
+        "temps",
+        "seconde",
+        "heure",
+        "court",
+        "attendre",
+        "montre"
+      ]
+    },
+    {
+      "mot": "Seconde",
+      "interdits": [
+        "temps",
+        "minute",
+        "court",
+        "chrono",
+        "instant",
+        "rapide"
+      ]
+    },
+    {
+      "mot": "Jour",
+      "interdits": [
+        "soleil",
+        "vingtquatre",
+        "semaine",
+        "nuit",
+        "date",
+        "lumière"
+      ]
+    },
+    {
+      "mot": "Semaine",
+      "interdits": [
+        "sept",
+        "jour",
+        "lundi",
+        "travail",
+        "weekend",
+        "calendrier"
+      ]
+    },
+    {
+      "mot": "Mois",
+      "interdits": [
+        "année",
+        "trente",
+        "calendrier",
+        "janvier",
+        "date",
+        "période"
+      ]
+    },
+    {
+      "mot": "Année",
+      "interdits": [
+        "douze",
+        "mois",
+        "âge",
+        "calendrier",
+        "janvier",
+        "temps"
+      ]
+    },
+    {
+      "mot": "Anniversaire",
+      "interdits": [
+        "fête",
+        "âge",
+        "gâteau",
+        "bougie",
+        "cadeau"
+      ]
+    },
+    {
+      "mot": "Pâques",
+      "interdits": [
+        "œuf",
+        "chocolat",
+        "lapin",
+        "fête",
+        "printemps",
+        "cloche"
+      ]
+    },
+    {
+      "mot": "Halloween",
+      "interdits": [
+        "citrouille",
+        "fantôme",
+        "bonbon",
+        "masque",
+        "peur",
+        "octobre"
+      ]
+    },
+    {
+      "mot": "Mariage",
+      "interdits": [
+        "alliance",
+        "amour",
+        "fête",
+        "robe",
+        "époux",
+        "église"
+      ]
+    },
+    {
+      "mot": "Baptême",
+      "interdits": [
+        "bébé",
+        "église",
+        "eau",
+        "fête",
+        "parrain",
+        "religion"
+      ]
+    },
+    {
+      "mot": "Enterrement",
+      "interdits": [
+        "mort",
+        "cimetière",
+        "triste",
+        "cercueil",
+        "deuil",
+        "adieu"
+      ]
+    },
+    {
+      "mot": "Surprise",
+      "interdits": [
+        "inattendu",
+        "cadeau",
+        "fête",
+        "étonner",
+        "secret",
+        "wow"
+      ]
+    },
+    {
+      "mot": "Amour",
+      "interdits": [
+        "cœur",
+        "aimer",
+        "couple",
+        "sentiment",
+        "romance",
+        "bisou"
+      ]
+    },
+    {
+      "mot": "Amitié",
+      "interdits": [
+        "ami",
+        "lien",
+        "confiance",
+        "partager",
+        "copain",
+        "fidèle"
+      ]
+    },
+    {
+      "mot": "Famille",
+      "interdits": [
+        "parent",
+        "enfant",
+        "frère",
+        "sœur",
+        "foyer",
+        "proche"
+      ]
+    },
+    {
+      "mot": "Père",
+      "interdits": [
+        "papa",
+        "homme",
+        "parent",
+        "fils",
+        "fille",
+        "famille"
+      ]
+    },
+    {
+      "mot": "Mère",
+      "interdits": [
+        "maman",
+        "femme",
+        "parent",
+        "fils",
+        "fille",
+        "famille"
+      ]
+    },
+    {
+      "mot": "Frère",
+      "interdits": [
+        "sœur",
+        "garçon",
+        "famille",
+        "aîné",
+        "cadet",
+        "sibling"
+      ]
+    },
+    {
+      "mot": "Sœur",
+      "interdits": [
+        "frère",
+        "fille",
+        "famille",
+        "aînée",
+        "cadette",
+        "sibling"
+      ]
+    },
+    {
+      "mot": "Enfant",
+      "interdits": [
+        "petit",
+        "fils",
+        "fille",
+        "jouer",
+        "école",
+        "parent"
+      ]
+    },
+    {
+      "mot": "Bébé",
+      "interdits": [
+        "nouveau",
+        "couche",
+        "lait",
+        "berceau",
+        "pleurer",
+        "toutpetit"
+      ]
+    },
+    {
+      "mot": "Adolescent",
+      "interdits": [
+        "jeune",
+        "collège",
+        "puberté",
+        "crise",
+        "lycée",
+        "âge"
+      ]
+    },
+    {
+      "mot": "Adulte",
+      "interdits": [
+        "grand",
+        "âge",
+        "responsable",
+        "travail",
+        "mature",
+        "majeur"
+      ]
+    },
+    {
+      "mot": "Vieux",
+      "interdits": [
+        "âge",
+        "ancien",
+        "ride",
+        "retraite",
+        "senior"
+      ]
+    },
+    {
+      "mot": "Ami",
+      "interdits": [
+        "copain",
+        "amitié",
+        "proche",
+        "confiance",
+        "compagnie",
+        "pote"
+      ]
+    },
+    {
+      "mot": "Collègue",
+      "interdits": [
+        "travail",
+        "bureau",
+        "équipe",
+        "professionnel",
+        "job",
+        "open"
+      ]
+    },
+    {
+      "mot": "Patron",
+      "interdits": [
+        "chef",
+        "entreprise",
+        "boss",
+        "diriger",
+        "employé",
+        "travail"
+      ]
+    },
+    {
+      "mot": "Employé",
+      "interdits": [
+        "travail",
+        "salaire",
+        "bureau",
+        "contrat",
+        "patron",
+        "job"
+      ]
+    },
+    {
+      "mot": "Métier",
+      "interdits": [
+        "travail",
+        "profession",
+        "job",
+        "carrière",
+        "salaire",
+        "compétence"
+      ]
+    },
+    {
+      "mot": "Salaire",
+      "interdits": [
+        "argent",
+        "payer",
+        "mois",
+        "travail",
+        "fiche",
+        "revenu"
+      ]
+    },
+    {
+      "mot": "Voyage",
+      "interdits": [
+        "partir",
+        "valise",
+        "avion",
+        "découvrir",
+        "tourisme",
+        "destination"
+      ]
+    },
+    {
+      "mot": "Hôtel",
+      "interdits": [
+        "dormir",
+        "chambre",
+        "voyage",
+        "réception",
+        "étoile",
+        "nuit"
+      ]
+    },
+    {
+      "mot": "Tente",
+      "interdits": [
+        "camping",
+        "toile",
+        "dormir",
+        "piquet",
+        "nature",
+        "abri"
+      ]
+    },
+    {
+      "mot": "Boussole",
+      "interdits": [
+        "nord",
+        "direction",
+        "aiguille",
+        "orientation",
+        "magnétique",
+        "voyage"
+      ]
+    },
+    {
+      "mot": "Plan",
+      "interdits": [
+        "ville",
+        "rue",
+        "orientation",
+        "carte",
+        "itinéraire",
+        "dessin"
+      ]
+    },
+    {
+      "mot": "Rue",
+      "interdits": [
+        "ville",
+        "trottoir",
+        "voiture",
+        "adresse",
+        "nom",
+        "circulation"
+      ]
+    },
+    {
+      "mot": "Avenue",
+      "interdits": [
+        "rue",
+        "large",
+        "ville",
+        "arbre",
+        "boulevard",
+        "adresse"
+      ]
+    },
+    {
+      "mot": "Place",
+      "interdits": [
+        "ville",
+        "centrale",
+        "fontaine",
+        "rassemblement",
+        "publique",
+        "square"
+      ]
+    },
+    {
+      "mot": "Pont",
+      "interdits": [
+        "rivière",
+        "traverser",
+        "route",
+        "arche",
+        "eau",
+        "relier"
+      ]
+    },
+    {
+      "mot": "Tunnel",
+      "interdits": [
+        "souterrain",
+        "passer",
+        "montagne",
+        "noir",
+        "route",
+        "trou"
+      ]
+    },
+    {
+      "mot": "Tour",
+      "interdits": [
+        "haut",
+        "bâtiment",
+        "vue",
+        "immeuble",
+        "sommet",
+        "panorama"
+      ]
+    },
+    {
+      "mot": "Église",
+      "interdits": [
+        "religion",
+        "croix",
+        "prêtre",
+        "messe",
+        "clocher",
+        "prière"
+      ]
+    },
+    {
+      "mot": "Mosquée",
+      "interdits": [
+        "islam",
+        "prière",
+        "minaret",
+        "religion",
+        "tapis",
+        "vendredi"
+      ]
+    },
+    {
+      "mot": "Temple",
+      "interdits": [
+        "religion",
+        "prière",
+        "sacré",
+        "asie",
+        "culte",
+        "divinité"
+      ]
+    },
+    {
+      "mot": "Cimetière",
+      "interdits": [
+        "tombe",
+        "mort",
+        "fleur",
+        "deuil",
+        "pierre",
+        "silence"
+      ]
+    },
+    {
+      "mot": "Parc",
+      "interdits": [
+        "vert",
+        "banc",
+        "arbre",
+        "promenade",
+        "enfant",
+        "public"
+      ]
+    },
+    {
+      "mot": "Zoo",
+      "interdits": [
+        "animal",
+        "cage",
+        "visite",
+        "safari",
+        "espèce",
+        "enclos"
+      ]
+    },
+    {
+      "mot": "Cirque",
+      "interdits": [
+        "chapiteau",
+        "clown",
+        "spectacle",
+        "acrobate",
+        "tente",
+        "piste"
+      ]
+    },
+    {
+      "mot": "Clown",
+      "interdits": [
+        "cirque",
+        "nez",
+        "rire",
+        "maquillage",
+        "costume",
+        "comique"
+      ]
+    },
+    {
+      "mot": "Magicien",
+      "interdits": [
+        "tour",
+        "chapeau",
+        "lapin",
+        "illusion",
+        "spectacle",
+        "baguette"
+      ]
+    },
+    {
+      "mot": "Jongleur",
+      "interdits": [
+        "ballon",
+        "lancer",
+        "cirque",
+        "équilibre",
+        "spectacle",
+        "main"
+      ]
+    },
+    {
+      "mot": "Acrobate",
+      "interdits": [
+        "cirque",
+        "souplesse",
+        "trapèze",
+        "équilibre",
+        "spectacle",
+        "sauter"
+      ]
+    },
+    {
+      "mot": "Spectateur",
+      "interdits": [
+        "public",
+        "regarder",
+        "spectacle",
+        "assis",
+        "applaudir",
+        "salle"
+      ]
+    },
+    {
+      "mot": "Acteur",
+      "interdits": [
+        "film",
+        "théâtre",
+        "rôle",
+        "jouer",
+        "scène",
+        "cinéma"
+      ]
+    },
+    {
+      "mot": "Actrice",
+      "interdits": [
+        "film",
+        "théâtre",
+        "rôle",
+        "jouer",
+        "scène",
+        "cinéma"
+      ]
+    },
+    {
+      "mot": "Chanteur",
+      "interdits": [
+        "musique",
+        "voix",
+        "scène",
+        "micro",
+        "chanson",
+        "concert"
+      ]
+    },
+    {
+      "mot": "Musicien",
+      "interdits": [
+        "instrument",
+        "jouer",
+        "orchestre",
+        "note",
+        "concert",
+        "partition"
+      ]
+    },
+    {
+      "mot": "Peintre",
+      "interdits": [
+        "tableau",
+        "pinceau",
+        "couleur",
+        "toile",
+        "art",
+        "atelier"
+      ]
+    },
+    {
+      "mot": "Sculpteur",
+      "interdits": [
+        "statue",
+        "marbre",
+        "ciseau",
+        "art",
+        "forme",
+        "atelier"
+      ]
+    },
+    {
+      "mot": "Écrivain",
+      "interdits": [
+        "livre",
+        "roman",
+        "écrire",
+        "auteur",
+        "plume",
+        "histoire"
+      ]
+    },
+    {
+      "mot": "Journaliste",
+      "interdits": [
+        "actualité",
+        "article",
+        "presse",
+        "enquête",
+        "média",
+        "info"
+      ]
+    },
+    {
+      "mot": "Photographe",
+      "interdits": [
+        "appareil",
+        "image",
+        "cliché",
+        "objectif",
+        "studio",
+        "pose"
+      ]
+    },
+    {
+      "mot": "Cuisinier",
+      "interdits": [
+        "restaurant",
+        "plat",
+        "recette",
+        "toque",
+        "fourneau",
+        "goût"
+      ]
+    },
+    {
+      "mot": "Serveur",
+      "interdits": [
+        "restaurant",
+        "assiette",
+        "commande",
+        "pourboire",
+        "table",
+        "carte"
+      ]
+    },
+    {
+      "mot": "Boulanger",
+      "interdits": [
+        "pain",
+        "four",
+        "croissant",
+        "farine",
+        "matin",
+        "baguette"
+      ]
+    },
+    {
+      "mot": "Boucher",
+      "interdits": [
+        "viande",
+        "couteau",
+        "steak",
+        "magasin",
+        "coupe",
+        "charcuterie"
+      ]
+    },
+    {
+      "mot": "Infirmière",
+      "interdits": [
+        "hôpital",
+        "soigner",
+        "piqûre",
+        "blouse",
+        "patient",
+        "aide"
+      ]
+    },
+    {
+      "mot": "Pompière",
+      "interdits": [
+        "feu",
+        "secours",
+        "camion",
+        "casque",
+        "sauver",
+        "caserne"
+      ]
+    },
+    {
+      "mot": "Juge",
+      "interdits": [
+        "tribunal",
+        "loi",
+        "verdict",
+        "marteau",
+        "justice",
+        "décision"
+      ]
+    },
+    {
+      "mot": "Policier",
+      "interdits": [
+        "ordre",
+        "uniforme",
+        "amende",
+        "enquête",
+        "commissariat",
+        "loi"
+      ]
+    },
+    {
+      "mot": "Facteur",
+      "interdits": [
+        "lettre",
+        "courrier",
+        "boîte",
+        "livrer",
+        "sac",
+        "poste"
+      ]
+    },
+    {
+      "mot": "Pilote",
+      "interdits": [
+        "avion",
+        "voler",
+        "cockpit",
+        "aéroport",
+        "commande",
+        "ciel"
+      ]
+    },
+    {
+      "mot": "Chauffeur",
+      "interdits": [
+        "conduire",
+        "voiture",
+        "taxi",
+        "permis",
+        "route",
+        "volant"
+      ]
+    },
+    {
+      "mot": "Agriculteur",
+      "interdits": [
+        "ferme",
+        "champ",
+        "récolte",
+        "tracteur",
+        "culture",
+        "élevage"
+      ]
+    },
+    {
+      "mot": "Pêcheur",
+      "interdits": [
+        "poisson",
+        "mer",
+        "filet",
+        "bateau",
+        "ligne",
+        "port"
+      ]
+    },
+    {
+      "mot": "Chasseur",
+      "interdits": [
+        "gibier",
+        "fusil",
+        "forêt",
+        "proie",
+        "permis",
+        "traque"
+      ]
+    },
+    {
+      "mot": "Architecte",
+      "interdits": [
+        "bâtiment",
+        "plan",
+        "dessin",
+        "construire",
+        "projet",
+        "maison"
+      ]
+    },
+    {
+      "mot": "Ingénieur",
+      "interdits": [
+        "technique",
+        "projet",
+        "calcul",
+        "conception",
+        "diplôme",
+        "ouvrage"
+      ]
+    },
+    {
+      "mot": "Scientifique",
+      "interdits": [
+        "laboratoire",
+        "expérience",
+        "recherche",
+        "découverte",
+        "blouse",
+        "science"
+      ]
+    },
+    {
+      "mot": "Astronaute",
+      "interdits": [
+        "espace",
+        "fusée",
+        "lune",
+        "combinaison",
+        "orbite",
+        "nasa"
+      ]
+    },
+    {
+      "mot": "Maçon",
+      "interdits": [
+        "brique",
+        "mur",
+        "ciment",
+        "construire",
+        "chantier",
+        "truelle"
+      ]
+    },
+    {
+      "mot": "Menuisier",
+      "interdits": [
+        "bois",
+        "scie",
+        "meuble",
+        "atelier",
+        "rabot",
+        "planche"
+      ]
+    },
+    {
+      "mot": "Mécanicien",
+      "interdits": [
+        "voiture",
+        "réparer",
+        "moteur",
+        "garage",
+        "outil",
+        "panne"
+      ]
     }
   ],
   "moyen": [
@@ -1070,28 +4493,6 @@
       ]
     },
     {
-      "mot": "Machine à laver",
-      "interdits": [
-        "linge",
-        "lessive",
-        "tambour",
-        "essorage",
-        "sale",
-        "propre"
-      ]
-    },
-    {
-      "mot": "Sèche-linge",
-      "interdits": [
-        "linge",
-        "mou",
-        "chaud",
-        "tambour",
-        "machine",
-        "sécher"
-      ]
-    },
-    {
       "mot": "Aspirateur",
       "interdits": [
         "poussière",
@@ -1100,28 +4501,6 @@
         "bruit",
         "sol",
         "nettoyer"
-      ]
-    },
-    {
-      "mot": "Fer à repasser",
-      "interdits": [
-        "chemise",
-        "planche",
-        "vapeur",
-        "pli",
-        "chaud",
-        "repasser"
-      ]
-    },
-    {
-      "mot": "Micro-ondes",
-      "interdits": [
-        "chauffer",
-        "plat",
-        "minute",
-        "cuisine",
-        "rayon",
-        "réchauffer"
       ]
     },
     {
@@ -1141,7 +4520,6 @@
         "chauffer",
         "hiver",
         "froid",
-        "eau chaude",
         "bouton",
         "chaleur"
       ]
@@ -1150,7 +4528,7 @@
       "mot": "Facture",
       "interdits": [
         "payer",
-        "EDF",
+        "edf",
         "montant",
         "euros",
         "reçu",
@@ -1162,7 +4540,7 @@
       "interdits": [
         "payer",
         "mensuel",
-        "Netflix",
+        "netflix",
         "résilier",
         "contrat",
         "forfait"
@@ -1175,8 +4553,7 @@
         "réparer",
         "voiture",
         "tomber",
-        "garagiste",
-        "tomber en panne"
+        "garagiste"
       ]
     },
     {
@@ -1194,22 +4571,10 @@
       "mot": "Permis",
       "interdits": [
         "conduire",
-        "auto-école",
         "examen",
         "voiture",
         "code",
         "pref"
-      ]
-    },
-    {
-      "mot": "Contrôle technique",
-      "interdits": [
-        "voiture",
-        "garage",
-        "vignette",
-        "révision",
-        "obligatoire",
-        "défaut"
       ]
     },
     {
@@ -1246,23 +4611,12 @@
       ]
     },
     {
-      "mot": "Rendez-vous",
-      "interdits": [
-        "agenda",
-        "heure",
-        "retard",
-        "docteur",
-        "planning",
-        "noter"
-      ]
-    },
-    {
       "mot": "Réunion",
       "interdits": [
         "bureau",
         "collègue",
         "présentation",
-        "Teams",
+        "teams",
         "horaire",
         "salle"
       ]
@@ -1279,17 +4633,6 @@
       ]
     },
     {
-      "mot": "Burn-out",
-      "interdits": [
-        "travail",
-        "fatigue",
-        "stress",
-        "repos",
-        "épuisement",
-        "bureau"
-      ]
-    },
-    {
       "mot": "Procrastiner",
       "interdits": [
         "demain",
@@ -1298,17 +4641,6 @@
         "tâche",
         "reporter",
         "flemme"
-      ]
-    },
-    {
-      "mot": "Pique-nique",
-      "interdits": [
-        "herbe",
-        "panier",
-        "sandwich",
-        "parc",
-        "été",
-        "couverture"
       ]
     },
     {
@@ -1328,7 +4660,6 @@
         "tente",
         "nature",
         "feu",
-        "sac de couchage",
         "forêt",
         "étoile"
       ]
@@ -1345,39 +4676,6 @@
       ]
     },
     {
-      "mot": "Parc d'attractions",
-      "interdits": [
-        "manège",
-        "file",
-        "ticket",
-        "adrénaline",
-        "montagnes russes",
-        "peur"
-      ]
-    },
-    {
-      "mot": "Salle de sport",
-      "interdits": [
-        "muscu",
-        "tapis",
-        "abonnement",
-        "coach",
-        "transpirer",
-        "haltère"
-      ]
-    },
-    {
-      "mot": "Piscine municipale",
-      "interdits": [
-        "nager",
-        "maillot",
-        "bassin",
-        "coupure",
-        "verre",
-        "surveillant"
-      ]
-    },
-    {
       "mot": "Brocante",
       "interdits": [
         "vieux",
@@ -1386,17 +4684,6 @@
         "village",
         "antiquité",
         "stand"
-      ]
-    },
-    {
-      "mot": "Marché aux puces",
-      "interdits": [
-        "vieux",
-        "brocante",
-        "marchander",
-        "stand",
-        "trouvaille",
-        "vintage"
       ]
     },
     {
@@ -1411,21 +4698,10 @@
       ]
     },
     {
-      "mot": "Black Friday",
-      "interdits": [
-        "promo",
-        "acheter",
-        "novembre",
-        "internet",
-        "réduction",
-        "file"
-      ]
-    },
-    {
       "mot": "Livraison",
       "interdits": [
         "colis",
-        "Amazon",
+        "amazon",
         "livreur",
         "commander",
         "boîte",
@@ -1441,28 +4717,6 @@
         "facteur",
         "commander",
         "suivre"
-      ]
-    },
-    {
-      "mot": "Code postal",
-      "interdits": [
-        "adresse",
-        "ville",
-        "courrier",
-        "lettre",
-        "chiffre",
-        "envoyer"
-      ]
-    },
-    {
-      "mot": "Carte d'identité",
-      "interdits": [
-        "administration",
-        "photo",
-        "passeport",
-        "pref",
-        "identité",
-        "officiel"
       ]
     },
     {
@@ -1505,7 +4759,7 @@
         "avion",
         "heure",
         "attendre",
-        "SNCF",
+        "sncf",
         "annonce"
       ]
     },
@@ -1527,19 +4781,7 @@
         "soleil",
         "prévision",
         "nuage",
-        "température",
-        "Météo France"
-      ]
-    },
-    {
-      "mot": "Météo France",
-      "interdits": [
-        "prévision",
-        "pluie",
-        "soleil",
-        "application",
-        "tempête",
-        "alerte"
+        "température"
       ]
     },
     {
@@ -1565,22 +4807,10 @@
       ]
     },
     {
-      "mot": "Punaise de lit",
-      "interdits": [
-        "piquer",
-        "matelas",
-        "hôtel",
-        "désinsectiser",
-        "nuit",
-        "démangeaison"
-      ]
-    },
-    {
       "mot": "Désodorisant",
       "interdits": [
         "odeur",
         "spray",
-        "salle de bain",
         "parfum",
         "masquer",
         "aérosol"
@@ -1620,17 +4850,6 @@
       ]
     },
     {
-      "mot": "Lave-vaisselle",
-      "interdits": [
-        "vaisselle",
-        "tablette",
-        "cuisine",
-        "rincer",
-        "programme",
-        "propre"
-      ]
-    },
-    {
       "mot": "Four",
       "interdits": [
         "cuire",
@@ -1639,17 +4858,6 @@
         "gâteau",
         "thermostat",
         "cuisine"
-      ]
-    },
-    {
-      "mot": "Plaque de cuisson",
-      "interdits": [
-        "feu",
-        "poêle",
-        "cuisine",
-        "induction",
-        "chaud",
-        "cuire"
       ]
     },
     {
@@ -1683,17 +4891,6 @@
         "lame",
         "bruit",
         "mixer"
-      ]
-    },
-    {
-      "mot": "Grille-pain",
-      "interdits": [
-        "pain",
-        "tartine",
-        "matin",
-        "brun",
-        "cuisine",
-        "chauffer"
       ]
     },
     {
@@ -1770,18 +4967,7 @@
         "lampe",
         "électricité",
         "griller",
-        "LED"
-      ]
-    },
-    {
-      "mot": "Prise électrique",
-      "interdits": [
-        "brancher",
-        "câble",
-        "mur",
-        "courant",
-        "chargeur",
-        "électricité"
+        "led"
       ]
     },
     {
@@ -1804,17 +4990,6 @@
         "électricité",
         "brancher",
         "mètre"
-      ]
-    },
-    {
-      "mot": "Chauffe-eau",
-      "interdits": [
-        "eau chaude",
-        "douche",
-        "ballon",
-        "salle de bain",
-        "électrique",
-        "gaz"
       ]
     },
     {
@@ -1873,17 +5048,6 @@
       ]
     },
     {
-      "mot": "Baby-sitter",
-      "interdits": [
-        "enfant",
-        "soir",
-        "garder",
-        "parents",
-        "dodo",
-        "jeu"
-      ]
-    },
-    {
       "mot": "Poubelle",
       "interdits": [
         "jeter",
@@ -1892,17 +5056,6 @@
         "sac",
         "odeur",
         "bac"
-      ]
-    },
-    {
-      "mot": "Tri sélectif",
-      "interdits": [
-        "poubelle",
-        "recyclage",
-        "verre",
-        "carton",
-        "jaune",
-        "vert"
       ]
     },
     {
@@ -1923,8 +5076,7 @@
         "copropriété",
         "charges",
         "ascenseur",
-        "courrier",
-        "AG"
+        "courrier"
       ]
     },
     {
@@ -1961,17 +5113,6 @@
       ]
     },
     {
-      "mot": "Place de parking",
-      "interdits": [
-        "voiture",
-        "garer",
-        "sous-sol",
-        "numéro",
-        "payant",
-        "ticket"
-      ]
-    },
-    {
       "mot": "Radar",
       "interdits": [
         "vitesse",
@@ -2000,7 +5141,6 @@
         "police",
         "stationnement",
         "payer",
-        "PV",
         "voiture"
       ]
     },
@@ -2013,6 +5153,2951 @@
         "récupérer",
         "payer",
         "panne"
+      ]
+    },
+    {
+      "mot": "Horizon",
+      "interdits": [
+        "loin",
+        "ciel",
+        "ligne",
+        "vue",
+        "mer",
+        "perspective"
+      ]
+    },
+    {
+      "mot": "Écho",
+      "interdits": [
+        "son",
+        "répéter",
+        "montagne",
+        "résonner",
+        "voix",
+        "rebond"
+      ]
+    },
+    {
+      "mot": "Silence",
+      "interdits": [
+        "calme",
+        "mute",
+        "bruit",
+        "absence",
+        "paix",
+        "chuchoter"
+      ]
+    },
+    {
+      "mot": "Ombre",
+      "interdits": [
+        "soleil",
+        "noir",
+        "silhouette",
+        "projeter",
+        "lumière",
+        "suivre"
+      ]
+    },
+    {
+      "mot": "Reflet",
+      "interdits": [
+        "miroir",
+        "eau",
+        "image",
+        "surface",
+        "renvoyer",
+        "verre"
+      ]
+    },
+    {
+      "mot": "Contour",
+      "interdits": [
+        "forme",
+        "bord",
+        "ligne",
+        "dessin",
+        "silhouette",
+        "limite"
+      ]
+    },
+    {
+      "mot": "Texture",
+      "interdits": [
+        "toucher",
+        "surface",
+        "tissu",
+        "rugueux",
+        "doux",
+        "matière"
+      ]
+    },
+    {
+      "mot": "Contraste",
+      "interdits": [
+        "différence",
+        "noir",
+        "blanc",
+        "opposé",
+        "fort",
+        "visuel"
+      ]
+    },
+    {
+      "mot": "Nuance",
+      "interdits": [
+        "couleur",
+        "subtil",
+        "différence",
+        "ton",
+        "dégradé",
+        "léger"
+      ]
+    },
+    {
+      "mot": "Perspective",
+      "interdits": [
+        "vue",
+        "angle",
+        "profondeur",
+        "dessin",
+        "loin",
+        "point"
+      ]
+    },
+    {
+      "mot": "Équilibre",
+      "interdits": [
+        "stable",
+        "balance",
+        "centre",
+        "tomber",
+        "harmonie",
+        "poids"
+      ]
+    },
+    {
+      "mot": "Rythme",
+      "interdits": [
+        "musique",
+        "tempo",
+        "battement",
+        "régulier",
+        "danse",
+        "cadence"
+      ]
+    },
+    {
+      "mot": "Mélodie",
+      "interdits": [
+        "musique",
+        "air",
+        "note",
+        "chanter",
+        "harmonie",
+        "chanson"
+      ]
+    },
+    {
+      "mot": "Harmonie",
+      "interdits": [
+        "accord",
+        "musique",
+        "équilibre",
+        "paix",
+        "ensemble",
+        "beau"
+      ]
+    },
+    {
+      "mot": "Discours",
+      "interdits": [
+        "parler",
+        "public",
+        "orateur",
+        "politique",
+        "allocution",
+        "mot"
+      ]
+    },
+    {
+      "mot": "Débat",
+      "interdits": [
+        "discuter",
+        "avis",
+        "opposé",
+        "argument",
+        "échange",
+        "controverse"
+      ]
+    },
+    {
+      "mot": "Négociation",
+      "interdits": [
+        "accord",
+        "discuter",
+        "compromis",
+        "affaire",
+        "traite",
+        "deal"
+      ]
+    },
+    {
+      "mot": "Contrat",
+      "interdits": [
+        "signer",
+        "accord",
+        "légal",
+        "clause",
+        "engagement",
+        "papier"
+      ]
+    },
+    {
+      "mot": "Clause",
+      "interdits": [
+        "contrat",
+        "condition",
+        "juridique",
+        "petit",
+        "détail",
+        "texte"
+      ]
+    },
+    {
+      "mot": "Budget",
+      "interdits": [
+        "argent",
+        "dépense",
+        "prévoir",
+        "finance",
+        "limite",
+        "compte"
+      ]
+    },
+    {
+      "mot": "Investissement",
+      "interdits": [
+        "argent",
+        "placement",
+        "bourse",
+        "risque",
+        "retour",
+        "capital"
+      ]
+    },
+    {
+      "mot": "Inflation",
+      "interdits": [
+        "prix",
+        "augmenter",
+        "économie",
+        "pouvoir",
+        "achat",
+        "euro"
+      ]
+    },
+    {
+      "mot": "Récession",
+      "interdits": [
+        "économie",
+        "crise",
+        "baisse",
+        "chômage",
+        "ralentissement",
+        "pib"
+      ]
+    },
+    {
+      "mot": "Impôt",
+      "interdits": [
+        "état",
+        "payer",
+        "taxe",
+        "fisc",
+        "déclaration",
+        "revenu"
+      ]
+    },
+    {
+      "mot": "Taxe",
+      "interdits": [
+        "impôt",
+        "état",
+        "pourcentage",
+        "tva",
+        "payer",
+        "ajout"
+      ]
+    },
+    {
+      "mot": "Subvention",
+      "interdits": [
+        "aide",
+        "état",
+        "argent",
+        "soutien",
+        "entreprise",
+        "public"
+      ]
+    },
+    {
+      "mot": "Syndicat",
+      "interdits": [
+        "ouvrier",
+        "grève",
+        "défense",
+        "travail",
+        "négociation",
+        "droit"
+      ]
+    },
+    {
+      "mot": "Manifestation",
+      "interdits": [
+        "rue",
+        "protestation",
+        "cortège",
+        "slogan",
+        "politique",
+        "foule"
+      ]
+    },
+    {
+      "mot": "Élection",
+      "interdits": [
+        "voter",
+        "urne",
+        "candidat",
+        "démocratie",
+        "bulletin",
+        "scrutin"
+      ]
+    },
+    {
+      "mot": "Candidat",
+      "interdits": [
+        "élection",
+        "campagne",
+        "vote",
+        "postuler",
+        "politique",
+        "promesse"
+      ]
+    },
+    {
+      "mot": "Bulletin",
+      "interdits": [
+        "vote",
+        "urne",
+        "papier",
+        "école",
+        "note",
+        "officielle"
+      ]
+    },
+    {
+      "mot": "Urne",
+      "interdits": [
+        "vote",
+        "élection",
+        "boîte",
+        "bulletin",
+        "scrutin",
+        "démocratie"
+      ]
+    },
+    {
+      "mot": "Mairie",
+      "interdits": [
+        "maire",
+        "ville",
+        "administratif",
+        "étatcivil",
+        "local",
+        "conseil"
+      ]
+    },
+    {
+      "mot": "Préfecture",
+      "interdits": [
+        "département",
+        "état",
+        "administratif",
+        "permis",
+        "région",
+        "autorité"
+      ]
+    },
+    {
+      "mot": "Ambassade",
+      "interdits": [
+        "pays",
+        "diplomatique",
+        "consulat",
+        "étranger",
+        "passeport",
+        "mission"
+      ]
+    },
+    {
+      "mot": "Consulat",
+      "interdits": [
+        "passeport",
+        "étranger",
+        "visa",
+        "ambassade",
+        "service",
+        "pays"
+      ]
+    },
+    {
+      "mot": "Frontière",
+      "interdits": [
+        "pays",
+        "limite",
+        "douane",
+        "passer",
+        "contrôle",
+        "ligne"
+      ]
+    },
+    {
+      "mot": "Exil",
+      "interdits": [
+        "pays",
+        "fuir",
+        "étranger",
+        "politique",
+        "refuge",
+        "quitter"
+      ]
+    },
+    {
+      "mot": "Réfugié",
+      "interdits": [
+        "asile",
+        "fuite",
+        "guerre",
+        "accueil",
+        "étranger",
+        "protection"
+      ]
+    },
+    {
+      "mot": "Migration",
+      "interdits": [
+        "déplacement",
+        "pays",
+        "population",
+        "mouvement",
+        "exode",
+        "voyage"
+      ]
+    },
+    {
+      "mot": "Intégration",
+      "interdits": [
+        "société",
+        "accueil",
+        "inclure",
+        "culture",
+        "adapter",
+        "appartenir"
+      ]
+    },
+    {
+      "mot": "Discrimination",
+      "interdits": [
+        "injustice",
+        "racisme",
+        "exclure",
+        "inégal",
+        "préjugé",
+        "droit"
+      ]
+    },
+    {
+      "mot": "Préjugé",
+      "interdits": [
+        "idée",
+        "jugé",
+        "avant",
+        "stéréotype",
+        "opinion",
+        "biais"
+      ]
+    },
+    {
+      "mot": "Stéréotype",
+      "interdits": [
+        "cliché",
+        "généralisation",
+        "image",
+        "préjugé",
+        "catégorie",
+        "idée"
+      ]
+    },
+    {
+      "mot": "Tolérance",
+      "interdits": [
+        "accepter",
+        "différence",
+        "respect",
+        "ouverture",
+        "patience",
+        "vivre"
+      ]
+    },
+    {
+      "mot": "Solidarité",
+      "interdits": [
+        "entraide",
+        "soutien",
+        "ensemble",
+        "aide",
+        "lien",
+        "commun"
+      ]
+    },
+    {
+      "mot": "Bénévolat",
+      "interdits": [
+        "gratuit",
+        "aide",
+        "association",
+        "volontaire",
+        "don",
+        "temps"
+      ]
+    },
+    {
+      "mot": "Donation",
+      "interdits": [
+        "don",
+        "argent",
+        "charité",
+        "offrir",
+        "association",
+        "généreux"
+      ]
+    },
+    {
+      "mot": "Héritage",
+      "interdits": [
+        "succession",
+        "mort",
+        "bien",
+        "famille",
+        "testament",
+        "recevoir"
+      ]
+    },
+    {
+      "mot": "Testament",
+      "interdits": [
+        "héritage",
+        "mort",
+        "volonté",
+        "notaire",
+        "écrire",
+        "legs"
+      ]
+    },
+    {
+      "mot": "Notaire",
+      "interdits": [
+        "acte",
+        "officiel",
+        "héritage",
+        "contrat",
+        "légal",
+        "signature"
+      ]
+    },
+    {
+      "mot": "Assurance",
+      "interdits": [
+        "protéger",
+        "risque",
+        "contrat",
+        "cotisation",
+        "sinistre",
+        "couverture"
+      ]
+    },
+    {
+      "mot": "Sinistre",
+      "interdits": [
+        "accident",
+        "dégât",
+        "assurance",
+        "réclamer",
+        "incendie",
+        "dommage"
+      ]
+    },
+    {
+      "mot": "Franchise",
+      "interdits": [
+        "assurance",
+        "reste",
+        "payer",
+        "montant",
+        "sinistre",
+        "part"
+      ]
+    },
+    {
+      "mot": "Cotisation",
+      "interdits": [
+        "payer",
+        "mensuel",
+        "assurance",
+        "syndicat",
+        "contribution",
+        "somme"
+      ]
+    },
+    {
+      "mot": "Retraite",
+      "interdits": [
+        "âge",
+        "travail",
+        "pension",
+        "cesser",
+        "senior",
+        "repos"
+      ]
+    },
+    {
+      "mot": "Pension",
+      "interdits": [
+        "retraite",
+        "argent",
+        "mensuel",
+        "vieillesse",
+        "revenu",
+        "caisse"
+      ]
+    },
+    {
+      "mot": "Chômage",
+      "interdits": [
+        "travail",
+        "emploi",
+        "allocation",
+        "recherche",
+        "perte"
+      ]
+    },
+    {
+      "mot": "Embauche",
+      "interdits": [
+        "recruter",
+        "emploi",
+        "contrat",
+        "entreprise",
+        "poste",
+        "engager"
+      ]
+    },
+    {
+      "mot": "Licenciement",
+      "interdits": [
+        "renvoyer",
+        "emploi",
+        "perte",
+        "entreprise",
+        "fin",
+        "contrat"
+      ]
+    },
+    {
+      "mot": "Démission",
+      "interdits": [
+        "quitter",
+        "emploi",
+        "volontaire",
+        "lettre",
+        "partir",
+        "travail"
+      ]
+    },
+    {
+      "mot": "Stage",
+      "interdits": [
+        "apprendre",
+        "entreprise",
+        "étudiant",
+        "expérience",
+        "temporaire",
+        "formation"
+      ]
+    },
+    {
+      "mot": "Apprentissage",
+      "interdits": [
+        "former",
+        "métier",
+        "contrat",
+        "jeune",
+        "alternance",
+        "savoir"
+      ]
+    },
+    {
+      "mot": "Diplôme",
+      "interdits": [
+        "études",
+        "obtenir",
+        "papier",
+        "université",
+        "succès",
+        "certificat"
+      ]
+    },
+    {
+      "mot": "Concours",
+      "interdits": [
+        "examen",
+        "compétition",
+        "sélection",
+        "épreuve",
+        "réussir",
+        "place"
+      ]
+    },
+    {
+      "mot": "Épreuve",
+      "interdits": [
+        "examen",
+        "test",
+        "difficulté",
+        "passer",
+        "concours",
+        "challenge"
+      ]
+    },
+    {
+      "mot": "Oral",
+      "interdits": [
+        "parler",
+        "examen",
+        "présentation",
+        "voix",
+        "devant",
+        "jury"
+      ]
+    },
+    {
+      "mot": "Jury",
+      "interdits": [
+        "juger",
+        "examen",
+        "tribunal",
+        "décision",
+        "membres",
+        "note"
+      ]
+    },
+    {
+      "mot": "Moyenne",
+      "interdits": [
+        "note",
+        "calcul",
+        "intermédiaire",
+        "école",
+        "résultat",
+        "bilan"
+      ]
+    },
+    {
+      "mot": "Mention",
+      "interdits": [
+        "diplôme",
+        "bien",
+        "honneurs",
+        "réussite",
+        "apprécié",
+        "niveau"
+      ]
+    },
+    {
+      "mot": "Redoublement",
+      "interdits": [
+        "année",
+        "recommencer",
+        "échec",
+        "école",
+        "classe"
+      ]
+    },
+    {
+      "mot": "Orientation",
+      "interdits": [
+        "choix",
+        "études",
+        "métier",
+        "avenir",
+        "conseil",
+        "direction"
+      ]
+    },
+    {
+      "mot": "Entretien",
+      "interdits": [
+        "embauche",
+        "parler",
+        "candidat",
+        "questions",
+        "recruteur",
+        "rdv"
+      ]
+    },
+    {
+      "mot": "Référence",
+      "interdits": [
+        "recommandation",
+        "témoignage",
+        "employeur",
+        "citation",
+        "source",
+        "appui"
+      ]
+    },
+    {
+      "mot": "Compétence",
+      "interdits": [
+        "savoir",
+        "faire",
+        "aptitude",
+        "qualité",
+        "métier",
+        "skill"
+      ]
+    },
+    {
+      "mot": "Motivation",
+      "interdits": [
+        "envie",
+        "énergie",
+        "pousser",
+        "objectif",
+        "drive",
+        "volonté"
+      ]
+    },
+    {
+      "mot": "Ambition",
+      "interdits": [
+        "objectif",
+        "réussir",
+        "désir",
+        "carrière",
+        "haut",
+        "rêve"
+      ]
+    },
+    {
+      "mot": "Promotion",
+      "interdits": [
+        "monter",
+        "grade",
+        "salaire",
+        "avancer",
+        "poste",
+        "récompense"
+      ]
+    },
+    {
+      "mot": "Mutation",
+      "interdits": [
+        "transfert",
+        "changement",
+        "poste",
+        "ville",
+        "déplacer",
+        "nouveau"
+      ]
+    },
+    {
+      "mot": "Détachement",
+      "interdits": [
+        "temporaire",
+        "autre",
+        "service",
+        "mission",
+        "prêt",
+        "affectation"
+      ]
+    },
+    {
+      "mot": "Hiérarchie",
+      "interdits": [
+        "niveau",
+        "chef",
+        "organisation",
+        "rang",
+        "échelle",
+        "autorité"
+      ]
+    },
+    {
+      "mot": "Organigramme",
+      "interdits": [
+        "structure",
+        "entreprise",
+        "schéma",
+        "poste",
+        "hiérarchie",
+        "graphique"
+      ]
+    },
+    {
+      "mot": "Procédure",
+      "interdits": [
+        "étape",
+        "méthode",
+        "règle",
+        "suivre",
+        "processus",
+        "protocole"
+      ]
+    },
+    {
+      "mot": "Protocole",
+      "interdits": [
+        "règle",
+        "officiel",
+        "cérémonie",
+        "procédure",
+        "étiquette",
+        "formalisme"
+      ]
+    },
+    {
+      "mot": "Formalité",
+      "interdits": [
+        "administratif",
+        "papier",
+        "obligatoire",
+        "démarche",
+        "procédure",
+        "requis"
+      ]
+    },
+    {
+      "mot": "Démarche",
+      "interdits": [
+        "action",
+        "administratif",
+        "entreprendre",
+        "procédure",
+        "étape",
+        "faire"
+      ]
+    },
+    {
+      "mot": "Dossier",
+      "interdits": [
+        "document",
+        "papier",
+        "complet",
+        "administratif",
+        "chemise",
+        "fichier"
+      ]
+    },
+    {
+      "mot": "Archivage",
+      "interdits": [
+        "ranger",
+        "document",
+        "conserver",
+        "passé",
+        "stockage",
+        "classer"
+      ]
+    },
+    {
+      "mot": "Classement",
+      "interdits": [
+        "ordre",
+        "ranger",
+        "catégorie",
+        "alphabet",
+        "organiser",
+        "tri"
+      ]
+    },
+    {
+      "mot": "Inventaire",
+      "interdits": [
+        "liste",
+        "stock",
+        "compter",
+        "magasin",
+        "recensement",
+        "état"
+      ]
+    },
+    {
+      "mot": "Stock",
+      "interdits": [
+        "réserve",
+        "magasin",
+        "quantité",
+        "entrepôt",
+        "disponible",
+        "inventaire"
+      ]
+    },
+    {
+      "mot": "Entrepôt",
+      "interdits": [
+        "stockage",
+        "marchandise",
+        "grand",
+        "dépôt",
+        "logistique",
+        "palette"
+      ]
+    },
+    {
+      "mot": "Logistique",
+      "interdits": [
+        "transport",
+        "organisation",
+        "livraison",
+        "chaîne",
+        "flux",
+        "supply"
+      ]
+    },
+    {
+      "mot": "Délai",
+      "interdits": [
+        "temps",
+        "attente",
+        "échéance",
+        "retard",
+        "période",
+        "limite"
+      ]
+    },
+    {
+      "mot": "Échéance",
+      "interdits": [
+        "date",
+        "limite",
+        "payer",
+        "terminer",
+        "deadline",
+        "fin"
+      ]
+    },
+    {
+      "mot": "Avance",
+      "interdits": [
+        "tôt",
+        "paiement",
+        "devancer",
+        "précoce",
+        "anticipation"
+      ]
+    },
+    {
+      "mot": "Ponctualité",
+      "interdits": [
+        "heure",
+        "exact",
+        "temps",
+        "respect",
+        "horloge"
+      ]
+    },
+    {
+      "mot": "Absentéisme",
+      "interdits": [
+        "absence",
+        "travail",
+        "fréquent",
+        "manquer",
+        "école",
+        "taux"
+      ]
+    },
+    {
+      "mot": "Présence",
+      "interdits": [
+        "être",
+        "assister",
+        "feuille",
+        "présenter",
+        "attendance"
+      ]
+    },
+    {
+      "mot": "Quorum",
+      "interdits": [
+        "minimum",
+        "vote",
+        "assemblée",
+        "nombre",
+        "valide",
+        "présents"
+      ]
+    },
+    {
+      "mot": "Assemblée",
+      "interdits": [
+        "réunion",
+        "groupe",
+        "vote",
+        "générale",
+        "membres",
+        "débattre"
+      ]
+    },
+    {
+      "mot": "Conseil",
+      "interdits": [
+        "avis",
+        "réunion",
+        "administration",
+        "membre",
+        "décision",
+        "groupe"
+      ]
+    },
+    {
+      "mot": "Comité",
+      "interdits": [
+        "groupe",
+        "travail",
+        "réunion",
+        "membres",
+        "spécialisé",
+        "décision"
+      ]
+    },
+    {
+      "mot": "Commission",
+      "interdits": [
+        "groupe",
+        "enquête",
+        "étude",
+        "officielle",
+        "membres",
+        "rapport"
+      ]
+    },
+    {
+      "mot": "Rapport",
+      "interdits": [
+        "écrit",
+        "compte",
+        "rendu",
+        "document",
+        "analyser",
+        "présentation"
+      ]
+    },
+    {
+      "mot": "Bilan",
+      "interdits": [
+        "résultat",
+        "année",
+        "compte",
+        "synthèse",
+        "évaluation",
+        "total"
+      ]
+    },
+    {
+      "mot": "Synthèse",
+      "interdits": [
+        "résumé",
+        "essentiel",
+        "condenser",
+        "vue",
+        "ensemble",
+        "bref"
+      ]
+    },
+    {
+      "mot": "Analyse",
+      "interdits": [
+        "étudier",
+        "détail",
+        "examiner",
+        "comprendre",
+        "données",
+        "critique"
+      ]
+    },
+    {
+      "mot": "Diagnostic",
+      "interdits": [
+        "médecin",
+        "problème",
+        "identifier",
+        "analyse",
+        "conclusion",
+        "maladie"
+      ]
+    },
+    {
+      "mot": "Pronostic",
+      "interdits": [
+        "prévoir",
+        "avenir",
+        "médecin",
+        "évolution",
+        "espoir",
+        "prédiction"
+      ]
+    },
+    {
+      "mot": "Symptôme",
+      "interdits": [
+        "signe",
+        "maladie",
+        "fièvre",
+        "douleur",
+        "indiquer",
+        "manifestation"
+      ]
+    },
+    {
+      "mot": "Syndrome",
+      "interdits": [
+        "ensemble",
+        "symptômes",
+        "maladie",
+        "médical",
+        "groupe",
+        "trouble"
+      ]
+    },
+    {
+      "mot": "Pathologie",
+      "interdits": [
+        "maladie",
+        "étude",
+        "médical",
+        "trouble",
+        "science",
+        "anomalie"
+      ]
+    },
+    {
+      "mot": "Thérapie",
+      "interdits": [
+        "traitement",
+        "soigner",
+        "psychologie",
+        "guérir",
+        "méthode",
+        "soin"
+      ]
+    },
+    {
+      "mot": "Remède",
+      "interdits": [
+        "guérir",
+        "médicament",
+        "solution",
+        "traitement",
+        "plante",
+        "soigner"
+      ]
+    },
+    {
+      "mot": "Ordonnance",
+      "interdits": [
+        "médecin",
+        "médicament",
+        "prescrire",
+        "pharmacie",
+        "papier",
+        "recette"
+      ]
+    },
+    {
+      "mot": "Posologie",
+      "interdits": [
+        "dose",
+        "médicament",
+        "quantité",
+        "fréquence",
+        "prendre",
+        "mode"
+      ]
+    },
+    {
+      "mot": "Effet",
+      "interdits": [
+        "conséquence",
+        "résultat",
+        "provoquer",
+        "secondaire",
+        "impact",
+        "action"
+      ]
+    },
+    {
+      "mot": "Intolérance",
+      "interdits": [
+        "digestion",
+        "aliment",
+        "mal",
+        "lactose",
+        "supporter",
+        "réaction"
+      ]
+    },
+    {
+      "mot": "Immunité",
+      "interdits": [
+        "défense",
+        "corps",
+        "virus",
+        "protéger",
+        "anticorps",
+        "résistance"
+      ]
+    },
+    {
+      "mot": "Vaccin",
+      "interdits": [
+        "piqûre",
+        "protéger",
+        "maladie",
+        "immunité",
+        "prévention",
+        "sérum"
+      ]
+    },
+    {
+      "mot": "Épidémie",
+      "interdits": [
+        "maladie",
+        "propagation",
+        "contagion",
+        "population",
+        "crise",
+        "virus"
+      ]
+    },
+    {
+      "mot": "Pandémie",
+      "interdits": [
+        "mondial",
+        "épidémie",
+        "virus",
+        "global",
+        "crise",
+        "propagation"
+      ]
+    },
+    {
+      "mot": "Quarantaine",
+      "interdits": [
+        "isolement",
+        "maladie",
+        "contagion",
+        "séparer",
+        "période",
+        "confiner"
+      ]
+    },
+    {
+      "mot": "Confinement",
+      "interdits": [
+        "rester",
+        "chez",
+        "isolement",
+        "épidémie",
+        "restriction",
+        "fermer"
+      ]
+    },
+    {
+      "mot": "Contamination",
+      "interdits": [
+        "infecter",
+        "virus",
+        "toucher",
+        "propager",
+        "souiller",
+        "contact"
+      ]
+    },
+    {
+      "mot": "Désinfection",
+      "interdits": [
+        "nettoyer",
+        "germes",
+        "hygiène",
+        "tuer",
+        "bactérie",
+        "asepsie"
+      ]
+    },
+    {
+      "mot": "Stérilisation",
+      "interdits": [
+        "microbe",
+        "éliminer",
+        "hôpital",
+        "chirurgical",
+        "propre",
+        "autoclave"
+      ]
+    },
+    {
+      "mot": "Hygiène",
+      "interdits": [
+        "propre",
+        "santé",
+        "laver",
+        "propreté",
+        "soin",
+        "prévention"
+      ]
+    },
+    {
+      "mot": "Prévention",
+      "interdits": [
+        "éviter",
+        "avant",
+        "protéger",
+        "risque",
+        "anticiper",
+        "campagne"
+      ]
+    },
+    {
+      "mot": "Dépistage",
+      "interdits": [
+        "détecter",
+        "test",
+        "maladie",
+        "précoce",
+        "examen",
+        "rechercher"
+      ]
+    },
+    {
+      "mot": "Scanner",
+      "interdits": [
+        "image",
+        "hôpital",
+        "rayon",
+        "corps",
+        "examen",
+        "imagerie"
+      ]
+    },
+    {
+      "mot": "Radiographie",
+      "interdits": [
+        "rayon",
+        "image",
+        "hôpital",
+        "cliché",
+        "radio"
+      ]
+    },
+    {
+      "mot": "Échographie",
+      "interdits": [
+        "son",
+        "image",
+        "bébé",
+        "hôpital",
+        "ultrasons",
+        "examen"
+      ]
+    },
+    {
+      "mot": "Anesthésie",
+      "interdits": [
+        "endormir",
+        "opération",
+        "douleur",
+        "chirurgical",
+        "local",
+        "général"
+      ]
+    },
+    {
+      "mot": "Chirurgie",
+      "interdits": [
+        "opération",
+        "scalpel",
+        "hôpital",
+        "intervenir",
+        "bloc",
+        "opérer"
+      ]
+    },
+    {
+      "mot": "Greffe",
+      "interdits": [
+        "organe",
+        "transplanter",
+        "donneur",
+        "receveur",
+        "chirurgie",
+        "rejet"
+      ]
+    },
+    {
+      "mot": "Prothèse",
+      "interdits": [
+        "artificiel",
+        "remplacer",
+        "membre",
+        "dentaire",
+        "implant",
+        "mécanique"
+      ]
+    },
+    {
+      "mot": "Implant",
+      "interdits": [
+        "prothèse",
+        "dentaire",
+        "insérer",
+        "corps",
+        "chirurgical",
+        "fixe"
+      ]
+    },
+    {
+      "mot": "Rééducation",
+      "interdits": [
+        "récupérer",
+        "kiné",
+        "après",
+        "accident",
+        "mouvement",
+        "thérapie"
+      ]
+    },
+    {
+      "mot": "Kinésithérapeute",
+      "interdits": [
+        "rééducation",
+        "massage",
+        "mouvement",
+        "soigner",
+        "sport",
+        "cabinet"
+      ]
+    },
+    {
+      "mot": "Ostéopathe",
+      "interdits": [
+        "dos",
+        "manipulation",
+        "articulation",
+        "soigner",
+        "manuel",
+        "crâne"
+      ]
+    },
+    {
+      "mot": "Psychologue",
+      "interdits": [
+        "esprit",
+        "thérapie",
+        "écouter",
+        "mental",
+        "consultation",
+        "psy"
+      ]
+    },
+    {
+      "mot": "Psychiatre",
+      "interdits": [
+        "médecin",
+        "mental",
+        "médicament",
+        "folie",
+        "thérapie",
+        "hôpital"
+      ]
+    },
+    {
+      "mot": "Dépression",
+      "interdits": [
+        "triste",
+        "moral",
+        "maladie",
+        "psychique",
+        "cafard",
+        "traitement"
+      ]
+    },
+    {
+      "mot": "Anxiété",
+      "interdits": [
+        "angoisse",
+        "stress",
+        "inquiétude",
+        "peur",
+        "tension",
+        "nervosité"
+      ]
+    },
+    {
+      "mot": "Stress",
+      "interdits": [
+        "tension",
+        "pression",
+        "nervosité",
+        "anxiété",
+        "surcharge",
+        "burn"
+      ]
+    },
+    {
+      "mot": "Addiction",
+      "interdits": [
+        "dépendance",
+        "drogue",
+        "habitude",
+        "compulsion",
+        "alcool",
+        "sevrage"
+      ]
+    },
+    {
+      "mot": "Sevrage",
+      "interdits": [
+        "arrêter",
+        "dépendance",
+        "syndrome",
+        "désintox",
+        "manque",
+        "addiction"
+      ]
+    },
+    {
+      "mot": "Méditation",
+      "interdits": [
+        "calme",
+        "esprit",
+        "respiration",
+        "zen",
+        "concentration",
+        "paix"
+      ]
+    },
+    {
+      "mot": "Respiration",
+      "interdits": [
+        "souffle",
+        "air",
+        "poumon",
+        "inspire",
+        "expire",
+        "vital"
+      ]
+    },
+    {
+      "mot": "Posture",
+      "interdits": [
+        "position",
+        "corps",
+        "tenue",
+        "yoga",
+        "attitude",
+        "dos"
+      ]
+    },
+    {
+      "mot": "Souplesse",
+      "interdits": [
+        "flexible",
+        "étirer",
+        "corps",
+        "yoga",
+        "agile",
+        "muscle"
+      ]
+    },
+    {
+      "mot": "Endurance",
+      "interdits": [
+        "résister",
+        "long",
+        "effort",
+        "cardio",
+        "tenir",
+        "stamina"
+      ]
+    },
+    {
+      "mot": "Performance",
+      "interdits": [
+        "résultat",
+        "exploit",
+        "niveau",
+        "sport",
+        "rendement",
+        "succès"
+      ]
+    },
+    {
+      "mot": "Entraînement",
+      "interdits": [
+        "pratique",
+        "sport",
+        "préparer",
+        "exercice",
+        "régulier",
+        "coach"
+      ]
+    },
+    {
+      "mot": "Échauffement",
+      "interdits": [
+        "avant",
+        "sport",
+        "préparer",
+        "muscle",
+        "éviter",
+        "blessure"
+      ]
+    },
+    {
+      "mot": "Étirement",
+      "interdits": [
+        "souplesse",
+        "muscle",
+        "après",
+        "sport",
+        "allonger",
+        "yoga"
+      ]
+    },
+    {
+      "mot": "Blessure",
+      "interdits": [
+        "accident",
+        "douleur",
+        "sport",
+        "entorse",
+        "soigner",
+        "trauma"
+      ]
+    },
+    {
+      "mot": "Entorse",
+      "interdits": [
+        "cheville",
+        "torsion",
+        "blessure",
+        "gonfler",
+        "ligament",
+        "sprain"
+      ]
+    },
+    {
+      "mot": "Fracture",
+      "interdits": [
+        "cassé",
+        "plâtre",
+        "blessure",
+        "radiographie",
+        "break"
+      ]
+    },
+    {
+      "mot": "Contusion",
+      "interdits": [
+        "bleu",
+        "coup",
+        "hématome",
+        "choc",
+        "peau",
+        "bruise"
+      ]
+    },
+    {
+      "mot": "Hématome",
+      "interdits": [
+        "bleu",
+        "sang",
+        "coup",
+        "gonfler",
+        "peau",
+        "contusion"
+      ]
+    },
+    {
+      "mot": "Cicatrices",
+      "interdits": [
+        "marque",
+        "peau",
+        "blessure",
+        "guéri",
+        "trace",
+        "coupure"
+      ]
+    },
+    {
+      "mot": "Bandage",
+      "interdits": [
+        "envelopper",
+        "blessure",
+        "tissu",
+        "serrer",
+        "soigner",
+        "entorse"
+      ]
+    },
+    {
+      "mot": "Attelle",
+      "interdits": [
+        "immobiliser",
+        "membre",
+        "fracture",
+        "soutien",
+        "rigide",
+        "plâtre"
+      ]
+    },
+    {
+      "mot": "Plâtre",
+      "interdits": [
+        "fracture",
+        "dur",
+        "immobiliser",
+        "blanc",
+        "bras",
+        "jambe"
+      ]
+    },
+    {
+      "mot": "Béquille",
+      "interdits": [
+        "marcher",
+        "appui",
+        "jambe",
+        "blessure",
+        "aide",
+        "axillaire"
+      ]
+    },
+    {
+      "mot": "Fauteuil",
+      "interdits": [
+        "roulant",
+        "handicap",
+        "mobilité",
+        "assis",
+        "roues",
+        "accès"
+      ]
+    },
+    {
+      "mot": "Handicap",
+      "interdits": [
+        "disability",
+        "limitation",
+        "accès",
+        "différence",
+        "adaptation",
+        "invalidité"
+      ]
+    },
+    {
+      "mot": "Accessibilité",
+      "interdits": [
+        "accès",
+        "handicap",
+        "facile",
+        "rampe",
+        "inclusion",
+        "ouvert"
+      ]
+    },
+    {
+      "mot": "Inclusion",
+      "interdits": [
+        "intégrer",
+        "tous",
+        "diversité",
+        "accepter",
+        "société",
+        "ensemble"
+      ]
+    },
+    {
+      "mot": "Diversité",
+      "interdits": [
+        "différence",
+        "variété",
+        "multiple",
+        "richesse",
+        "culturel",
+        "mixité"
+      ]
+    },
+    {
+      "mot": "Parité",
+      "interdits": [
+        "égal",
+        "homme",
+        "femme",
+        "équilibre",
+        "nombre",
+        "égalité"
+      ]
+    },
+    {
+      "mot": "Féminisme",
+      "interdits": [
+        "femme",
+        "égalité",
+        "droit",
+        "mouvement",
+        "genre",
+        "lutte"
+      ]
+    },
+    {
+      "mot": "Masculinité",
+      "interdits": [
+        "homme",
+        "genre",
+        "identité",
+        "viril",
+        "rôle",
+        "norme"
+      ]
+    },
+    {
+      "mot": "Autonomie",
+      "interdits": [
+        "indépendant",
+        "seul",
+        "liberté",
+        "décider",
+        "autosuffisant",
+        "libre"
+      ]
+    },
+    {
+      "mot": "Indépendance",
+      "interdits": [
+        "libre",
+        "autonome",
+        "pays",
+        "seul",
+        "souverain",
+        "émanciper"
+      ]
+    },
+    {
+      "mot": "Souveraineté",
+      "interdits": [
+        "pouvoir",
+        "état",
+        "indépendant",
+        "autorité",
+        "territoire",
+        "contrôle"
+      ]
+    },
+    {
+      "mot": "Démocratie",
+      "interdits": [
+        "peuple",
+        "vote",
+        "liberté",
+        "élection",
+        "citoyen",
+        "régime"
+      ]
+    },
+    {
+      "mot": "Dictature",
+      "interdits": [
+        "tyran",
+        "pouvoir",
+        "absolu",
+        "oppression",
+        "autoritaire",
+        "régime"
+      ]
+    },
+    {
+      "mot": "République",
+      "interdits": [
+        "état",
+        "président",
+        "démocratie",
+        "citoyen",
+        "régime",
+        "publique"
+      ]
+    },
+    {
+      "mot": "Monarchie",
+      "interdits": [
+        "roi",
+        "reine",
+        "couronne",
+        "héréditaire",
+        "royaume",
+        "régime"
+      ]
+    },
+    {
+      "mot": "Constitution",
+      "interdits": [
+        "loi",
+        "fondamentale",
+        "état",
+        "droits",
+        "texte",
+        "règles"
+      ]
+    },
+    {
+      "mot": "Amendement",
+      "interdits": [
+        "modifier",
+        "loi",
+        "constitution",
+        "changement",
+        "texte",
+        "révision"
+      ]
+    },
+    {
+      "mot": "Référendum",
+      "interdits": [
+        "vote",
+        "peuple",
+        "question",
+        "direct",
+        "consultation"
+      ]
+    },
+    {
+      "mot": "Pétition",
+      "interdits": [
+        "signature",
+        "demande",
+        "collecte",
+        "revendication",
+        "soutien",
+        "texte"
+      ]
+    },
+    {
+      "mot": "Propagande",
+      "interdits": [
+        "manipulation",
+        "idée",
+        "politique",
+        "médias",
+        "persuader",
+        "message"
+      ]
+    },
+    {
+      "mot": "Censure",
+      "interdits": [
+        "interdire",
+        "média",
+        "contrôler",
+        "liberté",
+        "bloquer",
+        "expression"
+      ]
+    },
+    {
+      "mot": "Liberté",
+      "interdits": [
+        "libre",
+        "droit",
+        "expression",
+        "choix",
+        "autonomie",
+        "indépendance"
+      ]
+    },
+    {
+      "mot": "Égalité",
+      "interdits": [
+        "égal",
+        "droit",
+        "même",
+        "justice",
+        "parité",
+        "équité"
+      ]
+    },
+    {
+      "mot": "Fraternité",
+      "interdits": [
+        "frère",
+        "lien",
+        "solidarité",
+        "devise",
+        "entraide",
+        "union"
+      ]
+    },
+    {
+      "mot": "Justice",
+      "interdits": [
+        "droit",
+        "juger",
+        "équité",
+        "tribunal",
+        "fair",
+        "loi"
+      ]
+    },
+    {
+      "mot": "Équité",
+      "interdits": [
+        "juste",
+        "fair",
+        "équilibre",
+        "impartial",
+        "égalité",
+        "droit"
+      ]
+    },
+    {
+      "mot": "Impartialité",
+      "interdits": [
+        "neutre",
+        "objectif",
+        "parti",
+        "juge",
+        "équitable"
+      ]
+    },
+    {
+      "mot": "Corruption",
+      "interdits": [
+        "pot",
+        "vin",
+        "argent",
+        "trafic",
+        "détournement"
+      ]
+    },
+    {
+      "mot": "Fraude",
+      "interdits": [
+        "tromper",
+        "arnaque",
+        "illégal",
+        "escroquerie",
+        "faux",
+        "tricher"
+      ]
+    },
+    {
+      "mot": "Escroquerie",
+      "interdits": [
+        "arnaque",
+        "tromper",
+        "argent",
+        "victime",
+        "fraude",
+        "voleur"
+      ]
+    },
+    {
+      "mot": "Contrefaçon",
+      "interdits": [
+        "faux",
+        "copie",
+        "marque",
+        "illégal",
+        "imiter",
+        "pirate"
+      ]
+    },
+    {
+      "mot": "Cyberattaque",
+      "interdits": [
+        "informatique",
+        "pirater",
+        "réseau",
+        "virus",
+        "hack",
+        "sécurité"
+      ]
+    },
+    {
+      "mot": "Cryptographie",
+      "interdits": [
+        "code",
+        "secret",
+        "chiffrer",
+        "sécurité",
+        "clé",
+        "message"
+      ]
+    },
+    {
+      "mot": "Algorithme",
+      "interdits": [
+        "calcul",
+        "informatique",
+        "étape",
+        "programme",
+        "méthode",
+        "code"
+      ]
+    },
+    {
+      "mot": "Intelligence",
+      "interdits": [
+        "artificielle",
+        "machine",
+        "apprendre",
+        "robot",
+        "cerveau"
+      ]
+    },
+    {
+      "mot": "Robotique",
+      "interdits": [
+        "robot",
+        "machine",
+        "automatique",
+        "mécanique",
+        "technologie"
+      ]
+    },
+    {
+      "mot": "Automatisation",
+      "interdits": [
+        "automatique",
+        "machine",
+        "remplacer",
+        "processus",
+        "robot",
+        "efficacité"
+      ]
+    },
+    {
+      "mot": "Innovation",
+      "interdits": [
+        "nouveau",
+        "création",
+        "idée",
+        "progrès",
+        "invention",
+        "changement"
+      ]
+    },
+    {
+      "mot": "Brevet",
+      "interdits": [
+        "invention",
+        "protéger",
+        "propriété",
+        "industriel",
+        "déposer",
+        "exclusif"
+      ]
+    },
+    {
+      "mot": "Prototype",
+      "interdits": [
+        "modèle",
+        "premier",
+        "essai",
+        "version",
+        "test",
+        "maquette"
+      ]
+    },
+    {
+      "mot": "Maquette",
+      "interdits": [
+        "modèle",
+        "réduit",
+        "projet",
+        "présentation",
+        "prototype",
+        "miniature"
+      ]
+    },
+    {
+      "mot": "Simulation",
+      "interdits": [
+        "imiter",
+        "virtuel",
+        "entraîner",
+        "modèle",
+        "reproduire",
+        "scénario"
+      ]
+    },
+    {
+      "mot": "Scénario",
+      "interdits": [
+        "histoire",
+        "film",
+        "prévoir",
+        "script",
+        "hypothèse",
+        "plan"
+      ]
+    },
+    {
+      "mot": "Hypothèse",
+      "interdits": [
+        "supposer",
+        "théorie",
+        "idée",
+        "tester",
+        "science"
+      ]
+    },
+    {
+      "mot": "Théorie",
+      "interdits": [
+        "idée",
+        "science",
+        "expliquer",
+        "modèle",
+        "hypothèse",
+        "concept"
+      ]
+    },
+    {
+      "mot": "Paradigme",
+      "interdits": [
+        "modèle",
+        "pensée",
+        "cadre",
+        "changement",
+        "référence",
+        "vision"
+      ]
+    },
+    {
+      "mot": "Concept",
+      "interdits": [
+        "idée",
+        "notion",
+        "abstrait",
+        "définition",
+        "pensée",
+        "théorie"
+      ]
+    },
+    {
+      "mot": "Abstraction",
+      "interdits": [
+        "idée",
+        "général",
+        "concret",
+        "opposé",
+        "concept",
+        "théorie"
+      ]
+    },
+    {
+      "mot": "Métaphore",
+      "interdits": [
+        "image",
+        "comparaison",
+        "langage",
+        "figure",
+        "symbolique",
+        "comme"
+      ]
+    },
+    {
+      "mot": "Analogie",
+      "interdits": [
+        "comparaison",
+        "ressemblance",
+        "similaire",
+        "parallel",
+        "comme",
+        "lien"
+      ]
+    },
+    {
+      "mot": "Symbole",
+      "interdits": [
+        "signe",
+        "représenter",
+        "signification",
+        "icône",
+        "embleme",
+        "code"
+      ]
+    },
+    {
+      "mot": "Emblème",
+      "interdits": [
+        "symbole",
+        "représenter",
+        "blason",
+        "marque",
+        "identité",
+        "signe"
+      ]
+    },
+    {
+      "mot": "Blason",
+      "interdits": [
+        "armoiries",
+        "famille",
+        "héraldique",
+        "écu",
+        "noble",
+        "symbole"
+      ]
+    },
+    {
+      "mot": "Héraldique",
+      "interdits": [
+        "blason",
+        "armoiries",
+        "science",
+        "noble",
+        "écu",
+        "symbole"
+      ]
+    },
+    {
+      "mot": "Généalogie",
+      "interdits": [
+        "famille",
+        "arbre",
+        "ancêtre",
+        "histoire",
+        "ligne",
+        "origine"
+      ]
+    },
+    {
+      "mot": "Ancêtre",
+      "interdits": [
+        "aïeul",
+        "passe",
+        "famille",
+        "origine",
+        "génération",
+        "avant"
+      ]
+    },
+    {
+      "mot": "Descendant",
+      "interdits": [
+        "enfant",
+        "suite",
+        "famille",
+        "génération",
+        "héritier",
+        "après"
+      ]
+    },
+    {
+      "mot": "Lignée",
+      "interdits": [
+        "famille",
+        "descendance",
+        "sang",
+        "génération",
+        "dynastie",
+        "suite"
+      ]
+    },
+    {
+      "mot": "Dynastie",
+      "interdits": [
+        "famille",
+        "roi",
+        "règne",
+        "génération",
+        "pouvoir",
+        "succession"
+      ]
+    },
+    {
+      "mot": "Succession",
+      "interdits": [
+        "suite",
+        "héritage",
+        "ordre",
+        "trône",
+        "remplacer",
+        "enchaînement"
+      ]
+    },
+    {
+      "mot": "Couronnement",
+      "interdits": [
+        "roi",
+        "couronne",
+        "cérémonie",
+        "sacré",
+        "trône",
+        "intronisation"
+      ]
+    },
+    {
+      "mot": "Abdication",
+      "interdits": [
+        "renoncer",
+        "trône",
+        "roi",
+        "quitter",
+        "pouvoir",
+        "démission"
+      ]
+    },
+    {
+      "mot": "Usurpation",
+      "interdits": [
+        "voler",
+        "trône",
+        "illégitime",
+        "prendre",
+        "pouvoir",
+        "saisir"
+      ]
+    },
+    {
+      "mot": "Conspiration",
+      "interdits": [
+        "complot",
+        "secret",
+        "contre",
+        "groupe",
+        "planifier",
+        "intrigue"
+      ]
+    },
+    {
+      "mot": "Trahison",
+      "interdits": [
+        "trahir",
+        "fidélité",
+        "ennemi",
+        "secret",
+        "délation",
+        "backstab"
+      ]
+    },
+    {
+      "mot": "Loyalisme",
+      "interdits": [
+        "fidèle",
+        "loyal",
+        "soutien",
+        "roi",
+        "attachement",
+        "devoir"
+      ]
+    },
+    {
+      "mot": "Allégeance",
+      "interdits": [
+        "fidélité",
+        "serment",
+        "roi",
+        "soumission",
+        "devoir",
+        "loyal"
+      ]
+    },
+    {
+      "mot": "Serment",
+      "interdits": [
+        "promettre",
+        "jurer",
+        "engagement",
+        "solennel",
+        "parole",
+        "sacré"
+      ]
+    },
+    {
+      "mot": "Vœu",
+      "interdits": [
+        "promettre",
+        "souhait",
+        "engagement",
+        "mariage",
+        "religion",
+        "désir"
+      ]
+    },
+    {
+      "mot": "Promesse",
+      "interdits": [
+        "engager",
+        "parole",
+        "tenir",
+        "avenir",
+        "assurer",
+        "contrat"
+      ]
+    },
+    {
+      "mot": "Engagement",
+      "interdits": [
+        "promettre",
+        "investir",
+        "responsabilité",
+        "lien",
+        "devoir",
+        "implique"
+      ]
+    },
+    {
+      "mot": "Responsabilité",
+      "interdits": [
+        "devoir",
+        "charge",
+        "responsable",
+        "assumer",
+        "faute",
+        "rôle"
+      ]
+    },
+    {
+      "mot": "Culpabilité",
+      "interdits": [
+        "faute",
+        "coupable",
+        "remords",
+        "sentiment",
+        "responsable",
+        "blame"
+      ]
+    },
+    {
+      "mot": "Remords",
+      "interdits": [
+        "regret",
+        "culpabilité",
+        "conscience",
+        "faute",
+        "repentir",
+        "sorry"
+      ]
+    },
+    {
+      "mot": "Pardon",
+      "interdits": [
+        "excuser",
+        "oublier",
+        "faute",
+        "réconciliation",
+        "absoudre",
+        "grâce"
+      ]
+    },
+    {
+      "mot": "Réconciliation",
+      "interdits": [
+        "paix",
+        "retrouvailles",
+        "pardon",
+        "accord",
+        "retrouver",
+        "entente"
+      ]
+    },
+    {
+      "mot": "Rupture",
+      "interdits": [
+        "casse",
+        "séparation",
+        "couple",
+        "fin",
+        "break",
+        "lien"
+      ]
+    },
+    {
+      "mot": "Séparation",
+      "interdits": [
+        "divorce",
+        "éloigner",
+        "couple",
+        "partir",
+        "distance",
+        "split"
+      ]
+    },
+    {
+      "mot": "Divorce",
+      "interdits": [
+        "mariage",
+        "séparation",
+        "légal",
+        "couple",
+        "rompre",
+        "jugement"
+      ]
+    },
+    {
+      "mot": "Garde",
+      "interdits": [
+        "enfant",
+        "custody",
+        "parent",
+        "divorce",
+        "responsabilité",
+        "partagée"
+      ]
+    },
+    {
+      "mot": "Arbitrage",
+      "interdits": [
+        "juge",
+        "conflit",
+        "décision",
+        "tiers",
+        "résoudre",
+        "sentence"
+      ]
+    },
+    {
+      "mot": "Médiateur",
+      "interdits": [
+        "intermédiaire",
+        "conflit",
+        "négocier",
+        "paix",
+        "tiers",
+        "faciliter"
+      ]
+    },
+    {
+      "mot": "Conciliation",
+      "interdits": [
+        "accord",
+        "paix",
+        "rapprocher",
+        "entente",
+        "médiation",
+        "harmonie"
+      ]
+    },
+    {
+      "mot": "Litige",
+      "interdits": [
+        "conflit",
+        "juridique",
+        "dispute",
+        "procès",
+        "désaccord",
+        "affaire"
+      ]
+    },
+    {
+      "mot": "Procès",
+      "interdits": [
+        "tribunal",
+        "juger",
+        "affaire",
+        "avocat",
+        "audience",
+        "verdict"
+      ]
+    },
+    {
+      "mot": "Audience",
+      "interdits": [
+        "tribunal",
+        "écoute",
+        "publique",
+        "juge",
+        "séance",
+        "entendre"
+      ]
+    },
+    {
+      "mot": "Verdict",
+      "interdits": [
+        "jugement",
+        "décision",
+        "coupable",
+        "innocent",
+        "jury",
+        "sentence"
+      ]
+    },
+    {
+      "mot": "Sentence",
+      "interdits": [
+        "peine",
+        "condamnation",
+        "jugement",
+        "prison",
+        "amende",
+        "verdict"
+      ]
+    },
+    {
+      "mot": "Condamnation",
+      "interdits": [
+        "coupable",
+        "peine",
+        "jugement",
+        "prison",
+        "sanction",
+        "sentence"
+      ]
+    },
+    {
+      "mot": "Acquittement",
+      "interdits": [
+        "innocent",
+        "libre",
+        "jugement",
+        "disculper",
+        "coupable"
+      ]
+    },
+    {
+      "mot": "Appel",
+      "interdits": [
+        "contester",
+        "jugement",
+        "recours",
+        "cour",
+        "supérieure",
+        "revoir"
+      ]
+    },
+    {
+      "mot": "Pourvoi",
+      "interdits": [
+        "cassation",
+        "recours",
+        "ultime",
+        "cour",
+        "droit",
+        "appel"
+      ]
+    },
+    {
+      "mot": "Cassation",
+      "interdits": [
+        "cour",
+        "suprême",
+        "annuler",
+        "jugement",
+        "droit",
+        "pourvoi"
+      ]
+    },
+    {
+      "mot": "Jurisprudence",
+      "interdits": [
+        "précédent",
+        "droit",
+        "décision",
+        "tribunal",
+        "référence",
+        "cas"
+      ]
+    },
+    {
+      "mot": "Doctrine",
+      "interdits": [
+        "théorie",
+        "droit",
+        "opinion",
+        "savant",
+        "principe",
+        "écriture"
+      ]
+    },
+    {
+      "mot": "Précédent",
+      "interdits": [
+        "avant",
+        "exemple",
+        "jurisprudence",
+        "référence",
+        "cas",
+        "similaire"
+      ]
+    },
+    {
+      "mot": "Prescription",
+      "interdits": [
+        "délai",
+        "droit",
+        "expirer",
+        "temps",
+        "action",
+        "limite"
+      ]
+    },
+    {
+      "mot": "Amnistie",
+      "interdits": [
+        "pardon",
+        "état",
+        "oubli",
+        "peine",
+        "politique",
+        "grâce"
+      ]
+    },
+    {
+      "mot": "Grâce",
+      "interdits": [
+        "pardon",
+        "président",
+        "peine",
+        "clémence",
+        "libérer",
+        "faveur"
+      ]
+    },
+    {
+      "mot": "Clémence",
+      "interdits": [
+        "indulgence",
+        "douceur",
+        "pardon",
+        "merci",
+        "souple",
+        "pitié"
+      ]
+    },
+    {
+      "mot": "Sévérité",
+      "interdits": [
+        "dur",
+        "strict",
+        "rigueur",
+        "puni",
+        "ferme",
+        "intransigeant"
       ]
     }
   ],
@@ -2062,17 +8147,6 @@
       ]
     },
     {
-      "mot": "Tire-bouchon",
-      "interdits": [
-        "vin",
-        "bouteille",
-        "ouvrir",
-        "liège",
-        "tourner",
-        "bouchon"
-      ]
-    },
-    {
       "mot": "Décapsuleur",
       "interdits": [
         "bière",
@@ -2089,7 +8163,6 @@
         "légume",
         "éplucher",
         "cuisine",
-        "pomme de terre",
         "lame",
         "manche"
       ]
@@ -2150,17 +8223,6 @@
       ]
     },
     {
-      "mot": "Rouleau papier",
-      "interdits": [
-        "toilette",
-        "Sopalin",
-        "dérouler",
-        "salle de bain",
-        "essuyer",
-        "carton"
-      ]
-    },
-    {
       "mot": "Balai",
       "interdits": [
         "balayer",
@@ -2205,66 +8267,10 @@
       ]
     },
     {
-      "mot": "Poubelle sous évier",
-      "interdits": [
-        "cuisine",
-        "jeter",
-        "bac",
-        "déchet",
-        "odeur",
-        "tri"
-      ]
-    },
-    {
-      "mot": "Tapis de bain",
-      "interdits": [
-        "salle de bain",
-        "pied",
-        "mou",
-        "douche",
-        "absorber",
-        "sol"
-      ]
-    },
-    {
-      "mot": "Porte-savon",
-      "interdits": [
-        "savon",
-        "salle de bain",
-        "lavabo",
-        "mousser",
-        "support",
-        "douche"
-      ]
-    },
-    {
-      "mot": "Porte-brosse à dents",
-      "interdits": [
-        "salle de bain",
-        "dent",
-        "lavabo",
-        "support",
-        "hygiène",
-        "mural"
-      ]
-    },
-    {
-      "mot": "Bonnet de douche",
-      "interdits": [
-        "cheveux",
-        "douche",
-        "plastique",
-        "mouiller",
-        "salle de bain",
-        "protéger"
-      ]
-    },
-    {
       "mot": "Peignoir",
       "interdits": [
         "sortir",
         "douche",
-        "salle de bain",
         "tissu",
         "ceinture",
         "chaud"
@@ -2293,20 +8299,8 @@
       ]
     },
     {
-      "mot": "Soutien-gorge",
-      "interdits": [
-        "lingerie",
-        "armoire",
-        "bretelle",
-        "taille",
-        "laver",
-        "femme"
-      ]
-    },
-    {
       "mot": "Caleçon",
       "interdits": [
-        "sous-vêtement",
         "homme",
         "coton",
         "laver",
@@ -2329,7 +8323,6 @@
       "mot": "Gilet",
       "interdits": [
         "pull",
-        "sans manche",
         "bouton",
         "hiver",
         "couche",
@@ -2414,17 +8407,6 @@
       ]
     },
     {
-      "mot": "Fermeture éclair",
-      "interdits": [
-        "zip",
-        "pantalon",
-        "veste",
-        "glisser",
-        "cassé",
-        "fermer"
-      ]
-    },
-    {
       "mot": "Étiquette",
       "interdits": [
         "vêtement",
@@ -2433,28 +8415,6 @@
         "marque",
         "lavage",
         "col"
-      ]
-    },
-    {
-      "mot": "Cintre à pantalon",
-      "interdits": [
-        "placard",
-        "pince",
-        "pantalon",
-        "accrocher",
-        "pli",
-        "armoire"
-      ]
-    },
-    {
-      "mot": "Boîte à chaussures",
-      "interdits": [
-        "ranger",
-        "carton",
-        "paire",
-        "placard",
-        "empiler",
-        "étiquette"
       ]
     },
     {
@@ -2502,17 +8462,6 @@
       ]
     },
     {
-      "mot": "Chaîne de sécurité",
-      "interdits": [
-        "porte",
-        "ouvrir",
-        "sécurité",
-        "visiteur",
-        "entrebâiller",
-        "maillon"
-      ]
-    },
-    {
       "mot": "Verrou",
       "interdits": [
         "porte",
@@ -2524,22 +8473,10 @@
       ]
     },
     {
-      "mot": "Joint silicone",
-      "interdits": [
-        "salle de bain",
-        "lavabo",
-        "douche",
-        "étanchéité",
-        "moisissure",
-        "colle"
-      ]
-    },
-    {
       "mot": "Moisissure",
       "interdits": [
         "humidité",
         "mur",
-        "salle de bain",
         "noir",
         "nettoyer",
         "tache"
@@ -2565,17 +8502,6 @@
         "caoutchouc",
         "manche",
         "bouchon"
-      ]
-    },
-    {
-      "mot": "Joint de robinet",
-      "interdits": [
-        "fuite",
-        "eau",
-        "goutte",
-        "changer",
-        "plombier",
-        "téflon"
       ]
     },
     {
@@ -2617,7 +8543,6 @@
         "télécommande",
         "tournevis",
         "appareil",
-        "AA",
         "remplacer",
         "chargeur"
       ]
@@ -2634,28 +8559,6 @@
       ]
     },
     {
-      "mot": "Box internet",
-      "interdits": [
-        "wifi",
-        "fibre",
-        "clignoter",
-        "orange",
-        "débit",
-        "routeur"
-      ]
-    },
-    {
-      "mot": "Mot de passe",
-      "interdits": [
-        "oublier",
-        "connexion",
-        "compte",
-        "sécurité",
-        "lettre",
-        "chiffre"
-      ]
-    },
-    {
       "mot": "Captcha",
       "interdits": [
         "robot",
@@ -2664,17 +8567,6 @@
         "internet",
         "case",
         "vérifier"
-      ]
-    },
-    {
-      "mot": "Mise à jour",
-      "interdits": [
-        "téléphone",
-        "ordinateur",
-        "redémarrer",
-        "logiciel",
-        "attendre",
-        "version"
       ]
     },
     {
@@ -2700,39 +8592,6 @@
       ]
     },
     {
-      "mot": "Raccourci clavier",
-      "interdits": [
-        "copier",
-        "coller",
-        "Ctrl",
-        "ordinateur",
-        "toucher",
-        "gagner"
-      ]
-    },
-    {
-      "mot": "Capture d'écran",
-      "interdits": [
-        "téléphone",
-        "ordinateur",
-        "image",
-        "enregistrer",
-        "bouton",
-        "partager"
-      ]
-    },
-    {
-      "mot": "Story Instagram",
-      "interdits": [
-        "photo",
-        "24h",
-        "réseau",
-        "filtre",
-        "ami",
-        "vertical"
-      ]
-    },
-    {
       "mot": "Notification",
       "interdits": [
         "téléphone",
@@ -2741,17 +8600,6 @@
         "application",
         "badge",
         "désactiver"
-      ]
-    },
-    {
-      "mot": "Forfait mobile",
-      "interdits": [
-        "data",
-        "SMS",
-        "opérateur",
-        "payer",
-        "giga",
-        "abonnement"
       ]
     },
     {
@@ -2766,50 +8614,6 @@
       ]
     },
     {
-      "mot": "Ticket resto",
-      "interdits": [
-        "déjeuner",
-        "restaurant",
-        "carte",
-        "employeur",
-        "payer",
-        "cantine"
-      ]
-    },
-    {
-      "mot": "Ticket de caisse",
-      "interdits": [
-        "supermarché",
-        "payer",
-        "rendre",
-        "monnaie",
-        "courses",
-        "garantie"
-      ]
-    },
-    {
-      "mot": "Carte fidélité",
-      "interdits": [
-        "magasin",
-        "point",
-        "scanner",
-        "réduction",
-        "trou",
-        "portefeuille"
-      ]
-    },
-    {
-      "mot": "Ticket de métro",
-      "interdits": [
-        "valider",
-        "station",
-        "composteur",
-        "voyage",
-        "perdre",
-        "recharge"
-      ]
-    },
-    {
       "mot": "Composteur",
       "interdits": [
         "métro",
@@ -2821,58 +8625,13 @@
       ]
     },
     {
-      "mot": "Badge entreprise",
-      "interdits": [
-        "bureau",
-        "scanner",
-        "accès",
-        "photo",
-        "collier",
-        "employé"
-      ]
-    },
-    {
-      "mot": "Machine à café",
-      "interdits": [
-        "bureau",
-        "capsule",
-        "expresso",
-        "pause",
-        "tasse",
-        "grain"
-      ]
-    },
-    {
-      "mot": "Fontaine à eau",
-      "interdits": [
-        "bureau",
-        "verre",
-        "fraîche",
-        "gourde",
-        "remplir",
-        "fraîcheur"
-      ]
-    },
-    {
-      "mot": "Micro-ondes bureau",
-      "interdits": [
-        "réchauffer",
-        "tupperware",
-        "odeur",
-        "pause",
-        "pop-corn",
-        "plastique"
-      ]
-    },
-    {
       "mot": "Tupperware",
       "interdits": [
         "ranger",
         "frigo",
         "couvert",
         "repas",
-        "plastique",
-        "micro-ondes"
+        "plastique"
       ]
     },
     {
@@ -2895,39 +8654,6 @@
         "bureau",
         "gourde",
         "voyage"
-      ]
-    },
-    {
-      "mot": "Coussin lumbar",
-      "interdits": [
-        "dos",
-        "bureau",
-        "chaise",
-        "confort",
-        "siège",
-        "ergonomie"
-      ]
-    },
-    {
-      "mot": "Casque antibruit",
-      "interdits": [
-        "bureau",
-        "concentrer",
-        "open space",
-        "oreille",
-        "musique",
-        "silence"
-      ]
-    },
-    {
-      "mot": "Post-it",
-      "interdits": [
-        "bureau",
-        "coller",
-        "note",
-        "jaune",
-        "rappel",
-        "feuille"
       ]
     },
     {
@@ -2961,28 +8687,6 @@
         "dos",
         "étiquette",
         "étagère"
-      ]
-    },
-    {
-      "mot": "Chemise cartonnée",
-      "interdits": [
-        "bureau",
-        "ranger",
-        "document",
-        "dossier",
-        "étiquette",
-        "carton"
-      ]
-    },
-    {
-      "mot": "Tampon encreur",
-      "interdits": [
-        "bureau",
-        "encre",
-        "tamponner",
-        "date",
-        "administratif",
-        "violet"
       ]
     },
     {
@@ -3063,72 +8767,6 @@
       ]
     },
     {
-      "mot": "Sac à dos",
-      "interdits": [
-        "dos",
-        "bretelle",
-        "randonnée",
-        "école",
-        "porter",
-        "poche"
-      ]
-    },
-    {
-      "mot": "Porte-documents",
-      "interdits": [
-        "bureau",
-        "document",
-        "zip",
-        "réunion",
-        "cuir",
-        "manche"
-      ]
-    },
-    {
-      "mot": "Parapluie compact",
-      "interdits": [
-        "pluie",
-        "poche",
-        "plier",
-        "petit",
-        "sac",
-        "manche"
-      ]
-    },
-    {
-      "mot": "Anti-moustique",
-      "interdits": [
-        "été",
-        "spray",
-        "piquer",
-        "odeur",
-        "nuisible",
-        "répulsif"
-      ]
-    },
-    {
-      "mot": "Crème solaire",
-      "interdits": [
-        "soleil",
-        "plage",
-        "brûler",
-        "SPF",
-        "été",
-        "peau"
-      ]
-    },
-    {
-      "mot": "Après-soleil",
-      "interdits": [
-        "brûler",
-        "plage",
-        "aloès",
-        "rouge",
-        "peau",
-        "apaiser"
-      ]
-    },
-    {
       "mot": "Pansement",
       "interdits": [
         "blessure",
@@ -3148,6 +8786,2396 @@
         "pharmacie",
         "coton",
         "bobo"
+      ]
+    },
+    {
+      "mot": "Éphémère",
+      "interdits": [
+        "court",
+        "durée",
+        "passager",
+        "temporaire",
+        "fugace",
+        "bref"
+      ]
+    },
+    {
+      "mot": "Fugace",
+      "interdits": [
+        "rapide",
+        "passer",
+        "éphémère",
+        "bref",
+        "instant",
+        "disparaître"
+      ]
+    },
+    {
+      "mot": "Pérenne",
+      "interdits": [
+        "durable",
+        "permanent",
+        "long",
+        "année",
+        "stable",
+        "continuer"
+      ]
+    },
+    {
+      "mot": "Obsolète",
+      "interdits": [
+        "dépassé",
+        "vieux",
+        "périmé",
+        "ancien",
+        "inutile",
+        "technologie"
+      ]
+    },
+    {
+      "mot": "Anachronique",
+      "interdits": [
+        "époque",
+        "décalé",
+        "temps",
+        "inapproprié",
+        "historique",
+        "hors"
+      ]
+    },
+    {
+      "mot": "Contemporain",
+      "interdits": [
+        "actuel",
+        "époque",
+        "moderne",
+        "même",
+        "temps",
+        "aujourd"
+      ]
+    },
+    {
+      "mot": "Antérieur",
+      "interdits": [
+        "avant",
+        "précédent",
+        "passé",
+        "prior",
+        "tôt"
+      ]
+    },
+    {
+      "mot": "Postérieur",
+      "interdits": [
+        "après",
+        "suivant",
+        "tard",
+        "ultérieur",
+        "suite"
+      ]
+    },
+    {
+      "mot": "Simultané",
+      "interdits": [
+        "même",
+        "temps",
+        "ensemble",
+        "parallèle",
+        "coincider",
+        "sync"
+      ]
+    },
+    {
+      "mot": "Séquentiel",
+      "interdits": [
+        "suite",
+        "ordre",
+        "enchaînement",
+        "étape",
+        "successif",
+        "série"
+      ]
+    },
+    {
+      "mot": "Aléatoire",
+      "interdits": [
+        "hasard",
+        "random",
+        "imprévisible",
+        "chance",
+        "dés",
+        "fortuit"
+      ]
+    },
+    {
+      "mot": "Fortuit",
+      "interdits": [
+        "hasard",
+        "accidentel",
+        "imprévu",
+        "chance",
+        "aléatoire",
+        "inattendu"
+      ]
+    },
+    {
+      "mot": "Inéluctable",
+      "interdits": [
+        "inévitable",
+        "fatal",
+        "certain",
+        "inescapable",
+        "destiné",
+        "obligé"
+      ]
+    },
+    {
+      "mot": "Inexorable",
+      "interdits": [
+        "implacable",
+        "dur",
+        "pitié",
+        "inévitable",
+        "ferme"
+      ]
+    },
+    {
+      "mot": "Implacable",
+      "interdits": [
+        "pitié",
+        "dur",
+        "acharné",
+        "inexorable",
+        "rigide"
+      ]
+    },
+    {
+      "mot": "Irréversible",
+      "interdits": [
+        "impossible",
+        "revenir",
+        "définitif",
+        "permanent",
+        "retour"
+      ]
+    },
+    {
+      "mot": "Irrémédiable",
+      "interdits": [
+        "remède",
+        "définitif",
+        "irrécupérable",
+        "perdu",
+        "fatal"
+      ]
+    },
+    {
+      "mot": "Irrécusable",
+      "interdits": [
+        "incontestable",
+        "preuve",
+        "évident",
+        "indiscutable",
+        "certain",
+        "clair"
+      ]
+    },
+    {
+      "mot": "Indélébile",
+      "interdits": [
+        "ineffaçable",
+        "permanent",
+        "marque",
+        "mémoire",
+        "durable",
+        "encre"
+      ]
+    },
+    {
+      "mot": "Impalpable",
+      "interdits": [
+        "intangible",
+        "toucher",
+        "impossible",
+        "abstrait",
+        "subtil",
+        "évanescent"
+      ]
+    },
+    {
+      "mot": "Intangible",
+      "interdits": [
+        "toucher",
+        "impossible",
+        "abstrait",
+        "immatériel",
+        "droit",
+        "bien"
+      ]
+    },
+    {
+      "mot": "Immatériel",
+      "interdits": [
+        "matière",
+        "spirituel",
+        "virtuel",
+        "abstrait",
+        "incorporel"
+      ]
+    },
+    {
+      "mot": "Incorporel",
+      "interdits": [
+        "corps",
+        "esprit",
+        "abstrait",
+        "droit",
+        "immatériel"
+      ]
+    },
+    {
+      "mot": "Évanescent",
+      "interdits": [
+        "disparaître",
+        "fugace",
+        "vapeur",
+        "éphémère",
+        "léger"
+      ]
+    },
+    {
+      "mot": "Diaphane",
+      "interdits": [
+        "transparent",
+        "fin",
+        "voile",
+        "lumière",
+        "délicat",
+        "clair"
+      ]
+    },
+    {
+      "mot": "Opaque",
+      "interdits": [
+        "bloquer",
+        "lumière",
+        "sombre",
+        "incompréhensible",
+        "dense",
+        "couvrir"
+      ]
+    },
+    {
+      "mot": "Translucide",
+      "interdits": [
+        "lumière",
+        "passer",
+        "flou",
+        "semi",
+        "transparent",
+        "verre"
+      ]
+    },
+    {
+      "mot": "Luminescent",
+      "interdits": [
+        "briller",
+        "lumière",
+        "propre",
+        "phosphore",
+        "nuit",
+        "émettre"
+      ]
+    },
+    {
+      "mot": "Iridescent",
+      "interdits": [
+        "couleur",
+        "changeant",
+        "reflet",
+        "arc",
+        "nacre",
+        "briller"
+      ]
+    },
+    {
+      "mot": "Opalescent",
+      "interdits": [
+        "nacre",
+        "reflet",
+        "lait",
+        "couleur",
+        "iris",
+        "pierre"
+      ]
+    },
+    {
+      "mot": "Prismatique",
+      "interdits": [
+        "prisme",
+        "couleur",
+        "décomposer",
+        "lumière",
+        "spectre",
+        "arc"
+      ]
+    },
+    {
+      "mot": "Chromatique",
+      "interdits": [
+        "couleur",
+        "échelle",
+        "gamme",
+        "musique",
+        "spectre",
+        "teinte"
+      ]
+    },
+    {
+      "mot": "Achromatique",
+      "interdits": [
+        "couleur",
+        "gris",
+        "neutre",
+        "noir",
+        "blanc"
+      ]
+    },
+    {
+      "mot": "Monochrome",
+      "interdits": [
+        "couleur",
+        "noir",
+        "blanc",
+        "simple",
+        "teinte"
+      ]
+    },
+    {
+      "mot": "Polychrome",
+      "interdits": [
+        "plusieurs",
+        "couleurs",
+        "varié",
+        "riche",
+        "multicolore",
+        "palette"
+      ]
+    },
+    {
+      "mot": "Sépia",
+      "interdits": [
+        "brun",
+        "photo",
+        "ancienne",
+        "encre",
+        "teinte",
+        "vintage"
+      ]
+    },
+    {
+      "mot": "Pastel",
+      "interdits": [
+        "doux",
+        "couleur",
+        "crayon",
+        "clair",
+        "tendre",
+        "art"
+      ]
+    },
+    {
+      "mot": "Fluorescent",
+      "interdits": [
+        "brillant",
+        "vif",
+        "lumière",
+        "néon",
+        "flashy",
+        "markeur"
+      ]
+    },
+    {
+      "mot": "Mat",
+      "interdits": [
+        "brillance",
+        "doux",
+        "peinture",
+        "opposé",
+        "brillant"
+      ]
+    },
+    {
+      "mot": "Satiné",
+      "interdits": [
+        "doux",
+        "brillance",
+        "tissu",
+        "léger",
+        "soyeux",
+        "fini"
+      ]
+    },
+    {
+      "mot": "Velouté",
+      "interdits": [
+        "doux",
+        "toucher",
+        "velours",
+        "texture",
+        "lisse",
+        "agréable"
+      ]
+    },
+    {
+      "mot": "Rugueux",
+      "interdits": [
+        "râpeux",
+        "surface",
+        "irrégulier",
+        "dur",
+        "abrasif",
+        "gratte"
+      ]
+    },
+    {
+      "mot": "Granuleux",
+      "interdits": [
+        "grain",
+        "texture",
+        "petit",
+        "surface",
+        "sable",
+        "rugueux"
+      ]
+    },
+    {
+      "mot": "Fibreux",
+      "interdits": [
+        "fibre",
+        "texture",
+        "fil",
+        "tissu",
+        "plante",
+        "allongé"
+      ]
+    },
+    {
+      "mot": "Poreux",
+      "interdits": [
+        "trou",
+        "absorber",
+        "spongieux",
+        "perméable",
+        "surface",
+        "ouvert"
+      ]
+    },
+    {
+      "mot": "Imperméable",
+      "interdits": [
+        "eau",
+        "bloquer",
+        "étanche",
+        "manteau",
+        "protéger",
+        "résister"
+      ]
+    },
+    {
+      "mot": "Étanche",
+      "interdits": [
+        "eau",
+        "air",
+        "fermé",
+        "scellé",
+        "hermétique",
+        "imperméable"
+      ]
+    },
+    {
+      "mot": "Hermétique",
+      "interdits": [
+        "fermé",
+        "étanche",
+        "secret",
+        "scellé",
+        "air",
+        "incompréhensible"
+      ]
+    },
+    {
+      "mot": "Perméable",
+      "interdits": [
+        "laisser",
+        "passer",
+        "eau",
+        "poreux",
+        "filtrant",
+        "ouvert"
+      ]
+    },
+    {
+      "mot": "Absorbant",
+      "interdits": [
+        "prendre",
+        "liquide",
+        "éponge",
+        "absorber",
+        "retenir",
+        "soif"
+      ]
+    },
+    {
+      "mot": "Adhérent",
+      "interdits": [
+        "coller",
+        "surface",
+        "tenir",
+        "adhésif",
+        "fixer",
+        "accrocher"
+      ]
+    },
+    {
+      "mot": "Adhésif",
+      "interdits": [
+        "colle",
+        "collant",
+        "ruban",
+        "fixer",
+        "scotch",
+        "glue"
+      ]
+    },
+    {
+      "mot": "Visqueux",
+      "interdits": [
+        "épais",
+        "collant",
+        "miel",
+        "fluide",
+        "lent",
+        "glu"
+      ]
+    },
+    {
+      "mot": "Fluide",
+      "interdits": [
+        "liquide",
+        "couler",
+        "mobile",
+        "gaz",
+        "souple",
+        "aisé"
+      ]
+    },
+    {
+      "mot": "Gazeux",
+      "interdits": [
+        "gaz",
+        "air",
+        "vapeur",
+        "état",
+        "matière",
+        "volatil"
+      ]
+    },
+    {
+      "mot": "Volatile",
+      "interdits": [
+        "évaporer",
+        "instable",
+        "gaz",
+        "changeant",
+        "éphémère",
+        "fuite"
+      ]
+    },
+    {
+      "mot": "Sublimation",
+      "interdits": [
+        "solide",
+        "gaz",
+        "direct",
+        "glace",
+        "passer",
+        "physique"
+      ]
+    },
+    {
+      "mot": "Condensation",
+      "interdits": [
+        "vapeur",
+        "liquide",
+        "eau",
+        "froid",
+        "goutte",
+        "fenêtre"
+      ]
+    },
+    {
+      "mot": "Évaporation",
+      "interdits": [
+        "liquide",
+        "gaz",
+        "sécher",
+        "chaleur",
+        "vapeur",
+        "disparaître"
+      ]
+    },
+    {
+      "mot": "Fusion",
+      "interdits": [
+        "fondre",
+        "solide",
+        "liquide",
+        "chaleur",
+        "métal",
+        "unir"
+      ]
+    },
+    {
+      "mot": "Solidification",
+      "interdits": [
+        "durcir",
+        "liquide",
+        "solide",
+        "geler",
+        "figer",
+        "froid"
+      ]
+    },
+    {
+      "mot": "Cristallisation",
+      "interdits": [
+        "cristal",
+        "former",
+        "solide",
+        "ordre",
+        "sucre",
+        "structure"
+      ]
+    },
+    {
+      "mot": "Oxydation",
+      "interdits": [
+        "oxygène",
+        "rouille",
+        "réaction",
+        "chimie",
+        "métaux",
+        "brunir"
+      ]
+    },
+    {
+      "mot": "Corrosion",
+      "interdits": [
+        "rouille",
+        "métal",
+        "manger",
+        "oxydation",
+        "dégrader",
+        "acide"
+      ]
+    },
+    {
+      "mot": "Érosion",
+      "interdits": [
+        "user",
+        "vent",
+        "eau",
+        "rocher",
+        "usure",
+        "temps"
+      ]
+    },
+    {
+      "mot": "Sédimentation",
+      "interdits": [
+        "dépôt",
+        "fond",
+        "couche",
+        "rivière",
+        "accumuler",
+        "sédiment"
+      ]
+    },
+    {
+      "mot": "Stratification",
+      "interdits": [
+        "couche",
+        "niveau",
+        "superposer",
+        "roche",
+        "sociale",
+        "étage"
+      ]
+    },
+    {
+      "mot": "Sismique",
+      "interdits": [
+        "tremblement",
+        "terre",
+        "séisme",
+        "onde",
+        "vibration",
+        "faille"
+      ]
+    },
+    {
+      "mot": "Tectonique",
+      "interdits": [
+        "plaque",
+        "terre",
+        "mouvement",
+        "continent",
+        "séisme",
+        "dérive"
+      ]
+    },
+    {
+      "mot": "Magmatique",
+      "interdits": [
+        "magma",
+        "volcan",
+        "roche",
+        "fondu",
+        "éruption",
+        "feu"
+      ]
+    },
+    {
+      "mot": "Éruptif",
+      "interdits": [
+        "volcan",
+        "explosion",
+        "sortie",
+        "magma",
+        "violent",
+        "jaillir"
+      ]
+    },
+    {
+      "mot": "Sismographe",
+      "interdits": [
+        "tremblement",
+        "mesure",
+        "appareil",
+        "onde",
+        "enregistrer",
+        "séisme"
+      ]
+    },
+    {
+      "mot": "Baromètre",
+      "interdits": [
+        "pression",
+        "air",
+        "météo",
+        "mesure",
+        "atmosphère",
+        "appareil"
+      ]
+    },
+    {
+      "mot": "Anémomètre",
+      "interdits": [
+        "vent",
+        "vitesse",
+        "mesure",
+        "météo",
+        "appareil",
+        "girouette"
+      ]
+    },
+    {
+      "mot": "Hygromètre",
+      "interdits": [
+        "humidité",
+        "air",
+        "mesure",
+        "eau",
+        "météo",
+        "appareil"
+      ]
+    },
+    {
+      "mot": "Thermodynamique",
+      "interdits": [
+        "chaleur",
+        "énergie",
+        "physique",
+        "loi",
+        "température",
+        "travail"
+      ]
+    },
+    {
+      "mot": "Entropie",
+      "interdits": [
+        "désordre",
+        "thermodynamique",
+        "chaos",
+        "énergie",
+        "mesure",
+        "physique"
+      ]
+    },
+    {
+      "mot": "Cinétique",
+      "interdits": [
+        "mouvement",
+        "énergie",
+        "vitesse",
+        "physique",
+        "dynamique",
+        "corps"
+      ]
+    },
+    {
+      "mot": "Potentiel",
+      "interdits": [
+        "énergie",
+        "capable",
+        "latent",
+        "possible",
+        "électricité",
+        "réserve"
+      ]
+    },
+    {
+      "mot": "Inertie",
+      "interdits": [
+        "résister",
+        "mouvement",
+        "physique",
+        "immobilité",
+        "masse",
+        "continuer"
+      ]
+    },
+    {
+      "mot": "Gravitation",
+      "interdits": [
+        "attraction",
+        "masse",
+        "terre",
+        "newton",
+        "force",
+        "pesanteur"
+      ]
+    },
+    {
+      "mot": "Pesanteur",
+      "interdits": [
+        "poids",
+        "terre",
+        "attraction",
+        "gravité",
+        "tomber",
+        "force"
+      ]
+    },
+    {
+      "mot": "Centrifuge",
+      "interdits": [
+        "centre",
+        "éloigner",
+        "force",
+        "rotation",
+        "essoreuse",
+        "extérieur"
+      ]
+    },
+    {
+      "mot": "Centripète",
+      "interdits": [
+        "centre",
+        "attirer",
+        "force",
+        "rotation",
+        "vers",
+        "intérieur"
+      ]
+    },
+    {
+      "mot": "Oscillation",
+      "interdits": [
+        "balancier",
+        "vient",
+        "vibration",
+        "période",
+        "pendule"
+      ]
+    },
+    {
+      "mot": "Fréquence",
+      "interdits": [
+        "hertz",
+        "répétition",
+        "onde",
+        "rythme",
+        "nombre",
+        "période"
+      ]
+    },
+    {
+      "mot": "Amplitude",
+      "interdits": [
+        "étendue",
+        "onde",
+        "grandeur",
+        "vibration",
+        "maximale",
+        "écart"
+      ]
+    },
+    {
+      "mot": "Longueur",
+      "interdits": [
+        "onde",
+        "distance",
+        "période",
+        "fréquence",
+        "mesure",
+        "espace"
+      ]
+    },
+    {
+      "mot": "Résonance",
+      "interdits": [
+        "vibration",
+        "accord",
+        "fréquence",
+        "écho",
+        "amplifier",
+        "naturel"
+      ]
+    },
+    {
+      "mot": "Interférence",
+      "interdits": [
+        "onde",
+        "croisement",
+        "perturber",
+        "signal",
+        "superposer",
+        "parasite"
+      ]
+    },
+    {
+      "mot": "Diffraction",
+      "interdits": [
+        "onde",
+        "déviation",
+        "obstacle",
+        "lumière",
+        "fente",
+        "physique"
+      ]
+    },
+    {
+      "mot": "Réfraction",
+      "interdits": [
+        "lumière",
+        "dévier",
+        "milieu",
+        "eau",
+        "prisme",
+        "angle"
+      ]
+    },
+    {
+      "mot": "Réflexion",
+      "interdits": [
+        "miroir",
+        "rebond",
+        "lumière",
+        "image",
+        "renvoyer",
+        "pensée"
+      ]
+    },
+    {
+      "mot": "Polarisation",
+      "interdits": [
+        "lumière",
+        "filtre",
+        "direction",
+        "onde",
+        "lunette",
+        "physique"
+      ]
+    },
+    {
+      "mot": "Photon",
+      "interdits": [
+        "lumière",
+        "particule",
+        "quantique",
+        "énergie",
+        "paquet",
+        "optique"
+      ]
+    },
+    {
+      "mot": "Électron",
+      "interdits": [
+        "particule",
+        "négatif",
+        "atome",
+        "électricité",
+        "charge",
+        "orbite"
+      ]
+    },
+    {
+      "mot": "Proton",
+      "interdits": [
+        "particule",
+        "positif",
+        "noyau",
+        "atome",
+        "charge",
+        "hydrogène"
+      ]
+    },
+    {
+      "mot": "Neutron",
+      "interdits": [
+        "particule",
+        "neutre",
+        "noyau",
+        "atome",
+        "masse"
+      ]
+    },
+    {
+      "mot": "Quark",
+      "interdits": [
+        "particule",
+        "élémentaire",
+        "matière",
+        "physique",
+        "composant",
+        "théorie"
+      ]
+    },
+    {
+      "mot": "Boson",
+      "interdits": [
+        "particule",
+        "force",
+        "higgs",
+        "physique",
+        "quantique",
+        "médiateur"
+      ]
+    },
+    {
+      "mot": "Fermion",
+      "interdits": [
+        "particule",
+        "matière",
+        "électron",
+        "physique",
+        "spin",
+        "pauli"
+      ]
+    },
+    {
+      "mot": "Antimatière",
+      "interdits": [
+        "opposé",
+        "matière",
+        "annihilation",
+        "positron",
+        "physique",
+        "miroir"
+      ]
+    },
+    {
+      "mot": "Annihilation",
+      "interdits": [
+        "destruction",
+        "totale",
+        "matière",
+        "antimatière",
+        "énergie",
+        "disparaître"
+      ]
+    },
+    {
+      "mot": "Fission",
+      "interdits": [
+        "noyau",
+        "casser",
+        "nucléaire",
+        "énergie",
+        "uranium",
+        "réacteur"
+      ]
+    },
+    {
+      "mot": "Radioactivité",
+      "interdits": [
+        "rayonnement",
+        "noyau",
+        "danger",
+        "isotope",
+        "désintégration",
+        "curie"
+      ]
+    },
+    {
+      "mot": "Isotope",
+      "interdits": [
+        "atome",
+        "même",
+        "élément",
+        "neutron",
+        "variante",
+        "masse"
+      ]
+    },
+    {
+      "mot": "Catalyseur",
+      "interdits": [
+        "accélérer",
+        "réaction",
+        "chimie",
+        "consommer",
+        "aide"
+      ]
+    },
+    {
+      "mot": "Réactif",
+      "interdits": [
+        "chimie",
+        "substance",
+        "réagir",
+        "produit",
+        "expérience",
+        "composant"
+      ]
+    },
+    {
+      "mot": "Solvant",
+      "interdits": [
+        "dissoudre",
+        "liquide",
+        "eau",
+        "chimie",
+        "diluer",
+        "solution"
+      ]
+    },
+    {
+      "mot": "Soluté",
+      "interdits": [
+        "dissous",
+        "substance",
+        "solution",
+        "chimie",
+        "sel",
+        "sucre"
+      ]
+    },
+    {
+      "mot": "Précipité",
+      "interdits": [
+        "solide",
+        "tomber",
+        "solution",
+        "chimie",
+        "dépôt",
+        "réaction"
+      ]
+    },
+    {
+      "mot": "Titration",
+      "interdits": [
+        "dosage",
+        "chimie",
+        "mesure",
+        "acide",
+        "base",
+        "burette"
+      ]
+    },
+    {
+      "mot": "Ph",
+      "interdits": [
+        "acide",
+        "basique",
+        "mesure",
+        "échelle",
+        "chimie",
+        "hydrogène"
+      ]
+    },
+    {
+      "mot": "Mole",
+      "interdits": [
+        "quantité",
+        "chimie",
+        "avogadro",
+        "substance",
+        "unité",
+        "nombre"
+      ]
+    },
+    {
+      "mot": "Molarité",
+      "interdits": [
+        "concentration",
+        "solution",
+        "mole",
+        "litre",
+        "chimie",
+        "dose"
+      ]
+    },
+    {
+      "mot": "Stoechiométrie",
+      "interdits": [
+        "proportion",
+        "réaction",
+        "chimie",
+        "calcul",
+        "équation",
+        "quantité"
+      ]
+    },
+    {
+      "mot": "Endothermique",
+      "interdits": [
+        "absorber",
+        "chaleur",
+        "réaction",
+        "froid",
+        "énergie",
+        "chimie"
+      ]
+    },
+    {
+      "mot": "Exothermique",
+      "interdits": [
+        "libérer",
+        "chaleur",
+        "réaction",
+        "chaud",
+        "énergie",
+        "chimie"
+      ]
+    },
+    {
+      "mot": "Catalyse",
+      "interdits": [
+        "accélérer",
+        "réaction",
+        "catalyseur",
+        "chimie",
+        "enzyme",
+        "aide"
+      ]
+    },
+    {
+      "mot": "Enzyme",
+      "interdits": [
+        "protéine",
+        "catalyseur",
+        "biologie",
+        "digestion",
+        "réaction",
+        "actif"
+      ]
+    },
+    {
+      "mot": "Protéine",
+      "interdits": [
+        "acide",
+        "aminé",
+        "muscle",
+        "aliment",
+        "biologie",
+        "macromolécule"
+      ]
+    },
+    {
+      "mot": "Lipide",
+      "interdits": [
+        "graisse",
+        "huile",
+        "biologie",
+        "énergie",
+        "membrane",
+        "calorique"
+      ]
+    },
+    {
+      "mot": "Glucide",
+      "interdits": [
+        "sucre",
+        "hydrate",
+        "carbone",
+        "énergie",
+        "amidon",
+        "glucose"
+      ]
+    },
+    {
+      "mot": "Acide",
+      "interdits": [
+        "aminé",
+        "protéine",
+        "composant",
+        "biologie",
+        "chaîne",
+        "peptide"
+      ]
+    },
+    {
+      "mot": "Nucléotide",
+      "interdits": [
+        "adn",
+        "base",
+        "composant",
+        "génétique",
+        "phosphate",
+        "sucre"
+      ]
+    },
+    {
+      "mot": "Chromosome",
+      "interdits": [
+        "adn",
+        "gène",
+        "noyau",
+        "cellule",
+        "hérédité",
+        "paire"
+      ]
+    },
+    {
+      "mot": "Génome",
+      "interdits": [
+        "ensemble",
+        "gènes",
+        "adn",
+        "hérédité",
+        "complet",
+        "organisme"
+      ]
+    },
+    {
+      "mot": "Sélection",
+      "interdits": [
+        "naturelle",
+        "évolution",
+        "darwin",
+        "survie",
+        "adaptation",
+        "espèce"
+      ]
+    },
+    {
+      "mot": "Adaptation",
+      "interdits": [
+        "ajuster",
+        "environnement",
+        "évolution",
+        "survivre",
+        "changement",
+        "fit"
+      ]
+    },
+    {
+      "mot": "Biodiversité",
+      "interdits": [
+        "variété",
+        "espèces",
+        "nature",
+        "richesse",
+        "écosystème",
+        "divers"
+      ]
+    },
+    {
+      "mot": "Écosystème",
+      "interdits": [
+        "milieu",
+        "êtres",
+        "vivants",
+        "interaction",
+        "nature",
+        "habitat"
+      ]
+    },
+    {
+      "mot": "Biotique",
+      "interdits": [
+        "vivant",
+        "organisme",
+        "facteur",
+        "écologie",
+        "bio",
+        "vie"
+      ]
+    },
+    {
+      "mot": "Abiotique",
+      "interdits": [
+        "vivant",
+        "climat",
+        "sol",
+        "facteur",
+        "physique"
+      ]
+    },
+    {
+      "mot": "Symbiose",
+      "interdits": [
+        "association",
+        "bénéfice",
+        "espèces",
+        "coopération",
+        "mutualisme",
+        "lien"
+      ]
+    },
+    {
+      "mot": "Parasitisme",
+      "interdits": [
+        "parasite",
+        "hôte",
+        "exploiter",
+        "nuire",
+        "vivre"
+      ]
+    },
+    {
+      "mot": "Mutualisme",
+      "interdits": [
+        "bénéfice",
+        "réciproque",
+        "symbiose",
+        "échange",
+        "coopération",
+        "deux"
+      ]
+    },
+    {
+      "mot": "Prédation",
+      "interdits": [
+        "prédateur",
+        "proie",
+        "chasser",
+        "manger",
+        "chaîne",
+        "alimentaire"
+      ]
+    },
+    {
+      "mot": "Herbivore",
+      "interdits": [
+        "plante",
+        "manger",
+        "végétarien",
+        "vache",
+        "régime",
+        "feuilles"
+      ]
+    },
+    {
+      "mot": "Carnivore",
+      "interdits": [
+        "viande",
+        "manger",
+        "prédateur",
+        "lion",
+        "régime",
+        "chair"
+      ]
+    },
+    {
+      "mot": "Omnivore",
+      "interdits": [
+        "tout",
+        "manger",
+        "humain",
+        "régime",
+        "varié",
+        "mixte"
+      ]
+    },
+    {
+      "mot": "Détritivore",
+      "interdits": [
+        "déchet",
+        "manger",
+        "recycle",
+        "sol",
+        "vers",
+        "décomposer"
+      ]
+    },
+    {
+      "mot": "Décomposeur",
+      "interdits": [
+        "bactérie",
+        "recyclage",
+        "matière",
+        "morte",
+        "champignon",
+        "sol"
+      ]
+    },
+    {
+      "mot": "Photosynthèse",
+      "interdits": [
+        "plante",
+        "lumière",
+        "oxygène",
+        "chlorophylle",
+        "carbone",
+        "énergie"
+      ]
+    },
+    {
+      "mot": "Chlorophylle",
+      "interdits": [
+        "vert",
+        "plante",
+        "photosynthèse",
+        "pigment",
+        "feuille",
+        "lumière"
+      ]
+    },
+    {
+      "mot": "Mitochondrie",
+      "interdits": [
+        "énergie",
+        "cellule",
+        "atp",
+        "organite",
+        "respiration",
+        "pouvoir"
+      ]
+    },
+    {
+      "mot": "Chloroplaste",
+      "interdits": [
+        "plante",
+        "photosynthèse",
+        "vert",
+        "organite",
+        "cellule",
+        "lumière"
+      ]
+    },
+    {
+      "mot": "Ribosome",
+      "interdits": [
+        "protéine",
+        "fabriquer",
+        "cellule",
+        "arn",
+        "organite",
+        "synthèse"
+      ]
+    },
+    {
+      "mot": "Noyau",
+      "interdits": [
+        "cellule",
+        "adn",
+        "contrôle",
+        "centre",
+        "organite",
+        "génétique"
+      ]
+    },
+    {
+      "mot": "Membrane",
+      "interdits": [
+        "cellule",
+        "barrière",
+        "protéger",
+        "filtre",
+        "lipidique",
+        "enveloppe"
+      ]
+    },
+    {
+      "mot": "Cytoplasme",
+      "interdits": [
+        "cellule",
+        "intérieur",
+        "gel",
+        "organite",
+        "liquide",
+        "contenu"
+      ]
+    },
+    {
+      "mot": "Mitose",
+      "interdits": [
+        "division",
+        "cellule",
+        "identique",
+        "reproduction",
+        "chromosomes",
+        "croissance"
+      ]
+    },
+    {
+      "mot": "Méiose",
+      "interdits": [
+        "division",
+        "gamète",
+        "réduction",
+        "chromosomes",
+        "reproduction",
+        "sexuée"
+      ]
+    },
+    {
+      "mot": "Gamète",
+      "interdits": [
+        "sexe",
+        "cellule",
+        "œuf",
+        "spermatozoïde",
+        "fécondation",
+        "repro"
+      ]
+    },
+    {
+      "mot": "Zygote",
+      "interdits": [
+        "fécondé",
+        "œuf",
+        "premier",
+        "cellule",
+        "embryon",
+        "union"
+      ]
+    },
+    {
+      "mot": "Embryon",
+      "interdits": [
+        "développement",
+        "œuf",
+        "fœtus",
+        "début",
+        "vie",
+        "gestation"
+      ]
+    },
+    {
+      "mot": "Fœtus",
+      "interdits": [
+        "bébé",
+        "utérus",
+        "développement",
+        "grossesse",
+        "embryon",
+        "avant"
+      ]
+    },
+    {
+      "mot": "Placenta",
+      "interdits": [
+        "utérus",
+        "nourrir",
+        "bébé",
+        "échange",
+        "grossesse",
+        "organe"
+      ]
+    },
+    {
+      "mot": "Gestation",
+      "interdits": [
+        "grossesse",
+        "durée",
+        "porter",
+        "bébé",
+        "mammifère",
+        "développement"
+      ]
+    },
+    {
+      "mot": "Parturition",
+      "interdits": [
+        "accouchement",
+        "naissance",
+        "bébé",
+        "mettre",
+        "bas",
+        "travail"
+      ]
+    },
+    {
+      "mot": "Lactation",
+      "interdits": [
+        "lait",
+        "produire",
+        "sein",
+        "nourrir",
+        "mamelle",
+        "allaitement"
+      ]
+    },
+    {
+      "mot": "Métamorphose",
+      "interdits": [
+        "transformation",
+        "chenille",
+        "papillon",
+        "changement",
+        "stade",
+        "forme"
+      ]
+    },
+    {
+      "mot": "Nymphose",
+      "interdits": [
+        "nymphe",
+        "insecte",
+        "transformation",
+        "chrysalide",
+        "stade",
+        "métamorphose"
+      ]
+    },
+    {
+      "mot": "Chrysalide",
+      "interdits": [
+        "cocoon",
+        "papillon",
+        "chenille",
+        "transformation",
+        "stade",
+        "protege"
+      ]
+    },
+    {
+      "mot": "Hibernation",
+      "interdits": [
+        "hiver",
+        "dormir",
+        "animal",
+        "ralentir",
+        "ours",
+        "sommeil"
+      ]
+    },
+    {
+      "mot": "Estivation",
+      "interdits": [
+        "été",
+        "dormir",
+        "chaleur",
+        "animal",
+        "ralentir",
+        "repos"
+      ]
+    },
+    {
+      "mot": "Territorialité",
+      "interdits": [
+        "territoire",
+        "défendre",
+        "animal",
+        "marquer",
+        "espace",
+        "propre"
+      ]
+    },
+    {
+      "mot": "Dominance",
+      "interdits": [
+        "hiérarchie",
+        "dominant",
+        "groupe",
+        "pouvoir",
+        "alpha",
+        "supérieur"
+      ]
+    },
+    {
+      "mot": "Altruisme",
+      "interdits": [
+        "aide",
+        "autre",
+        "désintéressé",
+        "généreux",
+        "sacrifice",
+        "don"
+      ]
+    },
+    {
+      "mot": "Égoïsme",
+      "interdits": [
+        "soi",
+        "intérêt",
+        "personnel",
+        "narcissisme",
+        "moi",
+        "seul"
+      ]
+    },
+    {
+      "mot": "Empathie",
+      "interdits": [
+        "ressentir",
+        "autre",
+        "comprendre",
+        "émotion",
+        "compassion",
+        "partager"
+      ]
+    },
+    {
+      "mot": "Compassion",
+      "interdits": [
+        "pitié",
+        "souffrance",
+        "aide",
+        "empathie",
+        "tendresse",
+        "cœur"
+      ]
+    },
+    {
+      "mot": "Stoïcisme",
+      "interdits": [
+        "philosophie",
+        "calme",
+        "émotion",
+        "maîtrise",
+        "résignation",
+        "antique"
+      ]
+    },
+    {
+      "mot": "Épicurisme",
+      "interdits": [
+        "plaisir",
+        "philosophie",
+        "bonheur",
+        "modéré",
+        "jardin",
+        "antique"
+      ]
+    },
+    {
+      "mot": "Nihilisme",
+      "interdits": [
+        "rien",
+        "sens",
+        "valeur",
+        "philosophie",
+        "absurde",
+        "nier"
+      ]
+    },
+    {
+      "mot": "Existentialisme",
+      "interdits": [
+        "existence",
+        "liberté",
+        "philosophie",
+        "sartre",
+        "choix",
+        "sens"
+      ]
+    },
+    {
+      "mot": "Phénoménologie",
+      "interdits": [
+        "expérience",
+        "conscience",
+        "philosophie",
+        "husserl",
+        "phénomène",
+        "vécu"
+      ]
+    },
+    {
+      "mot": "Ontologie",
+      "interdits": [
+        "être",
+        "existence",
+        "philosophie",
+        "réalité",
+        "métaphysique",
+        "nature"
+      ]
+    },
+    {
+      "mot": "Épistémologie",
+      "interdits": [
+        "connaissance",
+        "science",
+        "philosophie",
+        "savoir",
+        "méthode",
+        "théorie"
+      ]
+    },
+    {
+      "mot": "Herméneutique",
+      "interdits": [
+        "interprétation",
+        "texte",
+        "sens",
+        "philosophie",
+        "comprendre",
+        "exégèse"
+      ]
+    },
+    {
+      "mot": "Dialectique",
+      "interdits": [
+        "contradiction",
+        "opposé",
+        "hegel",
+        "débat",
+        "synthèse",
+        "pensée"
+      ]
+    },
+    {
+      "mot": "Syllogisme",
+      "interdits": [
+        "logique",
+        "raisonnement",
+        "prémisses",
+        "conclusion",
+        "aristote",
+        "déduction"
+      ]
+    },
+    {
+      "mot": "Axiome",
+      "interdits": [
+        "évidence",
+        "principe",
+        "base",
+        "mathématique",
+        "admettre",
+        "fondement"
+      ]
+    },
+    {
+      "mot": "Théorème",
+      "interdits": [
+        "démonstration",
+        "mathématique",
+        "prouvé",
+        "proposition",
+        "formule",
+        "vérité"
+      ]
+    },
+    {
+      "mot": "Conjecture",
+      "interdits": [
+        "hypothèse",
+        "prouvé",
+        "mathématique",
+        "supposer",
+        "idée"
+      ]
+    },
+    {
+      "mot": "Postulat",
+      "interdits": [
+        "admettre",
+        "preuve",
+        "base",
+        "géométrie",
+        "principe"
+      ]
+    },
+    {
+      "mot": "Corollaire",
+      "interdits": [
+        "conséquence",
+        "théorème",
+        "directe",
+        "suite",
+        "mathématique",
+        "découle"
+      ]
+    },
+    {
+      "mot": "Lemme",
+      "interdits": [
+        "petit",
+        "théorème",
+        "intermédiaire",
+        "preuve",
+        "mathématique",
+        "étape"
+      ]
+    },
+    {
+      "mot": "Paradoxe",
+      "interdits": [
+        "contradiction",
+        "apparent",
+        "logique",
+        "absurde",
+        "énigme",
+        "impossible"
+      ]
+    },
+    {
+      "mot": "Antinomie",
+      "interdits": [
+        "contradiction",
+        "lois",
+        "opposé",
+        "philosophie",
+        "conflit",
+        "kant"
+      ]
+    },
+    {
+      "mot": "Tautologie",
+      "interdits": [
+        "répétition",
+        "évident",
+        "logique",
+        "redondant",
+        "vrai",
+        "toujours"
+      ]
+    },
+    {
+      "mot": "Oxymore",
+      "interdits": [
+        "contradictoire",
+        "mots",
+        "réunis",
+        "figure",
+        "obscure",
+        "clarté"
+      ]
+    },
+    {
+      "mot": "Antithèse",
+      "interdits": [
+        "opposé",
+        "contraste",
+        "idée",
+        "figure",
+        "contradictoire",
+        "dualité"
+      ]
+    },
+    {
+      "mot": "Chiasme",
+      "interdits": [
+        "croisement",
+        "mots",
+        "ordre",
+        "inversé",
+        "figure",
+        "symétrie"
+      ]
+    },
+    {
+      "mot": "Anaphore",
+      "interdits": [
+        "répétition",
+        "début",
+        "phrase",
+        "figure",
+        "insistance",
+        "rythme"
+      ]
+    },
+    {
+      "mot": "Épiphore",
+      "interdits": [
+        "répétition",
+        "fin",
+        "phrase",
+        "figure",
+        "insistance",
+        "rythme"
+      ]
+    },
+    {
+      "mot": "Allitération",
+      "interdits": [
+        "consonne",
+        "répétition",
+        "son",
+        "poésie",
+        "effet",
+        "lettre"
+      ]
+    },
+    {
+      "mot": "Assonance",
+      "interdits": [
+        "voyelle",
+        "répétition",
+        "son",
+        "poésie",
+        "écho",
+        "rime"
+      ]
+    },
+    {
+      "mot": "Césure",
+      "interdits": [
+        "coupe",
+        "vers",
+        "pause",
+        "poésie",
+        "milieu",
+        "respiration"
+      ]
+    },
+    {
+      "mot": "Enjambement",
+      "interdits": [
+        "vers",
+        "suite",
+        "phrase",
+        "poésie",
+        "déborde",
+        "ligne"
+      ]
+    },
+    {
+      "mot": "Alexandrin",
+      "interdits": [
+        "douze",
+        "syllabes",
+        "vers",
+        "poésie",
+        "classique",
+        "français"
+      ]
+    },
+    {
+      "mot": "Sonnet",
+      "interdits": [
+        "poème",
+        "quatorze",
+        "vers",
+        "structure",
+        "rimes",
+        "lyrique"
+      ]
+    },
+    {
+      "mot": "Haïku",
+      "interdits": [
+        "japonais",
+        "court",
+        "poème",
+        "trois",
+        "vers",
+        "nature"
+      ]
+    },
+    {
+      "mot": "Élégie",
+      "interdits": [
+        "poème",
+        "triste",
+        "deuil",
+        "lamentation",
+        "lyrique",
+        "mort"
+      ]
+    },
+    {
+      "mot": "Ode",
+      "interdits": [
+        "poème",
+        "lyrique",
+        "éloge",
+        "célébrer",
+        "chant",
+        "inspiré"
+      ]
+    },
+    {
+      "mot": "Épopée",
+      "interdits": [
+        "long",
+        "récit",
+        "héros",
+        "aventure",
+        "homère",
+        "geste"
+      ]
+    },
+    {
+      "mot": "Tragédie",
+      "interdits": [
+        "théâtre",
+        "triste",
+        "destin",
+        "héros",
+        "catastrophe",
+        "antique"
+      ]
+    },
+    {
+      "mot": "Comédie",
+      "interdits": [
+        "théâtre",
+        "rire",
+        "heureux",
+        "fin",
+        "molière",
+        "amusant"
+      ]
+    },
+    {
+      "mot": "Farce",
+      "interdits": [
+        "comique",
+        "gros",
+        "rire",
+        "théâtre",
+        "burlesque",
+        "vulgarité"
+      ]
+    },
+    {
+      "mot": "Satire",
+      "interdits": [
+        "critique",
+        "moquer",
+        "société",
+        "ironie",
+        "rire",
+        "dénoncer"
+      ]
+    },
+    {
+      "mot": "Pamflet",
+      "interdits": [
+        "écrit",
+        "attaque",
+        "politique",
+        "virulent",
+        "critique",
+        "court"
+      ]
+    },
+    {
+      "mot": "Apologie",
+      "interdits": [
+        "défense",
+        "éloge",
+        "justifier",
+        "écrit",
+        "soutenir",
+        "cause"
+      ]
+    },
+    {
+      "mot": "Éloge",
+      "interdits": [
+        "louange",
+        "compliment",
+        "vanter",
+        "discours",
+        "admiration",
+        "célébrer"
+      ]
+    },
+    {
+      "mot": "Dithyrambe",
+      "interdits": [
+        "éloge",
+        "enthousiaste",
+        "exagéré",
+        "louange",
+        "lyrique",
+        "excessif"
+      ]
+    },
+    {
+      "mot": "Panégyrique",
+      "interdits": [
+        "éloge",
+        "officiel",
+        "personne",
+        "discours",
+        "louange",
+        "cérémonie"
+      ]
+    },
+    {
+      "mot": "Réquisitoire",
+      "interdits": [
+        "accusation",
+        "procureur",
+        "attaque",
+        "discours",
+        "charge",
+        "tribunal"
+      ]
+    },
+    {
+      "mot": "Plaidoyer",
+      "interdits": [
+        "défense",
+        "avocat",
+        "argument",
+        "soutenir",
+        "cause",
+        "discours"
+      ]
+    },
+    {
+      "mot": "Exorde",
+      "interdits": [
+        "début",
+        "discours",
+        "introduction",
+        "rhétorique",
+        "ouverture",
+        "commencer"
+      ]
+    },
+    {
+      "mot": "Péroraison",
+      "interdits": [
+        "fin",
+        "discours",
+        "conclusion",
+        "rhétorique",
+        "dernier",
+        "appel"
+      ]
+    },
+    {
+      "mot": "Commensalisme",
+      "interdits": [
+        "bénéfice",
+        "unique",
+        "seul",
+        "association",
+        "neutre",
+        "hôte"
       ]
     }
   ]
