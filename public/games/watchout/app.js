@@ -83,6 +83,46 @@ function clearRevealPlayers() {
   if (imp) imp.innerHTML = '';
 }
 
+function revealThumbHtml(videoId) {
+  const safe = String(videoId || '').replace(/[^a-zA-Z0-9_-]/g, '');
+  const thumb = `https://i.ytimg.com/vi/${safe}/hqdefault.jpg`;
+  return `<button type="button" class="wo-reveal-thumb" data-video-id="${safe}" aria-label="Lire la vidéo">
+    <img src="${thumb}" alt="" loading="lazy">
+    <span class="wo-reveal-play">▶</span>
+  </button>`;
+}
+
+function stopOtherRevealEmbeds(exceptId) {
+  ['reveal-main', 'reveal-imp'].forEach((cid) => {
+    if (cid === exceptId) return;
+    const el = $(cid);
+    const iframe = el?.querySelector('iframe');
+    if (!iframe) return;
+    const vid = iframe.dataset.videoId;
+    if (!vid) return;
+    el.innerHTML = revealThumbHtml(vid);
+    bindRevealThumb(cid);
+  });
+}
+
+function bindRevealThumb(containerId) {
+  const el = $(containerId);
+  const btn = el?.querySelector('.wo-reveal-thumb');
+  if (!btn || btn.dataset.bound) return;
+  btn.dataset.bound = '1';
+  btn.addEventListener('click', () => {
+    const videoId = btn.dataset.videoId;
+    if (!videoId) return;
+    stopOtherRevealEmbeds(containerId);
+    el.innerHTML = `<iframe
+      data-video-id="${videoId}"
+      src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}?autoplay=1&rel=0&modestbranding=1&playsinline=1"
+      allow="autoplay; encrypted-media; picture-in-picture"
+      allowfullscreen
+      title="reveal"></iframe>`;
+  });
+}
+
 function mountWatchPlayer(videoId) {
   if (!videoId) return;
   if (currentVideoId === videoId && ytPlayer) return;
@@ -131,7 +171,7 @@ function mountWatchPlayer(videoId) {
   });
 }
 
-function mountRevealIframe(containerId, videoId, slot) {
+function mountRevealPreview(containerId, videoId, slot) {
   const el = $(containerId);
   if (!el) return;
   if (!videoId) {
@@ -140,19 +180,20 @@ function mountRevealIframe(containerId, videoId, slot) {
     else if (slot === 'imp') revealImpId = null;
     return;
   }
-  // Ne pas recréer l'iframe à chaque room-state (sinon écran noir / clignotement)
-  if (slot === 'main' && revealMainId === videoId && el.querySelector('iframe')) return;
-  if (slot === 'imp' && revealImpId === videoId && el.querySelector('iframe')) return;
+  // Miniatures stables ; un seul embed à la fois (évite limite YouTube / clignotement)
+  const already =
+    (slot === 'main' && revealMainId === videoId) ||
+    (slot === 'imp' && revealImpId === videoId);
+  if (already && (el.querySelector('iframe') || el.querySelector('.wo-reveal-thumb'))) {
+    bindRevealThumb(containerId);
+    return;
+  }
 
   if (slot === 'main') revealMainId = videoId;
   else if (slot === 'imp') revealImpId = videoId;
 
-  el.innerHTML = `<iframe
-    src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}?rel=0&modestbranding=1&playsinline=1"
-    allow="encrypted-media; picture-in-picture"
-    allowfullscreen
-    loading="lazy"
-    title="reveal"></iframe>`;
+  el.innerHTML = revealThumbHtml(videoId);
+  bindRevealThumb(containerId);
 }
 
 function renderCategories(available, selected) {
@@ -308,8 +349,8 @@ function render(s) {
       $('reveal-outcome').textContent = r.accusedCorrect
         ? `Le groupe a accusé ${r.accusedName} — correct !`
         : `Le groupe a accusé ${r.accusedName || 'personne'} — l’Imposteur s’en sort.`;
-      mountRevealIframe('reveal-main', r.mainVideoId, 'main');
-      mountRevealIframe('reveal-imp', r.impostorVideoId, 'imp');
+      mountRevealPreview('reveal-main', r.mainVideoId, 'main');
+      mountRevealPreview('reveal-imp', r.impostorVideoId, 'imp');
     }
     $('btn-next').style.display = s.isHost ? 'inline-block' : 'none';
     return;
