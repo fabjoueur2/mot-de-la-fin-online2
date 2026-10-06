@@ -4,7 +4,7 @@
  */
 'use strict';
 
-const { pickPair, listCategories } = require('./youtube');
+const { pickPair, listCategories, isYoutubeConfigured } = require('./youtube');
 
 const GAME_ID = 'watchout';
 const MIN_PLAYERS = 3;
@@ -170,6 +170,7 @@ async function beginRound(room) {
     pair.impostorVideo.youtubeId
   ].filter(Boolean);
   room.impostorHistory = [...(room.impostorHistory || []), impostor.id];
+  room.lastPairSource = pair.source || 'bank';
   room.roundSecret = {
     pairId: pair.pairId,
     category: pair.category,
@@ -308,7 +309,8 @@ function finalizeVotes(room) {
     impostorVideoId: secret.impostorVideoId,
     pairLabel: secret.label,
     category: secret.category,
-    difficulty: secret.difficulty
+    difficulty: secret.difficulty,
+    source: secret.source || null
   };
   room.lastRoundResults = room.roundResults;
   room.phase = 'reveal';
@@ -440,6 +442,8 @@ function sanitizeRoom(room, socketId) {
     myVideoDuration,
     pairCategory: secret?.category || publicResults?.category || null,
     pairLabel: secret?.label || publicResults?.pairLabel || null,
+    pairSource: secret?.source || publicResults?.source || room.lastPairSource || null,
+    youtubeConfigured: isYoutubeConfigured(),
     hostId: room.hostId,
     settings: { ...room.settings },
     players: room.players.map((p) => ({

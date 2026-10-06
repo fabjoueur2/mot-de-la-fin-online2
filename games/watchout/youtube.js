@@ -1,7 +1,7 @@
 /**
  * Sélection de paires WatchOut.
- * - Si YOUTUBE_API_KEY : recherche YouTube aléatoire par thème (catégories respectées)
- * - Sinon : banque locale filtrée par catégories
+ * - Priorité : YouTube Data API (aléatoire, catégories respectées)
+ * - Fallback : banque locale (aussi filtrée par catégories)
  */
 'use strict';
 
@@ -11,18 +11,18 @@ const THEME_QUERIES = {
   animals: {
     easy: [
       ['funny dog fail short', 'funny cat fail short'],
-      ['dog vs vacuum', 'cat vs cucumber'],
-      ['puppy first snow', 'kitten first snow'],
-      ['dog scared of broccoli', 'cat scared of suitcase']
+      ['dog vs vacuum funny', 'cat vs cucumber funny'],
+      ['puppy first snow funny', 'kitten first snow funny'],
+      ['dog scared broccoli', 'cat scared suitcase']
     ],
     normal: [
       ['dog falls in pool funny', 'cat falls off table funny'],
       ['dog steals food funny', 'cat steals pizza funny'],
-      ['dog zoomies fail', 'cat jump fail'],
+      ['dog zoomies fail', 'cat jump fail funny'],
       ['parrot funny moment', 'goat scream funny']
     ],
     hard: [
-      ['dog jumps on couch fail', 'cat jumps on counter fail'],
+      ['dog jumps couch fail', 'cat jumps counter fail'],
       ['puppy trip funny', 'kitten trip funny'],
       ['dog sneezes funny', 'cat sneezes funny'],
       ['dog opens door funny', 'cat opens door funny']
@@ -37,14 +37,14 @@ const THEME_QUERIES = {
     ],
     normal: [
       ['parkour fail funny', 'skateboard fall funny'],
-      ['diving board fail', 'pool jump fail funny'],
+      ['diving board fail funny', 'pool jump fail funny'],
       ['football miss funny', 'basketball airball funny'],
       ['ladder fall funny', 'chair break fail']
     ],
     hard: [
       ['missed dive funny', 'missed jump water funny'],
       ['almost made it fail', 'so close sports fail'],
-      ['wallride fail', 'rail grind fail skate'],
+      ['wallride fail skate', 'rail grind fail skate'],
       ['backflip fail funny', 'front flip fail funny']
     ]
   },
@@ -58,12 +58,12 @@ const THEME_QUERIES = {
     normal: [
       ['basketball buzzer beater miss', 'soccer own goal funny'],
       ['rugby fail funny', 'hockey fail funny'],
-      ['badminton fail', 'table tennis fail'],
+      ['badminton fail funny', 'table tennis fail funny'],
       ['archery miss funny', 'darts miss funny']
     ],
     hard: [
       ['missed dunk funny', 'missed layup funny'],
-      ['long jump fail', 'high jump fail funny'],
+      ['long jump fail funny', 'high jump fail funny'],
       ['penalty miss funny', 'free throw airball'],
       ['skateboard trick almost', 'bmx trick almost']
     ]
@@ -78,12 +78,12 @@ const THEME_QUERIES = {
     normal: [
       ['dog steals hamburger', 'cat steals chicken'],
       ['food drop fail restaurant', 'waiter fail tray'],
-      ['baking fail collapse', 'souffle fail'],
+      ['baking fail collapse', 'souffle fail funny'],
       ['ice cream drop fail', 'smoothie spill fail']
     ],
     hard: [
       ['stealing food from table dog', 'stealing food from table cat'],
-      ['chef knife fail funny', 'cutting board fail'],
+      ['chef fail funny short', 'cutting board fail funny'],
       ['barbecue flare fail', 'grill fail funny'],
       ['fondue fail funny', 'chocolate fountain fail']
     ]
@@ -99,12 +99,12 @@ const THEME_QUERIES = {
       ['kid reacts to gift funny', 'kid reacts to vegetable'],
       ['baby first steps fall', 'toddler first steps fall'],
       ['kid magic trick fail', 'kid science experiment fail'],
-      ['child swings miss', 'kid slides funny fall']
+      ['child swing miss', 'kid slide funny fall']
     ],
     hard: [
       ['kid tries jump fails', 'kid tries cartwheel fails'],
       ['kid scooter fail', 'kid bike first time fall'],
-      ['piñata miss kid', 'balloon pop scare kid'],
+      ['pinata miss kid', 'balloon pop scare kid'],
       ['kid bowling fail', 'kid soccer miss funny']
     ]
   },
@@ -130,19 +130,7 @@ const THEME_QUERIES = {
   }
 };
 
-const QUERY_SPICE = [
-  '',
-  'shorts',
-  'clip',
-  'viral',
-  'funny',
-  '2023',
-  '2024',
-  '2025',
-  'compilation',
-  'moment'
-];
-
+const QUERY_SPICE = ['', 'shorts', 'clip', 'viral', 'funny', '2024', '2025', 'moment'];
 const SEARCH_ORDERS = ['relevance', 'date', 'viewCount', 'rating'];
 
 function shuffle(arr) {
@@ -159,6 +147,11 @@ function pickOne(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
+function isYoutubeConfigured() {
+  const k = process.env.YOUTUBE_API_KEY;
+  return Boolean(k && String(k).startsWith('AIza') && String(k).length >= 20);
+}
+
 function normalizeCategories(categories) {
   const all = Object.keys(THEME_QUERIES);
   if (!categories?.length) return all;
@@ -170,11 +163,15 @@ function durationClose(a, b, maxDelta = 5) {
   return Math.abs(Number(a) - Number(b)) <= maxDelta;
 }
 
-function filterBank({ categories, difficulty, excludePairIds, maxVideoSec, looseDuration }) {
+function filterBank({ categories, difficulty, excludePairIds, excludeVideoIds, maxVideoSec, looseDuration }) {
   const cats = categories?.length ? new Set(categories) : null;
-  const excl = new Set(excludePairIds || []);
+  const exclPairs = new Set(excludePairIds || []);
+  const exclVideos = new Set(excludeVideoIds || []);
   return BANK.filter((p) => {
-    if (excl.has(p.pairId)) return false;
+    if (exclPairs.has(p.pairId)) return false;
+    if (exclVideos.has(p.mainVideo.youtubeId) || exclVideos.has(p.impostorVideo.youtubeId)) {
+      return false;
+    }
     if (cats && !cats.has(p.category)) return false;
     if (difficulty && difficulty !== 'any' && p.difficulty !== difficulty) return false;
     const d = Math.max(p.mainVideo.duration, p.impostorVideo.duration);
@@ -191,6 +188,7 @@ function pickFromBank(opts) {
   const base = {
     categories: cats,
     excludePairIds: opts.excludePairIds,
+    excludeVideoIds: opts.excludeVideoIds,
     maxVideoSec: opts.maxVideoSec,
     difficulty: opts.difficulty
   };
@@ -200,26 +198,42 @@ function pickFromBank(opts) {
     { ...base, difficulty: 'any' },
     { ...base, difficulty: 'any', maxVideoSec: null },
     { ...base, difficulty: 'any', maxVideoSec: null, looseDuration: true },
-    // Réautorise les paires déjà vues, mais garde les catégories
-    { categories: cats, difficulty: 'any', maxVideoSec: null, looseDuration: true, excludePairIds: [] }
+    {
+      categories: cats,
+      difficulty: 'any',
+      maxVideoSec: null,
+      looseDuration: true,
+      excludePairIds: [],
+      excludeVideoIds: opts.excludeVideoIds
+    },
+    {
+      categories: cats,
+      difficulty: 'any',
+      maxVideoSec: null,
+      looseDuration: true,
+      excludePairIds: [],
+      excludeVideoIds: []
+    }
   ];
 
   for (const a of attempts) {
     const pool = filterBank(a);
     if (pool.length) {
-      return { ...pickOne(shuffle(pool)), source: 'bank' };
+      const pick = pickOne(shuffle(pool));
+      return { ...pick, source: 'bank' };
     }
   }
-
-  // Ne jamais sortir des catégories demandées
-  if (cats?.length) return null;
-  return { ...pickOne(shuffle(BANK)), source: 'bank' };
+  return null;
 }
 
 async function ytGetJson(url) {
   const res = await fetch(url);
-  if (!res.ok) throw new Error(`YouTube API ${res.status}`);
-  return res.json();
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    const msg = body?.error?.message || `YouTube API ${res.status}`;
+    throw new Error(msg);
+  }
+  return body;
 }
 
 function parseIsoDuration(iso) {
@@ -232,13 +246,7 @@ function parseIsoDuration(iso) {
   );
 }
 
-function randomPublishedAfter() {
-  // Fenêtre aléatoire sur ~18 mois pour varier le corpus
-  const daysAgo = 14 + Math.floor(Math.random() * 520);
-  return new Date(Date.now() - daysAgo * 864e5).toISOString();
-}
-
-async function searchCandidates(apiKey, query, maxVideoSec, excludeVideoIds) {
+async function searchCandidates(apiKey, query, maxVideoSec, excludeVideoIds, mode) {
   const excl = new Set(excludeVideoIds || []);
   const spice = pickOne(QUERY_SPICE);
   const order = pickOne(SEARCH_ORDERS);
@@ -250,16 +258,23 @@ async function searchCandidates(apiKey, query, maxVideoSec, excludeVideoIds) {
     type: 'video',
     videoEmbeddable: 'true',
     videoSyndicated: 'true',
-    maxResults: '15',
+    maxResults: '25',
     q,
     order,
-    safeSearch: 'moderate',
-    relevanceLanguage: 'en',
-    publishedAfter: randomPublishedAfter()
+    safeSearch: 'moderate'
   };
 
-  // videoDuration medium = 4-20 min trop long ; short = <4 min OK pour clips
-  if (Math.random() < 0.7) params.videoDuration = 'short';
+  // mode 'strict' = plus de variation ; mode 'loose' = max résultats
+  if (mode === 'strict') {
+    params.relevanceLanguage = 'en';
+    if (Math.random() < 0.65) params.videoDuration = 'short';
+    if (Math.random() < 0.55) {
+      const daysAgo = 21 + Math.floor(Math.random() * 600);
+      params.publishedAfter = new Date(Date.now() - daysAgo * 864e5).toISOString();
+    }
+  } else {
+    params.videoDuration = 'short';
+  }
 
   const searchUrl =
     'https://www.googleapis.com/youtube/v3/search?' + new URLSearchParams(params);
@@ -274,7 +289,7 @@ async function searchCandidates(apiKey, query, maxVideoSec, excludeVideoIds) {
     new URLSearchParams({
       key: apiKey,
       part: 'contentDetails,status,snippet',
-      id: ids.join(',')
+      id: ids.slice(0, 25).join(',')
     });
   const details = await ytGetJson(detailsUrl);
   const out = [];
@@ -309,54 +324,68 @@ function buildPairCandidates(mains, imps, excludeVideoIds, maxDelta) {
   return out;
 }
 
+async function tryPairFromQueries(apiKey, cat, difficulty, qMain, qImp, opts) {
+  for (const mode of ['strict', 'loose']) {
+    const [mains, imps] = await Promise.all([
+      searchCandidates(apiKey, qMain, opts.maxVideoSec, opts.excludeVideoIds, mode),
+      searchCandidates(apiKey, qImp, opts.maxVideoSec, opts.excludeVideoIds, mode)
+    ]);
+    if (!mains.length || !imps.length) continue;
+
+    let candidates = buildPairCandidates(mains, imps, opts.excludeVideoIds, 5);
+    if (!candidates.length) {
+      candidates = buildPairCandidates(mains, imps, opts.excludeVideoIds, 15);
+    }
+    if (!candidates.length) continue;
+
+    const best = pickOne(shuffle(candidates));
+    return {
+      pairId: `yt_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`,
+      category: cat,
+      difficulty,
+      label: `${qMain} / ${qImp}`,
+      mainVideo: { youtubeId: best.a.youtubeId, duration: best.a.duration },
+      impostorVideo: { youtubeId: best.b.youtubeId, duration: best.b.duration },
+      source: 'youtube-api'
+    };
+  }
+  return null;
+}
+
 async function pickFromYouTube(opts) {
+  if (!isYoutubeConfigured()) return null;
   const apiKey = process.env.YOUTUBE_API_KEY;
-  if (!apiKey) return null;
 
   const categories = normalizeCategories(opts.categories);
   const difficulty =
     opts.difficulty && opts.difficulty !== 'any'
       ? opts.difficulty
       : pickOne(['easy', 'normal', 'hard']);
-  const excludeVideoIds = opts.excludeVideoIds || [];
 
-  // Plusieurs tentatives : thèmes / requêtes / ordres différents
   const catOrder = shuffle(categories);
-  for (const cat of catOrder.slice(0, Math.min(3, catOrder.length))) {
+  const errors = [];
+
+  for (const cat of catOrder) {
     const pack = THEME_QUERIES[cat];
     if (!pack) continue;
     const queryPairs = shuffle(pack[difficulty] || pack.normal || pack.easy || []);
-    for (const pairQueries of queryPairs.slice(0, 2)) {
+    for (const pairQueries of queryPairs.slice(0, 3)) {
       const [qMain, qImp] = pairQueries;
       try {
-        const [mains, imps] = await Promise.all([
-          searchCandidates(apiKey, qMain, opts.maxVideoSec, excludeVideoIds),
-          searchCandidates(apiKey, qImp, opts.maxVideoSec, excludeVideoIds)
-        ]);
-        if (!mains.length || !imps.length) continue;
-
-        let candidates = buildPairCandidates(mains, imps, excludeVideoIds, 5);
-        if (!candidates.length) {
-          candidates = buildPairCandidates(mains, imps, excludeVideoIds, 12);
-        }
-        if (!candidates.length) continue;
-
-        const best = pickOne(shuffle(candidates));
-        return {
-          pairId: `yt_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 7)}`,
-          category: cat,
-          difficulty,
-          label: `${qMain} / ${qImp}`,
-          mainVideo: { youtubeId: best.a.youtubeId, duration: best.a.duration },
-          impostorVideo: { youtubeId: best.b.youtubeId, duration: best.b.duration },
-          source: 'youtube-api'
-        };
+        const pair = await tryPairFromQueries(apiKey, cat, difficulty, qMain, qImp, opts);
+        if (pair) return pair;
       } catch (e) {
-        console.warn('[watchout] YouTube search attempt failed:', e.message);
+        errors.push(e.message);
+        console.warn('[watchout] YouTube attempt failed:', e.message);
       }
     }
   }
 
+  if (errors.length) {
+    console.warn('[watchout] YouTube API unavailable, fallback bank. Last error:', errors[errors.length - 1]);
+  } else {
+    console.warn('[watchout] YouTube returned no pair for cats=', categories.join(','));
+  }
   return null;
 }
 
@@ -366,8 +395,26 @@ async function pickFromYouTube(opts) {
 async function pickPair(opts = {}) {
   const cats = normalizeCategories(opts.categories);
   const live = await pickFromYouTube({ ...opts, categories: cats });
-  if (live) return live;
-  return pickFromBank({ ...opts, categories: cats });
+  if (live) {
+    console.log(
+      '[watchout] pair source=youtube-api cat=%s main=%s imp=%s',
+      live.category,
+      live.mainVideo.youtubeId,
+      live.impostorVideo.youtubeId
+    );
+    return live;
+  }
+  const bank = pickFromBank({ ...opts, categories: cats });
+  if (bank) {
+    console.log(
+      '[watchout] pair source=bank cat=%s main=%s imp=%s (API %s)',
+      bank.category,
+      bank.mainVideo.youtubeId,
+      bank.impostorVideo.youtubeId,
+      isYoutubeConfigured() ? 'failed/empty' : 'MISSING KEY'
+    );
+  }
+  return bank;
 }
 
 function listCategories() {
@@ -378,6 +425,7 @@ module.exports = {
   pickPair,
   pickFromBank,
   listCategories,
+  isYoutubeConfigured,
   BANK,
   THEME_QUERIES
 };

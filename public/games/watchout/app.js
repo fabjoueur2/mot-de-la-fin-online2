@@ -312,6 +312,18 @@ function render(s) {
       .map((p) => `<li>${escapeHtml(p.name)}${p.isHost ? ' · hôte' : ''} · ${p.score} pts</li>`)
       .join('');
     $('lobby-min-hint').textContent = `Minimum ${s.minPlayers} joueurs pour lancer.`;
+    const ytBox = $('youtube-status');
+    if (ytBox) {
+      if (!s.youtubeConfigured) {
+        ytBox.style.display = 'block';
+        ytBox.innerHTML =
+          '<p style="color:#f87171;margin:0;"><strong>YouTube API non configurée sur le serveur.</strong> Les mêmes vidéos de secours vont revenir. Ajoute <code>YOUTUBE_API_KEY</code> dans les variables d’environnement Render, puis redéploie.</p>';
+      } else {
+        ytBox.style.display = 'block';
+        ytBox.innerHTML =
+          '<p style="color:#34d399;margin:0;">YouTube API active — vidéos aléatoires par thème.</p>';
+      }
+    }
     $('host-settings').style.display = s.isHost ? 'block' : 'none';
     if (s.isHost) {
       const focusInSettings = Boolean(document.activeElement?.closest?.('#host-settings'));
@@ -395,7 +407,11 @@ function render(s) {
       const themeEl = $('reveal-theme');
       if (themeEl) {
         const cat = CAT_LABELS[r.category] || r.category || s.pairCategory || '';
-        themeEl.textContent = cat ? `Thème : ${cat}` : '';
+        const src = r.source || s.pairSource || '';
+        const srcLabel = src === 'youtube-api' ? 'aléatoire YouTube' : src === 'bank' ? 'banque locale' : '';
+        themeEl.textContent = [cat && `Thème : ${cat}`, srcLabel && `(${srcLabel})`]
+          .filter(Boolean)
+          .join(' ');
       }
       mountRevealPreview('reveal-main', r.mainVideoId, 'main');
       mountRevealPreview('reveal-imp', r.impostorVideoId, 'imp');

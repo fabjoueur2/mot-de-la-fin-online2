@@ -220,5 +220,11 @@ io.on('connection', (socket) => {
 });
 
 server.listen(PORT, () => {
+  const ytOk = require('./games/watchout/youtube').isYoutubeConfigured();
   console.log(`Plateforme jeux — port ${PORT} (${Object.keys(gameEngines).length} jeu(x))`);
+  console.log(
+    ytOk
+      ? 'WatchOut YouTube API: OK (vidéos aléatoires)'
+      : 'WatchOut YouTube API: MANQUANTE — ajoute YOUTUBE_API_KEY (sinon banque fixe)'
+  );
 });
