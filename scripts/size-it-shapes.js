@@ -254,7 +254,9 @@ function renderShape(shapeKey) {
   const family = seed % 7;
 
   // Heuristics by name fragments
-  if (/frisbee|discus|puck/.test(key)) return SPECIAL.frisbee();
+  if (/frisbee/.test(key)) return SPECIAL.frisbee();
+  if (/discus/.test(key)) return SPECIAL.discus();
+  if (/puck/.test(key)) return svg(ellipse(50, 55, 34, 12) + ellipse(50, 50, 34, 12) + rect(16, 50, 68, 6));
   if (/ball|coin|planet|disc|orange|apple|tomato|egg|watch|ring/.test(key)) {
     return svg(circle(50, 50, 28 + (seed % 10)));
   }
