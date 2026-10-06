@@ -10,13 +10,19 @@ const ALL_ITEMS = Array.isArray(BANK.items) ? BANK.items : [];
 const DEFAULT_SETTINGS = {
   roundCount: 10,
   estimateSec: 20,
-  categories: ['geography', 'standard_object', 'sports', 'space']
+  categories: [
+    'animals', 'everyday', 'vehicles', 'sports', 'landmarks',
+    'food', 'geography', 'space', 'nature'
+  ]
 };
 
 const MIN_PLAYERS = 2;
 const VALID_ROUNDS = [5, 10];
 const VALID_ESTIMATE_SEC = [15, 20, 30];
-const VALID_CATEGORIES = ['geography', 'standard_object', 'sports', 'space'];
+const VALID_CATEGORIES = [
+  'animals', 'everyday', 'vehicles', 'sports', 'landmarks',
+  'food', 'geography', 'space', 'nature'
+];
 
 const DIMENSION_LABELS = {
   projected_width: 'largeur projetée',
@@ -35,8 +41,8 @@ function dimensionLabel(dim) {
 /** Références avec vraies silhouettes quand possible. */
 function buildReferences() {
   const france = ALL_ITEMS.find((i) => i.id === 'geo-france');
-  const pitch = ALL_ITEMS.find((i) => i.id === 'sport-association-football-pitch-fifa-recommended-international');
-  const franceM = france ? toMeters(france.trueSize, france.unit) : 6022700;
+  const pitch = ALL_ITEMS.find((i) => i.id === 'sport-football-pitch');
+  const franceM = france ? toMeters(france.trueSize, france.unit) : 950_000;
   const pitchM = pitch ? toMeters(pitch.trueSize, pitch.unit) : 105;
 
   return [
@@ -61,7 +67,7 @@ function buildReferences() {
       maxTrueM: 300,
       svgUrl: pitch
         ? publicSvgUrl(pitch.svg)
-        : '/games/size-it/assets/standards/sport-association-football-pitch-fifa-recommended-international.svg'
+        : '/games/size-it/refs/pitch.svg'
     },
     {
       id: 'eiffel',
@@ -75,7 +81,6 @@ function buildReferences() {
       label: 'France',
       sizeM: franceM,
       maxTrueM: Infinity,
-      // SVG dédié (la banque geo-france était un export incomplet)
       svgUrl: '/games/size-it/refs/france.svg'
     }
   ];

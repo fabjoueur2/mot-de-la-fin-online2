@@ -6,7 +6,10 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "sync-animals": "node scripts/sync-animal-sprites.js"
+    "sync-animals": "node scripts/sync-animal-sprites.js",
+    "build-size-it-bank": "node scripts/build-size-it-bank.js",
+    "fetch-size-it-assets": "node scripts/fetch-size-it-assets.js",
+    "rebuild-size-it-bank": "node scripts/fetch-size-it-assets.js && node scripts/build-size-it-bank.js"
   },
   "engines": {
     "node": ">=18"
@@ -16,5 +19,8 @@
     "matter-js": "^0.20.0",
     "poly-decomp": "^0.3.0",
     "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "fzstd": "^0.1.1"
   }
 }

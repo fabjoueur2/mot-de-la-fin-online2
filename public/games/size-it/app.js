@@ -209,10 +209,16 @@ function metersToNative(m, unit) {
 
 function categoryLabel(cat) {
   return ({
-    geography: 'Géographie',
-    standard_object: 'Objet',
+    animals: 'Animaux',
+    everyday: 'Quotidien',
+    vehicles: 'Véhicules',
     sports: 'Sport',
-    space: 'Espace'
+    landmarks: 'Monuments',
+    food: 'Nourriture',
+    geography: 'Géographie',
+    space: 'Espace',
+    nature: 'Nature',
+    standard_object: 'Objet'
   })[cat] || cat;
 }
 

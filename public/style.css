@@ -621,7 +621,7 @@ footer { text-align: center; margin-top: 28px; color: var(--muted); font-size: .
 .players-list li { overflow: hidden; }
 
 /* —— Size It ! —— */
-.si-cats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 8px 0 4px; }
+.si-cats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin: 8px 0 4px; }
 .si-cat {
   display: flex; align-items: center; gap: 8px;
   background: var(--surface2); padding: 10px 12px; border-radius: 10px;
@@ -798,6 +798,6 @@ footer { text-align: center; margin-top: 28px; color: var(--muted); font-size: .
   .si-obj-ref { left: 22%; }
   .si-obj-est { left: 62%; }
   .si-obj-label { max-width: 90px; font-size: .58rem; }
-  .si-cats { grid-template-columns: 1fr; }
+  .si-cats { grid-template-columns: 1fr 1fr; }
 }
 
