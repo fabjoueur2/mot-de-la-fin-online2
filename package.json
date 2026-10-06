@@ -11,6 +11,8 @@
     "fetch-size-it-assets": "node scripts/fetch-size-it-assets.js",
     "audit-size-it-assets": "node scripts/audit-size-it-assets.js",
     "refresh-size-it-assets": "node scripts/fetch-size-it-assets.js --refresh-mismatched",
+    "review-size-it-assets": "node scripts/serve-size-it-review.js",
+    "apply-size-it-review": "node scripts/apply-size-it-review.js",
     "rebuild-size-it-bank": "node scripts/fetch-size-it-assets.js && node scripts/build-size-it-bank.js"
   },
   "engines": {

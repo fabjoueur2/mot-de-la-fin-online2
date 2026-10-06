@@ -1,1 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><g fill="#000"><ellipse cx="50" cy="50" rx="34" ry="20"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><g fill="#000"><rect x="36" y="40" width="40" height="32" rx="3"/><circle cx="48" cy="80" r="10"/><circle cx="72" cy="80" r="10"/><path d="M36 48 H16 V80 H24 V56 H36"/><path d="M16 48 V28 H24 V48"/></g></svg>

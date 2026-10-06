@@ -332,17 +332,37 @@ const SVGREPO_QUERY = {
 };
 
 /** IDs pour lesquels on évite SVG Repo (homonymes / pas d’icône CC0 fiable). */
-const FORCE_PROCEDURAL = new Set([
-  'vehi-velo-cargo',
-  'ever-palette-eur',
-  'spor-disque-frisbee',
-  'vehi-boeing-747',
-  'land-stonehenge-hauteur',
-  'land-muraille-de-chine-section',
-  'land-machu-picchu-mur',
-  'land-petronas-towers',
-  'food-glace-cornet',
-  'natu-tronc-de-chene'
-]);
+function loadForceProcedural() {
+  const base = [
+    'vehi-velo-cargo',
+    'ever-palette-eur',
+    'spor-disque-frisbee',
+    'vehi-boeing-747',
+    'land-stonehenge-hauteur',
+    'land-muraille-de-chine-section',
+    'land-machu-picchu-mur',
+    'land-petronas-towers',
+    'food-glace-cornet',
+    'natu-tronc-de-chene'
+  ];
+  try {
+    const extra = require('./size-it-force-procedural.json');
+    if (Array.isArray(extra)) return new Set([...base, ...extra]);
+  } catch {
+    /* optional file */
+  }
+  // Fallback: review.json if present
+  try {
+    const review = require('../games/size-it/bank/review.json');
+    const bad = Object.entries(review.verdicts || {})
+      .filter(([, v]) => v.status === 'bad')
+      .map(([id]) => id);
+    return new Set([...base, ...bad]);
+  } catch {
+    return new Set(base);
+  }
+}
+
+const FORCE_PROCEDURAL = loadForceProcedural();
 
 module.exports = { PHYLOPIC_QUERY, NATURAL_EARTH_NAME, SVGREPO_QUERY, FORCE_PROCEDURAL };

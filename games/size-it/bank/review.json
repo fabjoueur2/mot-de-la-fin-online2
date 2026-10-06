@@ -1,0 +1,2491 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-06T16:58:01.009Z",
+  "verdicts": {
+    "anim-abeille": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:46:27.209Z"
+    },
+    "anim-papillon-monarque": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:46:28.012Z"
+    },
+    "anim-souris": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:46:28.693Z"
+    },
+    "anim-hamster": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:46:30.868Z"
+    },
+    "anim-grenouille": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:46:32.109Z"
+    },
+    "anim-moineau": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:46:33.935Z"
+    },
+    "anim-pigeon": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:46:34.879Z"
+    },
+    "anim-chat-domestique": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:46:35.330Z"
+    },
+    "anim-lapin": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:46:35.893Z"
+    },
+    "anim-canard": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:46:36.364Z"
+    },
+    "anim-poule": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:46:36.868Z"
+    },
+    "anim-renard": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:46:38.353Z"
+    },
+    "anim-raton-laveur": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:46:39.313Z"
+    },
+    "anim-chien-labrador": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:46:39.731Z"
+    },
+    "anim-chien-berger": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:46:41.652Z"
+    },
+    "anim-loup": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:46:43.442Z"
+    },
+    "anim-sanglier": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:46:44.320Z"
+    },
+    "anim-cerf": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:46:45.179Z"
+    },
+    "anim-chevreuil": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:46:45.690Z"
+    },
+    "anim-chevre": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:46:46.499Z"
+    },
+    "anim-mouton": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:46:46.889Z"
+    },
+    "anim-cochon": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:46:47.369Z"
+    },
+    "anim-vache": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:46:58.288Z"
+    },
+    "anim-cheval": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:46:59.476Z"
+    },
+    "anim-ane": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:01.351Z"
+    },
+    "anim-zebre": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:02.248Z"
+    },
+    "anim-lion": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:05.218Z"
+    },
+    "anim-tigre": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:05.609Z"
+    },
+    "anim-leopard": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:07.630Z"
+    },
+    "anim-guepard": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:08.326Z"
+    },
+    "anim-ours-brun": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:09.169Z"
+    },
+    "anim-panda-geant": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:10.259Z"
+    },
+    "anim-gorille": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:11.227Z"
+    },
+    "anim-chimpanze": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:12.155Z"
+    },
+    "anim-orang-outan": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:12.649Z"
+    },
+    "anim-kangourou": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:47:16.956Z"
+    },
+    "anim-koala": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:19.394Z"
+    },
+    "anim-autruche": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:20.174Z"
+    },
+    "anim-flamant-rose": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:21.272Z"
+    },
+    "anim-cigogne": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:22.069Z"
+    },
+    "anim-hibou-grand-duc": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:33.466Z"
+    },
+    "anim-pingouin-empereur": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:34.158Z"
+    },
+    "anim-manchot-adelie": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:34.757Z"
+    },
+    "anim-dauphin": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:35.308Z"
+    },
+    "anim-orque": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:35.754Z"
+    },
+    "anim-aigle-royal": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:39.616Z"
+    },
+    "anim-requin-blanc": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:41.685Z"
+    },
+    "anim-requin-marteau": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:42.115Z"
+    },
+    "anim-phoque": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:43.274Z"
+    },
+    "anim-otarie": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:43.603Z"
+    },
+    "anim-serpent-python": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:44.344Z"
+    },
+    "anim-cobra": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:44.781Z"
+    },
+    "anim-morse": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:46.152Z"
+    },
+    "anim-hippopotame": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:46.469Z"
+    },
+    "anim-elephant-d-afrique": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:46.838Z"
+    },
+    "anim-elephant-d-asie": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:47.216Z"
+    },
+    "anim-girafe": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:47.602Z"
+    },
+    "anim-chameau": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:47.974Z"
+    },
+    "anim-lama": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:48.336Z"
+    },
+    "anim-crocodile-du-nil": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:47:56.280Z"
+    },
+    "anim-alligator": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:57.849Z"
+    },
+    "anim-iguane": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:47:59.915Z"
+    },
+    "anim-tortue-geante": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:01.412Z"
+    },
+    "anim-tortue-marine": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:01.933Z"
+    },
+    "anim-poulpe": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:02.808Z"
+    },
+    "anim-calmar-geant": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:03.592Z"
+    },
+    "anim-baleine-bleue": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:07.428Z"
+    },
+    "anim-rorqual-commun": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:09.584Z"
+    },
+    "anim-cachalot": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:09.954Z"
+    },
+    "anim-megalodon-fossil": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:10.383Z"
+    },
+    "anim-triceratops": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:10.775Z"
+    },
+    "anim-brachiosaure": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:11.544Z"
+    },
+    "anim-velociraptor": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:13.039Z"
+    },
+    "anim-pterodactyle": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:13.483Z"
+    },
+    "anim-escargot": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:13.856Z"
+    },
+    "anim-crabe": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:15.411Z"
+    },
+    "anim-homard": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:16.566Z"
+    },
+    "anim-etoile-de-mer": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:17.388Z"
+    },
+    "anim-hippocampe": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:17.828Z"
+    },
+    "anim-raie-manta": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:18.682Z"
+    },
+    "anim-libellule": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:19.059Z"
+    },
+    "anim-scorpion": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:19.435Z"
+    },
+    "anim-tarentule": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:19.786Z"
+    },
+    "anim-chauve-souris": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:20.100Z"
+    },
+    "anim-herisson": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:22.683Z"
+    },
+    "anim-ecureuil": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:23.624Z"
+    },
+    "anim-castor": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:24.304Z"
+    },
+    "anim-loutre": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:24.661Z"
+    },
+    "anim-furet": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:25.034Z"
+    },
+    "anim-paresseux": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:25.432Z"
+    },
+    "anim-dinde": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:25.805Z"
+    },
+    "anim-cygne": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:26.564Z"
+    },
+    "anim-pelican": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:26.987Z"
+    },
+    "anim-colibri": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:27.308Z"
+    },
+    "anim-perroquet": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:27.975Z"
+    },
+    "anim-toucan": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:28.293Z"
+    },
+    "anim-faucon": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:31.874Z"
+    },
+    "anim-vautour": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:32.301Z"
+    },
+    "anim-cigale": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:32.872Z"
+    },
+    "anim-mante-religieuse": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:33.274Z"
+    },
+    "anim-termite": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:36.000Z"
+    },
+    "anim-blatte": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:37.540Z"
+    },
+    "anim-mouche": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:38.711Z"
+    },
+    "anim-moustique": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:40.370Z"
+    },
+    "anim-ver-de-terre": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:40.709Z"
+    },
+    "anim-axolotl": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:42.067Z"
+    },
+    "anim-salamandre": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:42.741Z"
+    },
+    "anim-cameleon": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:43.090Z"
+    },
+    "ever-piece-de-1-euro": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:48:48.135Z"
+    },
+    "ever-piece-de-2-euros": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:48:48.848Z"
+    },
+    "anim-gecko": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:50.988Z"
+    },
+    "anim-varan-de-komodo": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:51.417Z"
+    },
+    "anim-anaconda": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:51.957Z"
+    },
+    "anim-boa-constrictor": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:52.306Z"
+    },
+    "anim-cobra-royal": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:52.651Z"
+    },
+    "anim-beluga": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:53.029Z"
+    },
+    "anim-narval": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:53.340Z"
+    },
+    "anim-loup-marin": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:53.782Z"
+    },
+    "anim-ours-polaire": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:54.428Z"
+    },
+    "anim-renard-polaire": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:54.873Z"
+    },
+    "anim-renne": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:55.186Z"
+    },
+    "anim-elan": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:55.525Z"
+    },
+    "ever-carte-sim": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:48:59.432Z"
+    },
+    "ever-carte-bancaire": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:49:02.777Z"
+    },
+    "ever-trombone": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:49:03.703Z"
+    },
+    "ever-crayon-hb": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:49:04.890Z"
+    },
+    "ever-stylo-bille": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:49:05.345Z"
+    },
+    "ever-cle-usb": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:49:07.044Z"
+    },
+    "ever-pile-aa": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:49:08.524Z"
+    },
+    "ever-pile-aaa": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:49:08.892Z"
+    },
+    "ever-pile-9v": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:49:09.302Z"
+    },
+    "ever-smartphone": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:49:10.312Z"
+    },
+    "ever-tablette-10": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:49:12.224Z"
+    },
+    "ever-livre-poche": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:49:14.331Z"
+    },
+    "ever-feuille-a4": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:49:14.844Z"
+    },
+    "ever-dvd": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:49:16.151Z"
+    },
+    "ever-cd": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:49:17.320Z"
+    },
+    "ever-tasse-a-cafe": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:49:20.700Z"
+    },
+    "ever-verre-a-eau": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:49:23.824Z"
+    },
+    "ever-bouteille-d-eau-50cl": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:49:26.420Z"
+    },
+    "ever-bouteille-de-vin": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:49:27.522Z"
+    },
+    "ever-canette-soda": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:49:29.305Z"
+    },
+    "ever-boite-de-conserve": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:49:30.881Z"
+    },
+    "ever-assiette-dessert": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:49:34.685Z"
+    },
+    "ever-assiette-plate": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:49:37.818Z"
+    },
+    "ever-fourchette": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:49:43.027Z"
+    },
+    "ever-couteau-de-table": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:49:43.538Z"
+    },
+    "ever-cuillere": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:49:44.431Z"
+    },
+    "ever-ciseaux": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:49:45.443Z"
+    },
+    "ever-regle-30-cm": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:49:48.136Z"
+    },
+    "ever-metre-ruban": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:49:49.426Z"
+    },
+    "ever-marteau": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:49:54.042Z"
+    },
+    "ever-tournevis": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:49:54.924Z"
+    },
+    "ever-cle-a-molette": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:49:56.568Z"
+    },
+    "ever-parapluie-plie": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:50:00.510Z"
+    },
+    "ever-parapluie-ouvert": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:49:58.579Z"
+    },
+    "ever-chaise-de-bureau": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:50:02.114Z"
+    },
+    "ever-table-basse": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:50:03.319Z"
+    },
+    "ever-bureau": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:50:06.147Z"
+    },
+    "ever-lit-une-place": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:50:06.884Z"
+    },
+    "ever-lit-double": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:50:07.343Z"
+    },
+    "ever-porte-standard": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:50:09.782Z"
+    },
+    "ever-frigo": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:50:10.430Z"
+    },
+    "ever-machine-a-laver": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:50:12.341Z"
+    },
+    "ever-micro-ondes": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:50:13.347Z"
+    },
+    "ever-four": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:50:14.256Z"
+    },
+    "ever-tv-55": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:50:15.052Z"
+    },
+    "ever-ordinateur-portable": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:50:15.950Z"
+    },
+    "ever-clavier": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:50:18.136Z"
+    },
+    "ever-souris-d-ordi": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:50:19.535Z"
+    },
+    "ever-casque-audio": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:50:21.277Z"
+    },
+    "ever-enceinte-bluetooth": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:50:22.296Z"
+    },
+    "ever-lampe-de-bureau": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:50:23.855Z"
+    },
+    "ever-ampoule-e27": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:50:24.363Z"
+    },
+    "ever-prise-electrique": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:50:28.321Z"
+    },
+    "ever-interrupteur": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:50:28.911Z"
+    },
+    "ever-horloge-murale": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:50:29.687Z"
+    },
+    "ever-reveil": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:50:30.391Z"
+    },
+    "ever-valise-cabine": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:50:32.825Z"
+    },
+    "ever-sac-a-dos": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:50:33.677Z"
+    },
+    "ever-chaussure-42": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:50:36.966Z"
+    },
+    "ever-basket": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:50:38.184Z"
+    },
+    "ever-botte": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:50:39.398Z"
+    },
+    "ever-casquette": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:50:40.795Z"
+    },
+    "ever-chapeau": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:50:41.549Z"
+    },
+    "ever-lunettes": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:50:42.958Z"
+    },
+    "ever-montre-bracelet": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:50:45.414Z"
+    },
+    "ever-bague": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:50:46.186Z"
+    },
+    "ever-cintre": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:50:48.298Z"
+    },
+    "ever-cintre-pantalon": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:50:49.323Z"
+    },
+    "ever-seau": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:50:50.871Z"
+    },
+    "ever-arrosoir": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:50:53.006Z"
+    },
+    "ever-pelle": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:50:55.260Z"
+    },
+    "ever-rateau": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:50:57.213Z"
+    },
+    "ever-echelle-3m": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:50:59.692Z"
+    },
+    "ever-escabeau": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:51:01.503Z"
+    },
+    "ever-caddie": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:51:02.291Z"
+    },
+    "ever-poussette": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:51:03.839Z"
+    },
+    "ever-landau": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:51:04.475Z"
+    },
+    "ever-trottinette": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:51:09.974Z"
+    },
+    "ever-skateboard": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:51:13.876Z"
+    },
+    "ever-sac-plastique": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:51:16.071Z"
+    },
+    "ever-carton-demenagement": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:51:18.784Z"
+    },
+    "ever-conteneur-20": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:51:19.937Z"
+    },
+    "ever-conteneur-40": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:51:21.399Z"
+    },
+    "ever-poubelle-rue": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:51:24.336Z"
+    },
+    "ever-boite-aux-lettres": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:51:25.650Z"
+    },
+    "ever-panneau-stop": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:51:27.080Z"
+    },
+    "ever-feu-tricolore": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:51:28.523Z"
+    },
+    "ever-banc-public": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:51:28.993Z"
+    },
+    "ever-reverbere": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:51:31.331Z"
+    },
+    "ever-poteau-electrique": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:51:33.483Z"
+    },
+    "ever-cable-hdmi": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:51:34.633Z"
+    },
+    "ever-rallonge-5m": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:51:36.056Z"
+    },
+    "ever-tuyau-d-arrosage-20m": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:51:37.602Z"
+    },
+    "ever-ballon-baudruche": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:51:41.178Z"
+    },
+    "ever-bougie": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:51:42.350Z"
+    },
+    "ever-briquet": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:51:44.291Z"
+    },
+    "ever-savon": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:51:45.701Z"
+    },
+    "ever-brosse-a-dents": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:51:46.180Z"
+    },
+    "vehi-trotti-electrique": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:51:47.632Z"
+    },
+    "vehi-velo-ville": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:51:48.780Z"
+    },
+    "vehi-moto": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:51:49.547Z"
+    },
+    "vehi-scooter-125": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:51:50.248Z"
+    },
+    "vehi-quad": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:51:51.678Z"
+    },
+    "vehi-voiture-citadine": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:51:52.765Z"
+    },
+    "vehi-berline": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:51:53.415Z"
+    },
+    "vehi-suv": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:51:54.405Z"
+    },
+    "vehi-break": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:51:56.356Z"
+    },
+    "vehi-pick-up": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:51:57.250Z"
+    },
+    "vehi-utilitaire": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:51:59.034Z"
+    },
+    "vehi-camionnette": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:51:59.723Z"
+    },
+    "vehi-camion-porteur": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:52:00.400Z"
+    },
+    "vehi-semi-remorque": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:52:01.213Z"
+    },
+    "vehi-bus-urbain": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:52:02.483Z"
+    },
+    "vehi-bus-articule": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:52:03.456Z"
+    },
+    "vehi-car-grand-tourisme": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:52:06.981Z"
+    },
+    "vehi-tramway": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:52:09.406Z"
+    },
+    "vehi-tgv-rame": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:52:10.093Z"
+    },
+    "vehi-tracteur": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:52:12.261Z"
+    },
+    "vehi-moissonneuse": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:52:13.879Z"
+    },
+    "vehi-pelleteuse": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:52:14.780Z"
+    },
+    "vehi-grue-mobile": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:52:16.359Z"
+    },
+    "vehi-ambulance": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:52:17.461Z"
+    },
+    "vehi-camion-de-pompiers": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:52:18.637Z"
+    },
+    "vehi-bateau-a-rames": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:52:20.512Z"
+    },
+    "vehi-paddle": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:52:24.060Z"
+    },
+    "vehi-voilier-30": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:52:25.351Z"
+    },
+    "vehi-yacht": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:52:26.169Z"
+    },
+    "vehi-porte-conteneurs": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:52:26.912Z"
+    },
+    "vehi-sous-marin": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:52:27.482Z"
+    },
+    "vehi-helicoptere": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:52:28.508Z"
+    },
+    "vehi-avion-de-ligne-a320": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:52:30.670Z"
+    },
+    "vehi-planeur": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:52:31.877Z"
+    },
+    "vehi-montgolfiere": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:52:33.159Z"
+    },
+    "vehi-fusee-falcon-9": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:52:34.335Z"
+    },
+    "vehi-trottinette-enfant": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:52:36.954Z"
+    },
+    "vehi-segway": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:52:38.149Z"
+    },
+    "vehi-gyropode": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:52:39.305Z"
+    },
+    "vehi-charrette": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:52:40.908Z"
+    },
+    "vehi-caleche": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:52:42.381Z"
+    },
+    "vehi-velo-cargo": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:52:43.692Z"
+    },
+    "vehi-monospace": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:52:44.861Z"
+    },
+    "vehi-camping-car": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:52:45.747Z"
+    },
+    "vehi-caravane": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:52:47.400Z"
+    },
+    "vehi-metro-rame": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:52:47.930Z"
+    },
+    "vehi-locomotive": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:52:48.515Z"
+    },
+    "vehi-wagon-marchandises": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:52:49.772Z"
+    },
+    "vehi-kart": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:52:50.900Z"
+    },
+    "vehi-formule-1": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:52:51.462Z"
+    },
+    "vehi-voiture-de-rallye": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:52:52.298Z"
+    },
+    "vehi-bulldozer": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:52:58.095Z"
+    },
+    "vehi-chariot-elevateur": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:52:58.978Z"
+    },
+    "vehi-police-berline": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:52:59.564Z"
+    },
+    "vehi-kayak": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:53:00.410Z"
+    },
+    "vehi-ferry": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:53:01.226Z"
+    },
+    "vehi-porte-avions": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:53:02.658Z"
+    },
+    "vehi-jet-ski": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:53:03.440Z"
+    },
+    "vehi-boeing-747": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:53:05.391Z"
+    },
+    "vehi-a380": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:53:06.173Z"
+    },
+    "sport-football-pitch": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:53:07.288Z"
+    },
+    "spor-balle-de-golf": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:53:08.927Z"
+    },
+    "spor-balle-de-tennis": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:53:11.487Z"
+    },
+    "spor-balle-de-baseball": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:53:14.638Z"
+    },
+    "spor-balle-de-cricket": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:53:17.542Z"
+    },
+    "spor-ballon-de-foot": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:53:17.895Z"
+    },
+    "spor-ballon-de-basket": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:53:19.889Z"
+    },
+    "spor-ballon-de-volley": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:53:20.260Z"
+    },
+    "spor-ballon-de-hand": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:53:22.834Z"
+    },
+    "spor-boule-de-bowling": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:53:24.001Z"
+    },
+    "spor-crosse-de-hockey": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:53:25.650Z"
+    },
+    "spor-raquette-de-tennis": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:53:27.445Z"
+    },
+    "spor-volant-badminton": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:53:28.207Z"
+    },
+    "spor-batte-de-baseball": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:53:30.599Z"
+    },
+    "spor-queue-de-billard": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:53:31.775Z"
+    },
+    "spor-marteau-athle": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:53:33.050Z"
+    },
+    "spor-haltere-20kg": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:53:34.096Z"
+    },
+    "spor-barre-olympique": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:53:36.445Z"
+    },
+    "spor-skis-alpins": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:53:37.218Z"
+    },
+    "spor-snowboard": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:53:38.834Z"
+    },
+    "spor-surf": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:53:42.070Z"
+    },
+    "spor-planche-a-voile": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:53:43.093Z"
+    },
+    "spor-canoe": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:53:44.030Z"
+    },
+    "spor-terrain-de-rugby": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:53:46.632Z"
+    },
+    "spor-terrain-de-basket": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:53:47.387Z"
+    },
+    "spor-piscine-olympique": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:53:51.257Z"
+    },
+    "spor-cage-de-foot": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:53:52.749Z"
+    },
+    "spor-table-de-ping-pong": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:53:55.573Z"
+    },
+    "spor-ring-de-boxe": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:53:56.657Z"
+    },
+    "spor-tatami-judo": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:53:58.660Z"
+    },
+    "spor-but-de-hockey-sur-glace": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:54:00.341Z"
+    },
+    "spor-casque-velo": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:54:01.208Z"
+    },
+    "spor-casque-moto": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:54:02.762Z"
+    },
+    "spor-gant-de-boxe": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:54:03.551Z"
+    },
+    "spor-maillot-de-bain": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:54:04.656Z"
+    },
+    "spor-balle-de-ping-pong": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:54:06.688Z"
+    },
+    "spor-ballon-de-rugby": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:54:07.846Z"
+    },
+    "spor-quille-de-bowling": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:54:08.437Z"
+    },
+    "spor-disque-frisbee": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:54:14.123Z"
+    },
+    "spor-puck-de-hockey": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:54:15.793Z"
+    },
+    "spor-raquette-de-badminton": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:54:18.059Z"
+    },
+    "spor-club-de-golf": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:54:18.757Z"
+    },
+    "spor-javelot": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:54:19.521Z"
+    },
+    "spor-perche": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:54:20.140Z"
+    },
+    "spor-disque-athle": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:54:21.464Z"
+    },
+    "spor-kayak-polo": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:54:22.010Z"
+    },
+    "spor-court-de-tennis": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:54:22.578Z"
+    },
+    "spor-piste-d-athletisme": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:54:23.221Z"
+    },
+    "spor-panier-de-basket": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:54:23.856Z"
+    },
+    "spor-filet-de-volley": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:54:24.521Z"
+    },
+    "land-tour-eiffel": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:54:25.320Z"
+    },
+    "land-statue-de-la-liberte": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:54:26.402Z"
+    },
+    "land-burj-khalifa": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:54:27.391Z"
+    },
+    "land-big-ben": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:54:28.390Z"
+    },
+    "land-colisee": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:54:29.416Z"
+    },
+    "land-sphinx-de-gizeh": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:54:32.540Z"
+    },
+    "land-taj-mahal": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:54:34.084Z"
+    },
+    "land-space-needle": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:54:43.628Z"
+    },
+    "land-golden-gate-bridge-hauteur": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:54:46.936Z"
+    },
+    "land-golden-gate-longueur": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:54:48.049Z"
+    },
+    "land-arc-de-triomphe": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:54:49.354Z"
+    },
+    "land-notre-dame-de-paris": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:54:50.054Z"
+    },
+    "land-pyramide-de-kheops": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:54:54.246Z"
+    },
+    "land-mont-saint-michel": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:54:56.076Z"
+    },
+    "land-louvre-pyramide": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:54:56.978Z"
+    },
+    "land-opera-garnier": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:54:57.801Z"
+    },
+    "land-la-defense-grande-arche": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:54:59.161Z"
+    },
+    "land-sydney-opera-house": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:55:00.500Z"
+    },
+    "land-phare-d-alexandrie-reconstr": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:55:01.847Z"
+    },
+    "land-statue-du-christ-roi-swiebodzin": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:55:02.473Z"
+    },
+    "land-empire-state-building": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:55:03.148Z"
+    },
+    "land-one-world-trade-center": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:55:03.723Z"
+    },
+    "land-tour-de-pise": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:55:05.429Z"
+    },
+    "land-christ-redempteur": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:55:07.698Z"
+    },
+    "land-tour-cn-toronto": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:55:09.189Z"
+    },
+    "land-pont-du-millau": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:55:09.672Z"
+    },
+    "land-sacre-c-ur": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:55:10.436Z"
+    },
+    "land-chateau-de-versailles-longueur": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:55:11.179Z"
+    },
+    "land-sagrada-familia": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:55:11.680Z"
+    },
+    "land-acropole-parthenon": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:55:12.328Z"
+    },
+    "land-stonehenge-hauteur": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:55:13.846Z"
+    },
+    "land-muraille-de-chine-section": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:55:14.588Z"
+    },
+    "land-machu-picchu-mur": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:55:15.979Z"
+    },
+    "land-moai-ile-de-paques": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:55:16.586Z"
+    },
+    "land-obelisque-de-louxor-concorde": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:55:17.388Z"
+    },
+    "land-tour-montparnasse": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:55:18.383Z"
+    },
+    "land-atomium": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:55:19.015Z"
+    },
+    "land-tour-de-londres": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:55:19.522Z"
+    },
+    "land-petronas-towers": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:55:20.420Z"
+    },
+    "land-shanghai-tower": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:55:20.903Z"
+    },
+    "food-grain-de-riz": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:55:21.668Z"
+    },
+    "food-grain-de-cafe": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:55:23.304Z"
+    },
+    "food-olive": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:55:28.385Z"
+    },
+    "food-raisin": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:55:29.348Z"
+    },
+    "food-cerise": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:55:30.324Z"
+    },
+    "food-fraise": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:55:31.125Z"
+    },
+    "food-citron": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:55:32.790Z"
+    },
+    "food-orange": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:55:33.252Z"
+    },
+    "food-pomme": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:55:36.154Z"
+    },
+    "food-banane": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:55:37.104Z"
+    },
+    "food-poire": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:55:38.771Z"
+    },
+    "food-ananas": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:55:40.361Z"
+    },
+    "food-pasteque": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:55:41.854Z"
+    },
+    "food-melon": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:55:43.031Z"
+    },
+    "food-noix-de-coco": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:55:44.476Z"
+    },
+    "food-carotte": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:55:45.203Z"
+    },
+    "food-concombre": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:55:46.176Z"
+    },
+    "food-aubergine": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:55:46.926Z"
+    },
+    "food-tomate": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:55:49.365Z"
+    },
+    "food-oignon": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:55:49.764Z"
+    },
+    "food-pomme-de-terre": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:55:50.629Z"
+    },
+    "food-mais-epi": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:55:51.724Z"
+    },
+    "food-baguette": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:55:54.369Z"
+    },
+    "food-pain-de-mie": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:55:54.997Z"
+    },
+    "food-pizza": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:55:55.959Z"
+    },
+    "food-hamburger": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:55:56.472Z"
+    },
+    "food-hot-dog": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:55:57.471Z"
+    },
+    "food-uf-de-poule": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:56:02.706Z"
+    },
+    "food-fromage-camembert": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:04.890Z"
+    },
+    "food-brique-de-lait": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:06.080Z"
+    },
+    "food-pot-de-yaourt": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:56:07.763Z"
+    },
+    "food-tablette-de-chocolat": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:56:08.839Z"
+    },
+    "food-sucette": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:09.744Z"
+    },
+    "food-pop-corn-grain": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:56:11.986Z"
+    },
+    "food-champignon-de-paris": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:12.683Z"
+    },
+    "food-courgette": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:56:14.111Z"
+    },
+    "food-poivron": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:56:15.439Z"
+    },
+    "food-croissant": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:56:16.400Z"
+    },
+    "food-glace-cornet": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:56:18.342Z"
+    },
+    "food-noix": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:56:19.155Z"
+    },
+    "geo-france": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:19.845Z"
+    },
+    "geog-belgique": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:21.892Z"
+    },
+    "geog-luxembourg": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:25.716Z"
+    },
+    "geog-pays-bas": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:27.012Z"
+    },
+    "geog-suisse": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:27.451Z"
+    },
+    "geog-portugal": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:27.932Z"
+    },
+    "geog-italie": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:28.339Z"
+    },
+    "geog-royaume-uni": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:28.789Z"
+    },
+    "geog-irlande": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:29.191Z"
+    },
+    "geog-espagne": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:29.602Z"
+    },
+    "geog-allemagne": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:30.771Z"
+    },
+    "geog-pologne": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:31.121Z"
+    },
+    "geog-suede": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:31.438Z"
+    },
+    "geog-norvege": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:32.003Z"
+    },
+    "geog-finlande": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:32.362Z"
+    },
+    "geog-grece": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:32.683Z"
+    },
+    "geog-turquie": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:33.003Z"
+    },
+    "geog-egypte": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:33.307Z"
+    },
+    "geog-maroc": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:33.671Z"
+    },
+    "geog-algerie": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:33.999Z"
+    },
+    "geog-afrique-du-sud": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:34.340Z"
+    },
+    "geog-nigeria": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:34.689Z"
+    },
+    "geog-kenya": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:35.876Z"
+    },
+    "geog-madagascar": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:36.135Z"
+    },
+    "geog-inde": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:36.461Z"
+    },
+    "geog-chine": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:36.763Z"
+    },
+    "geog-japon": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:37.082Z"
+    },
+    "geog-coree-du-sud": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:37.446Z"
+    },
+    "geog-thailande": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:37.729Z"
+    },
+    "geog-indonesie": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:38.102Z"
+    },
+    "geog-australie": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:38.441Z"
+    },
+    "geog-nouvelle-zelande": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:38.781Z"
+    },
+    "geog-bresil": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:39.145Z"
+    },
+    "geog-argentine": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:39.525Z"
+    },
+    "geog-arabie-saoudite": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:39.976Z"
+    },
+    "geog-ukraine": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:40.311Z"
+    },
+    "geog-russie": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:40.715Z"
+    },
+    "geog-haiti": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:41.365Z"
+    },
+    "geog-cuba": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:44.484Z"
+    },
+    "geog-islande": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:44.832Z"
+    },
+    "geog-groenland": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:45.193Z"
+    },
+    "geog-alaska": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:45.552Z"
+    },
+    "geog-etats-unis": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:45.875Z"
+    },
+    "geog-canada": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:46.214Z"
+    },
+    "geog-chili": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:47.006Z"
+    },
+    "geog-iran": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:48.251Z"
+    },
+    "geog-irak": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:48.676Z"
+    },
+    "geog-israel": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:49.093Z"
+    },
+    "geog-congo": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:49.498Z"
+    },
+    "spac-asteroide-bennu": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:56:50.209Z"
+    },
+    "spac-asteroide-ceres": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:56:51.560Z"
+    },
+    "spac-lune": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:52.493Z"
+    },
+    "spac-mercure": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:56.493Z"
+    },
+    "spac-mars": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:56:58.068Z"
+    },
+    "spac-venus": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:57:03.414Z"
+    },
+    "spac-terre": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:57:05.177Z"
+    },
+    "spac-neptune": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:57:06.538Z"
+    },
+    "spac-uranus": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:57:07.634Z"
+    },
+    "spac-soleil": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:57:08.286Z"
+    },
+    "spac-station-mir": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:57:10.960Z"
+    },
+    "spac-comete-halley-noyau": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:57:11.517Z"
+    },
+    "spac-voie-lactee-diametre": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:57:12.503Z"
+    },
+    "spac-saturne": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:57:13.651Z"
+    },
+    "spac-jupiter": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:57:17.387Z"
+    },
+    "spac-iss-longueur": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:57:19.302Z"
+    },
+    "spac-telescope-hubble": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:57:20.601Z"
+    },
+    "spac-rover-curiosity": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:57:21.455Z"
+    },
+    "spac-module-apollo": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:57:24.571Z"
+    },
+    "spac-anneaux-de-saturne-largeur": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:57:25.429Z"
+    },
+    "natu-cristal-de-neige": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:57:26.770Z"
+    },
+    "natu-iceberg-typique": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:57:28.800Z"
+    },
+    "natu-kilimandjaro": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:57:30.941Z"
+    },
+    "natu-everest": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:57:32.799Z"
+    },
+    "natu-mont-blanc": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:57:33.340Z"
+    },
+    "natu-palmier": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:57:34.345Z"
+    },
+    "natu-sapin-20-ans": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:57:35.580Z"
+    },
+    "natu-rose": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:57:36.970Z"
+    },
+    "natu-trefle": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:57:39.137Z"
+    },
+    "natu-feuille-d-erable": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:57:39.575Z"
+    },
+    "natu-flocon": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:57:42.224Z"
+    },
+    "natu-rocher": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:57:46.558Z"
+    },
+    "natu-pomme-de-pin": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:57:48.585Z"
+    },
+    "natu-tournesol": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:57:49.400Z"
+    },
+    "natu-tulipe": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:57:50.087Z"
+    },
+    "natu-bambou-section": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:57:51.269Z"
+    },
+    "natu-tronc-de-chene": {
+      "status": "bad",
+      "note": "",
+      "at": "2026-10-06T16:57:53.201Z"
+    },
+    "natu-sequoia-geant": {
+      "status": "good",
+      "note": "",
+      "at": "2026-10-06T16:57:53.575Z"
+    }
+  }
+}

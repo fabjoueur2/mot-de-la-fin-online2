@@ -246,8 +246,12 @@ function blobFromSeed(seed) {
   return svg(poly(pts.map(([x, y]) => [x.toFixed(1), y.toFixed(1)])));
 }
 
+const { renderCuratedShape } = require('./size-it-curated-silhouettes');
+
 function renderShape(shapeKey) {
   const key = String(shapeKey || 'blob');
+  const curated = renderCuratedShape(key);
+  if (curated) return curated;
   if (SPECIAL[key]) return SPECIAL[key]();
 
   const seed = hash(key);
