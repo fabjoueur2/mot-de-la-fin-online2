@@ -13,6 +13,8 @@ let currentVideoId = null;
 let revealMainId = null;
 let revealImpId = null;
 let timerInterval = null;
+let reportedVideoEnded = false;
+let fallbackEndTimer = null;
 
 const CAT_LABELS = {
   animals: 'Animaux',
@@ -60,9 +62,30 @@ function tickTimers() {
   };
   const id = map[state.phase];
   if (id && $(id)) $(id).textContent = fmtMs(left);
+
+  if (state.phase === 'watching') {
+    const detail = $('watch-wait-detail');
+    if (detail && $('watch-wait')?.style.display !== 'none') {
+      const done = state.videoEndedCount || 0;
+      const total = state.players?.length || 0;
+      detail.textContent = `${done}/${total} prêts · suite dans ${fmtMs(left)}`;
+    }
+  }
+}
+
+function reportVideoEnded() {
+  if (reportedVideoEnded || state?.phase !== 'watching') return;
+  reportedVideoEnded = true;
+  const wait = $('watch-wait');
+  if (wait) wait.style.display = 'grid';
+  socket.emit('wo-video-ended');
 }
 
 function destroyPlayer() {
+  if (fallbackEndTimer) {
+    clearTimeout(fallbackEndTimer);
+    fallbackEndTimer = null;
+  }
   try {
     ytPlayer?.destroy?.();
   } catch {
@@ -125,14 +148,18 @@ function bindRevealThumb(containerId) {
 
 function mountWatchPlayer(videoId) {
   if (!videoId) return;
-  if (currentVideoId === videoId && ytPlayer) return;
+  if (currentVideoId === videoId && (ytPlayer || $('yt-mount')?.querySelector('iframe'))) return;
   destroyPlayer();
   currentVideoId = videoId;
+  reportedVideoEnded = false;
   $('watch-wait').style.display = 'none';
   $('yt-mount').innerHTML = '';
 
+  const durSec = Math.max(8, Number(state?.myVideoDuration) || Number(state?.watchSec) || 30);
+  // Filet de sécu si l’API YT ne signale pas ENDED (iframe / erreur / pub)
+  fallbackEndTimer = setTimeout(reportVideoEnded, (durSec + 2) * 1000);
+
   if (!ytReady || typeof YT === 'undefined' || !YT.Player) {
-    // Fallback iframe
     $('yt-mount').innerHTML = `<iframe
       src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}?autoplay=1&rel=0&modestbranding=1&controls=1&fs=0&iv_load_policy=3&disablekb=1"
       allow="autoplay; encrypted-media"
@@ -163,9 +190,10 @@ function mountWatchPlayer(videoId) {
     },
     events: {
       onStateChange(e) {
-        if (e.data === YT.PlayerState.ENDED) {
-          $('watch-wait').style.display = 'grid';
-        }
+        if (e.data === YT.PlayerState.ENDED) reportVideoEnded();
+      },
+      onError() {
+        reportVideoEnded();
       }
     }
   });
@@ -315,6 +343,8 @@ function render(s) {
     badge.textContent = s.myRole === 'impostor' ? 'Imposteur' : 'Équipe';
     badge.className = `wo-badge ${s.myRole === 'impostor' ? 'impostor' : 'crew'}`;
     if (s.myVideoId) mountWatchPlayer(s.myVideoId);
+    const skipW = $('btn-skip-watch');
+    if (skipW) skipW.style.display = s.isHost ? 'inline-block' : 'none';
     return;
   }
 
@@ -422,6 +452,7 @@ $('chat-form')?.addEventListener('submit', (e) => {
   socket.emit('wo-chat', { text });
 });
 $('btn-skip-disc')?.addEventListener('click', () => socket.emit('wo-skip-phase'));
+$('btn-skip-watch')?.addEventListener('click', () => socket.emit('wo-skip-phase'));
 $('btn-next')?.addEventListener('click', () => socket.emit('wo-next-round'));
 $('btn-salon')?.addEventListener('click', () => socket.emit('wo-back-to-lobby'));
 $('btn-menu')?.addEventListener('click', () => {

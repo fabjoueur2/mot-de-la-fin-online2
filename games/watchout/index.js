@@ -91,10 +91,29 @@ function pickImpostor(room) {
   return shuffle(pool)[0];
 }
 
-function watchDurationSec(pair) {
+function watchDurationSec(pair, maxVideoSec) {
   const a = Number(pair.mainVideo.duration) || 30;
   const b = Number(pair.impostorVideo.duration) || 30;
-  return Math.max(a, b) + 2;
+  const cap = Math.min(Number(maxVideoSec) || 60, 90) + 5;
+  // Buffer court : on avance aussi dès que tous ont fini (wo-video-ended)
+  return Math.max(12, Math.min(Math.max(a, b) + 3, cap));
+}
+
+function tryAdvanceWatching(room) {
+  if (room.phase !== 'watching') return false;
+  const ended = room.videoEnded || {};
+  const ids = room.players.map((p) => p.id);
+  if (!ids.length) return false;
+  const allDone = ids.every((id) => ended[id]);
+  const timedOut = room.phaseEndsAt && Date.now() >= room.phaseEndsAt;
+  // Dès que tout le monde a fini (min 8s) ou timer écoulé
+  const minElapsed =
+    !room.watchStartedAt || Date.now() - room.watchStartedAt >= 8000;
+  if ((allDone && minElapsed) || timedOut) {
+    enterDiscussion(room);
+    return true;
+  }
+  return false;
 }
 
 async function beginRound(room) {
@@ -143,18 +162,21 @@ async function beginRound(room) {
     impostorVideoId: pair.impostorVideo.youtubeId,
     mainDuration: pair.mainVideo.duration,
     impostorDuration: pair.impostorVideo.duration,
-    watchSec: watchDurationSec(pair),
+    watchSec: watchDurationSec(pair, room.settings.maxVideoSec),
     impostorPlayerId: impostor.id
   };
 
   room.phase = 'role_reveal';
   room.phaseEndsAt = Date.now() + 5000;
+  room.videoEnded = {};
   return { ok: true };
 }
 
 function enterWatching(room) {
   if (!room.roundSecret) return;
   room.phase = 'watching';
+  room.videoEnded = {};
+  room.watchStartedAt = Date.now();
   room.phaseEndsAt = Date.now() + room.roundSecret.watchSec * 1000;
 }
 
@@ -383,6 +405,9 @@ function sanitizeRoom(room, socketId) {
     phaseEndsAt: room.phaseEndsAt,
     phaseRemainingMs: room.phaseEndsAt ? Math.max(0, room.phaseEndsAt - Date.now()) : null,
     watchSec: secret?.watchSec || null,
+    videoEndedCount: room.phase === 'watching'
+      ? Object.keys(room.videoEnded || {}).filter((id) => getPlayer(room, id)).length
+      : 0,
     chat: room.phase === 'discussion' || room.phase === 'voting' || room.phase === 'tie_break'
       ? room.chat.slice(-80)
       : [],
@@ -404,17 +429,18 @@ function ensureValidMaster(room) {
 }
 
 function onTick(room) {
+  // Watching : timer OU tous les joueurs ont fini leur vidéo
+  if (room.phase === 'watching') {
+    if (tryAdvanceWatching(room)) return true;
+    return false;
+  }
+
   if (!room.phaseEndsAt || Date.now() < room.phaseEndsAt) {
-    // Pendant watching/discussion/voting on rebroadcast périodiquement via server
     return false;
   }
 
   if (room.phase === 'role_reveal') {
     enterWatching(room);
-    return true;
-  }
-  if (room.phase === 'watching') {
-    enterDiscussion(room);
     return true;
   }
   if (room.phase === 'discussion') {
@@ -436,10 +462,11 @@ function onTick(room) {
     return true;
   }
   if (room.phase === 'scoreboard') {
-    // async advance — handled specially
-    room._pendingAdvance = true;
-    room.phaseEndsAt = null;
-    return true;
+    // async advance — handled specially (ne pas annuler le timer tant que pas lancé)
+    if (!room._pendingAdvance) {
+      room._pendingAdvance = true;
+    }
+    return false;
   }
   return false;
 }
@@ -457,10 +484,28 @@ function registerHandlers(io, ctx) {
   setInterval(() => {
     for (const room of ctx.rooms.values()) {
       if (room.gameId !== GAME_ID || !room._pendingAdvance) continue;
+      if (room._advancing) continue;
+      room._advancing = true;
       room._pendingAdvance = false;
-      advanceAfterScoreboard(room).then((ok) => {
-        if (ok) broadcastRoom(room);
-      });
+      advanceAfterScoreboard(room)
+        .then((res) => {
+          room._advancing = false;
+          if (res && res.ok === false) {
+            // Échec sélection vidéos : rester au scoreboard avec bouton hôte
+            room.phase = 'scoreboard';
+            room.phaseEndsAt = Date.now() + 15000;
+            room._pendingAdvance = false;
+            broadcastRoom(room);
+            return;
+          }
+          broadcastRoom(room);
+        })
+        .catch(() => {
+          room._advancing = false;
+          room.phase = 'scoreboard';
+          room.phaseEndsAt = Date.now() + 15000;
+          broadcastRoom(room);
+        });
     }
   }, 400);
 
@@ -552,6 +597,18 @@ function registerHandlers(io, ctx) {
       broadcastRoom(room);
     });
 
+    socket.on('wo-video-ended', () => {
+      const room = getRoom(ctx, socket);
+      if (!room || room.phase !== 'watching') return;
+      room.videoEnded = room.videoEnded || {};
+      room.videoEnded[socket.id] = true;
+      if (tryAdvanceWatching(room)) {
+        broadcastRoom(room);
+      } else {
+        broadcastRoom(room);
+      }
+    });
+
     socket.on('wo-skip-phase', async () => {
       const room = getRoom(ctx, socket);
       if (!room || !isHost(room, socket.id)) return;
@@ -568,7 +625,13 @@ function registerHandlers(io, ctx) {
         enterScoreboard(room);
         broadcastRoom(room);
       } else if (room.phase === 'scoreboard') {
-        await advanceAfterScoreboard(room);
+        room._pendingAdvance = true;
+        room._advancing = false;
+        const res = await advanceAfterScoreboard(room);
+        room._pendingAdvance = false;
+        if (res && res.ok === false) {
+          socket.emit('error-msg', res.msg || 'Impossible de lancer la manche.');
+        }
         broadcastRoom(room);
       }
     });

@@ -128,9 +128,15 @@
         </div>
         <div class="wo-player-wrap" id="player-wrap">
           <div id="yt-mount"></div>
-          <div id="watch-wait" class="wo-wait" style="display:none;">En attente des autres…</div>
+          <div id="watch-wait" class="wo-wait" style="display:none;">
+            <div>
+              <div>En attente des autres…</div>
+              <div id="watch-wait-detail" class="wo-wait-detail"></div>
+            </div>
+          </div>
         </div>
         <p class="wo-hint muted">Pas de chat. Regarde attentivement.</p>
+        <button class="btn btn-secondary" id="btn-skip-watch" style="display:none;margin-top:8px;">Passer à la discussion (hôte)</button>
       </div>
     </div>
 

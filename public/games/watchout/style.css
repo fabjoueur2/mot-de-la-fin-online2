@@ -133,6 +133,15 @@
   background: #111;
   color: var(--wo-muted);
   font-family: 'DM Sans', sans-serif;
+  text-align: center;
+  padding: 1rem;
+}
+
+.wo-wait-detail {
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--wo-cream);
+  opacity: 0.8;
 }
 
 .wo-hint {
