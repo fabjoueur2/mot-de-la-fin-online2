@@ -466,6 +466,7 @@ function sanitizeRoom(room, socketId) {
     roundCount: room.settings.roundCount,
     phaseEndsAt: room.phaseEndsAt,
     phaseRemainingMs: room.phaseEndsAt ? Math.max(0, room.phaseEndsAt - Date.now()) : null,
+    serverNow: Date.now(),
     watchSec: secret?.watchSec || null,
     videoEndedCount: room.phase === 'watching'
       ? Object.keys(room.videoEnded || {}).filter((id) => getPlayer(room, id)).length

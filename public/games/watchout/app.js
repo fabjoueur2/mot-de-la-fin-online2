@@ -16,6 +16,12 @@ let timerInterval = null;
 let reportedVideoEnded = false;
 let fallbackEndTimer = null;
 
+/** Chrono local stable (évite décalage horloge client/serveur + sauts à chaque broadcast) */
+let localPhaseEndsAt = null;
+let syncedPhaseEndsAt = null;
+let syncedPhase = null;
+let serverOffsetMs = 0;
+
 const CAT_LABELS = {
   animals: 'Animaux',
   fails: 'Fails',
@@ -50,25 +56,71 @@ function fmtMs(ms) {
   return m > 0 ? `${m}:${String(r).padStart(2, '0')}` : `${r}s`;
 }
 
+function syncTimersFromState(s) {
+  if (!s) return;
+
+  if (typeof s.serverNow === 'number' && Number.isFinite(s.serverNow)) {
+    const sample = s.serverNow - Date.now();
+    serverOffsetMs =
+      syncedPhase == null ? sample : Math.round(serverOffsetMs * 0.75 + sample * 0.25);
+  }
+
+  if (s.phaseRemainingMs == null && s.phaseEndsAt == null) {
+    localPhaseEndsAt = null;
+    syncedPhaseEndsAt = null;
+    syncedPhase = s.phase;
+    return;
+  }
+
+  const phaseChanged = s.phase !== syncedPhase;
+  const endsChanged = s.phaseEndsAt !== syncedPhaseEndsAt;
+  // Resync seulement si la phase / deadline serveur change — pas à chaque tick 500ms
+  if (phaseChanged || endsChanged || localPhaseEndsAt == null) {
+    let remaining;
+    if (typeof s.phaseRemainingMs === 'number' && Number.isFinite(s.phaseRemainingMs)) {
+      remaining = Math.max(0, s.phaseRemainingMs);
+    } else if (typeof s.phaseEndsAt === 'number') {
+      remaining = Math.max(0, s.phaseEndsAt - (Date.now() + serverOffsetMs));
+    } else {
+      remaining = 0;
+    }
+    localPhaseEndsAt = Date.now() + remaining;
+    syncedPhaseEndsAt = s.phaseEndsAt;
+    syncedPhase = s.phase;
+  }
+}
+
+function phaseTimeLeftMs() {
+  if (localPhaseEndsAt == null) return null;
+  return Math.max(0, localPhaseEndsAt - Date.now());
+}
+
 function tickTimers() {
-  if (!state?.phaseEndsAt) return;
-  const left = Math.max(0, state.phaseEndsAt - Date.now());
+  if (!state) return;
   const map = {
     role_reveal: 'role-timer',
     watching: 'watch-timer',
     discussion: 'disc-timer',
     voting: 'vote-timer',
-    tie_break: 'vote-timer'
+    tie_break: 'vote-timer',
+    reveal: 'reveal-timer',
+    scoreboard: 'score-timer'
   };
   const id = map[state.phase];
-  if (id && $(id)) $(id).textContent = fmtMs(left);
+  const left = phaseTimeLeftMs();
+  if (id && $(id)) {
+    if (left == null) $(id).textContent = '';
+    else if (left <= 0) $(id).textContent = '…';
+    else $(id).textContent = fmtMs(left);
+  }
 
   if (state.phase === 'watching') {
     const detail = $('watch-wait-detail');
     if (detail && $('watch-wait')?.style.display !== 'none') {
       const done = state.videoEndedCount || 0;
       const total = state.players?.length || 0;
-      detail.textContent = `${done}/${total} prêts · suite dans ${fmtMs(left)}`;
+      const leftLabel = left == null || left <= 0 ? '…' : fmtMs(left);
+      detail.textContent = `${done}/${total} prêts · suite dans ${leftLabel}`;
     }
   }
 }
@@ -464,12 +516,16 @@ socket.on('disconnect', () => setStatus('Déconnecté…', false));
 socket.on('error-msg', (msg) => alert(msg || 'Erreur'));
 socket.on('left-room', () => {
   state = null;
+  localPhaseEndsAt = null;
+  syncedPhaseEndsAt = null;
+  syncedPhase = null;
   destroyPlayer();
   showScreen('screen-home');
 });
 socket.on('room-state', (s) => {
   if (s.gameId && s.gameId !== GAME_ID) return;
   render(s);
+  syncTimersFromState(s);
   tickTimers();
 });
 
@@ -530,4 +586,4 @@ if (params.get('room')) {
   $('join-code').value = params.get('room').toUpperCase();
 }
 
-setInterval(tickTimers, 250);
+setInterval(tickTimers, 200);
