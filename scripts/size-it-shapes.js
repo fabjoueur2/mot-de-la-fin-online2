@@ -166,7 +166,42 @@ const SPECIAL = {
   coin: () => svg(circle(50, 50, 34)),
   bottle: () => svg(rect(36, 34, 28, 56, 4) + rect(42, 14, 16, 22) + rect(40, 6, 20, 10, 2)),
   football: () => svg(circle(50, 50, 36) + path('M50 18 L62 40 L50 46 L38 40 Z')),
-  basketball: () => svg(circle(50, 50, 36) + path('M50 14 V86 M14 50 H86 M22 30 Q50 50 78 30 M22 70 Q50 50 78 70'))
+  basketball: () => svg(circle(50, 50, 36) + path('M50 14 V86 M14 50 H86 M22 30 Q50 50 78 30 M22 70 Q50 50 78 70')),
+  /** Frisbee / disque volant : ellipse plate (silhouette monochrome). */
+  frisbee: () => svg(ellipse(50, 52, 42, 16) + ellipse(50, 52, 20, 7)),
+  discus: () => svg(ellipse(50, 50, 34, 14) + ellipse(50, 50, 22, 8)),
+  jumbo: () =>
+    svg(
+      path('M8 58 L28 52 L55 48 L88 52 L92 58 L88 64 L55 62 L28 66 Z') +
+        path('M40 50 L50 28 L62 50') +
+        path('M70 52 L92 40 L88 54') +
+        ellipse(22, 58, 10, 6)
+    ),
+  stonehenge: () =>
+    svg(rect(18, 48, 14, 40) + rect(68, 48, 14, 40) + rect(16, 36, 68, 14, 2)),
+  greatwall: () =>
+    svg(
+      path('M4 70 L20 48 L36 62 L52 40 L68 58 L84 44 L96 70 V88 H4 Z') +
+        Array.from({ length: 5 }, (_, i) => rect(10 + i * 16, 34, 10, 12)).join('')
+    ),
+  machu: () =>
+    svg(
+      path('M8 80 L28 50 L50 62 L72 42 L92 80 Z') +
+        rect(20, 58, 18, 22) +
+        rect(48, 52, 16, 28) +
+        rect(68, 60, 14, 20)
+    ),
+  petronas: () =>
+    svg(
+      rect(22, 20, 18, 72) +
+        rect(60, 20, 18, 72) +
+        path('M40 32 H60 V42 H40 Z') +
+        path('M28 12 L31 20 H31 L34 12 Z') +
+        path('M66 12 L69 20 H69 L72 12 Z')
+    ),
+  icecream: () =>
+    svg(path('M36 48 L50 92 L64 48 Z') + circle(50, 38, 18) + circle(40, 34, 8) + circle(60, 34, 8)),
+  trunk: () => svg(rect(40, 18, 20, 72, 4) + path('M32 18 Q50 6 68 18') + path('M36 40 H64 M38 58 H62')),
 };
 
 function animalSide(seed) {
@@ -219,9 +254,19 @@ function renderShape(shapeKey) {
   const family = seed % 7;
 
   // Heuristics by name fragments
+  if (/frisbee|discus|puck/.test(key)) return SPECIAL.frisbee();
   if (/ball|coin|planet|disc|orange|apple|tomato|egg|watch|ring/.test(key)) {
     return svg(circle(50, 50, 28 + (seed % 10)));
   }
+  if (/jumbo|boeing|airplane|airliner|a320|a380/.test(key)) return SPECIAL.jumbo();
+  if (/stonehenge/.test(key)) return SPECIAL.stonehenge();
+  if (/greatwall|wall/.test(key) && /great|chine|china|machu/.test(key)) {
+    return /machu/.test(key) ? SPECIAL.machu() : SPECIAL.greatwall();
+  }
+  if (/machu/.test(key)) return SPECIAL.machu();
+  if (/petronas/.test(key)) return SPECIAL.petronas();
+  if (/icecream|glace|cornet/.test(key)) return SPECIAL.icecream();
+  if (/^trunk$|treetrunk|oaktrunk/.test(key)) return SPECIAL.trunk();
   if (/snake|worm|cable|hose|rope|eel/.test(key)) {
     return svg(path(`M8 50 Q30 ${30 + (seed % 20)} 50 50 Q70 ${70 - (seed % 20)} 92 50`));
   }
