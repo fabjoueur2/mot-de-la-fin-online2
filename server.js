@@ -7,6 +7,7 @@ const { listGames, getGame } = require('./games/registry');
 const motDeLaFin = require('./games/mot-de-la-fin');
 const animalStacker = require('./games/animal-stacker');
 const quiDitMieux = require('./games/qui-dit-mieux');
+const sizeIt = require('./games/size-it');
 
 const PORT = process.env.PORT || 3000;
 const CODE_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -15,7 +16,8 @@ const CODE_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 const gameEngines = {
   [motDeLaFin.id]: motDeLaFin,
   [animalStacker.id]: animalStacker,
-  [quiDitMieux.id]: quiDitMieux
+  [quiDitMieux.id]: quiDitMieux,
+  [sizeIt.id]: sizeIt
 };
 
 const app = express();
@@ -27,6 +29,13 @@ const io = new Server(server, {
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(
+  '/games/size-it/assets',
+  express.static(path.join(__dirname, 'games', 'size-it', 'bank', 'assets'), {
+    maxAge: '1d',
+    fallthrough: true
+  })
+);
 
 app.get('/api/health', (_, res) => res.json({ ok: true }));
 app.get('/api/games', (_, res) => res.json(listGames()));
@@ -106,6 +115,7 @@ setInterval(() => {
           !room.timerPaused &&
           room.timerEndAt)
         || (room.phase === 'bidding' && room.auctionEndsAt)
+        || (room.phase === 'estimate' && room.estimateEndsAt)
       )
     ) {
       broadcastRoom(room);

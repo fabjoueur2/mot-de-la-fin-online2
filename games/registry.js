@@ -38,6 +38,17 @@ const GAMES = [
     duration: '15–40 min',
     path: '/games/qui-dit-mieux/',
     status: 'available'
+  },
+  {
+    id: 'size-it',
+    name: 'Size It !',
+    tagline: 'Estime la taille réelle — silhouettes, référence, révélation collective',
+    icon: '📏',
+    color: '#6bcb77',
+    players: '2–8 joueurs',
+    duration: '5–15 min',
+    path: '/games/size-it/',
+    status: 'available'
   }
 ];
 
