@@ -1,6 +1,16 @@
 const GAME_ID = 'mot-de-la-fin';
 const GAME_PATH = '/games/mot-de-la-fin/';
 const socket = io({ transports: ['websocket', 'polling'] });
+const escapeHtml =
+  typeof window !== 'undefined' && window.escapeHtml
+    ? window.escapeHtml
+    : (s) =>
+        String(s ?? '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
 
 let state = null;
 let selectedDifficulty = 'mixte';
@@ -11,8 +21,99 @@ let smoothTimer = {
   frozenPct: 100,
   running: false
 };
+let micStatus = { status: 'idle', detail: '' };
 
 const $ = (id) => document.getElementById(id);
+
+const speechAssist = window.SpeechAssist?.createAssist({
+  onStatus(status, detail) {
+    micStatus = { status, detail };
+    updateMicUi();
+  },
+  onTranscript(text, isFinal) {
+    const el = $('mic-transcript');
+    if (!el) return;
+    el.textContent = text ? (isFinal ? `« ${text} »` : `… ${text}`) : '';
+  },
+  onClue(word) {
+    showToast(`Indice détecté : ${word}`);
+    socket.emit('clue-given');
+  },
+  onForbidden(word) {
+    showToast(`Mot interdit détecté : ${word}`);
+    socket.emit('card-fail');
+  },
+  onError() {
+    updateMicUi();
+  }
+});
+
+function updateMicUi() {
+  const panel = $('mic-assist');
+  const btn = $('btn-mic-toggle');
+  const statusEl = $('mic-status');
+  if (!panel || !btn || !statusEl) return;
+
+  const supported = window.SpeechAssist?.isSupported?.() ?? false;
+  const enabled = speechAssist?.isEnabled?.() ?? false;
+  const listening = speechAssist?.isListening?.() ?? false;
+  const starting = speechAssist?.isStarting?.() ?? false;
+  const { status, detail } = micStatus;
+
+  // Jamais désactiver pendant Activation — sinon reclic impossible
+  btn.disabled = !supported;
+  btn.classList.toggle('mic-on', enabled && supported && status !== 'off');
+  if (!supported) {
+    btn.textContent = '🎤 Micro N/A';
+  } else if (listening) {
+    btn.textContent = '🎤 Écoute… (stop)';
+  } else if (starting || status === 'starting') {
+    btn.textContent = '🎤 Relancer…';
+  } else if (status === 'error' || status === 'denied') {
+    btn.textContent = '🎤 Réessayer';
+  } else if (enabled) {
+    btn.textContent = '🎤 Lancer le micro';
+  } else {
+    btn.textContent = '🎤 Micro off';
+  }
+
+  statusEl.className = 'mic-status';
+  if (status === 'listening') statusEl.classList.add('listening');
+  else if (status === 'denied' || status === 'error' || status === 'unsupported') {
+    statusEl.classList.add(status === 'unsupported' ? 'unsupported' : status === 'denied' ? 'denied' : 'error');
+  } else if (!enabled) statusEl.classList.add('off');
+
+  statusEl.textContent = detail || (enabled ? 'Micro prêt' : 'Micro off');
+}
+
+function syncMicAssist(s) {
+  const panel = $('mic-assist');
+  if (!panel) return;
+
+  const showForMaster = Boolean(
+    s
+    && (s.phase === 'round1' || s.phase === 'round2')
+    && s.isMaster
+  );
+  panel.style.display = showForMaster ? 'block' : 'none';
+
+  if (!speechAssist) {
+    micStatus = { status: 'unsupported', detail: 'Aide micro indisponible' };
+    updateMicUi();
+    return;
+  }
+
+  if (!showForMaster) {
+    speechAssist.stop();
+    const transcript = $('mic-transcript');
+    if (transcript) transcript.textContent = '';
+    updateMicUi();
+    return;
+  }
+
+  speechAssist.syncFromGameState(s);
+  updateMicUi();
+}
 
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -24,6 +125,7 @@ function showScreen(id) {
 }
 
 function leaveToMenu() {
+  speechAssist?.stop();
   socket.emit('leave-room');
   state = null;
   window.location.href = '/';
@@ -170,8 +272,8 @@ function renderScores(containerId, teams, currentTeamIndex, teamTimers) {
       : '';
     return `
     <div class="score-box${i === currentTeamIndex ? ' active-team' : ''}" style="border:2px solid ${t.color}33">
-      <div class="team-name">${t.name}${i === currentTeamIndex ? ' ▶' : ''}</div>
-      <div class="pts" style="color:${t.color}">${t.score}</div>
+      <div class="team-name">${escapeHtml(t.name)}${i === currentTeamIndex ? ' ▶' : ''}</div>
+      <div class="pts" style="color:${escapeHtml(t.color)}">${t.score}</div>
       ${timerHtml}
     </div>
   `;
@@ -204,8 +306,8 @@ function renderHostTeamNames(teams) {
   const existing = [...container.querySelectorAll('.team-name-host')].map(i => i.value);
   container.innerHTML = teams.map((t, i) => `
     <div>
-      <label style="color:${t.color}">Équipe ${i + 1}</label>
-      <input type="text" class="team-name-host" value="${existing[i] || t.name}" maxlength="20">
+      <label style="color:${escapeHtml(t.color)}">Équipe ${i + 1}</label>
+      <input type="text" class="team-name-host" value="${escapeHtml(existing[i] || t.name)}" maxlength="20">
     </div>
   `).join('');
   container.querySelectorAll('.team-name-host').forEach(inp => {
@@ -230,7 +332,7 @@ function renderLobby(s) {
 
   const myTeam = $('my-team-select');
   myTeam.innerHTML = s.teams.map((t, i) =>
-    `<option value="${i}">${t.name}</option>`
+    `<option value="${i}">${escapeHtml(t.name)}</option>`
   ).join('');
   const me = s.players.find(p => p.isYou);
   if (me) myTeam.value = me.teamIndex;
@@ -243,16 +345,16 @@ function renderLobby(s) {
   list.innerHTML = s.players.map(p => `
     <li>
       <span>
-        <span class="name">${p.name}</span>
-        <span class="player-role-tag ${p.role || 'devineur'}">${roleLabel(p.role || 'devineur')}</span>
+        <span class="name">${escapeHtml(p.name)}</span>
+        <span class="player-role-tag ${p.role || 'devineur'}">${escapeHtml(roleLabel(p.role || 'devineur'))}</span>
         ${p.isYou ? '<span class="you"> (vous)</span>' : ''}
         ${p.id === s.hostId ? ' 👑' : ''}
       </span>
       ${s.isHost ? `
-        <select class="assign-team" data-player="${p.id}">
-          ${s.teams.map((t, i) => `<option value="${i}" ${p.teamIndex === i ? 'selected' : ''}>${t.name}</option>`).join('')}
+        <select class="assign-team" data-player="${escapeHtml(p.id)}">
+          ${s.teams.map((t, i) => `<option value="${i}" ${p.teamIndex === i ? 'selected' : ''}>${escapeHtml(t.name)}</option>`).join('')}
         </select>
-      ` : `<span style="color:${s.teams[p.teamIndex]?.color};font-size:.85rem;font-weight:600">${s.teams[p.teamIndex]?.name}</span>`}
+      ` : `<span style="color:${escapeHtml(s.teams[p.teamIndex]?.color)};font-size:.85rem;font-weight:600">${escapeHtml(s.teams[p.teamIndex]?.name)}</span>`}
     </li>
   `).join('');
 
@@ -413,11 +515,14 @@ function renderGame(s) {
         : 'Vous êtes le <strong>Maître</strong> pour toute la partie — seul vous voyez le mot et les mots interdits.';
   } else if (s.role === 'spectator') {
     spec.style.display = 'block';
+    const master = escapeHtml(s.masterName || (timeUp ? 'le Maître' : '…'));
+    const teamName = escapeHtml(team?.name || 'l’équipe');
+    const guessers = escapeHtml((s.guesserNames || []).join(', ') || '…');
     spec.innerHTML = timeUp
-      ? `Temps écoulé — ${s.masterName || 'le Maître'} valide le dernier mot de <strong>${team?.name || 'l’équipe'}</strong>.`
+      ? `Temps écoulé — ${master} valide le dernier mot de <strong>${teamName}</strong>.`
       : isR1
-      ? `<strong>${team?.name}</strong> joue : ${s.masterName || '…'} fait deviner à ${s.guesserNames?.join(', ') || '…'}.`
-      : `<strong>${team?.name}</strong> joue : ${s.masterName || '…'} décrit le mot.`;
+      ? `<strong>${teamName}</strong> joue : ${master} fait deviner à ${guessers}.`
+      : `<strong>${teamName}</strong> joue : ${master} décrit le mot.`;
   } else {
     spec.style.display = 'none';
   }
@@ -425,6 +530,7 @@ function renderGame(s) {
   if (isR1) updateClueTracker(s.currentClue);
   $('btn-pause').textContent = s.timerPaused ? '▶ Reprendre' : '⏸ Pause';
   $('host-timer-controls').style.display = s.isHost && !s.awaitingMasterStart && !timeUp ? 'flex' : 'none';
+  syncMicAssist(s);
 }
 
 function renderEnd(s) {
@@ -442,11 +548,13 @@ function applyState(s) {
   state = s;
   if (!s) {
     stopSmoothTimer();
+    speechAssist?.stop();
     return;
   }
 
   if (s.phase === 'lobby') {
     stopSmoothTimer();
+    speechAssist?.stop();
     showScreen('screen-lobby');
     renderLobby(s);
   } else if (s.phase === 'round1' || s.phase === 'round2') {
@@ -454,12 +562,14 @@ function applyState(s) {
     renderGame(s);
   } else if (s.phase === 'transition') {
     stopSmoothTimer();
+    speechAssist?.stop();
     showScreen('screen-transition');
     renderScores('scores-transition', s.teams, s.currentTeamIndex, s.teamTimers);
     $('btn-round2').style.display = s.isHost ? 'inline-flex' : 'none';
     $('wait-host-r2').style.display = s.isHost ? 'none' : 'block';
   } else if (s.phase === 'end') {
     stopSmoothTimer();
+    speechAssist?.stop();
     showScreen('screen-end');
     renderEnd(s);
     $('btn-replay').style.display = s.isHost ? 'inline-flex' : 'none';
@@ -555,7 +665,15 @@ $('btn-start-game').addEventListener('click', () => {
 $('btn-round2').addEventListener('click', () => socket.emit('start-round2'));
 $('btn-replay').addEventListener('click', () => socket.emit('back-to-lobby'));
 
-$('btn-start-turn').addEventListener('click', () => socket.emit('start-turn'));
+$('btn-start-turn').addEventListener('click', () => {
+  socket.emit('start-turn');
+  if (!speechAssist?.isEnabled?.()) return;
+  // start() synchrone dans le geste du clic
+  const result = speechAssist.startFromUserGesture();
+  updateMicUi();
+  if (result?.ok) showToast('Micro en écoute');
+  else if (result?.reason) showToast(`Micro: ${result.reason}`);
+});
 $('btn-clue').addEventListener('click', () => socket.emit('clue-given'));
 $('btn-found').addEventListener('click', () => socket.emit('card-found'));
 $('btn-fail').addEventListener('click', () => socket.emit('card-fail'));
@@ -564,6 +682,38 @@ $('btn-found-r2').addEventListener('click', () => socket.emit('card-found'));
 $('btn-fail-r2').addEventListener('click', () => socket.emit('card-fail'));
 $('btn-pause').addEventListener('click', () => socket.emit('pause-timer'));
 $('btn-reset-timer').addEventListener('click', () => socket.emit('reset-timer'));
+
+$('btn-mic-toggle').addEventListener('click', () => {
+  if (!speechAssist || !window.SpeechAssist?.isSupported?.()) {
+    showToast('Aide micro disponible sur Chrome ou Edge uniquement');
+    return;
+  }
+
+  // Pendant l'écoute → un clic coupe
+  if (speechAssist.isListening()) {
+    speechAssist.setEnabled(false);
+    if (state) syncMicAssist(state);
+    showToast('Micro coupé');
+    updateMicUi();
+    return;
+  }
+
+  // Toujours démarrer synchrone dans ce clic (pas d'await)
+  speechAssist.setEnabled(true);
+  const result = speechAssist.startFromUserGesture();
+  updateMicUi();
+
+  if (result?.ok) {
+    showToast('Micro lancé — parlez maintenant');
+  } else {
+    const err = speechAssist.getLastError?.() || result?.reason || 'échec';
+    showToast(`Micro bloqué (${err}). Chrome + internet requis.`);
+    const tr = $('mic-transcript');
+    if (tr) tr.textContent = `Erreur: ${err}`;
+  }
+});
+
+updateMicUi();
 
 // Auto-join via URL ?room=CODE
 const urlParams = new URLSearchParams(location.search);

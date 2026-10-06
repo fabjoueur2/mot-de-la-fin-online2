@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs');
+const { sanitizeDisplayName } = require('../../lib/sanitize');
 
 const GAME_ID = 'mot-de-la-fin';
 const MOTS = JSON.parse(fs.readFileSync(path.join(__dirname, 'mots.json'), 'utf8'));
@@ -596,7 +597,9 @@ function registerHandlers(io, ctx) {
 
       if (settings.teamNames && Array.isArray(settings.teamNames)) {
         settings.teamNames.forEach((n, i) => {
-          if (room.teams[i] && n) room.teams[i].name = String(n).slice(0, 20);
+          if (room.teams[i] && n) {
+            room.teams[i].name = sanitizeDisplayName(n, room.teams[i].name || `Équipe ${i + 1}`);
+          }
         });
       }
 

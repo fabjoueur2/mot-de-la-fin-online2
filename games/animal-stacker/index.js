@@ -9,6 +9,7 @@ const {
   serializePoses,
   isWorldSettled
 } = require('./physics');
+const { sanitizeDisplayName } = require('../../lib/sanitize');
 
 const GAME_ID = 'animal-stacker';
 const TEAM_COLORS = ['#4d96ff', '#ff6b6b'];
@@ -443,7 +444,9 @@ function registerHandlers(io, ctx) {
       if (!room || !isHost(room, socket.id) || room.phase !== 'lobby') return;
       if (teamNames && Array.isArray(teamNames)) {
         teamNames.forEach((n, i) => {
-          if (room.teams[i] && n) room.teams[i].name = String(n).slice(0, 20);
+          if (room.teams[i] && n) {
+            room.teams[i].name = sanitizeDisplayName(n, room.teams[i].name || `Équipe ${i + 1}`);
+          }
         });
       }
       broadcastRoom(room);

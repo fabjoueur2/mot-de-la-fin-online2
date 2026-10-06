@@ -3,6 +3,8 @@ const http = require('http');
 const { Server } = require('socket.io');
 const path = require('path');
 const fs = require('fs');
+const crypto = require('crypto');
+const { sanitizeDisplayName } = require('./lib/sanitize');
 
 // Charge .env local (YOUTUBE_API_KEY, etc.) sans dépendance dotenv
 (function loadEnvFile() {
@@ -34,6 +36,24 @@ const watchout = require('./games/watchout');
 
 const PORT = process.env.PORT || 3000;
 const CODE_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+const MAX_ROOMS = parseInt(process.env.MAX_ROOMS || '200', 10);
+
+const DEFAULT_CORS_ORIGINS = [
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
+  'https://mot-de-la-fin.onrender.com',
+  'https://mot-de-la-fin-online2.onrender.com'
+];
+
+function resolveCorsOrigins() {
+  const fromEnv = (process.env.CORS_ORIGINS || '')
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
+  return fromEnv.length ? fromEnv : DEFAULT_CORS_ORIGINS;
+}
+
+const CORS_ORIGINS = resolveCorsOrigins();
 
 /** Moteurs de jeu enregistrés — ajouter ici chaque nouveau jeu */
 const gameEngines = {
@@ -44,10 +64,46 @@ const gameEngines = {
   [watchout.id]: watchout
 };
 
+/** Rate limiter mémoire simple (fenêtre glissante par clé). */
+function createRateLimiter({ windowMs, max }) {
+  /** @type {Map<string, { count: number, resetAt: number }>} */
+  const hits = new Map();
+  setInterval(() => {
+    const now = Date.now();
+    for (const [k, v] of hits) {
+      if (now >= v.resetAt) hits.delete(k);
+    }
+  }, Math.max(windowMs, 30_000)).unref?.();
+
+  return function allow(key) {
+    const now = Date.now();
+    let entry = hits.get(key);
+    if (!entry || now >= entry.resetAt) {
+      entry = { count: 0, resetAt: now + windowMs };
+      hits.set(key, entry);
+    }
+    entry.count += 1;
+    return entry.count <= max;
+  };
+}
+
+const allowCreateRoom = createRateLimiter({ windowMs: 60_000, max: 5 });
+const allowJoinRoom = createRateLimiter({ windowMs: 60_000, max: 30 });
+const allowSocketPacket = createRateLimiter({ windowMs: 10_000, max: 120 });
+
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
-  cors: { origin: '*' },
+  cors: {
+    origin(origin, callback) {
+      // Requêtes same-origin / clients sans Origin (ok)
+      if (!origin || CORS_ORIGINS.includes(origin)) {
+        callback(null, true);
+        return;
+      }
+      callback(null, false);
+    }
+  },
   pingTimeout: 60000,
   pingInterval: 25000
 });
@@ -73,10 +129,15 @@ function getEngine(gameId) {
   return gameEngines[gameId] || null;
 }
 
+function clientKey(socket) {
+  const ip = socket.handshake?.address || socket.conn?.remoteAddress || 'unknown';
+  return `${ip}|${socket.id}`;
+}
+
 function generateCode() {
   let code;
   do {
-    code = Array.from({ length: 6 }, () => CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)]).join('');
+    code = Array.from({ length: 6 }, () => CODE_CHARS[crypto.randomInt(CODE_CHARS.length)]).join('');
   } while (rooms.has(code));
   return code;
 }
@@ -105,7 +166,7 @@ function leaveRoom(socket) {
     return;
   }
 
-  room.players = room.players.filter(p => p.id !== socket.id);
+  room.players = room.players.filter((p) => p.id !== socket.id);
   socket.leave(code);
   socketToRoom.delete(socket.id);
 
@@ -124,7 +185,7 @@ function leaveRoom(socket) {
 }
 
 const socketCtx = { rooms, socketToRoom, joinSocketToRoom, leaveRoom, broadcastRoom };
-Object.values(gameEngines).forEach(engine => engine.registerHandlers(io, socketCtx));
+Object.values(gameEngines).forEach((engine) => engine.registerHandlers(io, socketCtx));
 
 setInterval(() => {
   for (const room of rooms.values()) {
@@ -133,24 +194,52 @@ setInterval(() => {
     const changed = engine.onTick(room);
     if (changed) broadcastRoom(room);
     else if (
-      (
-        ((room.phase === 'round1' || room.phase === 'round2') &&
-          !room.awaitingMasterStart &&
-          !room.timerPaused &&
-          room.timerEndAt)
-        || (room.phase === 'bidding' && room.auctionEndsAt)
-        || (room.phase === 'estimate' && room.estimateEndsAt)
-        || (room.gameId === 'watchout' && room.phaseEndsAt &&
-          ['role_reveal', 'watching', 'discussion', 'voting', 'tie_break', 'reveal', 'scoreboard'].includes(room.phase))
-      )
+      ((room.phase === 'round1' || room.phase === 'round2') &&
+        !room.awaitingMasterStart &&
+        !room.timerPaused &&
+        room.timerEndAt) ||
+      (room.phase === 'bidding' && room.auctionEndsAt) ||
+      (room.phase === 'estimate' && room.estimateEndsAt) ||
+      (room.gameId === 'watchout' &&
+        room.phaseEndsAt &&
+        [
+          'role_reveal',
+          'watching',
+          'discussion',
+          'voting',
+          'tie_break',
+          'reveal',
+          'scoreboard'
+        ].includes(room.phase))
     ) {
       broadcastRoom(room);
     }
   }
 }, 500);
 
+io.use((socket, next) => {
+  socket.use((packet, nextPacket) => {
+    if (!allowSocketPacket(socket.id)) {
+      socket.emit('error-msg', 'Trop de requêtes — ralentis un peu.');
+      return;
+    }
+    nextPacket();
+  });
+  next();
+});
+
 io.on('connection', (socket) => {
-  socket.on('create-room', ({ playerName, gameId }) => {
+  socket.on('create-room', ({ playerName, gameId } = {}) => {
+    const key = clientKey(socket);
+    if (!allowCreateRoom(key)) {
+      socket.emit('error-msg', 'Trop de salles créées. Réessaie dans une minute.');
+      return;
+    }
+    if (rooms.size >= MAX_ROOMS) {
+      socket.emit('error-msg', 'Serveur saturé — réessaie plus tard.');
+      return;
+    }
+
     const id = gameId || 'mot-de-la-fin';
     const meta = getGame(id);
     const engine = getEngine(id);
@@ -158,7 +247,7 @@ io.on('connection', (socket) => {
       socket.emit('error-msg', 'Jeu introuvable ou indisponible.');
       return;
     }
-    const name = (playerName || 'Joueur').trim().slice(0, 20) || 'Joueur';
+    const name = sanitizeDisplayName(playerName, 'Joueur');
     const code = generateCode();
     const room = engine.createInitialRoomState({
       hostSocketId: socket.id,
@@ -170,16 +259,25 @@ io.on('connection', (socket) => {
     socket.emit('room-state', engine.sanitizeRoom(room, socket.id));
   });
 
-  socket.on('join-room', ({ code, playerName, gameId }) => {
-    const roomCode = (code || '').toUpperCase().trim();
+  socket.on('join-room', ({ code, playerName, gameId } = {}) => {
+    const key = clientKey(socket);
+    if (!allowJoinRoom(key)) {
+      socket.emit('error-msg', 'Trop de tentatives. Réessaie dans une minute.');
+      return;
+    }
+
+    const roomCode = String(code || '')
+      .toUpperCase()
+      .replace(/[^A-Z0-9]/g, '')
+      .slice(0, 6);
     const room = rooms.get(roomCode);
     if (!room) {
-      socket.emit('error-msg', 'Salle introuvable. Vérifiez le code.');
+      // Message volontairement générique (réduit l’oracle d’énumération)
+      socket.emit('error-msg', 'Impossible de rejoindre cette salle.');
       return;
     }
     if (gameId && room.gameId !== gameId) {
-      const gameMeta = getGame(room.gameId);
-      socket.emit('error-msg', `Cette salle est pour « ${gameMeta?.name || 'un autre jeu'} ».`);
+      socket.emit('error-msg', 'Impossible de rejoindre cette salle.');
       return;
     }
     if (room.phase !== 'lobby') {
@@ -194,8 +292,8 @@ io.on('connection', (socket) => {
       return;
     }
 
-    const name = (playerName || 'Joueur').trim().slice(0, 20) || 'Joueur';
-    const existing = room.players.find(p => p.id === socket.id);
+    const name = sanitizeDisplayName(playerName, 'Joueur');
+    const existing = room.players.find((p) => p.id === socket.id);
     if (!existing) {
       room.players.push({
         id: socket.id,
@@ -222,6 +320,7 @@ io.on('connection', (socket) => {
 server.listen(PORT, () => {
   const ytOk = require('./games/watchout/youtube').isYoutubeConfigured();
   console.log(`Plateforme jeux — port ${PORT} (${Object.keys(gameEngines).length} jeu(x))`);
+  console.log(`CORS origins: ${CORS_ORIGINS.join(', ')}`);
   console.log(
     ytOk
       ? 'WatchOut YouTube API: OK (vidéos aléatoires)'

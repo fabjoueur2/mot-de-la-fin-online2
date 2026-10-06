@@ -599,7 +599,11 @@ function registerHandlers(io, ctx) {
       if (!['discussion', 'voting', 'tie_break'].includes(room.phase)) return;
       const me = getPlayer(room, socket.id);
       if (!me) return;
-      const msg = String(text || '').trim().slice(0, 240);
+      const msg = String(text || '')
+        .replace(/[\u0000-\u001F\u007F]/g, '')
+        .replace(/[<>]/g, '')
+        .trim()
+        .slice(0, 240);
       if (!msg) return;
       room.chat.push({
         id: `${Date.now()}_${socket.id}`,

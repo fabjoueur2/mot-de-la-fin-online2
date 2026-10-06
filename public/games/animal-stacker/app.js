@@ -1,6 +1,16 @@
 const GAME_ID = 'animal-stacker';
 const GAME_PATH = '/games/animal-stacker/';
 const socket = io({ transports: ['websocket', 'polling'] });
+const escapeHtml =
+  typeof window !== 'undefined' && window.escapeHtml
+    ? window.escapeHtml
+    : (s) =>
+        String(s ?? '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
 
 let state = null;
 const $ = (id) => document.getElementById(id);
@@ -343,16 +353,16 @@ function renderLobby(s) {
   $('players-list').innerHTML = s.players.map(p => `
     <li>
       <span>
-        <span class="name">${p.name}</span>
+        <span class="name">${escapeHtml(p.name)}</span>
         ${p.isYou ? '<span class="you"> (vous)</span>' : ''}
         ${p.id === s.hostId ? ' 👑' : ''}
       </span>
       ${s.isHost ? `
-        <select class="assign-team" data-player="${p.id}">
-          <option value="0" ${p.teamIndex === 0 ? 'selected' : ''}>${s.teams[0]?.name}</option>
-          <option value="1" ${p.teamIndex === 1 ? 'selected' : ''}>${s.teams[1]?.name}</option>
+        <select class="assign-team" data-player="${escapeHtml(p.id)}">
+          <option value="0" ${p.teamIndex === 0 ? 'selected' : ''}>${escapeHtml(s.teams[0]?.name)}</option>
+          <option value="1" ${p.teamIndex === 1 ? 'selected' : ''}>${escapeHtml(s.teams[1]?.name)}</option>
         </select>
-      ` : `<span style="color:${s.teams[p.teamIndex]?.color};font-weight:600;font-size:.85rem">${s.teams[p.teamIndex]?.name}</span>`}
+      ` : `<span style="color:${escapeHtml(s.teams[p.teamIndex]?.color)};font-weight:600;font-size:.85rem">${escapeHtml(s.teams[p.teamIndex]?.name)}</span>`}
     </li>
   `).join('');
 
@@ -372,7 +382,7 @@ function renderTeamPills(s) {
   const target = s.settings?.roundsToWin ?? 1;
   el.innerHTML = s.teams.map((t, i) => `
     <div class="as-team-pill${i === s.currentTeamIndex && s.phase === 'playing' ? ' active' : ''}"
-         style="color:${t.color}">${t.name} · ${t.score}/${target}</div>
+         style="color:${escapeHtml(t.color)}">${escapeHtml(t.name)} · ${t.score}/${target}</div>
   `).join('');
 }
 
@@ -436,8 +446,8 @@ function renderEnd(s) {
       ? i === s.matchWinnerTeamIndex
       : i === s.winnerTeamIndex;
     return `
-    <div class="as-team-pill${highlight ? ' active' : ''}" style="color:${t.color}">
-      ${t.name} · ${t.score}/${roundsToWin}
+    <div class="as-team-pill${highlight ? ' active' : ''}" style="color:${escapeHtml(t.color)}">
+      ${escapeHtml(t.name)} · ${t.score}/${roundsToWin}
     </div>
   `;
   }).join('');

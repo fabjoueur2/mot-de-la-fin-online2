@@ -113,6 +113,15 @@
         <div class="timer-bar"><div class="timer-fill" id="timer-fill"></div></div>
         <div class="timer-display" id="timer-display">01:00</div>
 
+        <div id="mic-assist" class="mic-assist" style="display:none;">
+          <div class="mic-assist-row">
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-mic-toggle">🎤 Micro off</button>
+            <span id="mic-status" class="mic-status">—</span>
+          </div>
+          <p id="mic-transcript" class="mic-transcript" aria-live="polite"></p>
+          <p class="mic-hint">Aide micro — les boutons restent disponibles</p>
+        </div>
+
         <div id="start-turn-section" class="start-turn-section" style="display:none;">
           <button class="btn btn-primary" id="btn-start-turn">▶ Démarrer</button>
           <p class="start-turn-hint">Le chrono et le mot apparaîtront quand le Maître est prêt.</p>
@@ -188,6 +197,8 @@
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
-  <script src="app.js"></script>
+  <script src="/js/escape.js"></script>
+  <script src="speech-assist.js?v=5"></script>
+  <script src="app.js?v=6"></script>
 </body>
 </html>
