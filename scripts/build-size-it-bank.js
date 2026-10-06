@@ -116,6 +116,18 @@ function main() {
     nature: 20
   };
   const keepIds = new Set(['geo-france', 'sport-football-pitch']);
+  // Garder les assets marqués « bad » en review (corrigés) dans le trim 500
+  try {
+    const reviewPath = path.join(BANK_DIR, 'review.json');
+    if (fs.existsSync(reviewPath)) {
+      const review = JSON.parse(fs.readFileSync(reviewPath, 'utf8'));
+      for (const [id, v] of Object.entries(review.verdicts || {})) {
+        if (v && v.status === 'bad') keepIds.add(id);
+      }
+    }
+  } catch {
+    /* optional */
+  }
   const byCat = {};
   for (const it of items) (byCat[it.category] ||= []).push(it);
 
@@ -124,13 +136,18 @@ function main() {
     const target = targets[cat] || list.length;
     const locked = list.filter((i) => keepIds.has(i.id));
     const rest = list.filter((i) => !keepIds.has(i.id));
-    // Prefer fetched over generated when trimming
+    // Prefer fetched over generated when trimming (locked always kept)
     rest.sort((a, b) => {
       const af = a.provider === 'generated' ? 1 : 0;
       const bf = b.provider === 'generated' ? 1 : 0;
       return af - bf;
     });
-    finalItems.push(...locked, ...rest.slice(0, Math.max(0, target - locked.length)));
+    if (locked.length > target) {
+      console.warn(`Category ${cat}: ${locked.length} locked > target ${target}, keeping all locked`);
+      finalItems.push(...locked);
+    } else {
+      finalItems.push(...locked, ...rest.slice(0, Math.max(0, target - locked.length)));
+    }
   }
 
   const finalCounts = {};

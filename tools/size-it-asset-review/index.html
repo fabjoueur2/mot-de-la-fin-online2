@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Size It — Review assets</title>
+  <style>
+    :root {
+      --bg: #0b1220;
+      --panel: #121a2b;
+      --card: #182238;
+      --line: #2a3a55;
+      --text: #e8eefc;
+      --muted: #8fa3c4;
+      --good: #2ecc71;
+      --bad: #e74c3c;
+      --skip: #6b7c99;
+      --accent: #4da3ff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      background: radial-gradient(1200px 600px at 20% -10%, #1a2744, var(--bg));
+      color: var(--text);
+      min-height: 100vh;
+    }
+    header {
+      position: sticky; top: 0; z-index: 20;
+      backdrop-filter: blur(10px);
+      background: rgba(11, 18, 32, .88);
+      border-bottom: 1px solid var(--line);
+      padding: 12px 16px;
+      display: grid;
+      gap: 10px;
+    }
+    h1 { margin: 0; font-size: 1.15rem; letter-spacing: .02em; }
+    .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .stats { color: var(--muted); font-size: .9rem; }
+    .stats b { color: var(--text); }
+    .good { color: var(--good); }
+    .bad { color: var(--bad); }
+    .todo { color: #f1c40f; }
+    select, input[type="search"], button, textarea {
+      font: inherit;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--text);
+      padding: 8px 10px;
+    }
+    input[type="search"] { min-width: 180px; flex: 1; }
+    button { cursor: pointer; }
+    button.primary { background: var(--accent); color: #041018; border-color: transparent; font-weight: 700; }
+    button.ok { background: rgba(46, 204, 113, .15); border-color: var(--good); color: var(--good); }
+    button.ko { background: rgba(231, 76, 60, .15); border-color: var(--bad); color: var(--bad); }
+    button.neutral { background: rgba(107, 124, 153, .15); border-color: var(--skip); color: #c5d0e4; }
+    .hint { color: var(--muted); font-size: .8rem; }
+    main { padding: 14px 16px 40px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+      gap: 12px;
+    }
+    .card {
+      background: var(--card);
+      border: 2px solid var(--line);
+      border-radius: 14px;
+      padding: 10px;
+      display: grid;
+      gap: 8px;
+      cursor: pointer;
+      transition: border-color .15s, transform .12s;
+      position: relative;
+    }
+    .card:hover { transform: translateY(-1px); border-color: #3d5278; }
+    .card.active { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .card.good { border-color: var(--good); box-shadow: inset 0 0 0 1px rgba(46,204,113,.35); }
+    .card.bad { border-color: var(--bad); box-shadow: inset 0 0 0 1px rgba(231,76,60,.35); }
+    .card.skip { border-color: #55657f; opacity: .72; }
+    .thumb {
+      height: 110px;
+      display: grid;
+      place-items: center;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px) 0 0 / 16px 16px,
+        linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px) 0 0 / 16px 16px,
+        #0e1626;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .thumb img {
+      max-width: 88%;
+      max-height: 88%;
+      filter: brightness(0) invert(28%) sepia(90%) saturate(2500%) hue-rotate(340deg) brightness(1.1);
+    }
+    .name { font-weight: 700; font-size: .92rem; line-height: 1.2; }
+    .meta { color: var(--muted); font-size: .72rem; line-height: 1.35; word-break: break-word; }
+    .badge {
+      position: absolute; top: 8px; right: 8px;
+      font-size: .68rem; font-weight: 800; letter-spacing: .04em;
+      padding: 3px 7px; border-radius: 999px;
+      background: #24314a; color: var(--muted);
+    }
+    .card.good .badge { background: rgba(46,204,113,.2); color: var(--good); }
+    .card.bad .badge { background: rgba(231,76,60,.2); color: var(--bad); }
+    .card.skip .badge { background: rgba(107,124,153,.25); color: #c5d0e4; }
+    .actions { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+    .actions button { padding: 6px 4px; font-size: .78rem; font-weight: 700; }
+    .drawer {
+      position: sticky; bottom: 0; z-index: 25;
+      background: rgba(11,18,32,.94);
+      border-top: 1px solid var(--line);
+      padding: 10px 16px 14px;
+      display: grid; gap: 8px;
+    }
+    .drawer textarea { width: 100%; min-height: 56px; resize: vertical; }
+    .toast {
+      position: fixed; right: 16px; bottom: 110px; z-index: 40;
+      background: #173156; border: 1px solid var(--accent);
+      padding: 10px 14px; border-radius: 12px;
+      opacity: 0; pointer-events: none; transition: opacity .2s;
+    }
+    .toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="row" style="justify-content:space-between;">
+      <h1>Size It — validation des silhouettes</h1>
+      <div class="stats" id="stats">Chargement…</div>
+    </div>
+    <div class="row">
+      <select id="filter-cat">
+        <option value="">Toutes catégories</option>
+      </select>
+      <select id="filter-status">
+        <option value="">Tous statuts</option>
+        <option value="todo">À faire</option>
+        <option value="good">Bons</option>
+        <option value="bad">Mauvais</option>
+        <option value="skip">Indécis</option>
+      </select>
+      <select id="filter-provider">
+        <option value="">Tous providers</option>
+      </select>
+      <input id="search" type="search" placeholder="Rechercher nom / id…" />
+      <button type="button" class="ok" id="btn-mark-visible-good">Tous visibles = bons</button>
+      <button type="button" class="ko" id="btn-mark-visible-bad">Tous visibles = mauvais</button>
+      <button type="button" class="primary" id="btn-save">Sauver</button>
+      <button type="button" id="btn-export">Exporter JSON</button>
+      <button type="button" id="btn-export-bad">Copier liste mauvais</button>
+    </div>
+    <div class="hint">Clic carte = basculer Bon → Mauvais → Indécis → À faire · Raccourcis <b>G</b> / <b>B</b> / <b>U</b> · flèches · <b>S</b> sauver · note optionnelle en bas</div>
+  </header>
+
+  <main>
+    <div class="grid" id="grid"></div>
+  </main>
+
+  <div class="drawer">
+    <div class="row" style="justify-content:space-between;">
+      <div><b id="focus-name">—</b> <span class="meta" id="focus-id"></span></div>
+      <div class="row">
+        <button type="button" class="ok" id="btn-good">Bon (G)</button>
+        <button type="button" class="ko" id="btn-bad">Mauvais (B)</button>
+        <button type="button" class="neutral" id="btn-skip">Indécis (U)</button>
+        <button type="button" id="btn-clear">Effacer</button>
+      </div>
+    </div>
+    <textarea id="note" placeholder="Note pour cet asset (ex: « voiture au lieu de vélo », « symbole zodiac »)"></textarea>
+  </div>
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const state = {
+      items: [],
+      verdicts: {},
+      filtered: [],
+      activeId: null,
+      dirty: false
+    };
+
+    const $ = (id) => document.getElementById(id);
+    const toast = (msg) => {
+      const el = $('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      clearTimeout(toast._t);
+      toast._t = setTimeout(() => el.classList.remove('show'), 1600);
+    };
+
+    function statusOf(id) {
+      return state.verdicts[id]?.status || 'todo';
+    }
+
+    function setStatus(id, status, opts = {}) {
+      if (!id) return;
+      if (status === 'todo') {
+        delete state.verdicts[id];
+      } else {
+        state.verdicts[id] = {
+          status,
+          note: opts.note != null ? opts.note : (state.verdicts[id]?.note || ''),
+          at: new Date().toISOString()
+        };
+      }
+      state.dirty = true;
+      render();
+      updateFocus();
+    }
+
+    function cycleStatus(id) {
+      const order = ['todo', 'good', 'bad', 'skip'];
+      const cur = statusOf(id);
+      const next = order[(order.indexOf(cur) + 1) % order.length];
+      setStatus(id, next);
+    }
+
+    function counts() {
+      let good = 0, bad = 0, skip = 0;
+      for (const v of Object.values(state.verdicts)) {
+        if (v.status === 'good') good++;
+        else if (v.status === 'bad') bad++;
+        else if (v.status === 'skip') skip++;
+      }
+      const todo = state.items.length - good - bad - skip;
+      return { good, bad, skip, todo };
+    }
+
+    function updateStats() {
+      const c = counts();
+      $('stats').innerHTML =
+        `<b>${state.items.length}</b> assets · ` +
+        `<span class="todo">${c.todo} à faire</span> · ` +
+        `<span class="good">${c.good} bons</span> · ` +
+        `<span class="bad">${c.bad} mauvais</span> · ` +
+        `${c.skip} indécis` +
+        (state.dirty ? ' · <b>non sauvé</b>' : '');
+    }
+
+    function applyFilters() {
+      const cat = $('filter-cat').value;
+      const st = $('filter-status').value;
+      const prov = $('filter-provider').value;
+      const q = $('search').value.trim().toLowerCase();
+      state.filtered = state.items.filter((it) => {
+        if (cat && it.category !== cat) return false;
+        if (prov && (it.provider || '') !== prov) return false;
+        if (st && statusOf(it.id) !== st) return false;
+        if (q) {
+          const hay = `${it.name} ${it.id} ${it.shape || ''}`.toLowerCase();
+          if (!hay.includes(q)) return false;
+        }
+        return true;
+      });
+    }
+
+    function render() {
+      applyFilters();
+      updateStats();
+      const grid = $('grid');
+      grid.innerHTML = '';
+      const frag = document.createDocumentFragment();
+      for (const it of state.filtered) {
+        const st = statusOf(it.id);
+        const card = document.createElement('article');
+        card.className = `card ${st}${state.activeId === it.id ? ' active' : ''}`;
+        card.dataset.id = it.id;
+        card.innerHTML = `
+          <span class="badge">${st === 'todo' ? '…' : st.toUpperCase()}</span>
+          <div class="thumb"><img src="/${escapeHtml(it.svg)}" alt="" loading="lazy" /></div>
+          <div class="name">${escapeHtml(it.name)}</div>
+          <div class="meta">${escapeHtml(it.category)} · ${escapeHtml(it.provider || '?')}<br>${escapeHtml(it.id)}</div>
+          <div class="actions">
+            <button type="button" class="ok" data-act="good">Bon</button>
+            <button type="button" class="ko" data-act="bad">Mauvais</button>
+            <button type="button" class="neutral" data-act="skip">?</button>
+          </div>
+        `;
+        card.addEventListener('click', (e) => {
+          const btn = e.target.closest('button[data-act]');
+          state.activeId = it.id;
+          if (btn) {
+            e.stopPropagation();
+            setStatus(it.id, btn.dataset.act);
+            return;
+          }
+          cycleStatus(it.id);
+          updateFocus();
+        });
+        frag.appendChild(card);
+      }
+      grid.appendChild(frag);
+    }
+
+    function escapeHtml(s) {
+      return String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function updateFocus() {
+      const it = state.items.find((x) => x.id === state.activeId) || state.filtered[0];
+      if (!it) {
+        $('focus-name').textContent = '—';
+        $('focus-id').textContent = '';
+        $('note').value = '';
+        return;
+      }
+      state.activeId = it.id;
+      $('focus-name').textContent = it.name;
+      $('focus-id').textContent = `${it.id} · ${it.provider || '?'}`;
+      $('note').value = state.verdicts[it.id]?.note || '';
+      document.querySelectorAll('.card.active').forEach((el) => el.classList.remove('active'));
+      const esc = (window.CSS && CSS.escape) ? CSS.escape(it.id) : it.id.replace(/"/g, '\\"');
+      document.querySelector(`.card[data-id="${esc}"]`)?.classList.add('active');
+      document.querySelector(`.card[data-id="${esc}"]`)?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+
+    function markVisible(status) {
+      for (const it of state.filtered) setStatus(it.id, status);
+      toast(`${state.filtered.length} marqués ${status}`);
+    }
+
+    function moveActive(delta) {
+      if (!state.filtered.length) return;
+      let idx = state.filtered.findIndex((x) => x.id === state.activeId);
+      if (idx < 0) idx = 0;
+      else idx = Math.max(0, Math.min(state.filtered.length - 1, idx + delta));
+      state.activeId = state.filtered[idx].id;
+      updateFocus();
+      render();
+    }
+
+    async function save() {
+      const noteVal = $('note').value;
+      if (state.activeId && noteVal !== (state.verdicts[state.activeId]?.note || '')) {
+        const st = statusOf(state.activeId);
+        if (st === 'todo') setStatus(state.activeId, 'skip', { note: noteVal });
+        else setStatus(state.activeId, st, { note: noteVal });
+      }
+      const payload = { verdicts: state.verdicts };
+      const res = await fetch('/api/review.json', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (!data.ok) throw new Error(data.error || 'save failed');
+      state.verdicts = data.review.verdicts || {};
+      state.dirty = false;
+      render();
+      toast('Sauvegardé dans games/size-it/bank/review.json');
+    }
+
+    function exportJson() {
+      const blob = new Blob([JSON.stringify({ schemaVersion: 1, updatedAt: new Date().toISOString(), verdicts: state.verdicts }, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'size-it-review.json';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
+    async function copyBadList() {
+      const bad = state.items
+        .filter((it) => statusOf(it.id) === 'bad')
+        .map((it) => {
+          const note = state.verdicts[it.id]?.note;
+          return `- ${it.id} (${it.name})${note ? ` — ${note}` : ''}`;
+        })
+        .join('\n');
+      const text = bad || '(aucun mauvais pour l’instant)';
+      await navigator.clipboard.writeText(text);
+      toast('Liste des mauvais copiée');
+    }
+
+    async function boot() {
+      const [bank, review] = await Promise.all([
+        fetch('/api/bank.json').then((r) => r.json()),
+        fetch('/api/review.json').then((r) => r.json())
+      ]);
+      state.items = bank.items || [];
+      state.verdicts = review.verdicts || {};
+      state.activeId = state.items[0]?.id || null;
+
+      const cats = [...new Set(state.items.map((i) => i.category))].sort();
+      for (const c of cats) {
+        const o = document.createElement('option');
+        o.value = c; o.textContent = c;
+        $('filter-cat').appendChild(o);
+      }
+      const providers = [...new Set(state.items.map((i) => i.provider || 'unknown'))].sort();
+      for (const p of providers) {
+        const o = document.createElement('option');
+        o.value = p; o.textContent = p;
+        $('filter-provider').appendChild(o);
+      }
+
+      $('filter-cat').onchange = render;
+      $('filter-status').onchange = render;
+      $('filter-provider').onchange = render;
+      $('search').oninput = () => { render(); };
+      $('btn-save').onclick = () => save().catch((e) => toast(String(e.message || e)));
+      $('btn-export').onclick = exportJson;
+      $('btn-export-bad').onclick = () => copyBadList().catch(() => toast('Copie impossible'));
+      $('btn-mark-visible-good').onclick = () => markVisible('good');
+      $('btn-mark-visible-bad').onclick = () => markVisible('bad');
+      $('btn-good').onclick = () => setStatus(state.activeId, 'good', { note: $('note').value });
+      $('btn-bad').onclick = () => setStatus(state.activeId, 'bad', { note: $('note').value });
+      $('btn-skip').onclick = () => setStatus(state.activeId, 'skip', { note: $('note').value });
+      $('btn-clear').onclick = () => setStatus(state.activeId, 'todo');
+      $('note').onchange = () => {
+        const st = statusOf(state.activeId);
+        if (st === 'todo') return;
+        setStatus(state.activeId, st, { note: $('note').value });
+      };
+
+      window.addEventListener('keydown', (e) => {
+        if (e.target.matches('input, textarea')) return;
+        const k = e.key.toLowerCase();
+        if (k === 'g') setStatus(state.activeId, 'good', { note: $('note').value });
+        else if (k === 'b') setStatus(state.activeId, 'bad', { note: $('note').value });
+        else if (k === 'u') setStatus(state.activeId, 'skip', { note: $('note').value });
+        else if (k === 's') { e.preventDefault(); save().catch((err) => toast(String(err.message || err))); }
+        else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); moveActive(1); }
+        else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); moveActive(-1); }
+      });
+
+      window.addEventListener('beforeunload', (e) => {
+        if (state.dirty) e.preventDefault();
+      });
+
+      render();
+      updateFocus();
+    }
+
+    boot().catch((e) => {
+      document.body.innerHTML = `<pre style="padding:20px;color:#e74c3c">Erreur: ${escapeHtml(e.message || e)}</pre>`;
+    });
+  </script>
+</body>
+</html>
