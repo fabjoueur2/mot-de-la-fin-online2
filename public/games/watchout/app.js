@@ -10,7 +10,18 @@ let state = null;
 let ytPlayer = null;
 let ytReady = false;
 let currentVideoId = null;
+let revealMainId = null;
+let revealImpId = null;
 let timerInterval = null;
+
+const CAT_LABELS = {
+  animals: 'Animaux',
+  fails: 'Fails',
+  sports: 'Sport',
+  food: 'Nourriture',
+  kids: 'Enfants',
+  weird: 'Absurde'
+};
 
 window.onYouTubeIframeAPIReady = () => {
   ytReady = true;
@@ -63,6 +74,15 @@ function destroyPlayer() {
   if (mount) mount.innerHTML = '';
 }
 
+function clearRevealPlayers() {
+  revealMainId = null;
+  revealImpId = null;
+  const main = $('reveal-main');
+  const imp = $('reveal-imp');
+  if (main) main.innerHTML = '';
+  if (imp) imp.innerHTML = '';
+}
+
 function mountWatchPlayer(videoId) {
   if (!videoId) return;
   if (currentVideoId === videoId && ytPlayer) return;
@@ -111,17 +131,27 @@ function mountWatchPlayer(videoId) {
   });
 }
 
-function mountRevealIframe(containerId, videoId) {
+function mountRevealIframe(containerId, videoId, slot) {
   const el = $(containerId);
   if (!el) return;
   if (!videoId) {
     el.innerHTML = '';
+    if (slot === 'main') revealMainId = null;
+    else if (slot === 'imp') revealImpId = null;
     return;
   }
+  // Ne pas recréer l'iframe à chaque room-state (sinon écran noir / clignotement)
+  if (slot === 'main' && revealMainId === videoId && el.querySelector('iframe')) return;
+  if (slot === 'imp' && revealImpId === videoId && el.querySelector('iframe')) return;
+
+  if (slot === 'main') revealMainId = videoId;
+  else if (slot === 'imp') revealImpId = videoId;
+
   el.innerHTML = `<iframe
-    src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}?rel=0&modestbranding=1"
-    allow="encrypted-media"
+    src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}?rel=0&modestbranding=1&playsinline=1"
+    allow="encrypted-media; picture-in-picture"
     allowfullscreen
+    loading="lazy"
     title="reveal"></iframe>`;
 }
 
@@ -130,9 +160,10 @@ function renderCategories(available, selected) {
   if (!box) return;
   const sel = new Set(selected || available);
   box.innerHTML = (available || [])
-    .map(
-      (c) => `<label><input type="checkbox" value="${c}" ${sel.has(c) ? 'checked' : ''}> ${c}</label>`
-    )
+    .map((c) => {
+      const label = CAT_LABELS[c] || c;
+      return `<label><input type="checkbox" value="${c}" ${sel.has(c) ? 'checked' : ''}> ${label}</label>`;
+    })
     .join('');
 }
 
@@ -196,6 +227,7 @@ function render(s) {
 
   if (s.phase === 'lobby') {
     destroyPlayer();
+    clearRevealPlayers();
     showScreen('screen-lobby');
     $('lobby-code').textContent = s.code;
     $('lobby-player-count').textContent = `(${s.players.length}/${s.maxPlayers})`;
@@ -217,6 +249,7 @@ function render(s) {
 
   if (s.phase === 'role_reveal') {
     destroyPlayer();
+    clearRevealPlayers();
     showScreen('screen-role');
     $('role-round').textContent = `${s.currentRound}/${s.roundCount}`;
     const card = document.querySelector('.wo-role-card');
@@ -227,7 +260,7 @@ function render(s) {
       $('role-desc').textContent =
         'Tu vas regarder une autre vidéo. Écoute les autres, bluffe, ne te fais pas griller.';
     } else {
-      $('role-title').textContent = 'Tu es CREW';
+      $('role-title').textContent = 'Tu fais partie de l’ÉQUIPE';
       $('role-desc').textContent =
         'Tout le monde (sauf un) voit la même vidéo. Trouvez l’Imposteur sans trop révéler.';
     }
@@ -235,9 +268,10 @@ function render(s) {
   }
 
   if (s.phase === 'watching') {
+    clearRevealPlayers();
     showScreen('screen-watch');
     const badge = $('watch-role-badge');
-    badge.textContent = s.myRole === 'impostor' ? 'Imposteur' : 'Crew';
+    badge.textContent = s.myRole === 'impostor' ? 'Imposteur' : 'Équipe';
     badge.className = `wo-badge ${s.myRole === 'impostor' ? 'impostor' : 'crew'}`;
     if (s.myVideoId) mountWatchPlayer(s.myVideoId);
     return;
@@ -245,6 +279,7 @@ function render(s) {
 
   if (s.phase === 'discussion') {
     destroyPlayer();
+    clearRevealPlayers();
     showScreen('screen-discussion');
     renderChat('chat-log', s.chat);
     $('btn-skip-disc').style.display = s.isHost ? 'inline-block' : 'none';
@@ -253,11 +288,12 @@ function render(s) {
 
   if (s.phase === 'voting' || s.phase === 'tie_break') {
     destroyPlayer();
+    clearRevealPlayers();
     showScreen('screen-voting');
     $('vote-title').textContent =
       s.phase === 'tie_break'
-        ? 'Égalité — 30s de défense, puis re-vote'
-        : 'Who watched the wrong video?';
+        ? 'Égalité — 30 s de défense, puis nouveau vote'
+        : 'Qui a vu la mauvaise vidéo ?';
     renderVoteList();
     renderChat('vote-chat-log', s.chat);
     return;
@@ -272,8 +308,8 @@ function render(s) {
       $('reveal-outcome').textContent = r.accusedCorrect
         ? `Le groupe a accusé ${r.accusedName} — correct !`
         : `Le groupe a accusé ${r.accusedName || 'personne'} — l’Imposteur s’en sort.`;
-      mountRevealIframe('reveal-main', r.mainVideoId);
-      mountRevealIframe('reveal-imp', r.impostorVideoId);
+      mountRevealIframe('reveal-main', r.mainVideoId, 'main');
+      mountRevealIframe('reveal-imp', r.impostorVideoId, 'imp');
     }
     $('btn-next').style.display = s.isHost ? 'inline-block' : 'none';
     return;
@@ -281,6 +317,7 @@ function render(s) {
 
   if (s.phase === 'scoreboard' || s.phase === 'game_over') {
     destroyPlayer();
+    clearRevealPlayers();
     showScreen('screen-score');
     $('score-title').textContent = s.phase === 'game_over' ? 'Partie terminée' : 'Scores';
     $('score-list').innerHTML = (s.ranking || s.players)

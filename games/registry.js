@@ -53,7 +53,7 @@ const GAMES = [
   {
     id: 'watchout',
     name: 'WatchOut',
-    tagline: 'Same lobby. Same video. Almost. — trouve qui n’a pas vu la même chose',
+    tagline: 'Même salon. Même vidéo. Presque. — trouve qui n’a pas vu la même chose',
     icon: '👁️',
     color: '#f59e0b',
     players: '3–12 joueurs',

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>WatchOut — Same lobby. Same video. Almost.</title>
+  <title>WatchOut — Même salon. Même vidéo. Presque.</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
@@ -15,7 +15,7 @@
     <header class="wo-header">
       <a href="/" class="back-to-hub">← Tous les jeux</a>
       <h1 class="wo-brand">WATCHOUT</h1>
-      <p class="wo-tagline">Same lobby. Same video. Almost.</p>
+      <p class="wo-tagline">Même salon. Même vidéo. Presque.</p>
       <span class="badge-online">● Multijoueur en ligne</span>
     </header>
 
@@ -96,9 +96,9 @@
         </select>
         <label>Difficulté</label>
         <select id="set-difficulty">
-          <option value="easy">Easy — très différentes</option>
+          <option value="easy">Facile — très différentes</option>
           <option value="normal" selected>Normal — même thème</option>
-          <option value="hard">Hard — très similaires</option>
+          <option value="hard">Difficile — très similaires</option>
           <option value="any">Aléatoire</option>
         </select>
         <fieldset class="wo-cats">
@@ -137,7 +137,7 @@
     <!-- DISCUSSION -->
     <div id="screen-discussion" class="screen">
       <div class="card wo-card">
-        <h2>Discussion — Find the Impostor</h2>
+        <h2>Discussion — trouvez l’Imposteur</h2>
         <div class="wo-timer" id="disc-timer"></div>
         <p class="wo-hint">Prouve que tu as vu la vidéo <em>sans</em> la raconter à l’Imposteur.</p>
       </div>
@@ -154,7 +154,7 @@
     <!-- VOTING -->
     <div id="screen-voting" class="screen">
       <div class="card wo-card">
-        <h2 id="vote-title">Who watched the wrong video?</h2>
+        <h2 id="vote-title">Qui a vu la mauvaise vidéo ?</h2>
         <div class="wo-timer" id="vote-timer"></div>
         <div id="vote-list" class="wo-vote-list"></div>
       </div>
@@ -166,17 +166,17 @@
     <!-- REVEAL -->
     <div id="screen-reveal" class="screen">
       <div class="card wo-card wo-reveal">
-        <p class="wo-phase-tag">The Impostor was…</p>
+        <p class="wo-phase-tag">L’Imposteur était…</p>
         <h2 id="reveal-name">—</h2>
         <p id="reveal-outcome"></p>
       </div>
       <div class="wo-reveal-videos">
         <div class="wo-reveal-col">
-          <h3>Everyone watched</h3>
+          <h3>Tout le monde a vu</h3>
           <div id="reveal-main" class="wo-mini-player"></div>
         </div>
         <div class="wo-reveal-col">
-          <h3>The Impostor watched</h3>
+          <h3>L’Imposteur a vu</h3>
           <div id="reveal-imp" class="wo-mini-player"></div>
         </div>
       </div>
