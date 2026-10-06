@@ -13,6 +13,7 @@
     "refresh-size-it-assets": "node scripts/fetch-size-it-assets.js --refresh-mismatched",
     "review-size-it-assets": "node scripts/serve-size-it-review.js",
     "apply-size-it-review": "node scripts/apply-size-it-review.js",
+    "refetch-size-it-review-bad": "node scripts/refetch-review-bad-from-web.js",
     "rebuild-size-it-bank": "node scripts/fetch-size-it-assets.js && node scripts/build-size-it-bank.js"
   },
   "engines": {
