@@ -49,6 +49,17 @@ const GAMES = [
     duration: '5–15 min',
     path: '/games/size-it/',
     status: 'available'
+  },
+  {
+    id: 'watchout',
+    name: 'WatchOut',
+    tagline: 'Same lobby. Same video. Almost. — trouve qui n’a pas vu la même chose',
+    icon: '👁️',
+    color: '#f59e0b',
+    players: '3–12 joueurs',
+    duration: '15–25 min',
+    path: '/games/watchout/',
+    status: 'available'
   }
 ];
 

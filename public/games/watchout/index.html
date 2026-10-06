@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>WatchOut — Same lobby. Same video. Almost.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="wo-body">
+  <div class="app wo-app">
+    <header class="wo-header">
+      <a href="/" class="back-to-hub">← Tous les jeux</a>
+      <h1 class="wo-brand">WATCHOUT</h1>
+      <p class="wo-tagline">Same lobby. Same video. Almost.</p>
+      <span class="badge-online">● Multijoueur en ligne</span>
+    </header>
+
+    <div id="connection-status" class="connection-status">Connexion…</div>
+    <div id="room-nav" class="room-nav" style="display:none;">
+      <button type="button" id="btn-salon" class="btn-nav btn-nav-salon">🛋️ Retour au salon</button>
+      <button type="button" id="btn-menu" class="btn-nav btn-nav-menu">Quitter</button>
+    </div>
+
+    <!-- HOME -->
+    <div id="screen-home" class="screen active">
+      <div class="card wo-card">
+        <h2>Rejoindre la salle</h2>
+        <label>Votre pseudo</label>
+        <input type="text" id="player-name" placeholder="Ex : Fabian" maxlength="20" value="">
+        <div class="row" style="margin-top: 8px;">
+          <button class="btn btn-primary" id="btn-create">Créer une salle</button>
+          <button class="btn btn-secondary" id="btn-show-join">Rejoindre</button>
+        </div>
+      </div>
+      <div class="card wo-card" id="join-panel" style="display:none;">
+        <h2>Code de salle</h2>
+        <input type="text" id="join-code" placeholder="K7F2Q" maxlength="6" style="text-transform:uppercase; letter-spacing:4px; font-family:monospace; font-weight:700;">
+        <button class="btn btn-blue" id="btn-join">Entrer</button>
+      </div>
+      <div class="card wo-card wo-pitch">
+        <p><strong>Tout le monde regarde la même vidéo — sauf un.</strong></p>
+        <p class="muted">Trouve l’Imposteur avant qu’il comprenne ce que vous avez vu.</p>
+      </div>
+    </div>
+
+    <!-- LOBBY -->
+    <div id="screen-lobby" class="screen">
+      <div class="card wo-card">
+        <h2>Salon WatchOut</h2>
+        <div class="room-code-box">
+          <div class="label">Code</div>
+          <div class="code" id="lobby-code">------</div>
+          <div class="copy-row">
+            <button class="btn btn-secondary btn-sm" id="btn-copy-code">Copier le code</button>
+            <button class="btn btn-secondary btn-sm" id="btn-copy-link">Copier le lien</button>
+          </div>
+        </div>
+      </div>
+      <div class="card wo-card">
+        <h2>Joueurs <span id="lobby-player-count" class="muted-inline"></span></h2>
+        <ul id="lobby-players" class="players-list"></ul>
+        <p id="lobby-min-hint" class="share-hint"></p>
+      </div>
+      <div class="card wo-card" id="host-settings">
+        <h2>Réglages (hôte)</h2>
+        <label>Manches</label>
+        <select id="set-rounds">
+          <option value="3">3</option>
+          <option value="5" selected>5</option>
+          <option value="7">7</option>
+          <option value="10">10</option>
+        </select>
+        <label>Durée max vidéo</label>
+        <select id="set-max-video">
+          <option value="30">30 s</option>
+          <option value="45">45 s</option>
+          <option value="60" selected>60 s</option>
+          <option value="90">90 s</option>
+        </select>
+        <label>Discussion</label>
+        <select id="set-discussion">
+          <option value="45">45 s</option>
+          <option value="60">60 s</option>
+          <option value="90" selected>90 s</option>
+          <option value="120">120 s</option>
+        </select>
+        <label>Vote</label>
+        <select id="set-vote">
+          <option value="20">20 s</option>
+          <option value="30" selected>30 s</option>
+          <option value="45">45 s</option>
+        </select>
+        <label>Difficulté</label>
+        <select id="set-difficulty">
+          <option value="easy">Easy — très différentes</option>
+          <option value="normal" selected>Normal — même thème</option>
+          <option value="hard">Hard — très similaires</option>
+          <option value="any">Aléatoire</option>
+        </select>
+        <fieldset class="wo-cats">
+          <legend>Catégories</legend>
+          <div id="set-categories"></div>
+        </fieldset>
+        <button class="btn btn-primary" id="btn-start" style="margin-top:12px;">Lancer la partie</button>
+      </div>
+    </div>
+
+    <!-- ROLE -->
+    <div id="screen-role" class="screen">
+      <div class="card wo-card wo-role-card">
+        <div class="wo-phase-tag">Manche <span id="role-round">1</span></div>
+        <h2 id="role-title">…</h2>
+        <p id="role-desc"></p>
+        <div class="wo-timer" id="role-timer"></div>
+      </div>
+    </div>
+
+    <!-- WATCH -->
+    <div id="screen-watch" class="screen">
+      <div class="wo-watch-shell">
+        <div class="wo-watch-chrome">
+          <span id="watch-role-badge" class="wo-badge"></span>
+          <span class="wo-timer" id="watch-timer"></span>
+        </div>
+        <div class="wo-player-wrap" id="player-wrap">
+          <div id="yt-mount"></div>
+          <div id="watch-wait" class="wo-wait" style="display:none;">En attente des autres…</div>
+        </div>
+        <p class="wo-hint muted">Pas de chat. Regarde attentivement.</p>
+      </div>
+    </div>
+
+    <!-- DISCUSSION -->
+    <div id="screen-discussion" class="screen">
+      <div class="card wo-card">
+        <h2>Discussion — Find the Impostor</h2>
+        <div class="wo-timer" id="disc-timer"></div>
+        <p class="wo-hint">Prouve que tu as vu la vidéo <em>sans</em> la raconter à l’Imposteur.</p>
+      </div>
+      <div class="card wo-card wo-chat-card">
+        <div id="chat-log" class="wo-chat-log"></div>
+        <form id="chat-form" class="wo-chat-form">
+          <input type="text" id="chat-input" maxlength="240" placeholder="Réagir sans spoiler…" autocomplete="off">
+          <button class="btn btn-primary btn-sm" type="submit">Envoyer</button>
+        </form>
+      </div>
+      <button class="btn btn-secondary" id="btn-skip-disc" style="display:none;">Passer au vote (hôte)</button>
+    </div>
+
+    <!-- VOTING -->
+    <div id="screen-voting" class="screen">
+      <div class="card wo-card">
+        <h2 id="vote-title">Who watched the wrong video?</h2>
+        <div class="wo-timer" id="vote-timer"></div>
+        <div id="vote-list" class="wo-vote-list"></div>
+      </div>
+      <div class="card wo-card" id="vote-chat-wrap">
+        <div id="vote-chat-log" class="wo-chat-log"></div>
+      </div>
+    </div>
+
+    <!-- REVEAL -->
+    <div id="screen-reveal" class="screen">
+      <div class="card wo-card wo-reveal">
+        <p class="wo-phase-tag">The Impostor was…</p>
+        <h2 id="reveal-name">—</h2>
+        <p id="reveal-outcome"></p>
+      </div>
+      <div class="wo-reveal-videos">
+        <div class="wo-reveal-col">
+          <h3>Everyone watched</h3>
+          <div id="reveal-main" class="wo-mini-player"></div>
+        </div>
+        <div class="wo-reveal-col">
+          <h3>The Impostor watched</h3>
+          <div id="reveal-imp" class="wo-mini-player"></div>
+        </div>
+      </div>
+      <button class="btn btn-primary" id="btn-next" style="display:none;">Manche suivante</button>
+    </div>
+
+    <!-- SCORE / END -->
+    <div id="screen-score" class="screen">
+      <div class="card wo-card">
+        <h2 id="score-title">Scores</h2>
+        <ol id="score-list" class="wo-score-list"></ol>
+        <div class="row" id="score-actions"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script src="app.js"></script>
+</body>
+</html>

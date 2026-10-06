@@ -1,3 +1,4 @@
 node_modules/
+.env
 games/size-it/bank/cache/
 games/size-it/bank/fetched/

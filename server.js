@@ -2,12 +2,35 @@ const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 const path = require('path');
+const fs = require('fs');
+
+// Charge .env local (YOUTUBE_API_KEY, etc.) sans dépendance dotenv
+(function loadEnvFile() {
+  const envPath = path.join(__dirname, '.env');
+  if (!fs.existsSync(envPath)) return;
+  for (const line of fs.readFileSync(envPath, 'utf8').split(/\r?\n/)) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    const eq = trimmed.indexOf('=');
+    if (eq <= 0) continue;
+    const key = trimmed.slice(0, eq).trim();
+    let val = trimmed.slice(eq + 1).trim();
+    if (
+      (val.startsWith('"') && val.endsWith('"')) ||
+      (val.startsWith("'") && val.endsWith("'"))
+    ) {
+      val = val.slice(1, -1);
+    }
+    if (key && process.env[key] == null) process.env[key] = val;
+  }
+})();
 
 const { listGames, getGame } = require('./games/registry');
 const motDeLaFin = require('./games/mot-de-la-fin');
 const animalStacker = require('./games/animal-stacker');
 const quiDitMieux = require('./games/qui-dit-mieux');
 const sizeIt = require('./games/size-it');
+const watchout = require('./games/watchout');
 
 const PORT = process.env.PORT || 3000;
 const CODE_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -17,7 +40,8 @@ const gameEngines = {
   [motDeLaFin.id]: motDeLaFin,
   [animalStacker.id]: animalStacker,
   [quiDitMieux.id]: quiDitMieux,
-  [sizeIt.id]: sizeIt
+  [sizeIt.id]: sizeIt,
+  [watchout.id]: watchout
 };
 
 const app = express();
@@ -116,6 +140,8 @@ setInterval(() => {
           room.timerEndAt)
         || (room.phase === 'bidding' && room.auctionEndsAt)
         || (room.phase === 'estimate' && room.estimateEndsAt)
+        || (room.gameId === 'watchout' && room.phaseEndsAt &&
+          ['role_reveal', 'watching', 'discussion', 'voting', 'tie_break', 'reveal', 'scoreboard'].includes(room.phase))
       )
     ) {
       broadcastRoom(room);
@@ -162,6 +188,11 @@ io.on('connection', (socket) => {
     }
     const engine = getEngine(room.gameId);
     if (!engine) return;
+
+    if (room.gameId === 'watchout' && room.players.length >= 12) {
+      socket.emit('error-msg', 'Salle pleine (12 joueurs max).');
+      return;
+    }
 
     const name = (playerName || 'Joueur').trim().slice(0, 20) || 'Joueur';
     const existing = room.players.find(p => p.id === socket.id);
