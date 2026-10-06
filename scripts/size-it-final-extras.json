@@ -1,0 +1,93 @@
+[
+  {
+    "id": "spor-balle-tennis-jaune",
+    "name": "Balle tennis jaune",
+    "category": "sports",
+    "dimension": "diameter",
+    "trueSize": 67,
+    "unit": "mm",
+    "shape": "tennisball",
+    "measurementMethod": "norme sportive / dimension typique",
+    "source": "Game-icons.net (CC0)",
+    "license": "CC0",
+    "gameIconsPath": "delapouite/tennis-ball.svg"
+  },
+  {
+    "id": "spor-ballon-basket-officiel",
+    "name": "Ballon basket officiel",
+    "category": "sports",
+    "dimension": "diameter",
+    "trueSize": 24,
+    "unit": "cm",
+    "shape": "basketball",
+    "measurementMethod": "norme sportive / dimension typique",
+    "source": "Game-icons.net (CC0)",
+    "license": "CC0",
+    "gameIconsPath": "delapouite/basketball-ball.svg"
+  },
+  {
+    "id": "spor-ballon-soccer-pro",
+    "name": "Ballon soccer pro",
+    "category": "sports",
+    "dimension": "diameter",
+    "trueSize": 22,
+    "unit": "cm",
+    "shape": "football",
+    "measurementMethod": "norme sportive",
+    "source": "Game-icons.net (CC0)",
+    "license": "CC0",
+    "gameIconsPath": "delapouite/soccer-ball.svg"
+  },
+  {
+    "id": "spor-frisbee-competition",
+    "name": "Frisbee compétition",
+    "category": "sports",
+    "dimension": "diameter",
+    "trueSize": 27,
+    "unit": "cm",
+    "shape": "disk",
+    "measurementMethod": "norme sportive",
+    "source": "Game-icons.net (CC0)",
+    "license": "CC0",
+    "gameIconsPath": "delapouite/frisbee.svg"
+  },
+  {
+    "id": "natu-champignon-girolle",
+    "name": "Champignon girolle",
+    "category": "nature",
+    "dimension": "height",
+    "trueSize": 8,
+    "unit": "cm",
+    "shape": "mushroom",
+    "measurementMethod": "dimension naturelle typique",
+    "source": "Game-icons.net (CC0)",
+    "license": "CC0",
+    "gameIconsPath": "lorc/mushroom.svg"
+  },
+  {
+    "id": "natu-sapin-nordique",
+    "name": "Sapin nordique",
+    "category": "nature",
+    "dimension": "height",
+    "trueSize": 20,
+    "unit": "m",
+    "shape": "fir",
+    "measurementMethod": "dimension naturelle typique",
+    "source": "Game-icons.net (CC0)",
+    "license": "CC0",
+    "gameIconsPath": "lorc/pine-tree.svg"
+  },
+  {
+    "id": "ever-radio-de-poche",
+    "name": "Radio de poche",
+    "category": "everyday",
+    "dimension": "width",
+    "trueSize": 12,
+    "unit": "cm",
+    "shape": "rect",
+    "measurementMethod": "dimension typique / norme",
+    "source": "Game-icons.net (CC0)",
+    "license": "CC0",
+    "gameIconsPath": "delapouite/pocket-radio.svg"
+  }
+]
