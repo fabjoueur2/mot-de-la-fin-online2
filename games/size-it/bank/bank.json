@@ -13,29 +13,13 @@
     "nature": 20
   },
   "providers": {
-    "svgrepo": 305,
+    "generated": 109,
     "phylopic": 127,
-    "generated": 78,
+    "svgrepo": 274,
     "naturalearth": 51
   },
   "licensePolicy": "Animals: PhyloPic CC0. Geography: Natural Earth Public Domain. Other: SVG Repo CC0 (HuggingFace mirror) with procedural fallback.",
   "items": [
-    {
-      "id": "anim-fourmi",
-      "name": "Fourmi",
-      "category": "animals",
-      "dimension": "length",
-      "trueSize": 0.005,
-      "unit": "m",
-      "svg": "assets/animals/anim-fourmi.svg",
-      "source": "SVG Repo (CC0 via HuggingFace mirror)",
-      "license": "CC0",
-      "assetStatus": "fetched",
-      "measurementMethod": "longueur/hauteur adulte typique",
-      "shape": "ant",
-      "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/302916/defendant.svg"
-    },
     {
       "id": "anim-abeille",
       "name": "Abeille",
@@ -1061,22 +1045,6 @@
       "sourceUrl": "https://images.phylopic.org/images/6cebfd77-1ad5-449f-8440-c6f9f18f41d8/vector.svg"
     },
     {
-      "id": "anim-meduse",
-      "name": "Méduse",
-      "category": "animals",
-      "dimension": "diameter",
-      "trueSize": 0.4,
-      "unit": "m",
-      "svg": "assets/animals/anim-meduse.svg",
-      "source": "SVG Repo (CC0 via HuggingFace mirror)",
-      "license": "CC0",
-      "assetStatus": "fetched",
-      "measurementMethod": "longueur/hauteur adulte typique",
-      "shape": "jellyfish",
-      "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/493821/fish.svg"
-    },
-    {
       "id": "anim-poulpe",
       "name": "Poulpe",
       "category": "animals",
@@ -1171,22 +1139,6 @@
       "shape": "shark",
       "provider": "phylopic",
       "sourceUrl": "https://images.phylopic.org/images/ce4f235f-7a3a-4f7b-b424-2a8792a82c76/vector.svg"
-    },
-    {
-      "id": "anim-t-rex",
-      "name": "T. rex",
-      "category": "animals",
-      "dimension": "length",
-      "trueSize": 12,
-      "unit": "m",
-      "svg": "assets/animals/anim-t-rex.svg",
-      "source": "SVG Repo (CC0 via HuggingFace mirror)",
-      "license": "CC0",
-      "assetStatus": "fetched",
-      "measurementMethod": "longueur/hauteur adulte typique",
-      "shape": "trex",
-      "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/331318/bittrex.svg"
     },
     {
       "id": "anim-triceratops",
@@ -1941,6 +1893,54 @@
       "sourceUrl": "https://images.phylopic.org/images/35fbff4d-c0e6-4c53-9f27-f0a6ecbe7720/vector.svg"
     },
     {
+      "id": "anim-renard-polaire",
+      "name": "Renard polaire",
+      "category": "animals",
+      "dimension": "length",
+      "trueSize": 0.55,
+      "unit": "m",
+      "svg": "assets/animals/anim-renard-polaire.svg",
+      "source": "PhyloPic",
+      "license": "CC0",
+      "assetStatus": "fetched",
+      "measurementMethod": "longueur/hauteur adulte typique",
+      "shape": "arcticfox",
+      "provider": "phylopic",
+      "sourceUrl": "https://images.phylopic.org/images/8e5dfa51-961d-48be-acda-fd7a00f0e565/vector.svg"
+    },
+    {
+      "id": "anim-renne",
+      "name": "Renne",
+      "category": "animals",
+      "dimension": "length",
+      "trueSize": 2,
+      "unit": "m",
+      "svg": "assets/animals/anim-renne.svg",
+      "source": "PhyloPic",
+      "license": "CC0",
+      "assetStatus": "fetched",
+      "measurementMethod": "longueur/hauteur adulte typique",
+      "shape": "reindeer",
+      "provider": "phylopic",
+      "sourceUrl": "https://images.phylopic.org/images/76bb1db0-18b9-4aa4-9c6e-75c88c91741f/vector.svg"
+    },
+    {
+      "id": "anim-elan",
+      "name": "Élan",
+      "category": "animals",
+      "dimension": "length",
+      "trueSize": 3,
+      "unit": "m",
+      "svg": "assets/animals/anim-elan.svg",
+      "source": "PhyloPic",
+      "license": "CC0",
+      "assetStatus": "fetched",
+      "measurementMethod": "longueur/hauteur adulte typique",
+      "shape": "moose",
+      "provider": "phylopic",
+      "sourceUrl": "https://images.phylopic.org/images/94397ceb-67dc-4dcd-93bf-1a5bf38bba61/vector.svg"
+    },
+    {
       "id": "ever-carte-sim",
       "name": "Carte SIM",
       "category": "everyday",
@@ -2613,22 +2613,6 @@
       "sourceUrl": "https://www.svgrepo.com/download/303828/door-tag.svg"
     },
     {
-      "id": "ever-fenetre",
-      "name": "Fenêtre",
-      "category": "everyday",
-      "dimension": "height",
-      "trueSize": 1.2,
-      "unit": "m",
-      "svg": "assets/everyday/ever-fenetre.svg",
-      "source": "SVG Repo (CC0 via HuggingFace mirror)",
-      "license": "CC0",
-      "assetStatus": "fetched",
-      "measurementMethod": "dimension typique / norme",
-      "shape": "window",
-      "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/302794/ship-window-sea.svg"
-    },
-    {
       "id": "ever-frigo",
       "name": "Frigo",
       "category": "everyday",
@@ -3285,22 +3269,6 @@
       "sourceUrl": "https://www.svgrepo.com/download/331325/box.svg"
     },
     {
-      "id": "ever-palette-eur",
-      "name": "Palette EUR",
-      "category": "everyday",
-      "dimension": "long_side",
-      "trueSize": 1.2,
-      "unit": "m",
-      "svg": "assets/everyday/ever-palette-eur.svg",
-      "source": "SVG Repo (CC0 via HuggingFace mirror)",
-      "license": "CC0",
-      "assetStatus": "fetched",
-      "measurementMethod": "dimension typique / norme",
-      "shape": "pallet",
-      "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/380920/paint-tray-paint-pallette-paint-artist-tool.svg"
-    },
-    {
       "id": "ever-conteneur-20",
       "name": "Conteneur 20'",
       "category": "everyday",
@@ -3541,6 +3509,38 @@
       "sourceUrl": "https://www.svgrepo.com/download/380931/highlighter-pen-marker-highlight-stationery.svg"
     },
     {
+      "id": "ever-savon",
+      "name": "Savon",
+      "category": "everyday",
+      "dimension": "long_side",
+      "trueSize": 90,
+      "unit": "mm",
+      "svg": "assets/everyday/ever-savon.svg",
+      "source": "SVG Repo (CC0 via HuggingFace mirror)",
+      "license": "CC0",
+      "assetStatus": "fetched",
+      "measurementMethod": "dimension typique / norme",
+      "shape": "soap",
+      "provider": "svgrepo",
+      "sourceUrl": "https://www.svgrepo.com/download/530564/soap.svg"
+    },
+    {
+      "id": "ever-brosse-a-dents",
+      "name": "Brosse à dents",
+      "category": "everyday",
+      "dimension": "length",
+      "trueSize": 190,
+      "unit": "mm",
+      "svg": "assets/everyday/ever-brosse-a-dents.svg",
+      "source": "SVG Repo (CC0 via HuggingFace mirror)",
+      "license": "CC0",
+      "assetStatus": "fetched",
+      "measurementMethod": "dimension typique / norme",
+      "shape": "toothbrush",
+      "provider": "svgrepo",
+      "sourceUrl": "https://www.svgrepo.com/download/308907/toothbrush.svg"
+    },
+    {
       "id": "vehi-trotti-electrique",
       "name": "Trotti électrique",
       "category": "vehicles",
@@ -3571,22 +3571,6 @@
       "shape": "bike",
       "provider": "svgrepo",
       "sourceUrl": "https://www.svgrepo.com/download/476533/bicycle.svg"
-    },
-    {
-      "id": "vehi-velo-cargo",
-      "name": "Vélo cargo",
-      "category": "vehicles",
-      "dimension": "length",
-      "trueSize": 2.2,
-      "unit": "m",
-      "svg": "assets/vehicles/vehi-velo-cargo.svg",
-      "source": "SVG Repo (CC0 via HuggingFace mirror)",
-      "license": "CC0",
-      "assetStatus": "fetched",
-      "measurementMethod": "longueur hors-tout typique",
-      "shape": "cargobike",
-      "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/307052/car.svg"
     },
     {
       "id": "vehi-moto",
@@ -3715,22 +3699,6 @@
       "shape": "pickup",
       "provider": "svgrepo",
       "sourceUrl": "https://www.svgrepo.com/download/308314/pickup-transportation-car-transport.svg"
-    },
-    {
-      "id": "vehi-caravane",
-      "name": "Caravane",
-      "category": "vehicles",
-      "dimension": "length",
-      "trueSize": 6,
-      "unit": "m",
-      "svg": "assets/vehicles/vehi-caravane.svg",
-      "source": "SVG Repo (CC0 via HuggingFace mirror)",
-      "license": "CC0",
-      "assetStatus": "fetched",
-      "measurementMethod": "longueur hors-tout typique",
-      "shape": "caravan",
-      "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/307052/car.svg"
     },
     {
       "id": "vehi-utilitaire",
@@ -3877,22 +3845,6 @@
       "sourceUrl": "https://www.svgrepo.com/download/425820/train.svg"
     },
     {
-      "id": "vehi-wagon-marchandises",
-      "name": "Wagon marchandises",
-      "category": "vehicles",
-      "dimension": "length",
-      "trueSize": 14,
-      "unit": "m",
-      "svg": "assets/vehicles/vehi-wagon-marchandises.svg",
-      "source": "SVG Repo (CC0 via HuggingFace mirror)",
-      "license": "CC0",
-      "assetStatus": "fetched",
-      "measurementMethod": "longueur hors-tout typique",
-      "shape": "railcar",
-      "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/307052/car.svg"
-    },
-    {
       "id": "vehi-tracteur",
       "name": "Tracteur",
       "category": "vehicles",
@@ -3989,22 +3941,6 @@
       "sourceUrl": "https://www.svgrepo.com/download/343780/fire.svg"
     },
     {
-      "id": "vehi-police-berline",
-      "name": "Police berline",
-      "category": "vehicles",
-      "dimension": "length",
-      "trueSize": 4.8,
-      "unit": "m",
-      "svg": "assets/vehicles/vehi-police-berline.svg",
-      "source": "SVG Repo (CC0 via HuggingFace mirror)",
-      "license": "CC0",
-      "assetStatus": "fetched",
-      "measurementMethod": "longueur hors-tout typique",
-      "shape": "policecar",
-      "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/307052/car.svg"
-    },
-    {
       "id": "vehi-bateau-a-rames",
       "name": "Bateau à rames",
       "category": "vehicles",
@@ -4019,22 +3955,6 @@
       "shape": "rowboat",
       "provider": "svgrepo",
       "sourceUrl": "https://www.svgrepo.com/download/425269/boat.svg"
-    },
-    {
-      "id": "vehi-kayak",
-      "name": "Kayak",
-      "category": "vehicles",
-      "dimension": "length",
-      "trueSize": 3.5,
-      "unit": "m",
-      "svg": "assets/vehicles/vehi-kayak.svg",
-      "source": "SVG Repo (CC0 via HuggingFace mirror)",
-      "license": "CC0",
-      "assetStatus": "fetched",
-      "measurementMethod": "longueur hors-tout typique",
-      "shape": "kayak",
-      "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/307911/kayak-person-sport-people.svg"
     },
     {
       "id": "vehi-paddle",
@@ -4098,23 +4018,7 @@
       "measurementMethod": "longueur hors-tout typique",
       "shape": "cargoship",
       "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/307052/car.svg"
-    },
-    {
-      "id": "vehi-porte-avions",
-      "name": "Porte-avions",
-      "category": "vehicles",
-      "dimension": "length",
-      "trueSize": 330,
-      "unit": "m",
-      "svg": "assets/vehicles/vehi-porte-avions.svg",
-      "source": "SVG Repo (CC0 via HuggingFace mirror)",
-      "license": "CC0",
-      "assetStatus": "fetched",
-      "measurementMethod": "longueur hors-tout typique",
-      "shape": "carrier",
-      "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/307052/car.svg"
+      "sourceUrl": "https://www.svgrepo.com/download/313330/cargo.svg"
     },
     {
       "id": "vehi-sous-marin",
@@ -4293,6 +4197,21 @@
       "sourceUrl": "https://www.svgrepo.com/download/303831/carriage.svg"
     },
     {
+      "id": "vehi-velo-cargo",
+      "name": "Vélo cargo",
+      "category": "vehicles",
+      "dimension": "length",
+      "trueSize": 2.2,
+      "unit": "m",
+      "svg": "assets/vehicles/vehi-velo-cargo.svg",
+      "source": "Size It procedural silhouette (forced)",
+      "license": "CC0",
+      "assetStatus": "generated",
+      "measurementMethod": "longueur hors-tout typique",
+      "shape": "cargobike",
+      "provider": "generated"
+    },
+    {
       "id": "vehi-monospace",
       "name": "Monospace",
       "category": "vehicles",
@@ -4323,6 +4242,21 @@
       "provider": "generated"
     },
     {
+      "id": "vehi-caravane",
+      "name": "Caravane",
+      "category": "vehicles",
+      "dimension": "length",
+      "trueSize": 6,
+      "unit": "m",
+      "svg": "assets/vehicles/vehi-caravane.svg",
+      "source": "Size It procedural silhouette",
+      "license": "CC0",
+      "assetStatus": "generated",
+      "measurementMethod": "longueur hors-tout typique",
+      "shape": "caravan",
+      "provider": "generated"
+    },
+    {
       "id": "vehi-metro-rame",
       "name": "Métro rame",
       "category": "vehicles",
@@ -4350,6 +4284,21 @@
       "assetStatus": "generated",
       "measurementMethod": "longueur hors-tout typique",
       "shape": "locomotive",
+      "provider": "generated"
+    },
+    {
+      "id": "vehi-wagon-marchandises",
+      "name": "Wagon marchandises",
+      "category": "vehicles",
+      "dimension": "length",
+      "trueSize": 14,
+      "unit": "m",
+      "svg": "assets/vehicles/vehi-wagon-marchandises.svg",
+      "source": "Size It procedural silhouette",
+      "license": "CC0",
+      "assetStatus": "generated",
+      "measurementMethod": "longueur hors-tout typique",
+      "shape": "railcar",
       "provider": "generated"
     },
     {
@@ -4428,6 +4377,36 @@
       "provider": "generated"
     },
     {
+      "id": "vehi-police-berline",
+      "name": "Police berline",
+      "category": "vehicles",
+      "dimension": "length",
+      "trueSize": 4.8,
+      "unit": "m",
+      "svg": "assets/vehicles/vehi-police-berline.svg",
+      "source": "Size It procedural silhouette",
+      "license": "CC0",
+      "assetStatus": "generated",
+      "measurementMethod": "longueur hors-tout typique",
+      "shape": "policecar",
+      "provider": "generated"
+    },
+    {
+      "id": "vehi-kayak",
+      "name": "Kayak",
+      "category": "vehicles",
+      "dimension": "length",
+      "trueSize": 3.5,
+      "unit": "m",
+      "svg": "assets/vehicles/vehi-kayak.svg",
+      "source": "Size It procedural silhouette",
+      "license": "CC0",
+      "assetStatus": "generated",
+      "measurementMethod": "longueur hors-tout typique",
+      "shape": "kayak",
+      "provider": "generated"
+    },
+    {
       "id": "vehi-ferry",
       "name": "Ferry",
       "category": "vehicles",
@@ -4440,6 +4419,21 @@
       "assetStatus": "generated",
       "measurementMethod": "longueur hors-tout typique",
       "shape": "ferry",
+      "provider": "generated"
+    },
+    {
+      "id": "vehi-porte-avions",
+      "name": "Porte-avions",
+      "category": "vehicles",
+      "dimension": "length",
+      "trueSize": 330,
+      "unit": "m",
+      "svg": "assets/vehicles/vehi-porte-avions.svg",
+      "source": "Size It procedural silhouette",
+      "license": "CC0",
+      "assetStatus": "generated",
+      "measurementMethod": "longueur hors-tout typique",
+      "shape": "carrier",
       "provider": "generated"
     },
     {
@@ -4534,22 +4528,6 @@
       "shape": "tennisball",
       "provider": "svgrepo",
       "sourceUrl": "https://www.svgrepo.com/download/315897/tennis-ball.svg"
-    },
-    {
-      "id": "spor-balle-de-ping-pong",
-      "name": "Balle de ping-pong",
-      "category": "sports",
-      "dimension": "diameter",
-      "trueSize": 40,
-      "unit": "mm",
-      "svg": "assets/sports/spor-balle-de-ping-pong.svg",
-      "source": "SVG Repo (CC0 via HuggingFace mirror)",
-      "license": "CC0",
-      "assetStatus": "fetched",
-      "measurementMethod": "norme sportive / dimension typique",
-      "shape": "pingpong",
-      "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/311643/pin.svg"
     },
     {
       "id": "spor-balle-de-baseball",
@@ -4648,22 +4626,6 @@
       "sourceUrl": "https://www.svgrepo.com/download/471497/hand.svg"
     },
     {
-      "id": "spor-quille-de-bowling",
-      "name": "Quille de bowling",
-      "category": "sports",
-      "dimension": "height",
-      "trueSize": 38,
-      "unit": "cm",
-      "svg": "assets/sports/spor-quille-de-bowling.svg",
-      "source": "SVG Repo (CC0 via HuggingFace mirror)",
-      "license": "CC0",
-      "assetStatus": "fetched",
-      "measurementMethod": "norme sportive / dimension typique",
-      "shape": "pin",
-      "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/311643/pin.svg"
-    },
-    {
       "id": "spor-boule-de-bowling",
       "name": "Boule de bowling",
       "category": "sports",
@@ -4760,22 +4722,6 @@
       "sourceUrl": "https://www.svgrepo.com/download/311585/barbecue.svg"
     },
     {
-      "id": "spor-disque-athle",
-      "name": "Disque athlé",
-      "category": "sports",
-      "dimension": "diameter",
-      "trueSize": 22,
-      "unit": "cm",
-      "svg": "assets/sports/spor-disque-athle.svg",
-      "source": "SVG Repo (CC0 via HuggingFace mirror)",
-      "license": "CC0",
-      "assetStatus": "fetched",
-      "measurementMethod": "norme sportive / dimension typique",
-      "shape": "discus",
-      "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/308110/talk-business-business-discussion-business-chat-talk-about-business.svg"
-    },
-    {
       "id": "spor-marteau-athle",
       "name": "Marteau athlé",
       "category": "sports",
@@ -4837,7 +4783,7 @@
       "measurementMethod": "norme sportive / dimension typique",
       "shape": "ski",
       "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/307113/skin-hair-follicle-dermis.svg"
+      "sourceUrl": "https://www.svgrepo.com/download/308084/ski-downhill-fall-fun-sport.svg"
     },
     {
       "id": "spor-snowboard",
@@ -4952,22 +4898,6 @@
       "sourceUrl": "https://www.svgrepo.com/download/307436/pool-diving-dive-risk-jump.svg"
     },
     {
-      "id": "spor-piste-d-athletisme",
-      "name": "Piste d'athlétisme",
-      "category": "sports",
-      "dimension": "length",
-      "trueSize": 400,
-      "unit": "m",
-      "svg": "assets/sports/spor-piste-d-athletisme.svg",
-      "source": "SVG Repo (CC0 via HuggingFace mirror)",
-      "license": "CC0",
-      "assetStatus": "fetched",
-      "measurementMethod": "norme sportive / dimension typique",
-      "shape": "track",
-      "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/304386/track-dollar-truck-delivery-transport.svg"
-    },
-    {
       "id": "spor-cage-de-foot",
       "name": "Cage de foot",
       "category": "sports",
@@ -4981,7 +4911,7 @@
       "measurementMethod": "norme sportive / dimension typique",
       "shape": "goal",
       "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/307104/set-goals-think.svg"
+      "sourceUrl": "https://www.svgrepo.com/download/307107/settle-home-family-goal.svg"
     },
     {
       "id": "spor-table-de-ping-pong",
@@ -4997,7 +4927,7 @@
       "measurementMethod": "norme sportive / dimension typique",
       "shape": "pingpongtable",
       "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/311643/pin.svg"
+      "sourceUrl": "https://www.svgrepo.com/download/471959/table.svg"
     },
     {
       "id": "spor-ring-de-boxe",
@@ -5029,7 +4959,7 @@
       "measurementMethod": "norme sportive / dimension typique",
       "shape": "mat",
       "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/307063/profit-estimate-compare-decide-choose.svg"
+      "sourceUrl": "https://www.svgrepo.com/download/308844/rolled-mat-roll-mat-roll-up.svg"
     },
     {
       "id": "spor-but-de-hockey-sur-glace",
@@ -5112,6 +5042,21 @@
       "sourceUrl": "https://www.svgrepo.com/download/313185/swimsuit.svg"
     },
     {
+      "id": "spor-balle-de-ping-pong",
+      "name": "Balle de ping-pong",
+      "category": "sports",
+      "dimension": "diameter",
+      "trueSize": 40,
+      "unit": "mm",
+      "svg": "assets/sports/spor-balle-de-ping-pong.svg",
+      "source": "Size It procedural silhouette",
+      "license": "CC0",
+      "assetStatus": "generated",
+      "measurementMethod": "norme sportive / dimension typique",
+      "shape": "pingpong",
+      "provider": "generated"
+    },
+    {
       "id": "spor-ballon-de-rugby",
       "name": "Ballon de rugby",
       "category": "sports",
@@ -5124,6 +5069,21 @@
       "assetStatus": "generated",
       "measurementMethod": "norme sportive / dimension typique",
       "shape": "rugby",
+      "provider": "generated"
+    },
+    {
+      "id": "spor-quille-de-bowling",
+      "name": "Quille de bowling",
+      "category": "sports",
+      "dimension": "height",
+      "trueSize": 38,
+      "unit": "cm",
+      "svg": "assets/sports/spor-quille-de-bowling.svg",
+      "source": "Size It procedural silhouette",
+      "license": "CC0",
+      "assetStatus": "generated",
+      "measurementMethod": "norme sportive / dimension typique",
+      "shape": "pin",
       "provider": "generated"
     },
     {
@@ -5217,6 +5177,21 @@
       "provider": "generated"
     },
     {
+      "id": "spor-disque-athle",
+      "name": "Disque athlé",
+      "category": "sports",
+      "dimension": "diameter",
+      "trueSize": 22,
+      "unit": "cm",
+      "svg": "assets/sports/spor-disque-athle.svg",
+      "source": "Size It procedural silhouette",
+      "license": "CC0",
+      "assetStatus": "generated",
+      "measurementMethod": "norme sportive / dimension typique",
+      "shape": "discus",
+      "provider": "generated"
+    },
+    {
       "id": "spor-kayak-polo",
       "name": "Kayak polo",
       "category": "sports",
@@ -5244,6 +5219,21 @@
       "assetStatus": "generated",
       "measurementMethod": "norme sportive / dimension typique",
       "shape": "tenniscourt",
+      "provider": "generated"
+    },
+    {
+      "id": "spor-piste-d-athletisme",
+      "name": "Piste d'athlétisme",
+      "category": "sports",
+      "dimension": "length",
+      "trueSize": 400,
+      "unit": "m",
+      "svg": "assets/sports/spor-piste-d-athletisme.svg",
+      "source": "Size It procedural silhouette",
+      "license": "CC0",
+      "assetStatus": "generated",
+      "measurementMethod": "norme sportive / dimension typique",
+      "shape": "track",
       "provider": "generated"
     },
     {
@@ -5405,22 +5395,6 @@
       "sourceUrl": "https://www.svgrepo.com/download/303963/taj-mahal.svg"
     },
     {
-      "id": "land-christ-redempteur",
-      "name": "Christ Rédempteur",
-      "category": "landmarks",
-      "dimension": "height",
-      "trueSize": 38,
-      "unit": "m",
-      "svg": "assets/landmarks/land-christ-redempteur.svg",
-      "source": "SVG Repo (CC0 via HuggingFace mirror)",
-      "license": "CC0",
-      "assetStatus": "fetched",
-      "measurementMethod": "hauteur / longueur documentée",
-      "shape": "christ",
-      "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/343889/christmas-gift.svg"
-    },
-    {
       "id": "land-space-needle",
       "name": "Space Needle",
       "category": "landmarks",
@@ -5565,22 +5539,6 @@
       "sourceUrl": "https://www.svgrepo.com/download/307009/archery.svg"
     },
     {
-      "id": "land-tour-de-londres",
-      "name": "Tour de Londres",
-      "category": "landmarks",
-      "dimension": "height",
-      "trueSize": 27,
-      "unit": "m",
-      "svg": "assets/landmarks/land-tour-de-londres.svg",
-      "source": "SVG Repo (CC0 via HuggingFace mirror)",
-      "license": "CC0",
-      "assetStatus": "fetched",
-      "measurementMethod": "hauteur / longueur documentée",
-      "shape": "tower",
-      "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/304430/eiffel-tower-france-world-monument.svg"
-    },
-    {
       "id": "land-sydney-opera-house",
       "name": "Sydney Opera House",
       "category": "landmarks",
@@ -5595,38 +5553,6 @@
       "shape": "sydneyopera",
       "provider": "svgrepo",
       "sourceUrl": "https://www.svgrepo.com/download/331521/opera.svg"
-    },
-    {
-      "id": "land-petronas-towers",
-      "name": "Petronas Towers",
-      "category": "landmarks",
-      "dimension": "height",
-      "trueSize": 452,
-      "unit": "m",
-      "svg": "assets/landmarks/land-petronas-towers.svg",
-      "source": "SVG Repo (CC0 via HuggingFace mirror)",
-      "license": "CC0",
-      "assetStatus": "fetched",
-      "measurementMethod": "hauteur / longueur documentée",
-      "shape": "petronas",
-      "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/503671/pet.svg"
-    },
-    {
-      "id": "land-tokyo-skytree",
-      "name": "Tokyo Skytree",
-      "category": "landmarks",
-      "dimension": "height",
-      "trueSize": 634,
-      "unit": "m",
-      "svg": "assets/landmarks/land-tokyo-skytree.svg",
-      "source": "SVG Repo (CC0 via HuggingFace mirror)",
-      "license": "CC0",
-      "assetStatus": "fetched",
-      "measurementMethod": "hauteur / longueur documentée",
-      "shape": "skytree",
-      "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/343811/tree.svg"
     },
     {
       "id": "land-phare-d-alexandrie-reconstr",
@@ -5658,7 +5584,7 @@
       "measurementMethod": "hauteur / longueur documentée",
       "shape": "christ",
       "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/343889/christmas-gift.svg"
+      "sourceUrl": "https://www.svgrepo.com/download/420206/cake-christmas-dessert.svg"
     },
     {
       "id": "land-empire-state-building",
@@ -5703,6 +5629,21 @@
       "assetStatus": "generated",
       "measurementMethod": "hauteur / longueur documentée",
       "shape": "pisa",
+      "provider": "generated"
+    },
+    {
+      "id": "land-christ-redempteur",
+      "name": "Christ Rédempteur",
+      "category": "landmarks",
+      "dimension": "height",
+      "trueSize": 38,
+      "unit": "m",
+      "svg": "assets/landmarks/land-christ-redempteur.svg",
+      "source": "Size It procedural silhouette",
+      "license": "CC0",
+      "assetStatus": "generated",
+      "measurementMethod": "hauteur / longueur documentée",
+      "shape": "christ",
       "provider": "generated"
     },
     {
@@ -5898,6 +5839,51 @@
       "assetStatus": "generated",
       "measurementMethod": "hauteur / longueur documentée",
       "shape": "atomium",
+      "provider": "generated"
+    },
+    {
+      "id": "land-tour-de-londres",
+      "name": "Tour de Londres",
+      "category": "landmarks",
+      "dimension": "height",
+      "trueSize": 27,
+      "unit": "m",
+      "svg": "assets/landmarks/land-tour-de-londres.svg",
+      "source": "Size It procedural silhouette",
+      "license": "CC0",
+      "assetStatus": "generated",
+      "measurementMethod": "hauteur / longueur documentée",
+      "shape": "tower",
+      "provider": "generated"
+    },
+    {
+      "id": "land-petronas-towers",
+      "name": "Petronas Towers",
+      "category": "landmarks",
+      "dimension": "height",
+      "trueSize": 452,
+      "unit": "m",
+      "svg": "assets/landmarks/land-petronas-towers.svg",
+      "source": "Size It procedural silhouette",
+      "license": "CC0",
+      "assetStatus": "generated",
+      "measurementMethod": "hauteur / longueur documentée",
+      "shape": "petronas",
+      "provider": "generated"
+    },
+    {
+      "id": "land-shanghai-tower",
+      "name": "Shanghai Tower",
+      "category": "landmarks",
+      "dimension": "height",
+      "trueSize": 632,
+      "unit": "m",
+      "svg": "assets/landmarks/land-shanghai-tower.svg",
+      "source": "Size It procedural silhouette",
+      "license": "CC0",
+      "assetStatus": "generated",
+      "measurementMethod": "hauteur / longueur documentée",
+      "shape": "skyscraper",
       "provider": "generated"
     },
     {
@@ -6189,22 +6175,6 @@
       "sourceUrl": "https://www.svgrepo.com/download/513703/eggplant.svg"
     },
     {
-      "id": "food-poivron",
-      "name": "Poivron",
-      "category": "food",
-      "dimension": "height",
-      "trueSize": 120,
-      "unit": "mm",
-      "svg": "assets/food/food-poivron.svg",
-      "source": "SVG Repo (CC0 via HuggingFace mirror)",
-      "license": "CC0",
-      "assetStatus": "fetched",
-      "measurementMethod": "taille typique commerciale",
-      "shape": "pepper",
-      "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/368456/pepper-and-salt.svg"
-    },
-    {
       "id": "food-tomate",
       "name": "Tomate",
       "category": "food",
@@ -6250,7 +6220,7 @@
       "measurementMethod": "taille typique commerciale",
       "shape": "potato",
       "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/307614/hot-potato-food-vegetable-yam.svg"
+      "sourceUrl": "https://www.svgrepo.com/download/424123/potato-spud-tater.svg"
     },
     {
       "id": "food-mais-epi",
@@ -6445,22 +6415,6 @@
       "sourceUrl": "https://www.svgrepo.com/download/500030/lollipop.svg"
     },
     {
-      "id": "food-glace-cornet",
-      "name": "Glace cornet",
-      "category": "food",
-      "dimension": "height",
-      "trueSize": 15,
-      "unit": "cm",
-      "svg": "assets/food/food-glace-cornet.svg",
-      "source": "SVG Repo (CC0 via HuggingFace mirror)",
-      "license": "CC0",
-      "assetStatus": "fetched",
-      "measurementMethod": "taille typique commerciale",
-      "shape": "icecream",
-      "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/308278/icecream-turck-truck.svg"
-    },
-    {
       "id": "food-pop-corn-grain",
       "name": "Pop-corn grain",
       "category": "food",
@@ -6508,6 +6462,21 @@
       "provider": "generated"
     },
     {
+      "id": "food-poivron",
+      "name": "Poivron",
+      "category": "food",
+      "dimension": "height",
+      "trueSize": 120,
+      "unit": "mm",
+      "svg": "assets/food/food-poivron.svg",
+      "source": "Size It procedural silhouette",
+      "license": "CC0",
+      "assetStatus": "generated",
+      "measurementMethod": "taille typique commerciale",
+      "shape": "pepper",
+      "provider": "generated"
+    },
+    {
       "id": "food-croissant",
       "name": "Croissant",
       "category": "food",
@@ -6520,6 +6489,21 @@
       "assetStatus": "generated",
       "measurementMethod": "taille typique commerciale",
       "shape": "croissant",
+      "provider": "generated"
+    },
+    {
+      "id": "food-glace-cornet",
+      "name": "Glace cornet",
+      "category": "food",
+      "dimension": "height",
+      "trueSize": 15,
+      "unit": "cm",
+      "svg": "assets/food/food-glace-cornet.svg",
+      "source": "Size It procedural silhouette",
+      "license": "CC0",
+      "assetStatus": "generated",
+      "measurementMethod": "taille typique commerciale",
+      "shape": "icecream",
       "provider": "generated"
     },
     {
@@ -7482,38 +7466,6 @@
       "sourceUrl": "https://www.svgrepo.com/download/307471/cosmos-space-gravity-planet.svg"
     },
     {
-      "id": "spac-saturne",
-      "name": "Saturne",
-      "category": "space",
-      "dimension": "diameter",
-      "trueSize": 116460,
-      "unit": "km",
-      "svg": "assets/space/spac-saturne.svg",
-      "source": "SVG Repo (CC0 via HuggingFace mirror)",
-      "license": "CC0",
-      "assetStatus": "fetched",
-      "measurementMethod": "diamètre / longueur astronomique",
-      "shape": "saturn",
-      "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/390598/horoscope-saturn-zodiac.svg"
-    },
-    {
-      "id": "spac-jupiter",
-      "name": "Jupiter",
-      "category": "space",
-      "dimension": "diameter",
-      "trueSize": 139820,
-      "unit": "km",
-      "svg": "assets/space/spac-jupiter.svg",
-      "source": "SVG Repo (CC0 via HuggingFace mirror)",
-      "license": "CC0",
-      "assetStatus": "fetched",
-      "measurementMethod": "diamètre / longueur astronomique",
-      "shape": "jupiter",
-      "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/390597/horoscope-jupiter-zodiac.svg"
-    },
-    {
       "id": "spac-soleil",
       "name": "Soleil",
       "category": "space",
@@ -7528,22 +7480,6 @@
       "shape": "sun",
       "provider": "svgrepo",
       "sourceUrl": "https://www.svgrepo.com/download/315892/sun.svg"
-    },
-    {
-      "id": "spac-iss-longueur",
-      "name": "ISS longueur",
-      "category": "space",
-      "dimension": "length",
-      "trueSize": 109,
-      "unit": "m",
-      "svg": "assets/space/spac-iss-longueur.svg",
-      "source": "SVG Repo (CC0 via HuggingFace mirror)",
-      "license": "CC0",
-      "assetStatus": "fetched",
-      "measurementMethod": "diamètre / longueur astronomique",
-      "shape": "iss",
-      "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/307154/transmission-chain-people-covid-infected-population.svg"
     },
     {
       "id": "spac-station-mir",
@@ -7578,22 +7514,6 @@
       "sourceUrl": "https://www.svgrepo.com/download/307517/meteorite-fall-meteor-comet.svg"
     },
     {
-      "id": "spac-anneaux-de-saturne-largeur",
-      "name": "Anneaux de Saturne largeur",
-      "category": "space",
-      "dimension": "width",
-      "trueSize": 282000,
-      "unit": "km",
-      "svg": "assets/space/spac-anneaux-de-saturne-largeur.svg",
-      "source": "SVG Repo (CC0 via HuggingFace mirror)",
-      "license": "CC0",
-      "assetStatus": "fetched",
-      "measurementMethod": "diamètre / longueur astronomique",
-      "shape": "rings",
-      "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/303811/rings.svg"
-    },
-    {
       "id": "spac-voie-lactee-diametre",
       "name": "Voie lactée diamètre",
       "category": "space",
@@ -7608,6 +7528,51 @@
       "shape": "galaxy",
       "provider": "svgrepo",
       "sourceUrl": "https://www.svgrepo.com/download/472089/x.svg"
+    },
+    {
+      "id": "spac-saturne",
+      "name": "Saturne",
+      "category": "space",
+      "dimension": "diameter",
+      "trueSize": 116460,
+      "unit": "km",
+      "svg": "assets/space/spac-saturne.svg",
+      "source": "Size It procedural silhouette",
+      "license": "CC0",
+      "assetStatus": "generated",
+      "measurementMethod": "diamètre / longueur astronomique",
+      "shape": "saturn",
+      "provider": "generated"
+    },
+    {
+      "id": "spac-jupiter",
+      "name": "Jupiter",
+      "category": "space",
+      "dimension": "diameter",
+      "trueSize": 139820,
+      "unit": "km",
+      "svg": "assets/space/spac-jupiter.svg",
+      "source": "Size It procedural silhouette",
+      "license": "CC0",
+      "assetStatus": "generated",
+      "measurementMethod": "diamètre / longueur astronomique",
+      "shape": "jupiter",
+      "provider": "generated"
+    },
+    {
+      "id": "spac-iss-longueur",
+      "name": "ISS longueur",
+      "category": "space",
+      "dimension": "length",
+      "trueSize": 109,
+      "unit": "m",
+      "svg": "assets/space/spac-iss-longueur.svg",
+      "source": "Size It procedural silhouette",
+      "license": "CC0",
+      "assetStatus": "generated",
+      "measurementMethod": "diamètre / longueur astronomique",
+      "shape": "iss",
+      "provider": "generated"
     },
     {
       "id": "spac-telescope-hubble",
@@ -7655,6 +7620,21 @@
       "provider": "generated"
     },
     {
+      "id": "spac-anneaux-de-saturne-largeur",
+      "name": "Anneaux de Saturne largeur",
+      "category": "space",
+      "dimension": "width",
+      "trueSize": 282000,
+      "unit": "km",
+      "svg": "assets/space/spac-anneaux-de-saturne-largeur.svg",
+      "source": "Size It procedural silhouette",
+      "license": "CC0",
+      "assetStatus": "generated",
+      "measurementMethod": "diamètre / longueur astronomique",
+      "shape": "rings",
+      "provider": "generated"
+    },
+    {
       "id": "natu-gland",
       "name": "Gland",
       "category": "nature",
@@ -7669,22 +7649,6 @@
       "shape": "acorn",
       "provider": "svgrepo",
       "sourceUrl": "https://www.svgrepo.com/download/414842/acorns-autumn-fall.svg"
-    },
-    {
-      "id": "natu-pomme-de-pin",
-      "name": "Pomme de pin",
-      "category": "nature",
-      "dimension": "length",
-      "trueSize": 10,
-      "unit": "cm",
-      "svg": "assets/nature/natu-pomme-de-pin.svg",
-      "source": "SVG Repo (CC0 via HuggingFace mirror)",
-      "license": "CC0",
-      "assetStatus": "fetched",
-      "measurementMethod": "dimension naturelle typique",
-      "shape": "pinecone",
-      "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/311643/pin.svg"
     },
     {
       "id": "natu-feuille-d-erable",
@@ -7719,22 +7683,6 @@
       "sourceUrl": "https://www.svgrepo.com/download/331338/clover.svg"
     },
     {
-      "id": "natu-tournesol",
-      "name": "Tournesol",
-      "category": "nature",
-      "dimension": "diameter",
-      "trueSize": 30,
-      "unit": "cm",
-      "svg": "assets/nature/natu-tournesol.svg",
-      "source": "SVG Repo (CC0 via HuggingFace mirror)",
-      "license": "CC0",
-      "assetStatus": "fetched",
-      "measurementMethod": "dimension naturelle typique",
-      "shape": "sunflower",
-      "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/315892/sun.svg"
-    },
-    {
       "id": "natu-rose",
       "name": "Rose",
       "category": "nature",
@@ -7751,22 +7699,6 @@
       "sourceUrl": "https://www.svgrepo.com/download/303800/rose.svg"
     },
     {
-      "id": "natu-tronc-de-chene",
-      "name": "Tronc de chêne",
-      "category": "nature",
-      "dimension": "diameter",
-      "trueSize": 1.5,
-      "unit": "m",
-      "svg": "assets/nature/natu-tronc-de-chene.svg",
-      "source": "SVG Repo (CC0 via HuggingFace mirror)",
-      "license": "CC0",
-      "assetStatus": "fetched",
-      "measurementMethod": "dimension naturelle typique",
-      "shape": "trunk",
-      "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/419156/bag-trunk-bag-big.svg"
-    },
-    {
       "id": "natu-sapin-20-ans",
       "name": "Sapin 20 ans",
       "category": "nature",
@@ -7781,22 +7713,6 @@
       "shape": "fir",
       "provider": "svgrepo",
       "sourceUrl": "https://www.svgrepo.com/download/307532/pine-tree-nature-tree-christmas.svg"
-    },
-    {
-      "id": "natu-sequoia-geant",
-      "name": "Séquoia géant",
-      "category": "nature",
-      "dimension": "height",
-      "trueSize": 80,
-      "unit": "m",
-      "svg": "assets/nature/natu-sequoia-geant.svg",
-      "source": "SVG Repo (CC0 via HuggingFace mirror)",
-      "license": "CC0",
-      "assetStatus": "fetched",
-      "measurementMethod": "dimension naturelle typique",
-      "shape": "sequoia",
-      "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/475154/eq.svg"
     },
     {
       "id": "natu-palmier",
@@ -7940,7 +7856,37 @@
       "measurementMethod": "dimension naturelle typique",
       "shape": "rock",
       "provider": "svgrepo",
-      "sourceUrl": "https://www.svgrepo.com/download/304378/space-travel-rocket-moon-astronaut.svg"
+      "sourceUrl": "https://www.svgrepo.com/download/307538/rock-fall-fall-danger-dirt.svg"
+    },
+    {
+      "id": "natu-pomme-de-pin",
+      "name": "Pomme de pin",
+      "category": "nature",
+      "dimension": "length",
+      "trueSize": 10,
+      "unit": "cm",
+      "svg": "assets/nature/natu-pomme-de-pin.svg",
+      "source": "Size It procedural silhouette",
+      "license": "CC0",
+      "assetStatus": "generated",
+      "measurementMethod": "dimension naturelle typique",
+      "shape": "pinecone",
+      "provider": "generated"
+    },
+    {
+      "id": "natu-tournesol",
+      "name": "Tournesol",
+      "category": "nature",
+      "dimension": "diameter",
+      "trueSize": 30,
+      "unit": "cm",
+      "svg": "assets/nature/natu-tournesol.svg",
+      "source": "Size It procedural silhouette",
+      "license": "CC0",
+      "assetStatus": "generated",
+      "measurementMethod": "dimension naturelle typique",
+      "shape": "sunflower",
+      "provider": "generated"
     },
     {
       "id": "natu-tulipe",
@@ -7970,6 +7916,36 @@
       "assetStatus": "generated",
       "measurementMethod": "dimension naturelle typique",
       "shape": "bamboo",
+      "provider": "generated"
+    },
+    {
+      "id": "natu-tronc-de-chene",
+      "name": "Tronc de chêne",
+      "category": "nature",
+      "dimension": "diameter",
+      "trueSize": 1.5,
+      "unit": "m",
+      "svg": "assets/nature/natu-tronc-de-chene.svg",
+      "source": "Size It procedural silhouette",
+      "license": "CC0",
+      "assetStatus": "generated",
+      "measurementMethod": "dimension naturelle typique",
+      "shape": "trunk",
+      "provider": "generated"
+    },
+    {
+      "id": "natu-sequoia-geant",
+      "name": "Séquoia géant",
+      "category": "nature",
+      "dimension": "height",
+      "trueSize": 80,
+      "unit": "m",
+      "svg": "assets/nature/natu-sequoia-geant.svg",
+      "source": "Size It procedural silhouette",
+      "license": "CC0",
+      "assetStatus": "generated",
+      "measurementMethod": "dimension naturelle typique",
+      "shape": "sequoia",
       "provider": "generated"
     }
   ]

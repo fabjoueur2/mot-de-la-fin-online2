@@ -263,7 +263,7 @@ const SVGREPO_QUERY = {
   'ever-echelle-3m': 'ladder',
   'ever-caddie': 'shopping cart',
   'ever-skateboard': 'skateboard',
-  'ever-palette-eur': 'pallet',
+  // « pallet » seul matche des palettes de peintre sur SVG Repo → silhouette procédurale
   'ever-conteneur-20': 'container',
   'ever-poubelle-rue': 'trash',
   'ever-panneau-stop': 'stop sign',
@@ -331,4 +331,7 @@ const SVGREPO_QUERY = {
   'natu-flocon': 'snowflake'
 };
 
-module.exports = { PHYLOPIC_QUERY, NATURAL_EARTH_NAME, SVGREPO_QUERY };
+/** IDs pour lesquels on évite SVG Repo (homonymes / pas d’icône CC0 fiable). */
+const FORCE_PROCEDURAL = new Set(['vehi-velo-cargo', 'ever-palette-eur']);
+
+module.exports = { PHYLOPIC_QUERY, NATURAL_EARTH_NAME, SVGREPO_QUERY, FORCE_PROCEDURAL };

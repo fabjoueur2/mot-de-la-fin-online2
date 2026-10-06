@@ -13,8 +13,9 @@ const fs = require('fs');
 const path = require('path');
 const { decompress } = require('fzstd');
 const { CATALOG } = require('./size-it-catalog');
-const { PHYLOPIC_QUERY, NATURAL_EARTH_NAME, SVGREPO_QUERY } = require('./size-it-source-queries');
+const { PHYLOPIC_QUERY, NATURAL_EARTH_NAME, SVGREPO_QUERY, FORCE_PROCEDURAL } = require('./size-it-source-queries');
 const { renderShape, normalizeSvg } = require('./size-it-shapes');
+const { validateSvgRepoMatch, validateStoredAsset } = require('./size-it-svgrepo-validate');
 
 const ROOT = path.join(__dirname, '..');
 const CACHE = path.join(ROOT, 'games', 'size-it', 'bank', 'cache');
@@ -308,6 +309,40 @@ async function loadSvgRepoIndex() {
   return index;
 }
 
+function titleWords(title) {
+  return String(title || '')
+    .split(/\s+/)
+    .filter(Boolean);
+}
+
+function wordInText(word, text) {
+  if (!word || word.length < 2) return false;
+  const re = new RegExp(`(?:^|[\\s_-])${word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?:[\\s_-]|$)`);
+  return re.test(` ${text} `);
+}
+
+/** Pénalités quand la requête cible un sens précis (logistique, vélo, etc.). */
+function svgRepoQueryPenalties(querySlug, entryTitle, entryTags) {
+  const hay = `${entryTitle} ${entryTags.join(' ')}`;
+  let penalty = 0;
+  const q = querySlug;
+
+  if (/pallet|euro pallet|shipping|warehouse|wood pallet|logistics pallet/.test(q)) {
+    if (/paint|artist|art|color|tray|makeup|cosmetic/.test(hay)) penalty += 80;
+    if (entryTitle === 'palette' || wordInText('palette', entryTitle)) penalty += 60;
+  }
+  if (/cargo bike|bicycle cargo|cargobike|cargo bicycle/.test(q)) {
+    if (entryTitle === 'car' || wordInText('car', entryTitle)) penalty += 80;
+    if (/automobile|sedan|vehicle car/.test(hay) && !/bike|bicycle|cycle/.test(hay)) penalty += 40;
+  }
+  if (/\bbike\b|\bbicycle\b/.test(q) && /^(car|bus|truck)$/.test(entryTitle)) penalty += 50;
+  if (/jupiter|saturn|mars|mercury|venus|neptune|uranus|planet|moon|sun|earth/.test(q)) {
+    if (/horoscope|zodiac|astrology/.test(hay)) penalty += 120;
+  }
+
+  return penalty;
+}
+
 function bestSvgRepoMatch(index, query) {
   const q = slug(query);
   if (!q) return null;
@@ -316,24 +351,62 @@ function bestSvgRepoMatch(index, query) {
   let bestScore = 0;
   for (const entry of index) {
     let score = 0;
+    const words = titleWords(entry.title);
+
     if (entry.title === q) score += 100;
-    if (entry.title.includes(q) || q.includes(entry.title)) score += 40;
+    if (entry.title.includes(q) && q.length >= 5) score += 35;
+    else if (q.includes(entry.title) && entry.title.length >= 5) score += 25;
+
     for (const t of terms) {
-      if (entry.title.includes(t)) score += 12;
-      if (entry.tags.some((tag) => tag === t || tag.includes(t))) score += 8;
+      if (words.includes(t)) score += 18;
+      else if (t.length >= 4 && wordInText(t, entry.title)) score += 10;
+      else if (t.length >= 5 && entry.title.includes(t)) score += 4;
+      if (entry.tags.some((tag) => tag === t)) score += 10;
+      else if (t.length >= 4 && entry.tags.some((tag) => tag.includes(t))) score += 5;
     }
+
+    // Évite « cargobike » → « car », « pallet » → « paint palette »
+    if (terms.length === 1 && terms[0].length >= 4) {
+      const term = terms[0];
+      if (entry.title.length <= 3 && term.includes(entry.title) && entry.title !== term) score -= 50;
+    }
+
+    score -= svgRepoQueryPenalties(q, entry.title, entry.tags);
+    if (score <= 0) continue;
+
     if (score > bestScore) {
       bestScore = score;
       best = entry;
     }
   }
-  if (bestScore < 12) return null;
+  if (bestScore < 18) return null;
   return { ...best, score: bestScore };
+}
+
+function collectRefreshIds() {
+  const refresh = new Set();
+  for (const entry of CATALOG) {
+    const metaPath = path.join(OUT_ASSETS, '_meta', `${entry.id}.json`);
+    if (!fs.existsSync(metaPath)) continue;
+    const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+    const v = validateStoredAsset(entry, meta);
+    if (!v.ok) refresh.add(entry.id);
+  }
+  return refresh;
 }
 
 async function main() {
   ensureDir(OUT_ASSETS);
   ensureDir(CACHE);
+
+  const argv = process.argv.slice(2);
+  const refreshMismatched = argv.includes('--refresh-mismatched');
+  const onlyArg = argv.find((a) => a.startsWith('--only='));
+  const onlyIds = onlyArg ? new Set(onlyArg.slice(7).split(',').filter(Boolean)) : null;
+  const refreshIds = refreshMismatched ? collectRefreshIds() : new Set();
+  if (refreshMismatched) {
+    console.log('Refresh mismatched assets:', refreshIds.size);
+  }
 
   const build = await getPhyloBuild();
   console.log('PhyloPic build', build);
@@ -346,12 +419,14 @@ async function main() {
   for (let i = 0; i < CATALOG.length; i++) {
     const entry = CATALOG[i];
     const { id, category, name, shape } = entry;
+    if (onlyIds && !onlyIds.has(id)) continue;
     process.stdout.write(`[${i + 1}/${CATALOG.length}] ${id}… `);
 
     try {
       const existing = path.join(OUT_ASSETS, category, `${id}.svg`);
       const existingMeta = path.join(OUT_ASSETS, '_meta', `${id}.json`);
-      if (fs.existsSync(existing) && fs.existsSync(existingMeta)) {
+      const mustRefresh = FORCE_PROCEDURAL.has(id) || refreshIds.has(id);
+      if (fs.existsSync(existing) && fs.existsSync(existingMeta) && !mustRefresh) {
         const meta = JSON.parse(fs.readFileSync(existingMeta, 'utf8'));
         if (meta.provider && meta.provider !== 'generated') {
           stats[meta.provider] = (stats[meta.provider] || 0) + 1;
@@ -397,23 +472,44 @@ async function main() {
         }
       }
 
+      if (FORCE_PROCEDURAL.has(id)) {
+        const gen = renderShape(shape);
+        saveSvg(category, id, gen, {
+          id, name, category,
+          provider: 'generated',
+          source: 'Size It procedural silhouette (forced)',
+          license: 'CC0'
+        });
+        stats.generated++;
+        console.log('generated (forced)');
+        continue;
+      }
+
       // SVG Repo for everything else (and geo/animal fallbacks)
       const q = SVGREPO_QUERY[id] || shape || name;
       const match = bestSvgRepoMatch(svgRepoIndex, q);
       if (match) {
-        saveSvg(category, id, match.svg, {
-          id, name, category,
-          provider: 'svgrepo',
-          source: 'SVG Repo (CC0 via HuggingFace mirror)',
-          sourceUrl: match.url,
-          license: 'CC0',
-          query: q,
-          matchTitle: match.title,
-          score: match.score
+        const check = validateSvgRepoMatch(entry, q, {
+          title: match.title,
+          score: match.score,
+          url: match.url
         });
-        stats.svgrepo++;
-        console.log('SVGRepo', match.score);
-        continue;
+        if (check.ok) {
+          saveSvg(category, id, match.svg, {
+            id, name, category,
+            provider: 'svgrepo',
+            source: 'SVG Repo (CC0 via HuggingFace mirror)',
+            sourceUrl: match.url,
+            license: 'CC0',
+            query: q,
+            matchTitle: match.title,
+            score: match.score
+          });
+          stats.svgrepo++;
+          console.log('SVGRepo', match.score);
+          continue;
+        }
+        console.log('SVGRepo rejected', check.reasons.join(','));
       }
 
       // Fallback généré

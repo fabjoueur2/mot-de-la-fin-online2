@@ -9,6 +9,8 @@
     "sync-animals": "node scripts/sync-animal-sprites.js",
     "build-size-it-bank": "node scripts/build-size-it-bank.js",
     "fetch-size-it-assets": "node scripts/fetch-size-it-assets.js",
+    "audit-size-it-assets": "node scripts/audit-size-it-assets.js",
+    "refresh-size-it-assets": "node scripts/fetch-size-it-assets.js --refresh-mismatched",
     "rebuild-size-it-bank": "node scripts/fetch-size-it-assets.js && node scripts/build-size-it-bank.js"
   },
   "engines": {
