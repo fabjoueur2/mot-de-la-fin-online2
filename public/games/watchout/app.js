@@ -248,6 +248,7 @@ function collectSettings() {
     discussionSec: parseInt($('set-discussion').value, 10),
     voteSec: parseInt($('set-vote').value, 10),
     difficulty: $('set-difficulty').value,
+    showRoleAtStart: $('set-show-role')?.value !== '0',
     categories: cats
   };
 }
@@ -333,6 +334,9 @@ function render(s) {
         $('set-discussion').value = String(s.settings.discussionSec);
         $('set-vote').value = String(s.settings.voteSec);
         $('set-difficulty').value = s.settings.difficulty;
+        if ($('set-show-role')) {
+          $('set-show-role').value = s.settings.showRoleAtStart === false ? '0' : '1';
+        }
         renderCategories(s.categoriesAvailable, s.settings.categories);
       } else if (!$('set-categories')?.children?.length) {
         renderCategories(s.categoriesAvailable, s.settings.categories);
@@ -347,9 +351,14 @@ function render(s) {
     showScreen('screen-role');
     $('role-round').textContent = `${s.currentRound}/${s.roundCount}`;
     const card = document.querySelector('.wo-role-card');
-    card.classList.toggle('impostor', s.myRole === 'impostor');
-    card.classList.toggle('crew', s.myRole === 'crew');
-    if (s.myRole === 'impostor') {
+    const showRole = s.settings?.showRoleAtStart !== false && s.myRole;
+    card.classList.toggle('impostor', showRole && s.myRole === 'impostor');
+    card.classList.toggle('crew', showRole && s.myRole === 'crew');
+    if (!showRole) {
+      $('role-title').textContent = 'C’est parti';
+      $('role-desc').textContent =
+        'Regarde attentivement la vidéo. Ton rôle reste secret jusqu’à la révélation.';
+    } else if (s.myRole === 'impostor') {
       $('role-title').textContent = 'Tu es l’IMPOSTEUR';
       $('role-desc').textContent =
         'Tu vas regarder une autre vidéo. Écoute les autres, bluffe, ne te fais pas griller.';
@@ -365,8 +374,14 @@ function render(s) {
     clearRevealPlayers();
     showScreen('screen-watch');
     const badge = $('watch-role-badge');
-    badge.textContent = s.myRole === 'impostor' ? 'Imposteur' : 'Équipe';
-    badge.className = `wo-badge ${s.myRole === 'impostor' ? 'impostor' : 'crew'}`;
+    if (s.settings?.showRoleAtStart === false || !s.myRole) {
+      badge.style.display = 'none';
+      badge.textContent = '';
+    } else {
+      badge.style.display = '';
+      badge.textContent = s.myRole === 'impostor' ? 'Imposteur' : 'Équipe';
+      badge.className = `wo-badge ${s.myRole === 'impostor' ? 'impostor' : 'crew'}`;
+    }
     if (s.myVideoId) mountWatchPlayer(s.myVideoId);
     const skipW = $('btn-skip-watch');
     if (skipW) skipW.style.display = s.isHost ? 'inline-block' : 'none';
@@ -479,9 +494,11 @@ $('btn-start').addEventListener('click', () => {
   socket.emit('wo-update-settings', settings);
   socket.emit('wo-start-game', settings);
 });
-['set-rounds', 'set-max-video', 'set-discussion', 'set-vote', 'set-difficulty'].forEach((id) => {
-  $(id)?.addEventListener('change', pushSettings);
-});
+['set-rounds', 'set-max-video', 'set-discussion', 'set-vote', 'set-difficulty', 'set-show-role'].forEach(
+  (id) => {
+    $(id)?.addEventListener('change', pushSettings);
+  }
+);
 $('set-categories')?.addEventListener('change', pushSettings);
 
 $('chat-form')?.addEventListener('submit', (e) => {

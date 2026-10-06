@@ -22,7 +22,9 @@ const DEFAULT_SETTINGS = {
   categories: [...CATEGORIES],
   discussionSec: 90,
   voteSec: 30,
-  difficulty: 'normal'
+  difficulty: 'normal',
+  /** true = écran rôle au début ; false = rôle secret jusqu’au reveal */
+  showRoleAtStart: true
 };
 
 function shuffle(arr) {
@@ -52,7 +54,8 @@ function createInitialRoomState({ hostSocketId, playerName, code }) {
       categories: [...DEFAULT_SETTINGS.categories],
       discussionSec: DEFAULT_SETTINGS.discussionSec,
       voteSec: DEFAULT_SETTINGS.voteSec,
-      difficulty: DEFAULT_SETTINGS.difficulty
+      difficulty: DEFAULT_SETTINGS.difficulty,
+      showRoleAtStart: DEFAULT_SETTINGS.showRoleAtStart
     },
     phase: 'lobby',
     currentRound: 0,
@@ -186,7 +189,8 @@ async function beginRound(room) {
   };
 
   room.phase = 'role_reveal';
-  room.phaseEndsAt = Date.now() + 5000;
+  room.phaseEndsAt =
+    Date.now() + (room.settings.showRoleAtStart === false ? 3000 : 5000);
   room.videoEnded = {};
   return { ok: true };
 }
@@ -359,6 +363,9 @@ function applySettings(room, settings = {}) {
   if (settings.difficulty != null && VALID_DIFFICULTY.includes(settings.difficulty)) {
     room.settings.difficulty = settings.difficulty;
   }
+  if (settings.showRoleAtStart != null) {
+    room.settings.showRoleAtStart = Boolean(settings.showRoleAtStart);
+  }
   if (Array.isArray(settings.categories)) {
     const cats = settings.categories.filter((c) => CATEGORIES.includes(c));
     if (cats.length) room.settings.categories = cats;
@@ -412,14 +419,15 @@ function sanitizeRoom(room, socketId) {
   let myRole = null;
   let myVideoId = null;
   let myVideoDuration = null;
+  const showRoleAtStart = room.settings.showRoleAtStart !== false;
   if (secret && (room.phase === 'role_reveal' || room.phase === 'watching')) {
-    myRole = isImpostor ? 'impostor' : 'crew';
-    if (room.phase === 'watching' || room.phase === 'role_reveal') {
-      // Vidéo uniquement à partir de watching (role_reveal = teaser sans ID)
-      if (room.phase === 'watching') {
-        myVideoId = isImpostor ? secret.impostorVideoId : secret.mainVideoId;
-        myVideoDuration = isImpostor ? secret.impostorDuration : secret.mainDuration;
-      }
+    // Ne jamais envoyer le rôle si l’hôte a choisi de le cacher
+    if (showRoleAtStart) {
+      myRole = isImpostor ? 'impostor' : 'crew';
+    }
+    if (room.phase === 'watching') {
+      myVideoId = isImpostor ? secret.impostorVideoId : secret.mainVideoId;
+      myVideoDuration = isImpostor ? secret.impostorDuration : secret.mainDuration;
     }
   }
 
