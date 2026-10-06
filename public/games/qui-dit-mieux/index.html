@@ -128,23 +128,38 @@
         <ul id="bid-history" class="players-list qdm-bid-history"></ul>
       </div>
 
-      <div class="card" id="panel-action" style="display:none;">
-        <h2>🎤 Action</h2>
-        <p class="qdm-action-promise" id="action-promise"></p>
-        <p class="share-hint" id="action-hint">Performance en vocal Discord — pas de micro in-app.</p>
-        <button class="btn btn-blue" id="btn-go-vote" style="width:100%;margin-top:12px;display:none;">Passer au vote</button>
-      </div>
-
-      <div class="card" id="panel-voting" style="display:none;">
-        <h2>🗳️ Vote</h2>
-        <p id="vote-question" class="qdm-vote-q"></p>
-        <div class="qdm-vote-tally" id="vote-tally"></div>
-        <div class="row" id="vote-buttons">
-          <button class="btn btn-success" id="btn-vote-yes">✅ Réussi</button>
-          <button class="btn btn-danger" id="btn-vote-no">❌ Raté</button>
+      <div id="panel-action-vote" class="qdm-action-layout" style="display:none;">
+        <div class="qdm-action-stack">
+          <div class="card qdm-action-main" id="panel-action" style="display:none;">
+            <h2>🎤 Action</h2>
+            <p class="qdm-action-promise" id="action-promise"></p>
+            <p class="share-hint" id="action-hint">Performance en vocal Discord — pas de micro in-app.</p>
+            <button class="btn btn-blue" id="btn-go-vote" style="width:100%;margin-top:12px;display:none;">Passer au vote</button>
+          </div>
+          <div class="card" id="panel-voting" style="display:none;">
+            <h2>🗳️ Vote</h2>
+            <p id="vote-question" class="qdm-vote-q"></p>
+            <div class="qdm-vote-tally" id="vote-tally"></div>
+            <div class="row" id="vote-buttons">
+              <button class="btn btn-success" id="btn-vote-yes">✅ Réussi</button>
+              <button class="btn btn-danger" id="btn-vote-no">❌ Raté</button>
+            </div>
+            <p class="share-hint" id="vote-waiting" style="display:none;">Vote enregistré — en attente des autres…</p>
+            <button class="btn btn-secondary btn-sm" id="btn-force-resolve" style="display:none;margin-top:10px;">Forcer le décompte (hôte)</button>
+          </div>
         </div>
-        <p class="share-hint" id="vote-waiting" style="display:none;">Vote enregistré — en attente des autres…</p>
-        <button class="btn btn-secondary btn-sm" id="btn-force-resolve" style="display:none;margin-top:10px;">Forcer le décompte (hôte)</button>
+        <aside class="card qdm-counter-panel" id="counter-panel" aria-live="polite">
+          <div class="label">COMPTEUR</div>
+          <p class="qdm-counter-who" id="counter-who">—</p>
+          <div class="qdm-counter-value" id="counter-value">0</div>
+          <p class="qdm-counter-target" id="counter-target"></p>
+          <div class="qdm-counter-controls" id="counter-controls" style="display:none;">
+            <button type="button" class="btn btn-secondary qdm-counter-btn" id="btn-count-minus" aria-label="Moins un">−</button>
+            <button type="button" class="btn btn-primary qdm-counter-btn" id="btn-count-plus" aria-label="Plus un">+</button>
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-count-reset">Reset</button>
+          </div>
+          <p class="share-hint" id="counter-hint" style="margin-top:8px;"></p>
+        </aside>
       </div>
 
       <div class="card" id="panel-last-result" style="display:none;">
@@ -175,6 +190,6 @@
 
   <script src="/socket.io/socket.io.js"></script>
   <script src="/js/escape.js"></script>
-  <script src="app.js?v=3"></script>
+  <script src="app.js?v=4"></script>
 </body>
 </html>

@@ -585,6 +585,62 @@ footer { text-align: center; margin-top: 28px; color: var(--muted); font-size: .
   text-align: center;
   margin: 8px 0 12px;
 }
+.qdm-action-layout {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+@media (min-width: 720px) {
+  .qdm-action-layout {
+    grid-template-columns: 1fr minmax(200px, 260px);
+    align-items: start;
+  }
+}
+.qdm-action-layout > .card,
+.qdm-action-stack > .card { margin-bottom: 0; }
+.qdm-action-stack { display: grid; gap: 12px; }
+.qdm-counter-panel {
+  text-align: center;
+  border-color: rgba(77, 150, 255, 0.35);
+  background: linear-gradient(180deg, rgba(77, 150, 255, 0.08), transparent);
+}
+.qdm-counter-who {
+  margin: 4px 0 8px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.qdm-counter-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(2.8rem, 8vw, 3.6rem);
+  font-weight: 800;
+  line-height: 1;
+  color: var(--accent2);
+  letter-spacing: -0.02em;
+}
+.qdm-counter-target {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.qdm-counter-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 14px;
+}
+.qdm-counter-btn {
+  font-size: 1.6rem;
+  font-weight: 800;
+  min-height: 52px;
+  padding: 0.4rem;
+}
+.qdm-counter-controls #btn-count-reset {
+  grid-column: 1 / -1;
+}
+.qdm-counter-panel.is-me {
+  border-color: rgba(107, 203, 119, 0.45);
+  box-shadow: 0 0 0 1px rgba(107, 203, 119, 0.2);
+}
 .qdm-vote-q { font-weight: 600; margin-bottom: 12px; text-align: center; }
 .qdm-vote-tally {
   text-align: center;

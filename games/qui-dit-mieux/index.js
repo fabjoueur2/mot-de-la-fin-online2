@@ -47,6 +47,8 @@ function createInitialRoomState({ hostSocketId, playerName, code }) {
     bids: [],
     votes: {},
     auctionEndsAt: null,
+    counterId: null,
+    liveCount: 0,
     usedChallengeIds: [],
     deck: [],
     lastResult: null
@@ -96,6 +98,24 @@ function clearRoundTransient(room) {
   room.bids = [];
   room.votes = {};
   room.auctionEndsAt = null;
+  room.counterId = null;
+  room.liveCount = 0;
+}
+
+/**
+ * Compteur pendant l'action : hôte par défaut.
+ * Si l'hôte est le challenger → joueur (hors challenger) avec le plus de points.
+ */
+function pickCounterId(room) {
+  const challengerId = room.currentBidderId;
+  const hostId = room.hostId;
+  if (hostId && hostId !== challengerId && getPlayer(room, hostId)) {
+    return hostId;
+  }
+  const candidates = room.players
+    .filter((p) => p.id !== challengerId)
+    .sort((a, b) => (b.score || 0) - (a.score || 0) || a.name.localeCompare(b.name));
+  return candidates[0]?.id || null;
 }
 
 function startBiddingRound(room) {
@@ -138,6 +158,8 @@ function beginAction(room) {
   room.phase = 'action';
   room.auctionEndsAt = null;
   room.votes = {};
+  room.liveCount = 0;
+  room.counterId = pickCounterId(room);
   return true;
 }
 
@@ -272,7 +294,8 @@ function sanitizeRoom(room, socketId) {
       score: p.score || 0,
       isHost: p.id === room.hostId,
       isOpener: p.id === room.openerId,
-      isChallenger: p.id === room.currentBidderId
+      isChallenger: p.id === room.currentBidderId,
+      isCounter: p.id === room.counterId
     })),
     ranking: ranked,
     currentRound: room.currentRound,
@@ -300,7 +323,13 @@ function sanitizeRoom(room, socketId) {
       && room.votes[me.id] === undefined,
     myVote: me ? room.votes[me.id] : undefined,
     lastResult: room.lastResult,
-    minPlayers: MIN_PLAYERS
+    minPlayers: MIN_PLAYERS,
+    counterId: room.counterId || null,
+    counterName: room.counterId ? playerName(room, room.counterId) : null,
+    liveCount: typeof room.liveCount === 'number' ? room.liveCount : 0,
+    canCount:
+      (room.phase === 'action' || room.phase === 'voting') &&
+      Boolean(me && room.counterId && me.id === room.counterId)
   };
 }
 
@@ -318,9 +347,18 @@ function ensureValidMaster(room) {
     if (room.phase === 'action' || room.phase === 'voting') {
       room.currentBidderId = null;
       room.currentBid = 0;
+      room.counterId = null;
+      room.liveCount = 0;
       if (room.currentRound >= room.settings.roundCount) room.phase = 'end';
       else startBiddingRound(room);
     }
+  }
+  if (
+    (room.phase === 'action' || room.phase === 'voting') &&
+    room.counterId &&
+    !getPlayer(room, room.counterId)
+  ) {
+    room.counterId = pickCounterId(room);
   }
 }
 
@@ -399,11 +437,34 @@ function registerHandlers(io, ctx) {
       broadcastRoom(room);
     });
 
+    socket.on('qdm-count-delta', ({ delta } = {}) => {
+      const room = getRoom(ctx, socket);
+      if (!room || (room.phase !== 'action' && room.phase !== 'voting')) return;
+      if (socket.id !== room.counterId) return;
+      const d = parseInt(delta, 10);
+      if (d !== 1 && d !== -1) return;
+      const next = (room.liveCount || 0) + d;
+      room.liveCount = Math.max(0, Math.min(9999, next));
+      broadcastRoom(room);
+    });
+
+    socket.on('qdm-count-reset', () => {
+      const room = getRoom(ctx, socket);
+      if (!room || (room.phase !== 'action' && room.phase !== 'voting')) return;
+      if (socket.id !== room.counterId) return;
+      room.liveCount = 0;
+      broadcastRoom(room);
+    });
+
     socket.on('qdm-go-to-vote', () => {
       const room = getRoom(ctx, socket);
       if (!room || room.phase !== 'action') return;
-      // Challenger ou hôte peut lancer le vote
-      if (socket.id !== room.currentBidderId && !isHost(room, socket.id)) return;
+      // Challenger, hôte ou compteur peut lancer le vote
+      const allowed =
+        socket.id === room.currentBidderId ||
+        isHost(room, socket.id) ||
+        socket.id === room.counterId;
+      if (!allowed) return;
       room.phase = 'voting';
       room.votes = {};
       broadcastRoom(room);

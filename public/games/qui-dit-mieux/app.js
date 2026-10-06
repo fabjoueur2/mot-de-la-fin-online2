@@ -175,6 +175,9 @@ function renderScores(listEl, players) {
       p.isChallenger && (state?.phase === 'action' || state?.phase === 'voting')
         ? '<span class="qdm-badge qdm-badge-challenger">Challenger</span>'
         : '',
+      p.isCounter && (state?.phase === 'action' || state?.phase === 'voting')
+        ? '<span class="qdm-badge qdm-badge-opener">Compteur</span>'
+        : '',
       p.id === state?.myId ? '<span class="qdm-badge qdm-badge-me">Vous</span>' : ''
     ].filter(Boolean).join(' ');
     return `<li><span class="qdm-rank">${i + 1}.</span> <strong>${escapeHtml(p.name)}</strong> ${badges}<span class="qdm-score">${p.score || 0} pts</span></li>`;
@@ -217,13 +220,17 @@ function renderGame(s) {
     : '';
 
   const bidding = $('panel-bidding');
+  const actionVote = $('panel-action-vote');
   const action = $('panel-action');
   const voting = $('panel-voting');
   const lastRes = $('panel-last-result');
 
   bidding.style.display = s.phase === 'bidding' ? 'block' : 'none';
+  const showActionVote = s.phase === 'action' || s.phase === 'voting';
+  actionVote.style.display = showActionVote ? 'grid' : 'none';
   action.style.display = s.phase === 'action' ? 'block' : 'none';
   voting.style.display = s.phase === 'voting' ? 'block' : 'none';
+  if (showActionVote) renderCounter(s);
 
   if (s.lastResult && (s.phase === 'bidding' || s.phase === 'end')) {
     lastRes.style.display = 'block';
@@ -255,8 +262,10 @@ function renderGame(s) {
   }
 
   if (s.phase === 'action') {
-    $('action-promise').textContent = `${s.currentBidderName} doit réaliser : ${s.currentBid} ${s.challenge?.unite || ''}`;
-    const canGoVote = s.isHost || s.myId === s.currentBidderId;
+    const unit = s.challenge?.unite || '';
+    $('action-promise').textContent = `${s.currentBidderName} doit réaliser : ${s.currentBid} ${unit}`;
+    const canGoVote =
+      s.isHost || s.myId === s.currentBidderId || s.myId === s.counterId;
     $('btn-go-vote').style.display = canGoVote ? 'block' : 'none';
     $('action-hint').textContent = s.myId === s.currentBidderId
       ? 'À vous ! Faites votre perf en vocal Discord, puis passez au vote.'
@@ -279,6 +288,31 @@ function renderGame(s) {
   }
 
   renderScores($('live-scores'), s.players);
+}
+
+function renderCounter(s) {
+  const panel = $('counter-panel');
+  if (!panel) return;
+  const unit = s.challenge?.unite || '';
+  $('counter-value').textContent = String(s.liveCount ?? 0);
+  $('counter-who').textContent = s.counterName
+    ? `Compté par ${s.counterName}`
+    : 'Personne pour compter';
+  $('counter-target').textContent =
+    s.currentBid > 0 ? `Objectif : ${s.currentBid} ${unit}` : '';
+  const controls = $('counter-controls');
+  const hint = $('counter-hint');
+  if (s.canCount) {
+    controls.style.display = 'grid';
+    panel.classList.add('is-me');
+    hint.textContent = 'C’est toi qui comptes — utilise + / −';
+  } else {
+    controls.style.display = 'none';
+    panel.classList.remove('is-me');
+    hint.textContent = s.counterName
+      ? `${s.counterName} tient le compteur.`
+      : '';
+  }
 }
 
 function renderEnd(s) {
@@ -396,6 +430,20 @@ $('bid-input').addEventListener('keydown', (e) => {
 });
 
 $('btn-go-vote').addEventListener('click', () => socket.emit('qdm-go-to-vote'));
+$('btn-count-plus')?.addEventListener('click', () => socket.emit('qdm-count-delta', { delta: 1 }));
+$('btn-count-minus')?.addEventListener('click', () => socket.emit('qdm-count-delta', { delta: -1 }));
+$('btn-count-reset')?.addEventListener('click', () => socket.emit('qdm-count-reset'));
+document.addEventListener('keydown', (e) => {
+  if (!state?.canCount) return;
+  if (e.target && ['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) return;
+  if (e.key === '+' || e.key === '=') {
+    e.preventDefault();
+    socket.emit('qdm-count-delta', { delta: 1 });
+  } else if (e.key === '-' || e.key === '_') {
+    e.preventDefault();
+    socket.emit('qdm-count-delta', { delta: -1 });
+  }
+});
 $('btn-vote-yes').addEventListener('click', () => socket.emit('qdm-cast-vote', { success: true }));
 $('btn-vote-no').addEventListener('click', () => socket.emit('qdm-cast-vote', { success: false }));
 $('btn-force-resolve').addEventListener('click', () => socket.emit('qdm-host-force-resolve'));
