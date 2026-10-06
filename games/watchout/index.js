@@ -57,6 +57,7 @@ function createInitialRoomState({ hostSocketId, playerName, code }) {
     phase: 'lobby',
     currentRound: 0,
     usedPairIds: [],
+    usedVideoIds: [],
     impostorHistory: [],
     /** @type {null | object} secrets de manche — jamais exposés tels quels */
     roundSecret: null,
@@ -137,20 +138,37 @@ async function beginRound(room) {
   const impostor = pickImpostor(room);
   if (!impostor) return { ok: false, msg: 'Pas assez de joueurs.' };
 
+  const cats = Array.isArray(room.settings.categories) ? room.settings.categories : [...CATEGORIES];
+  if (!cats.length) {
+    return { ok: false, msg: 'Sélectionne au moins une catégorie.' };
+  }
+
   let pair;
   try {
     pair = await pickPair({
-      categories: room.settings.categories,
+      categories: cats,
       difficulty: room.settings.difficulty,
       excludePairIds: room.usedPairIds,
+      excludeVideoIds: room.usedVideoIds,
       maxVideoSec: room.settings.maxVideoSec
     });
   } catch (e) {
+    console.warn('[watchout] pickPair error:', e.message);
     return { ok: false, msg: 'Impossible de sélectionner des vidéos.' };
   }
-  if (!pair) return { ok: false, msg: 'Aucune paire de vidéos disponible.' };
+  if (!pair) return { ok: false, msg: 'Aucune paire de vidéos pour ces catégories.' };
+
+  // Garde-fou : rejeter une paire hors catégories demandées
+  if (cats.length && pair.category && !cats.includes(pair.category)) {
+    return { ok: false, msg: 'Aucune paire de vidéos pour ces catégories.' };
+  }
 
   room.usedPairIds = [...(room.usedPairIds || []), pair.pairId];
+  room.usedVideoIds = [
+    ...(room.usedVideoIds || []),
+    pair.mainVideo.youtubeId,
+    pair.impostorVideo.youtubeId
+  ].filter(Boolean);
   room.impostorHistory = [...(room.impostorHistory || []), impostor.id];
   room.roundSecret = {
     pairId: pair.pairId,
@@ -314,16 +332,42 @@ async function advanceAfterScoreboard(room) {
     room.ranking = [...room.players]
       .map((p) => ({ id: p.id, name: p.name, score: p.score || 0 }))
       .sort((a, b) => b.score - a.score || a.name.localeCompare(b.name));
-    return true;
+    return { ok: true };
   }
-  const r = await beginRound(room);
-  return r.ok;
+  return beginRound(room);
+}
+
+function applySettings(room, settings = {}) {
+  if (settings.roundCount != null) {
+    const n = parseInt(settings.roundCount, 10);
+    if (VALID_ROUNDS.includes(n)) room.settings.roundCount = n;
+  }
+  if (settings.maxVideoSec != null) {
+    const n = parseInt(settings.maxVideoSec, 10);
+    if (VALID_MAX_VIDEO.includes(n)) room.settings.maxVideoSec = n;
+  }
+  if (settings.discussionSec != null) {
+    const n = parseInt(settings.discussionSec, 10);
+    if (VALID_DISCUSSION.includes(n)) room.settings.discussionSec = n;
+  }
+  if (settings.voteSec != null) {
+    const n = parseInt(settings.voteSec, 10);
+    if (VALID_VOTE.includes(n)) room.settings.voteSec = n;
+  }
+  if (settings.difficulty != null && VALID_DIFFICULTY.includes(settings.difficulty)) {
+    room.settings.difficulty = settings.difficulty;
+  }
+  if (Array.isArray(settings.categories)) {
+    const cats = settings.categories.filter((c) => CATEGORIES.includes(c));
+    if (cats.length) room.settings.categories = cats;
+  }
 }
 
 function resetToLobby(room) {
   room.phase = 'lobby';
   room.currentRound = 0;
   room.usedPairIds = [];
+  room.usedVideoIds = [];
   room.impostorHistory = [];
   room.roundSecret = null;
   room.phaseEndsAt = null;
@@ -343,7 +387,11 @@ async function startGame(room) {
   if (room.players.length > MAX_PLAYERS) {
     return { ok: false, msg: `Maximum ${MAX_PLAYERS} joueurs.` };
   }
+  if (!room.settings.categories?.length) {
+    return { ok: false, msg: 'Sélectionne au moins une catégorie.' };
+  }
   room.usedPairIds = [];
+  room.usedVideoIds = [];
   room.impostorHistory = [];
   room.currentRound = 0;
   room.players.forEach((p) => {
@@ -390,6 +438,8 @@ function sanitizeRoom(room, socketId) {
     myRole,
     myVideoId,
     myVideoDuration,
+    pairCategory: secret?.category || publicResults?.category || null,
+    pairLabel: secret?.label || publicResults?.pairLabel || null,
     hostId: room.hostId,
     settings: { ...room.settings },
     players: room.players.map((p) => ({
@@ -513,36 +563,15 @@ function registerHandlers(io, ctx) {
     socket.on('wo-update-settings', (settings = {}) => {
       const room = getRoom(ctx, socket);
       if (!room || !isHost(room, socket.id) || room.phase !== 'lobby') return;
-
-      if (settings.roundCount != null) {
-        const n = parseInt(settings.roundCount, 10);
-        if (VALID_ROUNDS.includes(n)) room.settings.roundCount = n;
-      }
-      if (settings.maxVideoSec != null) {
-        const n = parseInt(settings.maxVideoSec, 10);
-        if (VALID_MAX_VIDEO.includes(n)) room.settings.maxVideoSec = n;
-      }
-      if (settings.discussionSec != null) {
-        const n = parseInt(settings.discussionSec, 10);
-        if (VALID_DISCUSSION.includes(n)) room.settings.discussionSec = n;
-      }
-      if (settings.voteSec != null) {
-        const n = parseInt(settings.voteSec, 10);
-        if (VALID_VOTE.includes(n)) room.settings.voteSec = n;
-      }
-      if (settings.difficulty != null && VALID_DIFFICULTY.includes(settings.difficulty)) {
-        room.settings.difficulty = settings.difficulty;
-      }
-      if (Array.isArray(settings.categories)) {
-        const cats = settings.categories.filter((c) => CATEGORIES.includes(c));
-        if (cats.length) room.settings.categories = cats;
-      }
+      applySettings(room, settings);
       broadcastRoom(room);
     });
 
-    socket.on('wo-start-game', async () => {
+    socket.on('wo-start-game', async (payload = {}) => {
       const room = getRoom(ctx, socket);
       if (!room || !isHost(room, socket.id) || room.phase !== 'lobby') return;
+      // Appliquer les réglages du lobby juste avant le lancement (évite course avec update)
+      if (payload && typeof payload === 'object') applySettings(room, payload);
       const check = await startGame(room);
       if (!check.ok) {
         socket.emit('error-msg', check.msg);

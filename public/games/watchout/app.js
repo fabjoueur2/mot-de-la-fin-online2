@@ -228,25 +228,33 @@ function renderCategories(available, selected) {
   const box = $('set-categories');
   if (!box) return;
   const sel = new Set(selected || available);
-  box.innerHTML = (available || [])
+  const next = (available || [])
     .map((c) => {
       const label = CAT_LABELS[c] || c;
       return `<label><input type="checkbox" value="${c}" ${sel.has(c) ? 'checked' : ''}> ${label}</label>`;
     })
     .join('');
+  // Évite de écraser les cases pendant que l’hôte clique
+  if (box.dataset.signature === next) return;
+  box.dataset.signature = next;
+  box.innerHTML = next;
 }
 
-function pushSettings() {
-  if (!state?.isHost || state.phase !== 'lobby') return;
+function collectSettings() {
   const cats = [...document.querySelectorAll('#set-categories input:checked')].map((i) => i.value);
-  socket.emit('wo-update-settings', {
+  return {
     roundCount: parseInt($('set-rounds').value, 10),
     maxVideoSec: parseInt($('set-max-video').value, 10),
     discussionSec: parseInt($('set-discussion').value, 10),
     voteSec: parseInt($('set-vote').value, 10),
     difficulty: $('set-difficulty').value,
     categories: cats
-  });
+  };
+}
+
+function pushSettings() {
+  if (!state?.isHost || state.phase !== 'lobby') return;
+  socket.emit('wo-update-settings', collectSettings());
 }
 
 function renderChat(targetId, messages) {
@@ -306,12 +314,17 @@ function render(s) {
     $('lobby-min-hint').textContent = `Minimum ${s.minPlayers} joueurs pour lancer.`;
     $('host-settings').style.display = s.isHost ? 'block' : 'none';
     if (s.isHost) {
-      $('set-rounds').value = String(s.settings.roundCount);
-      $('set-max-video').value = String(s.settings.maxVideoSec);
-      $('set-discussion').value = String(s.settings.discussionSec);
-      $('set-vote').value = String(s.settings.voteSec);
-      $('set-difficulty').value = s.settings.difficulty;
-      renderCategories(s.categoriesAvailable, s.settings.categories);
+      const focusInSettings = Boolean(document.activeElement?.closest?.('#host-settings'));
+      if (!focusInSettings) {
+        $('set-rounds').value = String(s.settings.roundCount);
+        $('set-max-video').value = String(s.settings.maxVideoSec);
+        $('set-discussion').value = String(s.settings.discussionSec);
+        $('set-vote').value = String(s.settings.voteSec);
+        $('set-difficulty').value = s.settings.difficulty;
+        renderCategories(s.categoriesAvailable, s.settings.categories);
+      } else if (!$('set-categories')?.children?.length) {
+        renderCategories(s.categoriesAvailable, s.settings.categories);
+      }
     }
     return;
   }
@@ -379,6 +392,11 @@ function render(s) {
       $('reveal-outcome').textContent = r.accusedCorrect
         ? `Le groupe a accusé ${r.accusedName} — correct !`
         : `Le groupe a accusé ${r.accusedName || 'personne'} — l’Imposteur s’en sort.`;
+      const themeEl = $('reveal-theme');
+      if (themeEl) {
+        const cat = CAT_LABELS[r.category] || r.category || s.pairCategory || '';
+        themeEl.textContent = cat ? `Thème : ${cat}` : '';
+      }
       mountRevealPreview('reveal-main', r.mainVideoId, 'main');
       mountRevealPreview('reveal-imp', r.impostorVideoId, 'imp');
     }
@@ -437,8 +455,13 @@ $('btn-join').addEventListener('click', () => {
   socket.emit('join-room', { code, playerName: name, gameId: GAME_ID });
 });
 $('btn-start').addEventListener('click', () => {
-  pushSettings();
-  socket.emit('wo-start-game');
+  const settings = collectSettings();
+  if (!settings.categories.length) {
+    alert('Sélectionne au moins une catégorie.');
+    return;
+  }
+  socket.emit('wo-update-settings', settings);
+  socket.emit('wo-start-game', settings);
 });
 ['set-rounds', 'set-max-video', 'set-discussion', 'set-vote', 'set-difficulty'].forEach((id) => {
   $(id)?.addEventListener('change', pushSettings);
