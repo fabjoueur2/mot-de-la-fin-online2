@@ -18,14 +18,74 @@ const VALID_ROUNDS = [5, 10];
 const VALID_ESTIMATE_SEC = [15, 20, 30];
 const VALID_CATEGORIES = ['geography', 'standard_object', 'sports', 'space'];
 
-/** Références fixes (taille en mètres). */
-const REFERENCES = [
-  { id: 'human', label: 'Humain', sizeM: 1.8, maxTrueM: 3 },
-  { id: 'bus', label: 'Bus', sizeM: 12, maxTrueM: 30 },
-  { id: 'pitch', label: 'Terrain de foot', sizeM: 105, maxTrueM: 300 },
-  { id: 'eiffel', label: 'Tour Eiffel', sizeM: 330, maxTrueM: 50000 },
-  { id: 'france', label: 'France (largeur)', sizeM: 950000, maxTrueM: Infinity }
-];
+const DIMENSION_LABELS = {
+  projected_width: 'largeur projetée',
+  long_side: 'grand côté',
+  length: 'longueur',
+  height: 'hauteur',
+  diameter: 'diamètre',
+  width: 'largeur',
+  short_side: 'petit côté'
+};
+
+function dimensionLabel(dim) {
+  return DIMENSION_LABELS[dim] || String(dim || 'taille').replace(/_/g, ' ');
+}
+
+/** Références avec vraies silhouettes quand possible. */
+function buildReferences() {
+  const france = ALL_ITEMS.find((i) => i.id === 'geo-france');
+  const pitch = ALL_ITEMS.find((i) => i.id === 'sport-association-football-pitch-fifa-recommended-international');
+  const franceM = france ? toMeters(france.trueSize, france.unit) : 6022700;
+  const pitchM = pitch ? toMeters(pitch.trueSize, pitch.unit) : 105;
+
+  return [
+    {
+      id: 'human',
+      label: 'Humain',
+      sizeM: 1.8,
+      maxTrueM: 3,
+      svgUrl: '/games/size-it/refs/human.svg'
+    },
+    {
+      id: 'bus',
+      label: 'Bus',
+      sizeM: 12,
+      maxTrueM: 30,
+      svgUrl: '/games/size-it/refs/bus.svg'
+    },
+    {
+      id: 'pitch',
+      label: 'Terrain de foot',
+      sizeM: pitchM,
+      maxTrueM: 300,
+      svgUrl: pitch
+        ? publicSvgUrl(pitch.svg)
+        : '/games/size-it/assets/standards/sport-association-football-pitch-fifa-recommended-international.svg'
+    },
+    {
+      id: 'eiffel',
+      label: 'Tour Eiffel',
+      sizeM: 330,
+      maxTrueM: 50_000,
+      svgUrl: '/games/size-it/refs/eiffel.svg'
+    },
+    {
+      id: 'france',
+      label: 'France',
+      sizeM: franceM,
+      maxTrueM: Infinity,
+      // SVG dédié (la banque geo-france était un export incomplet)
+      svgUrl: '/games/size-it/refs/france.svg'
+    }
+  ];
+}
+
+let REFERENCES = null;
+function getReferences() {
+  if (!REFERENCES) REFERENCES = buildReferences();
+  return REFERENCES;
+}
 
 function shuffle(arr) {
   const a = [...arr];
@@ -55,21 +115,27 @@ function fromMeters(meters, unit) {
   return m;
 }
 
-function pickReference(trueSizeM, category) {
-  if (category === 'space' && trueSizeM > 1e6) {
-    return { id: 'earth', label: 'Terre (diamètre)', sizeM: 12742000 };
-  }
-  for (const ref of REFERENCES) {
-    if (trueSizeM < ref.maxTrueM) {
-      return { id: ref.id, label: ref.label, sizeM: ref.sizeM };
-    }
-  }
-  return { id: 'france', label: 'France (largeur)', sizeM: 950000 };
-}
-
 function publicSvgUrl(svgPath) {
   const rel = String(svgPath || '').replace(/^assets\//, '');
   return `/games/size-it/assets/${rel}`;
+}
+
+function pickReference(trueSizeM, category) {
+  if (category === 'space' && trueSizeM > 1e6) {
+    return {
+      id: 'earth',
+      label: 'Terre (diamètre)',
+      sizeM: 12_742_000,
+      svgUrl: '/games/size-it/refs/earth.svg'
+    };
+  }
+  for (const ref of getReferences()) {
+    if (trueSizeM < ref.maxTrueM) {
+      return { id: ref.id, label: ref.label, sizeM: ref.sizeM, svgUrl: ref.svgUrl };
+    }
+  }
+  const last = getReferences()[getReferences().length - 1];
+  return { id: last.id, label: last.label, sizeM: last.sizeM, svgUrl: last.svgUrl };
 }
 
 function createInitialRoomState({ hostSocketId, playerName, code }) {
@@ -139,6 +205,7 @@ function puzzlePublicMeta(item, reference, { withTruth } = {}) {
     name: item.name,
     category: item.category,
     dimension: item.dimension,
+    dimensionLabel: dimensionLabel(item.dimension),
     unit: item.unit,
     svgUrl: publicSvgUrl(item.svg),
     reference
@@ -185,16 +252,22 @@ function allLocked(room) {
 
 function finalizeRound(room) {
   if (room.phase !== 'estimate' && room.phase !== 'locked') return false;
-  const trueSizeM = room.puzzle?.trueSizeM;
-  if (!trueSizeM) return false;
+  if (!room.puzzle) return false;
+
+  let trueSizeM = Number(room.puzzle.trueSizeM);
+  if (!Number.isFinite(trueSizeM) || trueSizeM <= 0) {
+    trueSizeM = toMeters(room.puzzle.trueSize, room.puzzle.unit);
+  }
+  if (!Number.isFinite(trueSizeM) || trueSizeM <= 0) return false;
+  room.puzzle.trueSizeM = trueSizeM;
 
   // Auto-lock remaining with last submitted value or default = reference size
   const rows = [];
   for (const p of room.players) {
     const est = room.estimates[p.id];
-    let valueM = est?.valueM;
+    let valueM = Number(est?.valueM);
     if (!Number.isFinite(valueM) || valueM <= 0) {
-      valueM = room.reference?.sizeM || trueSizeM;
+      valueM = Number(room.reference?.sizeM) || trueSizeM;
     }
     room.estimates[p.id] = {
       valueM,
@@ -212,6 +285,8 @@ function finalizeRound(room) {
 
   room.roundResults = scored.map((s) => ({
     ...s,
+    // JSON n'accepte pas Infinity
+    ratio: Number.isFinite(s.ratio) ? s.ratio : null,
     name: getPlayer(room, s.playerId)?.name || 'Joueur',
     estimateNative: fromMeters(s.estimateM, room.puzzle.unit)
   }));
@@ -335,12 +410,10 @@ function ensureValidMaster(room) {
 
 function onTick(room) {
   if (room.phase === 'estimate' && room.estimateEndsAt != null && Date.now() >= room.estimateEndsAt) {
-    finalizeRound(room);
-    return true;
+    return finalizeRound(room);
   }
   if (room.phase === 'reveal' && room.revealAutoAt != null && Date.now() >= room.revealAutoAt) {
-    advanceAfterReveal(room);
-    return true;
+    return advanceAfterReveal(room);
   }
   return false;
 }
@@ -405,11 +478,18 @@ function registerHandlers(io, ctx) {
       const room = getRoom(ctx, socket);
       if (!room || room.phase !== 'estimate') return;
       if (!getPlayer(room, socket.id)) return;
-      if (room.estimates[socket.id]?.locked) return;
+      if (room.estimates[socket.id]?.locked) {
+        // déjà verrouillé — renvoyer l'état (évite un bouton mort)
+        broadcastRoom(room);
+        return;
+      }
 
       let v = Number(valueM);
       if (!Number.isFinite(v) || v <= 0) {
         v = room.estimates[socket.id]?.valueM;
+      }
+      if (!Number.isFinite(v) || v <= 0) {
+        v = room.reference?.sizeM;
       }
       if (!Number.isFinite(v) || v <= 0) {
         socket.emit('error-msg', 'Estimation invalide.');
@@ -422,12 +502,18 @@ function registerHandlers(io, ctx) {
         lockedAt: Date.now()
       };
 
-      if (allLocked(room)) {
+      const timeUp = room.estimateEndsAt != null && Date.now() >= room.estimateEndsAt;
+      if (allLocked(room) || timeUp) {
         finalizeRound(room);
-      } else if (Object.values(room.estimates).filter((e) => e.locked).length === room.players.length) {
-        // noop
       }
       broadcastRoom(room);
+    });
+
+    socket.on('si-times-up', () => {
+      const room = getRoom(ctx, socket);
+      if (!room || room.phase !== 'estimate') return;
+      if (room.estimateEndsAt != null && Date.now() < room.estimateEndsAt - 250) return;
+      if (finalizeRound(room)) broadcastRoom(room);
     });
 
     socket.on('si-next-round', () => {

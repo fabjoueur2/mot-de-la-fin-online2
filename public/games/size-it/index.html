@@ -110,22 +110,40 @@
       </div>
 
       <div class="card si-stage-card" id="panel-estimate">
-        <div class="si-stage" id="si-stage">
-          <div class="si-col si-ref-col">
-            <div class="si-sil-wrap" id="ref-wrap">
-              <div class="si-sil si-ref-sil" id="ref-sil"></div>
-            </div>
-            <div class="si-label" id="ref-label">Référence</div>
+        <div class="si-canvas-wrap">
+          <div class="si-hud">
+            <span id="si-hud-line">ROUND 1 / 10 · SCORE 0</span>
           </div>
-          <div class="si-col si-est-col">
-            <div class="si-sil-wrap" id="est-wrap">
-              <img class="si-sil si-est-sil" id="est-sil" alt="silhouette" draggable="false">
-              <div class="si-handle" id="est-handle" title="Redimensionner"></div>
+          <div class="si-canvas" id="si-canvas">
+            <div class="si-zoom" aria-label="Zoom">
+              <button type="button" class="si-zoom-btn" id="btn-zoom-in" title="Zoom +">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M11 8v6M8 11h6M16.5 16.5L21 21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              </button>
+              <button type="button" class="si-zoom-btn" id="btn-zoom-out" title="Zoom −">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 11h6M16.5 16.5L21 21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              </button>
             </div>
-            <div class="si-label" id="est-value">—</div>
+            <div class="si-floor" id="si-floor"></div>
+
+            <div class="si-obj si-obj-ref" id="ref-obj">
+              <img class="si-sil si-ref-sil" id="ref-sil" alt="référence" draggable="false">
+              <div class="si-obj-label" id="ref-label">Référence</div>
+            </div>
+
+            <div class="si-obj si-obj-est" id="est-obj">
+              <img class="si-sil si-est-sil" id="est-sil" alt="à estimer" draggable="false">
+              <button type="button" class="si-resize-handle" id="est-handle" title="Redimensionner" aria-label="Redimensionner">
+                <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                  <path d="M7 17L17 7M7 17h5M7 17v-5M17 7h-5M17 7v5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
-        <p class="share-hint si-hint">Glisse le haut de la silhouette (ou molette) pour estimer.</p>
+        <div class="si-est-meta">
+          <div class="si-label" id="est-value">—</div>
+          <p class="share-hint si-hint">Déplace l’objet · redimensionne avec la double flèche · zoom ±</p>
+        </div>
         <div class="row si-actions">
           <button class="btn btn-primary" id="btn-lock" style="flex:1;">🔒 Verrouiller</button>
         </div>
@@ -158,6 +176,6 @@
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
-  <script src="app.js?v=1"></script>
+  <script src="app.js?v=3"></script>
 </body>
 </html>

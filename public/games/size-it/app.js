@@ -6,11 +6,29 @@ let state = null;
 let timerAnimId = null;
 let smoothTimer = { endsAt: null, durationMs: 20000, frozenPct: 100, running: false };
 let estimateM = null;
-let dragging = false;
 let lastPuzzleId = null;
+let lastTimesUpAt = 0;
 
-const STAGE_H = 280; // px usable for tallest silhouette
-const REF_FRAC = 0.42; // reference height fraction of stage when object >> ref
+/** Vue canvas : zoom + position de l'objet à estimer (%, depuis la gauche / depuis le sol). */
+let viewZoom = 1;
+let estPos = { xPct: 58, yPx: 0 }; // yPx = offset au-dessus du sol
+let dragMode = null; // 'move' | 'resize' | null
+let dragStart = null;
+
+const REF_TARGET_PX = 88; // hauteur cible de la référence à zoom=1
+const ZOOM_MIN = 0.25;
+const ZOOM_MAX = 4;
+const FLOOR_PAD = 30; // doit matcher CSS bottom du sol + un peu
+
+const DIMENSION_LABELS = {
+  projected_width: 'largeur projetée',
+  long_side: 'grand côté',
+  length: 'longueur',
+  height: 'hauteur',
+  diameter: 'diamètre',
+  width: 'largeur',
+  short_side: 'petit côté'
+};
 
 const $ = (id) => document.getElementById(id);
 
@@ -125,11 +143,20 @@ function tickSmoothTimer() {
   }
   applyTimerFill(pct);
   updateTimerDisplay(leftMs);
-  if (smoothTimer.endsAt != null && pct > 0) {
+  if (smoothTimer.endsAt != null && leftMs > 0) {
     timerAnimId = requestAnimationFrame(tickSmoothTimer);
   } else {
     smoothTimer.running = false;
+    requestTimesUp();
   }
+}
+
+function requestTimesUp() {
+  if (!state || state.phase !== 'estimate') return;
+  const now = Date.now();
+  if (now - lastTimesUpAt < 800) return;
+  lastTimesUpAt = now;
+  socket.emit('si-times-up');
 }
 
 function syncSmoothTimer(s) {
@@ -149,7 +176,11 @@ function syncSmoothTimer(s) {
   smoothTimer.running = leftMs > 0;
   applyTimerFill(smoothTimer.frozenPct);
   updateTimerDisplay(leftMs);
-  if (smoothTimer.running) tickSmoothTimer();
+  if (smoothTimer.running) {
+    tickSmoothTimer();
+  } else {
+    requestTimesUp();
+  }
 }
 
 function escapeHtml(str) {
@@ -185,6 +216,11 @@ function categoryLabel(cat) {
   })[cat] || cat;
 }
 
+function dimensionLabel(dim, fallback) {
+  if (fallback) return fallback;
+  return DIMENSION_LABELS[dim] || String(dim || 'taille').replace(/_/g, ' ');
+}
+
 function renderScores(listEl, players) {
   if (!listEl) return;
   const sorted = [...(players || [])].sort((a, b) => (b.score || 0) - (a.score || 0) || a.name.localeCompare(b.name));
@@ -198,86 +234,59 @@ function renderScores(listEl, players) {
   }).join('');
 }
 
-/** Calcule hauteur px référence + px/mètre pour l'échelle de scène. */
-function sceneScale(refSizeM, estimateMHint) {
-  const ref = Math.max(1e-9, refSizeM);
-  const est = Math.max(ref * 0.15, estimateMHint || ref);
-  // Fit both in STAGE_H: tallest gets STAGE_H
-  const tallest = Math.max(ref, est);
-  const pxPerM = STAGE_H / tallest;
-  // Keep reference at least readable
-  const refH = Math.max(36, ref * pxPerM);
-  return { pxPerM, refH };
+function pxPerMeter() {
+  const refM = Math.max(1e-9, state?.reference?.sizeM || 1);
+  return (REF_TARGET_PX / refM) * viewZoom;
 }
 
-function setEstimateFromPx(estPx) {
-  const s = state;
-  if (!s?.reference || s.myLocked || s.phase !== 'estimate') return;
-  const { pxPerM } = sceneScale(s.reference.sizeM, estimateM || s.reference.sizeM);
-  const minPx = 24;
-  const maxPx = STAGE_H;
-  const h = Math.max(minPx, Math.min(maxPx, estPx));
-  // Recalculate with new height dominating if needed
-  const ref = s.reference.sizeM;
-  const tentativeM = h / (STAGE_H / Math.max(ref, h / (STAGE_H / Math.max(ref, estimateM || ref))));
-  // Simpler: fix pxPerM so reference stays at REF_FRAC*STAGE_H or scales with estimate
-  const refTarget = Math.min(STAGE_H * REF_FRAC, STAGE_H);
-  let ppm = refTarget / ref;
-  let estH = estimateM ? estimateM * ppm : h;
-  // If estimate would exceed stage, shrink scale
-  if (estH > STAGE_H) {
-    ppm = STAGE_H / (h / ppm || estimateM || ref);
-    estH = STAGE_H;
-    // recompute from desired pixel height
-  }
-  // Direct approach from pixel height with adaptive scale:
-  const scale = computeAdaptiveScale(ref, h);
-  estimateM = h / scale.pxPerM;
-  applyStageHeights(scale.refH, h);
-  updateEstLabel();
-  socket.emit('si-update-estimate', { valueM: estimateM });
-}
-
-function computeAdaptiveScale(refSizeM, estPx) {
-  const ref = Math.max(1e-9, refSizeM);
-  // Convert estPx to meters assuming we'll solve for pxPerM such that max(refH, estPx)=STAGE_H
-  // Iterate: guess estimateM from previous
-  let guessM = estimateM || ref;
-  for (let i = 0; i < 3; i++) {
-    const tallest = Math.max(ref, guessM);
-    const pxPerM = STAGE_H / tallest;
-    guessM = estPx / pxPerM;
-  }
-  const tallest = Math.max(ref, guessM);
-  const pxPerM = STAGE_H / tallest;
-  return {
-    pxPerM,
-    refH: Math.max(28, ref * pxPerM),
-    estH: Math.max(24, Math.min(STAGE_H, guessM * pxPerM))
-  };
-}
-
-function applyStageHeights(refH, estH) {
-  const refSil = $('ref-sil');
-  const estSil = $('est-sil');
-  const handle = $('est-handle');
-  if (refSil) {
-    refSil.style.height = `${refH}px`;
-    refSil.style.width = `${Math.max(20, refH * 0.35)}px`;
-  }
-  if (estSil) {
-    estSil.style.height = `${estH}px`;
-    estSil.style.width = 'auto';
-  }
-  if (handle) {
-    handle.style.bottom = `${estH - 8}px`;
-  }
+function clampEstimate(m) {
+  const ref = state?.reference?.sizeM || 1;
+  const min = ref * 0.01;
+  const max = ref * 80;
+  return Math.max(min, Math.min(max, m));
 }
 
 function updateEstLabel() {
   const unit = state?.puzzle?.unit || 'm';
   const native = metersToNative(estimateM, unit);
-  $('est-value').textContent = formatSize(native, unit);
+  const el = $('est-value');
+  if (el) el.textContent = formatSize(native, unit);
+}
+
+function emitEstimate() {
+  if (!Number.isFinite(estimateM) || estimateM <= 0) return;
+  socket.emit('si-update-estimate', { valueM: estimateM });
+}
+
+function layoutCanvas() {
+  const s = state;
+  if (!s?.reference || !s?.puzzle) return;
+  const ppm = pxPerMeter();
+  const refH = Math.max(16, s.reference.sizeM * ppm);
+  const estH = Math.max(16, (estimateM || s.reference.sizeM) * ppm);
+
+  const refSil = $('ref-sil');
+  const estSil = $('est-sil');
+  const refObj = $('ref-obj');
+  const estObj = $('est-obj');
+
+  if (refSil) {
+    refSil.style.height = `${refH}px`;
+    refSil.style.width = 'auto';
+  }
+  if (estSil) {
+    estSil.style.height = `${estH}px`;
+    estSil.style.width = 'auto';
+  }
+  if (refObj) {
+    refObj.style.left = '18%';
+    refObj.style.bottom = `${FLOOR_PAD}px`;
+  }
+  if (estObj) {
+    estObj.style.left = `${estPos.xPct}%`;
+    estObj.style.bottom = `${FLOOR_PAD + Math.max(0, estPos.yPx)}px`;
+  }
+  updateEstLabel();
 }
 
 function initEstimateStage(s) {
@@ -287,33 +296,40 @@ function initEstimateStage(s) {
 
   $('puzzle-cat').textContent = categoryLabel(puzzle.category);
   $('puzzle-name').textContent = puzzle.name;
-  $('puzzle-dim').textContent = `Estime : ${puzzle.dimension || 'taille'} · Réf. ${ref.label} (${formatSize(metersToNative(ref.sizeM, puzzle.unit), puzzle.unit)})`;
-  $('ref-label').textContent = `${ref.label}`;
+  const dimTxt = dimensionLabel(puzzle.dimension, puzzle.dimensionLabel);
+  $('puzzle-dim').textContent =
+    `Estime : ${dimTxt} · Réf. ${ref.label} (${formatSize(metersToNative(ref.sizeM, puzzle.unit), puzzle.unit)})`;
+  $('ref-label').textContent = ref.label;
 
+  const hud = $('si-hud-line');
+  if (hud) {
+    hud.textContent = `ROUND ${s.currentRound} / ${s.roundCount} · SCORE ${s.myScore || 0}`;
+  }
+
+  const refSil = $('ref-sil');
   const estSil = $('est-sil');
+  const refUrl = ref.svgUrl || '';
+  if (refSil && refUrl && refSil.getAttribute('src') !== refUrl) {
+    refSil.src = refUrl;
+  }
+
   if (puzzle.id !== lastPuzzleId) {
     lastPuzzleId = puzzle.id;
-    estSil.src = puzzle.svgUrl;
-    // Start estimate near reference size
+    lastTimesUpAt = 0;
+    viewZoom = 1;
+    estPos = { xPct: 58, yPx: 0 };
+    if (estSil) estSil.src = puzzle.svgUrl;
     estimateM = s.myEstimateM && s.myEstimateM > 0 ? s.myEstimateM : ref.sizeM;
-  } else if (s.myEstimateM && s.myEstimateM > 0 && !dragging) {
+  } else if (s.myEstimateM && s.myEstimateM > 0 && !dragMode) {
     estimateM = s.myEstimateM;
   }
 
-  const scale = computeAdaptiveScale(ref.sizeM, (estimateM || ref.sizeM) * (STAGE_H / Math.max(ref.sizeM, estimateM || ref.sizeM)));
-  // Recompute cleanly
-  const tallest = Math.max(ref.sizeM, estimateM || ref.sizeM);
-  const pxPerM = STAGE_H / tallest;
-  const refH = Math.max(28, ref.sizeM * pxPerM);
-  const estH = Math.max(24, (estimateM || ref.sizeM) * pxPerM);
-  applyStageHeights(refH, estH);
-  updateEstLabel();
+  layoutCanvas();
 
   const locked = Boolean(s.myLocked);
   $('btn-lock').disabled = locked;
   $('btn-lock').textContent = locked ? '🔒 Verrouillé' : '🔒 Verrouiller';
-  $('est-handle').style.display = locked ? 'none' : 'block';
-  $('si-stage').classList.toggle('si-locked', locked);
+  $('si-canvas')?.classList.toggle('si-locked', locked);
 
   $('lock-list').innerHTML = (s.locks || []).map((p) =>
     `<li><strong>${escapeHtml(p.name)}</strong> ${p.locked ? '🔒' : '…'}</li>`
@@ -332,7 +348,8 @@ function renderReveal(s) {
   const trueM = puzzle.trueSizeM;
   const values = [trueM, ...results.map((r) => r.estimateM)].filter((v) => v > 0);
   const maxM = Math.max(...values, ref?.sizeM || 0);
-  const pxPerM = STAGE_H / maxM;
+  const stageH = 280;
+  const pxPerM = stageH / maxM;
 
   const stage = $('reveal-stage');
   const colors = ['#4d96ff', '#ff6b6b', '#ffd93d', '#c77dff', '#ff9f43', '#00cec9', '#fd79a8'];
@@ -445,53 +462,89 @@ function applyState(s) {
   }
 }
 
-/* —— Resize interactions —— */
-function pxFromPointer(clientY) {
-  const wrap = $('est-wrap');
-  const rect = wrap.getBoundingClientRect();
-  // height from bottom of wrap
-  return Math.max(24, Math.min(STAGE_H, rect.bottom - clientY));
+/* —— Canvas : move / resize / zoom —— */
+function pointerXY(e) {
+  if (e.touches && e.touches[0]) {
+    return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  }
+  if (e.changedTouches && e.changedTouches[0]) {
+    return { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
+  }
+  return { x: e.clientX, y: e.clientY };
+}
+
+function resizeDistFromAnchor(clientX, clientY) {
+  const sil = $('est-sil');
+  if (!sil) return 1;
+  const rect = sil.getBoundingClientRect();
+  const ax = rect.left;
+  const ay = rect.bottom;
+  return Math.max(12, Math.hypot(clientX - ax, ay - clientY));
 }
 
 function onPointerDown(e) {
   if (!state || state.phase !== 'estimate' || state.myLocked) return;
-  dragging = true;
-  const y = e.touches ? e.touches[0].clientY : e.clientY;
-  setEstimateHeightPx(pxFromPointer(y));
+  const target = e.target;
+  const handle = $('est-handle');
+  const estObj = $('est-obj');
+  const isHandle = target === handle || handle?.contains(target);
+  const isEst = target === estObj || estObj?.contains(target);
+  if (!isHandle && !isEst) return;
+
+  const { x, y } = pointerXY(e);
+  if (isHandle) {
+    dragMode = 'resize';
+    dragStart = {
+      x,
+      y,
+      estimateM,
+      dist: resizeDistFromAnchor(x, y)
+    };
+  } else {
+    dragMode = 'move';
+    estObj?.classList.add('si-dragging');
+    dragStart = {
+      x,
+      y,
+      xPct: estPos.xPct,
+      yPx: estPos.yPx,
+      canvasW: $('si-canvas')?.clientWidth || 1
+    };
+  }
   e.preventDefault();
 }
 
 function onPointerMove(e) {
-  if (!dragging) return;
-  const y = e.touches ? e.touches[0].clientY : e.clientY;
-  setEstimateHeightPx(pxFromPointer(y));
+  if (!dragMode || !dragStart) return;
+  const { x, y } = pointerXY(e);
+  if (dragMode === 'move') {
+    const dx = x - dragStart.x;
+    const dy = dragStart.y - y;
+    const w = dragStart.canvasW || 1;
+    estPos.xPct = Math.max(8, Math.min(92, dragStart.xPct + (dx / w) * 100));
+    estPos.yPx = Math.max(0, Math.min(220, dragStart.yPx + dy));
+    layoutCanvas();
+  } else if (dragMode === 'resize') {
+    const dist = resizeDistFromAnchor(x, y);
+    const ratio = dist / Math.max(12, dragStart.dist);
+    estimateM = clampEstimate(dragStart.estimateM * ratio);
+    layoutCanvas();
+    emitEstimate();
+  }
   e.preventDefault();
 }
 
 function onPointerUp() {
-  dragging = false;
+  if (dragMode === 'resize') emitEstimate();
+  dragMode = null;
+  dragStart = null;
+  $('est-obj')?.classList.remove('si-dragging');
 }
 
-function setEstimateHeightPx(estPx) {
-  if (!state?.reference || state.myLocked) return;
-  const ref = state.reference.sizeM;
-  // Solve estimateM so that with adaptive scale, visual height ≈ estPx
-  let guess = estimateM || ref;
-  for (let i = 0; i < 4; i++) {
-    const tallest = Math.max(ref, guess);
-    const pxPerM = STAGE_H / tallest;
-    guess = estPx / pxPerM;
-  }
-  estimateM = Math.max(ref * 0.02, guess);
-  const tallest = Math.max(ref, estimateM);
-  const pxPerM = STAGE_H / tallest;
-  applyStageHeights(Math.max(28, ref * pxPerM), Math.max(24, estimateM * pxPerM));
-  updateEstLabel();
-  socket.emit('si-update-estimate', { valueM: estimateM });
+function setZoom(next) {
+  viewZoom = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, next));
+  layoutCanvas();
 }
-
-const handle = () => $('est-handle');
-const estWrap = () => $('est-wrap');
 
 document.addEventListener('mousemove', onPointerMove);
 document.addEventListener('mouseup', onPointerUp);
@@ -499,22 +552,25 @@ document.addEventListener('touchmove', onPointerMove, { passive: false });
 document.addEventListener('touchend', onPointerUp);
 
 $('est-handle')?.addEventListener('mousedown', onPointerDown);
-$('est-wrap')?.addEventListener('mousedown', onPointerDown);
+$('est-obj')?.addEventListener('mousedown', onPointerDown);
 $('est-handle')?.addEventListener('touchstart', onPointerDown, { passive: false });
-$('est-wrap')?.addEventListener('touchstart', onPointerDown, { passive: false });
+$('est-obj')?.addEventListener('touchstart', onPointerDown, { passive: false });
 
-$('est-wrap')?.addEventListener('wheel', (e) => {
+$('si-canvas')?.addEventListener('wheel', (e) => {
   if (!state || state.phase !== 'estimate' || state.myLocked) return;
   e.preventDefault();
+  if (e.ctrlKey || e.metaKey) {
+    setZoom(viewZoom * (e.deltaY > 0 ? 0.9 : 1.1));
+    return;
+  }
   const factor = e.deltaY > 0 ? 0.92 : 1.08;
-  estimateM = Math.max((state.reference?.sizeM || 1) * 0.02, (estimateM || state.reference.sizeM) * factor);
-  const ref = state.reference.sizeM;
-  const tallest = Math.max(ref, estimateM);
-  const pxPerM = STAGE_H / tallest;
-  applyStageHeights(Math.max(28, ref * pxPerM), Math.max(24, estimateM * pxPerM));
-  updateEstLabel();
-  socket.emit('si-update-estimate', { valueM: estimateM });
+  estimateM = clampEstimate((estimateM || state.reference.sizeM) * factor);
+  layoutCanvas();
+  emitEstimate();
 }, { passive: false });
+
+$('btn-zoom-in')?.addEventListener('click', () => setZoom(viewZoom * 1.25));
+$('btn-zoom-out')?.addEventListener('click', () => setZoom(viewZoom / 1.25));
 
 socket.on('connect', () => {
   $('connection-status').textContent = '● Connecté';
@@ -566,8 +622,16 @@ $('btn-start-game').addEventListener('click', () => {
 });
 
 $('btn-lock').addEventListener('click', () => {
-  if (!estimateM || estimateM <= 0) return showToast('Ajuste d\'abord la silhouette');
-  socket.emit('si-lock', { valueM: estimateM });
+  if (!state || state.phase !== 'estimate') return;
+  if (state.myLocked) return;
+  const valueM = Number(estimateM);
+  if (!Number.isFinite(valueM) || valueM <= 0) {
+    showToast('Ajuste d\'abord la silhouette');
+    return;
+  }
+  $('btn-lock').disabled = true;
+  $('btn-lock').textContent = '🔒 Verrouillage…';
+  socket.emit('si-lock', { valueM });
 });
 
 $('btn-next-round').addEventListener('click', () => socket.emit('si-next-round'));
