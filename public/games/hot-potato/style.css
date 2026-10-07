@@ -130,15 +130,47 @@
 
 .hpc-input-row {
   display: flex;
-  gap: 0.5rem;
-  margin-top: 0.75rem;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 1rem;
+  width: 100%;
 }
 
 .hpc-input-row input {
-  flex: 1;
-  font-size: 1.1rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  width: 100%;
+  flex: none;
+  min-height: 64px;
+  padding: 1rem 1.1rem !important;
+  font-size: clamp(1.35rem, 5vw, 1.75rem) !important;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin-bottom: 0 !important;
+  border-radius: 14px !important;
+  border-width: 2px !important;
+  text-align: center;
+}
+
+.hpc-input-row .btn {
+  min-height: 52px;
+  width: 100%;
+  font-size: 1.15rem;
+  padding: 0.85rem 1.25rem;
+}
+
+@media (min-width: 560px) {
+  .hpc-input-row {
+    flex-direction: row;
+    align-items: stretch;
+  }
+  .hpc-input-row input {
+    flex: 1;
+    text-align: left;
+  }
+  .hpc-input-row .btn {
+    width: auto;
+    min-width: 110px;
+    align-self: stretch;
+  }
 }
 
 .hpc-chain {
