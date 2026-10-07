@@ -155,11 +155,11 @@ function render(s) {
         if (tc.aiConfigured) {
           const who = tc.provider === 'groq' ? 'Groq' : tc.provider || 'IA';
           hint.textContent = tc.lastAiError
-            ? `IA thème (${who}) : erreur — secours lexique.`
-            : `IA thème active via ${who} (${tc.model || 'ok'}).`;
+            ? `IA thème (${who}) en erreur — les mots ne seront pas validés tant que ça échoue.`
+            : `Vérif thème 100 % IA via ${who} (${tc.model || 'ok'}).`;
         } else {
           hint.textContent =
-            'IA thème inactive — ajoute GROQ_API_KEY (gratuit) sur Render puis redéploie.';
+            'IA inactive — ajoute GROQ_API_KEY (gratuit) sur Render puis redéploie.';
         }
       }
     }

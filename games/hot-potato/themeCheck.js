@@ -199,13 +199,18 @@ async function isWordInTheme(word, theme) {
           ? 'timeout'
           : String(e?.message || e).slice(0, 120);
       console.warn('[hot-potato] theme AI failed:', lastAiError);
-      const fallback = fromLexicon(w, themeLabel);
-      // Ne pas cacher un refus lexique après échec IA : le prochain essai peut réussir via IA
-      if (fallback.ok) cacheSet(key, fallback);
-      return fallback;
+      // Avec une clé IA : pas de secours lexique (évite les faux « Hors thème »).
+      return {
+        ok: false,
+        reason:
+          e?.name === 'AbortError'
+            ? 'Vérif IA trop lente — réessaie.'
+            : 'Vérif IA indisponible — réessaie.'
+      };
     }
   }
 
+  // Sans clé IA uniquement : lexique local
   const local = fromLexicon(w, themeLabel);
   cacheSet(key, local);
   return local;
