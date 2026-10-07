@@ -123,6 +123,20 @@ function freshSeed(room) {
   return word;
 }
 
+/**
+ * Après explosion : on retire la dernière lettre du mot courant
+ * → la contrainte devient l'avant-dernière lettre (ex. tomate → tomat → « T »).
+ */
+function rewindToPenultimate(room) {
+  const letters = normalizeWord(room.previousWord || '').replace(/[^a-z]/g, '');
+  if (letters.length >= 2) {
+    room.previousWord = letters.slice(0, -1);
+    return room.previousWord;
+  }
+  // Mot trop court : nouveau seed
+  return freshSeed(room);
+}
+
 function beginRound(room) {
   ensureScores(room);
   room.currentRound += 1;
@@ -178,7 +192,7 @@ function explode(room, reason) {
 
   const prevHolder = room.holderId;
   room.holderId = nextHolder(room, prevHolder);
-  freshSeed(room);
+  rewindToPenultimate(room);
 
   room.phase = 'explode';
   room.potatoEndsAt = null;
