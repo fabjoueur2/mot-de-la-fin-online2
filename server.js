@@ -126,10 +126,13 @@ app.get('/api/hot-potato/theme-check', async (req, res) => {
     const { getThemeCheckStatus, isWordInTheme } = require('./games/hot-potato/themeCheck');
     const status = getThemeCheckStatus();
     const out = { ok: true, ...status };
-    // ?probe=1 → test live (ex. bateau / Bateaux)
+    // ?probe=1 → test live (défaut: bateau / Bateaux)
+    // ?probe=1&word=prune&theme=Couleurs pour un cas précis
     if (String(req.query.probe || '') === '1' && status.aiConfigured) {
-      const probe = await isWordInTheme('bateau', 'Bateaux');
-      out.probe = probe;
+      const word = String(req.query.word || 'bateau').slice(0, 40);
+      const theme = String(req.query.theme || 'Bateaux').slice(0, 60);
+      const probe = await isWordInTheme(word, theme);
+      out.probe = { word, theme, ...probe };
       out.lastAiError = getThemeCheckStatus().lastAiError;
     }
     res.json(out);
