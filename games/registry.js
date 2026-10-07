@@ -60,6 +60,17 @@ const GAMES = [
     duration: '15–25 min',
     path: '/games/watchout/',
     status: 'available'
+  },
+  {
+    id: 'hot-potato',
+    name: 'Patate Chaude',
+    tagline: 'Un mot. Des secondes. Ça explose. — enchaîne avant la bombe',
+    icon: '💣',
+    color: '#ff4d4d',
+    players: '3–10 joueurs',
+    duration: '10–20 min',
+    path: '/games/hot-potato/',
+    status: 'available'
   }
 ];
 

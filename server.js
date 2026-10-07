@@ -33,6 +33,7 @@ const animalStacker = require('./games/animal-stacker');
 const quiDitMieux = require('./games/qui-dit-mieux');
 const sizeIt = require('./games/size-it');
 const watchout = require('./games/watchout');
+const hotPotato = require('./games/hot-potato');
 
 const PORT = process.env.PORT || 3000;
 const CODE_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -61,7 +62,8 @@ const gameEngines = {
   [animalStacker.id]: animalStacker,
   [quiDitMieux.id]: quiDitMieux,
   [sizeIt.id]: sizeIt,
-  [watchout.id]: watchout
+  [watchout.id]: watchout,
+  [hotPotato.id]: hotPotato
 };
 
 /** Rate limiter mémoire simple (fenêtre glissante par clé). */
@@ -210,7 +212,11 @@ setInterval(() => {
           'tie_break',
           'reveal',
           'scoreboard'
-        ].includes(room.phase))
+        ].includes(room.phase)) ||
+      (room.gameId === 'hot-potato' &&
+        ((room.potatoEndsAt && room.phase === 'hot') ||
+          (room.phaseEndsAt &&
+            ['round_intro', 'explode', 'scoreboard'].includes(room.phase))))
     ) {
       broadcastRoom(room);
     }
@@ -289,6 +295,10 @@ io.on('connection', (socket) => {
 
     if (room.gameId === 'watchout' && room.players.length >= 12) {
       socket.emit('error-msg', 'Salle pleine (12 joueurs max).');
+      return;
+    }
+    if (room.gameId === 'hot-potato' && room.players.length >= 10) {
+      socket.emit('error-msg', 'Salle pleine (10 joueurs max).');
       return;
     }
 

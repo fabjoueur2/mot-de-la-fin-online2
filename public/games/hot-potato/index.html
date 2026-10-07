@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Patate Chaude — Un mot. Des secondes. Ça explose.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="hpc-body">
+  <div class="app hpc-app">
+    <header>
+      <a href="/" class="back-to-hub">← Tous les jeux</a>
+      <h1 class="hpc-brand">PATATE CHAUDE</h1>
+      <p class="hpc-tagline">Un mot. Des secondes. Ça explose.</p>
+      <span class="badge-online">● Multijoueur en ligne</span>
+    </header>
+
+    <div id="connection-status" class="connection-status">Connexion…</div>
+    <div id="room-nav" class="room-nav" style="display:none;">
+      <button type="button" id="btn-salon" class="btn-nav btn-nav-salon">🛋️ Retour au salon</button>
+      <button type="button" id="btn-menu" class="btn-nav btn-nav-menu">Quitter</button>
+    </div>
+
+    <!-- HOME -->
+    <div id="screen-home" class="screen active">
+      <div class="card hpc-card">
+        <h2>Rejoindre la salle</h2>
+        <label>Votre pseudo</label>
+        <input type="text" id="player-name" placeholder="Ex : Léa" maxlength="20" value="">
+        <div class="row" style="margin-top:8px;">
+          <button class="btn btn-primary" id="btn-create">Créer une salle</button>
+          <button class="btn btn-secondary" id="btn-show-join">Rejoindre</button>
+        </div>
+      </div>
+      <div class="card hpc-card" id="join-panel" style="display:none;">
+        <h2>Code de salle</h2>
+        <input type="text" id="join-code" placeholder="K7F2Q" maxlength="6" style="text-transform:uppercase;letter-spacing:4px;font-family:monospace;font-weight:700;">
+        <button class="btn btn-blue" id="btn-join">Entrer</button>
+      </div>
+      <div class="card hpc-card">
+        <p><strong>Colle un mot qui commence par la dernière lettre du précédent</strong> — avant que ça explose.</p>
+        <p class="muted">+1 pt par mot · −2 si tu craques. Pas besoin de micro.</p>
+      </div>
+    </div>
+
+    <!-- LOBBY -->
+    <div id="screen-lobby" class="screen">
+      <div class="card hpc-card">
+        <h2>Salon Patate Chaude</h2>
+        <div class="room-code-box">
+          <div class="label">Code</div>
+          <div class="code" id="lobby-code">------</div>
+          <div class="copy-row">
+            <button class="btn btn-secondary btn-sm" id="btn-copy-code">Copier le code</button>
+            <button class="btn btn-secondary btn-sm" id="btn-copy-link">Copier le lien</button>
+          </div>
+        </div>
+      </div>
+      <div class="card hpc-card">
+        <h2>Joueurs <span id="lobby-player-count" class="muted"></span></h2>
+        <ul id="lobby-players" class="players-list"></ul>
+        <p id="lobby-min-hint" class="share-hint"></p>
+      </div>
+      <div class="card hpc-card" id="host-settings">
+        <h2>Réglages (hôte)</h2>
+        <label>Manches</label>
+        <select id="set-rounds">
+          <option value="5">5</option>
+          <option value="8" selected>8</option>
+          <option value="12">12</option>
+        </select>
+        <label>Temps par joueur</label>
+        <select id="set-potato">
+          <option value="4">4 s</option>
+          <option value="6" selected>6 s</option>
+          <option value="8">8 s</option>
+          <option value="10">10 s</option>
+        </select>
+        <label>Explosions pour finir la manche</label>
+        <select id="set-explosions">
+          <option value="2">2</option>
+          <option value="3" selected>3</option>
+          <option value="5">5</option>
+        </select>
+        <label><input type="checkbox" id="set-accelerate"> Accélération (chrono qui baisse)</label>
+        <button class="btn btn-primary" id="btn-start" style="margin-top:12px;">Lancer la partie</button>
+      </div>
+    </div>
+
+    <!-- INTRO -->
+    <div id="screen-intro" class="screen">
+      <div class="card hpc-card hpc-word-stage">
+        <div class="hpc-theme" id="intro-theme">—</div>
+        <p class="hpc-prev-label">Mot de départ</p>
+        <div class="hpc-prev-word" id="intro-word">—</div>
+        <div class="hpc-letter" id="intro-letter">?</div>
+        <p class="hpc-holder" id="intro-holder" style="margin-top:1rem;"></p>
+        <div class="wo-timer" id="intro-timer" style="margin-top:0.75rem;"></div>
+      </div>
+    </div>
+
+    <!-- HOT -->
+    <div id="screen-hot" class="screen">
+      <div class="hpc-meta">
+        <span id="hot-round">Manche 1/8</span>
+        <span id="hot-booms">💥 0/3</span>
+      </div>
+      <div class="card hpc-card hpc-word-stage">
+        <div class="hpc-theme" id="hot-theme">—</div>
+        <p class="hpc-prev-label">Mot précédent</p>
+        <div class="hpc-prev-word" id="hot-word">—</div>
+        <div class="hpc-letter" id="hot-letter">→ ?</div>
+        <div class="hpc-timer-ring" id="hot-ring" style="--pct:100%;">
+          <span class="hpc-timer-num" id="hot-timer">6</span>
+        </div>
+        <p class="hpc-holder" id="hot-holder">—</p>
+        <form id="word-form" class="hpc-input-row">
+          <input type="text" id="word-input" maxlength="24" placeholder="Ton mot…" autocomplete="off" autocapitalize="off">
+          <button class="btn btn-primary" type="submit" id="btn-submit">OK</button>
+        </form>
+        <p class="muted" id="hot-hint" style="margin-top:0.5rem;"></p>
+      </div>
+      <div class="card hpc-card">
+        <h2>Chaîne</h2>
+        <ul class="hpc-chain" id="hot-chain"></ul>
+      </div>
+      <div class="card hpc-card">
+        <h2>Scores</h2>
+        <ul class="hpc-scores" id="hot-scores"></ul>
+      </div>
+    </div>
+
+    <!-- EXPLODE -->
+    <div id="screen-explode" class="screen">
+      <div class="card hpc-card hpc-boom">
+        <h2>💥 BOOM</h2>
+        <p id="explode-text"></p>
+        <p class="muted" id="explode-next"></p>
+      </div>
+    </div>
+
+    <!-- SCORE / END -->
+    <div id="screen-score" class="screen">
+      <div class="card hpc-card">
+        <h2 id="score-title">Scores</h2>
+        <ul class="hpc-scores" id="score-list"></ul>
+        <div class="row" id="score-actions" style="margin-top:12px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/escape.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
