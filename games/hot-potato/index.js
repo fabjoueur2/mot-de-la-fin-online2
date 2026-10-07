@@ -5,7 +5,7 @@
 'use strict';
 
 const { sanitizeDisplayName } = require('../../lib/sanitize');
-const { pickSeed, pickTheme } = require('./words');
+const { pickSeed, pickTheme, THEMES } = require('./words');
 
 const GAME_ID = 'hot-potato';
 const MIN_PLAYERS = 3;
@@ -19,7 +19,10 @@ const DEFAULT_SETTINGS = {
   roundCount: 8,
   potatoSec: 6,
   explosionsPerRound: 3,
-  accelerate: false
+  accelerate: false,
+  /** 'random' = tire parmi themes[] chaque manche ; 'fixed' = themes[0] fixe */
+  themeMode: 'random',
+  themes: [...THEMES]
 };
 
 function createInitialRoomState({ hostSocketId, playerName, code }) {
@@ -36,7 +39,10 @@ function createInitialRoomState({ hostSocketId, playerName, code }) {
         explosions: 0
       }
     ],
-    settings: { ...DEFAULT_SETTINGS },
+    settings: {
+      ...DEFAULT_SETTINGS,
+      themes: [...DEFAULT_SETTINGS.themes]
+    },
     phase: 'lobby',
     currentRound: 0,
     holderId: null,
@@ -150,7 +156,12 @@ function beginRound(room) {
   }
 
   buildTurnOrder(room);
-  room.theme = pickTheme();
+  const pool = Array.isArray(room.settings.themes) ? room.settings.themes : [...THEMES];
+  if (room.settings.themeMode === 'fixed' && pool[0]) {
+    room.theme = THEMES.includes(pool[0]) ? pool[0] : pickTheme(pool);
+  } else {
+    room.theme = pickTheme(pool);
+  }
   room.usedWords = [];
   room.chain = [];
   room.explosionsThisRound = 0;
@@ -347,6 +358,7 @@ function sanitizeRoom(room, socketId) {
     currentRound: room.currentRound,
     roundCount: room.settings.roundCount,
     theme: room.theme,
+    themesAvailable: [...THEMES],
     previousWord: room.previousWord,
     expectedLetter: room.previousWord ? lastLetter(room.previousWord).toUpperCase() : null,
     holderId: room.holderId,
@@ -421,6 +433,13 @@ function applySettings(room, settings = {}) {
   }
   if (settings.accelerate != null) {
     room.settings.accelerate = Boolean(settings.accelerate);
+  }
+  if (settings.themeMode === 'random' || settings.themeMode === 'fixed') {
+    room.settings.themeMode = settings.themeMode;
+  }
+  if (Array.isArray(settings.themes)) {
+    const cats = settings.themes.filter((t) => THEMES.includes(t));
+    if (cats.length) room.settings.themes = cats;
   }
 }
 

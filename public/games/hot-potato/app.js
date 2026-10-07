@@ -36,12 +36,30 @@ function setStatus(text, ok) {
   el.classList.toggle('ok', Boolean(ok));
 }
 
+function renderThemeChecks(available, selected) {
+  const box = $('set-themes');
+  if (!box) return;
+  const sel = new Set(selected?.length ? selected : available);
+  const next = (available || [])
+    .map(
+      (t) =>
+        `<label><input type="checkbox" value="${escapeHtml(t)}" ${sel.has(t) ? 'checked' : ''}> ${escapeHtml(t)}</label>`
+    )
+    .join('');
+  if (box.dataset.signature === next) return;
+  box.dataset.signature = next;
+  box.innerHTML = next;
+}
+
 function collectSettings() {
+  const themes = [...document.querySelectorAll('#set-themes input:checked')].map((i) => i.value);
   return {
     roundCount: parseInt($('set-rounds').value, 10),
     potatoSec: parseInt($('set-potato').value, 10),
     explosionsPerRound: parseInt($('set-explosions').value, 10),
-    accelerate: Boolean($('set-accelerate')?.checked)
+    accelerate: Boolean($('set-accelerate')?.checked),
+    themeMode: $('set-theme-mode')?.value === 'fixed' ? 'fixed' : 'random',
+    themes
   };
 }
 
@@ -117,10 +135,20 @@ function render(s) {
     $('lobby-min-hint').textContent = `Minimum ${s.minPlayers} joueurs pour lancer.`;
     $('host-settings').style.display = s.isHost ? 'block' : 'none';
     if (s.isHost) {
-      $('set-rounds').value = String(s.settings.roundCount);
-      $('set-potato').value = String(s.settings.potatoSec);
-      $('set-explosions').value = String(s.settings.explosionsPerRound);
-      $('set-accelerate').checked = Boolean(s.settings.accelerate);
+      const focusInSettings = Boolean(document.activeElement?.closest?.('#host-settings'));
+      if (!focusInSettings) {
+        $('set-rounds').value = String(s.settings.roundCount);
+        $('set-potato').value = String(s.settings.potatoSec);
+        $('set-explosions').value = String(s.settings.explosionsPerRound);
+        $('set-accelerate').checked = Boolean(s.settings.accelerate);
+        if ($('set-theme-mode')) {
+          $('set-theme-mode').value =
+            s.settings.themeMode === 'fixed' ? 'fixed' : 'random';
+        }
+        renderThemeChecks(s.themesAvailable || [], s.settings.themes);
+      } else if (!$('set-themes')?.children?.length) {
+        renderThemeChecks(s.themesAvailable || [], s.settings.themes);
+      }
     }
     return;
   }
@@ -247,11 +275,30 @@ $('btn-join').addEventListener('click', () => {
   socket.emit('join-room', { code, playerName: name, gameId: GAME_ID });
 });
 $('btn-start').addEventListener('click', () => {
-  socket.emit('hpc-update-settings', collectSettings());
-  socket.emit('hpc-start-game', collectSettings());
+  const settings = collectSettings();
+  if (!settings.themes.length) {
+    alert('Sélectionne au moins un thème (ou clique Tout).');
+    return;
+  }
+  socket.emit('hpc-update-settings', settings);
+  socket.emit('hpc-start-game', settings);
 });
-['set-rounds', 'set-potato', 'set-explosions', 'set-accelerate'].forEach((id) => {
-  $(id)?.addEventListener('change', pushSettings);
+['set-rounds', 'set-potato', 'set-explosions', 'set-accelerate', 'set-theme-mode'].forEach(
+  (id) => {
+    $(id)?.addEventListener('change', pushSettings);
+  }
+);
+$('set-themes')?.addEventListener('change', pushSettings);
+$('btn-themes-all')?.addEventListener('click', () => {
+  document.querySelectorAll('#set-themes input').forEach((i) => {
+    i.checked = true;
+  });
+  pushSettings();
+});
+$('btn-themes-none')?.addEventListener('click', () => {
+  document.querySelectorAll('#set-themes input').forEach((i) => {
+    i.checked = false;
+  });
 });
 
 $('word-form')?.addEventListener('submit', (e) => {

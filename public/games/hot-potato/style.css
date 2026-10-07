@@ -264,3 +264,35 @@
 }
 
 .muted { color: var(--hpc-muted); }
+
+.hpc-themes {
+  border: 1px solid rgba(255, 77, 77, 0.25);
+  border-radius: 10px;
+  padding: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.hpc-themes legend {
+  padding: 0 0.35rem;
+  color: var(--hpc-amber);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.hpc-themes-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.85rem;
+}
+
+.hpc-themes-grid label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 500;
+  color: var(--hpc-cream);
+  cursor: pointer;
+  margin: 0;
+}

@@ -31,8 +31,12 @@ function pickSeed(exclude = []) {
   return list[Math.floor(Math.random() * list.length)];
 }
 
-function pickTheme() {
-  return THEMES[Math.floor(Math.random() * THEMES.length)];
+function pickTheme(fromList) {
+  const pool = Array.isArray(fromList) && fromList.length
+    ? fromList.filter((t) => THEMES.includes(t))
+    : THEMES;
+  const list = pool.length ? pool : THEMES;
+  return list[Math.floor(Math.random() * list.length)];
 }
 
 module.exports = { SEEDS, THEMES, pickSeed, pickTheme };
