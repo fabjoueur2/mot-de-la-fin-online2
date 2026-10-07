@@ -12,7 +12,7 @@ const MIN_PLAYERS = 3;
 const MAX_PLAYERS = 10;
 
 const VALID_ROUNDS = [5, 8, 12];
-const VALID_POTATO_SEC = [4, 6, 8, 10];
+const VALID_POTATO_SEC = [4, 6, 8, 10, 12, 15, 20, 30];
 const VALID_EXPLOSIONS = [2, 3, 5];
 
 const DEFAULT_SETTINGS = {
