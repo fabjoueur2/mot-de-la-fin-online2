@@ -8,7 +8,7 @@ const { sanitizeDisplayName } = require('../../lib/sanitize');
 const { pickSeed, pickTheme, THEMES } = require('./words');
 
 const GAME_ID = 'hot-potato';
-const MIN_PLAYERS = 3;
+const MIN_PLAYERS = 2;
 const MAX_PLAYERS = 10;
 
 const VALID_ROUNDS = [5, 8, 12];
