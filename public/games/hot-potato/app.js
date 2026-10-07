@@ -185,6 +185,7 @@ function render(s) {
     }
     const input = $('word-input');
     const btn = $('btn-submit');
+    if (pendingWord && s.lastEvent?.type === 'success') pendingWord = '';
     input.disabled = !s.isHolder;
     btn.disabled = !s.isHolder;
     $('hot-hint').textContent = s.isHolder
@@ -244,12 +245,20 @@ function render(s) {
 
 socket.on('connect', () => setStatus('Connecté', true));
 socket.on('disconnect', () => setStatus('Déconnecté…', false));
+let pendingWord = '';
 socket.on('error-msg', (msg) => {
   const t = document.createElement('div');
   t.className = 'toast';
   t.textContent = msg || 'Erreur';
   document.body.appendChild(t);
   setTimeout(() => t.remove(), 2800);
+  const input = $('word-input');
+  if (input && pendingWord) {
+    input.value = pendingWord;
+    input.disabled = false;
+    pendingWord = '';
+    input.focus();
+  }
 });
 socket.on('left-room', () => {
   state = null;
@@ -288,8 +297,14 @@ $('btn-start').addEventListener('click', () => {
 $('word-form')?.addEventListener('submit', (e) => {
   e.preventDefault();
   if (!state?.isHolder) return;
-  const word = $('word-input').value;
-  $('word-input').value = '';
+  const input = $('word-input');
+  const word = input?.value || '';
+  if (!word.trim()) return;
+  pendingWord = word;
+  if (input) {
+    input.value = '';
+    input.disabled = true;
+  }
   socket.emit('hpc-submit-word', { word });
 });
 

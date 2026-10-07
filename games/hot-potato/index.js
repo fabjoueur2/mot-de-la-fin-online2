@@ -6,6 +6,7 @@
 
 const { sanitizeDisplayName } = require('../../lib/sanitize');
 const { pickSeed, pickTheme, THEMES } = require('./words');
+const { isWordInTheme } = require('./themeCheck');
 
 const GAME_ID = 'hot-potato';
 const MIN_PLAYERS = 2;
@@ -223,7 +224,7 @@ function afterExplode(room) {
   enterHot(room);
 }
 
-function acceptWord(room, playerId, rawWord) {
+async function acceptWord(room, playerId, rawWord) {
   if (room.phase !== 'hot') return { ok: false, msg: 'Pas le moment.' };
   if (playerId !== room.holderId) return { ok: false, msg: 'Ce n’est pas ta patate.' };
 
@@ -246,6 +247,22 @@ function acceptWord(room, playerId, rawWord) {
 
   if ((room.usedWords || []).includes(normalized)) {
     return { ok: false, msg: 'Déjà utilisé dans cette manche.' };
+  }
+
+  const theme = room.theme || 'Libre';
+  if (String(theme).toLowerCase() !== 'libre') {
+    const display = String(rawWord || '').trim().toLowerCase();
+    const themeCheck = await isWordInTheme(display || normalized, theme);
+    if (!themeCheck.ok) {
+      return { ok: false, msg: themeCheck.reason || 'Hors thème.' };
+    }
+    if (room.phase !== 'hot') return { ok: false, msg: 'Pas le moment.' };
+    if (playerId !== room.holderId) {
+      return { ok: false, msg: 'Ce n’est pas ta patate.' };
+    }
+    if ((room.usedWords || []).includes(normalized)) {
+      return { ok: false, msg: 'Déjà utilisé dans cette manche.' };
+    }
   }
 
   const player = getPlayer(room, playerId);
@@ -472,10 +489,10 @@ function registerHandlers(io, ctx) {
       broadcastRoom(room);
     });
 
-    socket.on('hpc-submit-word', ({ word } = {}) => {
+    socket.on('hpc-submit-word', async ({ word } = {}) => {
       const room = getRoom(ctx, socket);
       if (!room) return;
-      const result = acceptWord(room, socket.id, word);
+      const result = await acceptWord(room, socket.id, word);
       if (!result.ok) {
         socket.emit('error-msg', result.msg);
         return;
