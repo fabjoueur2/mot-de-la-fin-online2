@@ -53,7 +53,7 @@ function getApiConfig() {
       model:
         process.env.GROQ_MODEL ||
         process.env.OPENAI_MODEL ||
-        'llama-3.1-8b-instant'
+        'openai/gpt-oss-20b'
     };
   }
 

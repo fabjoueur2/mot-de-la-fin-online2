@@ -49,7 +49,7 @@ const RAW = {
   Bricolage: `bricolage clou vis colle peinture pinceau papierpeint carrelage placo platre ciment enduit diy chantier atelier`,
   Vetements: `vetement pantalon jean short jupe robe chemise tshirt pull sweat veste manteau manteau manteau echarpe gant chapeau casquette bonnet chaussette sousvetement pyjama costume cravate`,
   Chaussures: `chaussure basket sneaker bottes sandale tongs escarpin mocassin ballerine botte talon semelle lacets`,
-  Couleurs: `couleur rouge bleu vert jaune orange violet rose noir blanc gris marron beige turquoise indigo magenta cyan dore argente`,
+  Couleurs: `couleur rouge bleu vert jaune orange violet rose noir blanc gris marron beige turquoise indigo magenta cyan dore argente prune pourpre lilas fuchsia bordeaux ecru ivoire cream creme saumon corail ocre kaki olive emeraude azur marine ciel pastel fluo neon`,
   'Corps humain': `corps tete cheveu oeil oreille nez bouche dent langue cou epaule bras main doigt poitrine ventre dos jambe pied genou coude coeur poumon cerveau`,
   Emotions: `emotion joie tristesse colere peur surprise degout amour haine jalousie stress anxiété anxiete calme bonheur rire pleurer sourire`,
   Famille: `famille pere mere papa maman frere soeur fils fille grandpere grandmere oncle tante cousin cousine beaupere beaumere neveu niece bebe enfant`,
