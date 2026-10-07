@@ -1,6 +1,8 @@
 'use strict';
 
-const TIMEOUT_MS = 1500;
+const { lexiconHas } = require('./themeLexicon');
+
+const TIMEOUT_MS = 4000;
 const MAX_CACHE = 5000;
 
 /** @type {Map<string, { ok: boolean, reason?: string }>} */
@@ -40,9 +42,14 @@ function parseYesNo(text) {
     .replace(/[\u0300-\u036f]/g, '');
   if (/^(oui|yes|o|y|true|1)\b/.test(t)) return true;
   if (/^(non|no|n|false|0)\b/.test(t)) return false;
-  if (t.includes('oui') || t.includes('yes')) return true;
-  if (t.includes('non') || t.includes('no')) return false;
+  if (/\boui\b/.test(t) || /\byes\b/.test(t)) return true;
+  if (/\bnon\b/.test(t) || /\bno\b/.test(t)) return false;
   return null;
+}
+
+function fromLexicon(word, theme) {
+  if (lexiconHas(theme, word)) return { ok: true };
+  return { ok: false, reason: 'Hors thème.' };
 }
 
 async function callOpenAI(cfg, word, theme) {
@@ -58,7 +65,7 @@ async function callOpenAI(cfg, word, theme) {
       body: JSON.stringify({
         model: cfg.model,
         temperature: 0,
-        max_tokens: 3,
+        max_tokens: 8,
         messages: [
           {
             role: 'system',
@@ -74,15 +81,14 @@ async function callOpenAI(cfg, word, theme) {
       signal: controller.signal
     });
     if (!res.ok) {
-      const err = new Error(`api_${res.status}`);
-      throw err;
+      throw new Error(`api_${res.status}`);
     }
     const data = await res.json();
     const content = data?.choices?.[0]?.message?.content;
     const verdict = parseYesNo(content);
     if (verdict === true) return { ok: true };
     if (verdict === false) return { ok: false, reason: 'Hors thème.' };
-    return { ok: false, reason: 'Vérif thème indisponible.' };
+    throw new Error('bad_verdict');
   } finally {
     clearTimeout(timer);
   }
@@ -109,26 +115,22 @@ async function isWordInTheme(word, theme) {
   if (cache.has(key)) return cache.get(key);
 
   const cfg = getApiConfig();
-  if (!cfg) {
-    return {
-      ok: false,
-      reason: 'Vérif thème indisponible (clé API manquante).'
-    };
+  if (cfg) {
+    try {
+      const result = await callOpenAI(cfg, w, themeLabel);
+      cacheSet(key, result);
+      return result;
+    } catch {
+      // API HS / lente → lexique local
+      const fallback = fromLexicon(w, themeLabel);
+      cacheSet(key, fallback);
+      return fallback;
+    }
   }
 
-  try {
-    const result = await callOpenAI(cfg, w, themeLabel);
-    cacheSet(key, result);
-    return result;
-  } catch (e) {
-    const aborted = e?.name === 'AbortError' || e?.message === 'timeout';
-    return {
-      ok: false,
-      reason: aborted
-        ? 'Vérif thème trop lente — réessaie.'
-        : 'Vérif thème indisponible.'
-    };
-  }
+  const local = fromLexicon(w, themeLabel);
+  cacheSet(key, local);
+  return local;
 }
 
 module.exports = { isWordInTheme };

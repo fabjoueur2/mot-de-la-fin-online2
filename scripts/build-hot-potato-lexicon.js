@@ -1,0 +1,180 @@
+'use strict';
+
+/** Génère games/hot-potato/themeLexicon.js — listes de mots par thème (hors ligne). */
+const fs = require('fs');
+const path = require('path');
+
+function norm(w) {
+  return String(w)
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z\-']/g, '');
+}
+
+const RAW = {
+  Cuisine: `four casserole poele couteau assiette bol sel poivre huile beurre farine sucre recette chef plat sauce epice ail oignon riz pate soupe salade grill fourchette cuillere nappe tablier roti friture bouillir mijoter legume viande poisson oeuf lait creme yaourt pain baguette croissant brioche confiture miel moutarde ketchup mayonnaise vinaigre basilic thym persil menthe cannelle vanille chocolat cacao gateau tarte quiche pizza burger frites steak jambon saucisse lardon bacon poulet dinde canard boeuf porc agneau tofu potage veloute bouillon brochette wok raclette fondue barbecue micro-ondes frigo congelateur mixeur blender fouet`,
+  Fruits: `pomme poire banane orange citron pamplemousse fraise framboise myrtille mure cassis cerise peche abricot prune mirabelle raisin melon pasteque kiwi ananas mangue papaye litchi noix noisette amande cajou pistache datte figue grenade coco avocat olive clementine mandarine nectarine brugnon kaki coing groseille goyave passion carambole fruit smoothie compote jus pepin noyau nectar sorbet verger cueillette sureau plantain`,
+  Legumes: `carotte tomate concombre salade laitue chou brocoli choufleur poivron aubergine courgette potiron citrouille navet radis betterave celeri fenouil poireau oignon ail echalote haricot petitpois pois lentille poischiche mais epinard oseille blette asperge artichaut champignon pommedeterre patate igname patatedouce topinambour panais rutabaga courge butternut gingembre curcuma ciboulette coriandre aneth romarin laurier endive mache roquette cresson soja edamame legume potager feve flageolet`,
+  Boissons: `eau lait jus soda cola limonade sirop the cafe chocolat tisane infusion biere vin champagne cidre whisky rhum vodka gin cocktail smoothie milkshake bubbletea orangeade citronnade tonic icetea expresso cappuccino latte mocha americano deca martini spritz mojito sangria kefir kombucha boisson gobelet verre bouteille canette carafe paille glacon bar pub cave aperol pastis cognac liqueur nectar`,
+  Desserts: `gateau tarte eclair chou profiterole mousse creme flan clafoutis brownie cookie biscuit madeleine financier macaron meringue nougat caramel praline truffe glace sorbet parfait tiramisu cheesecake fondant moelleux millefeuille operasaint fraisier crumble compote yaourt fromageblanc rizulait semoule ileflottante cremebrulee pannacotta donut beignet churros gaufre crepe pancake sucette bonbon chocolat dessert patisserie boulangerie cupcake muffin eclair religieuses`,
+  Fromages: `fromage camembert brie roquefort comte emmental gruyere cheddar mozzarella parmesan gouda edam feta chevre brebis reblochon raclette morbier munster livarot maroilles bleu stilton gorgonzola ricotta mascarpone burrata halloumi manchego pecorino provolone vacherin beaufort abondance tome tomme cantal salers mimolette babybel kiri boursin philadelphia faisselle brousse cancoillotte fondue tartiflette plateau`,
+  'Plats du monde': `sushi ramen pizza pasta paella couscous tajine curry tacos burrito kebab falafel hummus kebab kimchi pho padthai risotto lasagne moussaka goulash borsch pierogi empanada ceviche poutine fishandchips fishchips sashimi tempura yakitori bibimbap dimsum wonton dumpling naan chapati dosa samosa biryani chili guacamole nachos quesadilla enchilada gyros souvlaki bratwurst schnitzel`,
+  'Fast-food': `burger frites nuggets pizza hotdog kebab taco wrap sandwich panini bagel donut milkshake soda menu drive mcdonalds kfc burgerking quick subway pizza hut snack chicken wings onionrings milkshake milk shake milkshake cola ketchup mayo mustard sauce mcdonald mcdonalds bigmac cheese cheeseburger`,
+  Apero: `aperitif chips cacahuete olive saucisson fromage toast canape verrine tapenade guacamole humus guacamole saucisse cocktail vin biere pastis kir spritz cacahuetes pistache cake cakeaperitif cake sale gressin grissini bretzel popcorn cacahuetes cacahuètes saucissonsec rillettes terrine pate foiegras toastinettes`,
+  Animaux: `chien chat cheval vache mouton cochon poule canard oie dinde chevre ane lama alpaga panda koala kangourou elephant girafe lion tigre ours loup renard sanglier cerf ecureuil herisson chauvesouris dauphin baleine requin meduse pieuvre crabe homard crevette moule huitre escargot grenouille crapaud salamandre cameleon iguane perroquet aigle hibou corbeau mouette flamant pingouin manchot autruche paon cygne canari perruche tourterelle colibri animal zoo jungle savane`,
+  'Animaux de compagnie': `chien chat hamster lapin cochoninde furet poissonrouge perruche canari tortue serpent lezard iguane chinchilla rat souris gerbille nac nacanimal laisse collier croquettes litiere gamelle niche panier griffoir arbreachatre veterinarian veto toilettage adoption refuge chiot chaton`,
+  Oiseaux: `oiseau aigle hibou chouette perroquet canari perruche pigeon mouette goeland corbeau pie merle moineau hirondelle cygne canard oie dinde poule paon flamant pingouin manchot autruche colibri martinpecheur picverd toucan albatros faucon buse vautour cigogne heron`,
+  Poissons: `poisson saumon thon cabillaud morue truite sardine maquereau anchois sole dorade bar loup merlan lieu carpe brochet silure anguille raie requin dauphin baleine espadon thonrouge flétan flétan turbot lotte raie pastenague piranha guppy poissonrouge aquarium`,
+  Insectes: `insecte fourmi abeille guepe frelon mouche moustique papillon libellule coccinelle scarabee hanneton criquet sauterelle cigale luciole mite puce tique punaise cafard blatte millepatte scolopendre araignee scorpion mille-pattes chenille chrysalide`,
+  Dinosaures: `dinosaure trex tyrannosaure velociraptor triceratops stegosauro brachiosaure diplodocus brontosaure pterodactyle pteranodon ankylosaure spinosaure allosaure iguanodon megalosaure fossile jurassique cretace paleontologie os squelette`,
+  Ferme: `ferme fermier tracteur grange etable ecurie poulailler enclos champs ble mais orge avoine foin silo vache mouton cochon poule canard oie cheval ane chevre tracteur moissonneuse charrue botte seau lait oeuf`,
+  Zoo: `zoo enclos cage soigneur safari lion tigre elephant girafe zebre singe gorille panda koala kangourou hippopotame rhinoceros crocodile alligator serpent perroquet aquarium terrarium billet visite`,
+  Nature: `nature arbre fleur feuille herbe prairie champ foret montagne riviere lac ocean mer ciel nuage soleil lune etoile rocher pierre terre sol sable vent pluie neige orage cascade glacier vallee colline`,
+  Foret: `foret arbre chene hetre sapin pin bouleau erable mousse lichen champignon feuille branche tronc racine clairiere sentier ecureuil renard sanglier cerf chevreuil champignon bolete`,
+  Mer: `mer ocean vague maree plage sable coquillage galet algue corail poisson dauphin baleine requin meduse pieuvre crabe homard crevette mouette bateau voilier phare port crique ile`,
+  Montagne: `montagne sommet col glacier neige ski alpinisme randonnee refuge chalet pic crete vallee alpage chamois bouquetin aigle neige avalanche cordée piolet crampon`,
+  Desert: `desert sable dune oasis mirage chameau dromadaire cactus scorpion soleil chaleur secheresse vent simoun erg erg desertique`,
+  Jardin: `jardin potager fleur pelouse haie allee serre arrosage arrosoir binette rateau pelle tondeuse compost graine plant plantation legume fruit herbe`,
+  Fleurs: `fleur rose tulipe marguerite jonquille lys orchidee pivoine hortensia lavande jasmin mimosa geranium begonia dahlia chrysantheme tournesol bleuet coquelicot violette`,
+  Arbres: `arbre chene hetre sapin pin bouleau erable peuplier saule tilleul chataignier noyer pommier poirier cerisier olivier palmier baobab sequoia`,
+  Meteo: `meteo soleil pluie neige grele grele vent tempete orage eclair tonnerre nuage brouillard brume rosee givre gel canicule froid chaud humidite anticyclone depression`,
+  Saisons: `saison printemps ete automne hiver solstice equinoxe chaleur froid feuilles neige vacances rentree`,
+  Espace: `espace planete etoile galaxie soleil lune mars venus jupiter saturne mercure neptune uranus pluton astronaut fusée fusee satellite orbite comete meteorite trou noir voie lactee nasa`,
+  Maison: `maison appartement villa loft studio salon cuisine chambre salledebain wc toilettes couloir escalier grenier cave garage jardin balcon terrasse toit mur porte fenetre cle`,
+  Meubles: `meuble table chaise fauteuil canape lit armoire commode etagere bibliotheque bureau tabouret buffet vaisselier lit-superpose matelas oreiller couverture`,
+  'Objets du quotidien': `telephone cle portefeuille montre lunettes stylo crayon carnet sac cartable parapluie brosse peigne savon serviette assiette verre couteau fourchette cuillere tele telecommande`,
+  Outils: `outil marteau tournevis pince scie perceuse clemolette niveau metre cutter lime burin tenaille scie sauteuse meuleuse`,
+  Bricolage: `bricolage clou vis colle peinture pinceau papierpeint carrelage placo platre ciment enduit diy chantier atelier`,
+  Vetements: `vetement pantalon jean short jupe robe chemise tshirt pull sweat veste manteau manteau manteau echarpe gant chapeau casquette bonnet chaussette sousvetement pyjama costume cravate`,
+  Chaussures: `chaussure basket sneaker bottes sandale tongs escarpin mocassin ballerine botte talon semelle lacets`,
+  Couleurs: `couleur rouge bleu vert jaune orange violet rose noir blanc gris marron beige turquoise indigo magenta cyan dore argente`,
+  'Corps humain': `corps tete cheveu oeil oreille nez bouche dent langue cou epaule bras main doigt poitrine ventre dos jambe pied genou coude coeur poumon cerveau`,
+  Emotions: `emotion joie tristesse colere peur surprise degout amour haine jalousie stress anxiété anxiete calme bonheur rire pleurer sourire`,
+  Famille: `famille pere mere papa maman frere soeur fils fille grandpere grandmere oncle tante cousin cousine beaupere beaumere neveu niece bebe enfant`,
+  Metiers: `metier medecin infirmier professeur enseignant avocat policier pompier boulanger boucher cuisinier serveur commercant ingenieu developpeur artiste musicien acteur journaliste agriculteur`,
+  Ecole: `ecole classe prof eleve cahier stylo crayon gomme trousse cartable tableau lecon devoir controle examen bac recre cantine directeur`,
+  'Matieres scolaires': `maths francais histoire geo geographie svt physique chimie anglais espagnol allemand sport eps musique arts philo technologie`,
+  Travail: `travail bureau reunion deadline salaire patron collegue stagiaire client email ordinateur open space teletravail pause cafe`,
+  Shopping: `shopping magasin boutique centrecommercial solde reduction caisse panier cabas ticket carte cadeau vitrine marque luxe`,
+  Voyage: `voyage valise passeport billet avion train gare aeroport hotel auberge hostel destination itineraire carte visa douane`,
+  Vacances: `vacances ete hiver plage montagne camping roadtrip detente bronzage souvenir photo bronzer repos`,
+  Plage: `plage sable mer vague serviette parasol maillot creme bronzage chateausable coquillage galet baignade surfing`,
+  Transports: `transport voiture bus metro tram train avion bateau taxi velo trottinette scooter moto camion ferry`,
+  Voitures: `voiture auto moteur volant pneu frein essence diesel electrique garage parking permis conduite vitesse`,
+  Avions: `avion pilote aeroport piste cabine hublot aile reactor bagage billet vol turbulences`,
+  Bateaux: `bateau voilier yacht ferry cargo paquebot moteur ancre port quai cabine voile gouvernail`,
+  Ville: `ville rue avenue boulevard place mairie eglise parc square metro bus immeuble quartier centre`,
+  Pays: `france belgique suisse canada espagne italie allemagne portugal angleterre japon chine inde bresil mexique usa maroc algerie tunisie senegal`,
+  Monuments: `tour eiffel louvre notre dame colisee bigben statue liberte machupicchu pyramides tajmahal sagrada muraille chine`,
+  Histoire: `histoire roi reine empire revolution guerre paix chateau medieval antique rome grece egypte napoleon louis`,
+  Mythologie: `mythe zeus hera poseidon hades ares aphrodite athena hermes apollo odin thor loki hercule perseus meduse minotaure`,
+  Sport: `sport match equipe score but victoire defaite entrainement coach arbitre stade medaille coupe trophée trophee`,
+  Football: `football foot ballon but goal gardien attaquant defenseur milieu horsjeu penalty corner stade maillot`,
+  Tennis: `tennis raquette balle filet service ace set jeu tiebreak rolandgarros wimbledon`,
+  Basket: `basket panier ballon dunk dunk dribble passe rebond nba coach`,
+  Ski: `ski neige piste station telesiege baton chaussure ski snowboard luge avalanche`,
+  Musique: `musique chanson note rythme melodie instrument guitare piano batterie violon flute chant concert festival album`,
+  Chansons: `chanson couplet refrain tube hit playlist radio karaoké karaoke clip paroles`,
+  Cinema: `cinema film acteur actrice realisateur scenario scene camera ecran hollywood festival oscar`,
+  Series: `serie episode saison netflix spoilers personnages cliffhanger binge`,
+  'Jeux video': `jeu video console manette score niveau boss save load nintendo playstation xbox pc steam mario zelda`,
+  'BD & manga': `bd manga comics bulle case heros villain shonen shojo album case tintin asterix`,
+  Livres: `livre roman roman policier polar bibliotheque page chapitre auteur editeur lecture`,
+  'Super-heros': `superheros heros villain batman superman spiderman ironman wonderwoman marvel dc cape masque`,
+  Fantasy: `fantasy magie elfe nain dragon sorcier magicien quete epee chateau royaume`,
+  'Science-fiction': `sciencefiction sf robot alien vaisseau spatiale futur dystopie cyberpunk laser`,
+  Horreur: `horreur peur fantome vampire loupgarou zombie monstre sang cris cauchemar`,
+  Disney: `disney mickey minnie donald disney princess reine neiges simba nemo toy story`,
+  Anime: `anime manga naruto onepiece dragonball attackontitan studio ghibli cosplay`,
+  Technologie: `technologie ordinateur smartphone tablette internet wifi bluetooth ia robot drone`,
+  Internet: `internet site web email navigateur wifi fibre serveur cloud telechargement`,
+  'Reseaux sociaux': `facebook instagram tiktok twitter x snapchat youtube linkedin story like follower`,
+  Fetes: `fete anniversaire mariage noel halloween nouvelan carnaval festival feu artifice`,
+  Noel: `noel sapin cadeau pere noel renne traineau guirlande boule neige chocolat`,
+  Halloween: `halloween citrouille fantome sorciere deguisement bonbon fear vampire`,
+  Mariage: `mariage mariee marie alliance robe costume eglise mairie alliance temoins`,
+  Anniversaire: `anniversaire gateau bougie cadeau fete age ans surprise`,
+  Cirque: `cirque clown acrobat jongleur trapeze chapiteau lion elephant spectacle`,
+  Magie: `magie magicien tour illusion baguette chapeau lapin carte sortilege potion`,
+  Pirates: `pirate bateau voile tresor carte ile sabre perroquet capitaine crochet`,
+  Chevaliers: `chevalier epee armure chateau roi reine dragon tournoi bouclier`,
+  Robots: `robot androide automate ia machine metal circuit programme`,
+  Monstres: `monstre creature ogre troll demon dragon kraken yeti`,
+  Fantomes: `fantome spectre esprit hante maison brume drap`,
+  Zombies: `zombie mortvivant morsure apocalypse horde cerveau`,
+  Dragons: `dragon feu aile ecaille tresor grotte wyverne`,
+  Expressions: `expression proverbe dicton locution parler langage argot`,
+  Blagues: `blague rire humour vanne sketch comedie punchline`,
+  Marques: `nike adidas apple samsung google amazon microsoft cocacola mcdonalds`,
+  'Annees 80': `walkman neon synthpop arcade pacman rubikscube vhs walkman`,
+  'Annees 90': `tamagotchi dialup nokia gameboy pokemon dialup msn`,
+  'Annees 2000': `mp3 ipod myspace flipphone bluetooth youtube facebook`,
+  Nostalgie: `nostalgie souvenir enfance passé passe souvenir retro vintage`,
+  Enfance: `enfance bebe jouet nounours ecole recre goûter gouter balancoire`
+};
+
+const { THEMES } = require('../games/hot-potato/words');
+
+function fold(s) {
+  return String(s)
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/&/g, ' et ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+const themeByFold = new Map(THEMES.map((t) => [fold(t), t]));
+
+const out = {};
+for (const [k, words] of Object.entries(RAW)) {
+  const theme = themeByFold.get(fold(k));
+  if (!theme || theme === 'Libre') {
+    console.warn('Unmapped raw key:', k);
+    continue;
+  }
+  const set = [
+    ...new Set(
+      words
+        .split(/\s+/)
+        .map(norm)
+        .filter((w) => w.length >= 2)
+    )
+  ];
+  out[theme] = set;
+}
+
+const dest = path.join(__dirname, '..', 'games', 'hot-potato', 'themeLexicon.js');
+const body = `'use strict';
+
+/** Lexique hors-ligne (mots normalisés sans accents) pour validation de thème. */
+const LEXICON = ${JSON.stringify(out, null, 2)};
+
+function normalizeKey(theme) {
+  return String(theme || '').trim();
+}
+
+function normalizeWord(word) {
+  return String(word || '')
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\\u0300-\\u036f]/g, '')
+    .replace(/[^a-z\\-']/g, '');
+}
+
+function lexiconHas(theme, word) {
+  const list = LEXICON[normalizeKey(theme)];
+  if (!list || !list.length) return false;
+  const w = normalizeWord(word);
+  return list.includes(w);
+}
+
+module.exports = { LEXICON, lexiconHas, normalizeWord };
+`;
+
+fs.writeFileSync(dest, body, 'utf8');
+console.log('Wrote', dest, 'themes', Object.keys(out).length);
