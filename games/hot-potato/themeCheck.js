@@ -35,7 +35,28 @@ function sanitizeApiKey(raw) {
   return k;
 }
 
+/**
+ * Priorité : Groq (gratuit) → OpenAI / autre endpoint compatible.
+ * Groq : https://console.groq.com → API Keys
+ */
 function getApiConfig() {
+  const groqKey = sanitizeApiKey(process.env.GROQ_API_KEY);
+  if (groqKey) {
+    return {
+      provider: 'groq',
+      apiKey: groqKey,
+      baseUrl: (
+        process.env.GROQ_BASE_URL ||
+        process.env.OPENAI_BASE_URL ||
+        'https://api.groq.com/openai/v1'
+      ).replace(/\/$/, ''),
+      model:
+        process.env.GROQ_MODEL ||
+        process.env.OPENAI_MODEL ||
+        'llama-3.1-8b-instant'
+    };
+  }
+
   const apiKey = sanitizeApiKey(process.env.OPENAI_API_KEY);
   if (!apiKey) return null;
   const base = (process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1').replace(
@@ -43,6 +64,7 @@ function getApiConfig() {
     ''
   );
   return {
+    provider: 'openai',
     apiKey,
     baseUrl: base,
     model: process.env.OPENAI_MODEL || 'gpt-4o-mini'
@@ -53,6 +75,7 @@ function getThemeCheckStatus() {
   const cfg = getApiConfig();
   return {
     aiConfigured: Boolean(cfg),
+    provider: cfg?.provider || null,
     model: cfg?.model || null,
     lastAiError
   };
