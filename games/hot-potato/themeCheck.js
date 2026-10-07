@@ -2,11 +2,13 @@
 
 const { lexiconHas } = require('./themeLexicon');
 
-const TIMEOUT_MS = 4000;
+const TIMEOUT_MS = 10000;
 const MAX_CACHE = 5000;
 
 /** @type {Map<string, { ok: boolean, reason?: string }>} */
 const cache = new Map();
+
+let lastAiError = null;
 
 function cacheKey(theme, word) {
   return `${String(theme).toLowerCase()}|${String(word).toLowerCase()}`;
@@ -20,8 +22,21 @@ function cacheSet(key, value) {
   cache.set(key, value);
 }
 
+/** Nettoie la clé collée depuis le dashboard (espaces, guillemets, préfixe Bearer). */
+function sanitizeApiKey(raw) {
+  let k = String(raw || '').trim();
+  if (
+    (k.startsWith('"') && k.endsWith('"')) ||
+    (k.startsWith("'") && k.endsWith("'"))
+  ) {
+    k = k.slice(1, -1).trim();
+  }
+  if (/^bearer\s+/i.test(k)) k = k.replace(/^bearer\s+/i, '').trim();
+  return k;
+}
+
 function getApiConfig() {
-  const apiKey = process.env.OPENAI_API_KEY;
+  const apiKey = sanitizeApiKey(process.env.OPENAI_API_KEY);
   if (!apiKey) return null;
   const base = (process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1').replace(
     /\/$/,
@@ -34,12 +49,22 @@ function getApiConfig() {
   };
 }
 
+function getThemeCheckStatus() {
+  const cfg = getApiConfig();
+  return {
+    aiConfigured: Boolean(cfg),
+    model: cfg?.model || null,
+    lastAiError
+  };
+}
+
 function parseYesNo(text) {
   const t = String(text || '')
     .trim()
     .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '');
+  if (!t) return null;
   if (/^(oui|yes|o|y|true|1)\b/.test(t)) return true;
   if (/^(non|no|n|false|0)\b/.test(t)) return false;
   if (/\boui\b/.test(t) || /\byes\b/.test(t)) return true;
@@ -52,7 +77,7 @@ function fromLexicon(word, theme) {
   return { ok: false, reason: 'Hors thème.' };
 }
 
-async function callOpenAI(cfg, word, theme) {
+async function callOpenAIOnce(cfg, word, theme) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
   try {
@@ -65,7 +90,7 @@ async function callOpenAI(cfg, word, theme) {
       body: JSON.stringify({
         model: cfg.model,
         temperature: 0,
-        max_tokens: 8,
+        max_tokens: 16,
         messages: [
           {
             role: 'system',
@@ -81,16 +106,40 @@ async function callOpenAI(cfg, word, theme) {
       signal: controller.signal
     });
     if (!res.ok) {
-      throw new Error(`api_${res.status}`);
+      let detail = '';
+      try {
+        const errBody = await res.json();
+        detail = errBody?.error?.message || errBody?.error?.code || '';
+      } catch {
+        /* ignore */
+      }
+      const err = new Error(`api_${res.status}${detail ? `:${detail}` : ''}`);
+      err.status = res.status;
+      throw err;
     }
     const data = await res.json();
     const content = data?.choices?.[0]?.message?.content;
     const verdict = parseYesNo(content);
     if (verdict === true) return { ok: true };
     if (verdict === false) return { ok: false, reason: 'Hors thème.' };
-    throw new Error('bad_verdict');
+    const err = new Error(`bad_verdict:${String(content || '').slice(0, 40)}`);
+    throw err;
   } finally {
     clearTimeout(timer);
+  }
+}
+
+async function callOpenAI(cfg, word, theme) {
+  try {
+    return await callOpenAIOnce(cfg, word, theme);
+  } catch (e) {
+    // Un seul retry sur timeout / 429 / 5xx
+    const status = e?.status;
+    const aborted = e?.name === 'AbortError';
+    const retryable =
+      aborted || status === 429 || (typeof status === 'number' && status >= 500);
+    if (!retryable) throw e;
+    return callOpenAIOnce(cfg, word, theme);
   }
 }
 
@@ -118,12 +167,18 @@ async function isWordInTheme(word, theme) {
   if (cfg) {
     try {
       const result = await callOpenAI(cfg, w, themeLabel);
+      lastAiError = null;
       cacheSet(key, result);
       return result;
-    } catch {
-      // API HS / lente → lexique local
+    } catch (e) {
+      lastAiError =
+        e?.name === 'AbortError'
+          ? 'timeout'
+          : String(e?.message || e).slice(0, 120);
+      console.warn('[hot-potato] theme AI failed:', lastAiError);
       const fallback = fromLexicon(w, themeLabel);
-      cacheSet(key, fallback);
+      // Ne pas cacher un refus lexique après échec IA : le prochain essai peut réussir via IA
+      if (fallback.ok) cacheSet(key, fallback);
       return fallback;
     }
   }
@@ -133,4 +188,4 @@ async function isWordInTheme(word, theme) {
   return local;
 }
 
-module.exports = { isWordInTheme };
+module.exports = { isWordInTheme, getThemeCheckStatus };

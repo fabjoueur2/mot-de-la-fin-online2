@@ -121,6 +121,14 @@ app.use(
 
 app.get('/api/health', (_, res) => res.json({ ok: true }));
 app.get('/api/games', (_, res) => res.json(listGames()));
+app.get('/api/hot-potato/theme-check', (_, res) => {
+  try {
+    const { getThemeCheckStatus } = require('./games/hot-potato/themeCheck');
+    res.json({ ok: true, ...getThemeCheckStatus() });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: String(e?.message || e) });
+  }
+});
 
 /** @type {Map<string, object>} */
 const rooms = new Map();

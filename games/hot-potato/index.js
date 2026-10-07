@@ -6,7 +6,7 @@
 
 const { sanitizeDisplayName } = require('../../lib/sanitize');
 const { pickSeed, pickTheme, THEMES } = require('./words');
-const { isWordInTheme } = require('./themeCheck');
+const { isWordInTheme, getThemeCheckStatus } = require('./themeCheck');
 
 const GAME_ID = 'hot-potato';
 const MIN_PLAYERS = 2;
@@ -376,6 +376,7 @@ function sanitizeRoom(room, socketId) {
     roundCount: room.settings.roundCount,
     theme: room.theme,
     themesAvailable: [...THEMES],
+    themeCheck: getThemeCheckStatus(),
     previousWord: room.previousWord,
     expectedLetter: room.previousWord ? lastLetter(room.previousWord).toUpperCase() : null,
     holderId: room.holderId,

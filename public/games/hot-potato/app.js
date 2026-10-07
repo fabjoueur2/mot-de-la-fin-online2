@@ -149,6 +149,18 @@ function render(s) {
       } else if (!$('set-theme')?.options?.length) {
         fillThemeSelect(s.themesAvailable || [], s.settings);
       }
+      const hint = $('theme-check-hint');
+      if (hint) {
+        const tc = s.themeCheck || {};
+        if (tc.aiConfigured) {
+          hint.textContent = tc.lastAiError
+            ? `IA thème : erreur (${tc.lastAiError}) — secours lexique.`
+            : `IA thème active (${tc.model || 'ok'}).`;
+        } else {
+          hint.textContent =
+            'IA thème inactive — lexique local. Vérifie OPENAI_API_KEY sur Render puis redéploie.';
+        }
+      }
     }
     return;
   }
