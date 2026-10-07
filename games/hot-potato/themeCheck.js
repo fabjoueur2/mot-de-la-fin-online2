@@ -2,7 +2,7 @@
 
 const { lexiconHas } = require('./themeLexicon');
 
-const TIMEOUT_MS = 10000;
+const TIMEOUT_MS = 12000;
 const MAX_CACHE = 5000;
 
 /** @type {Map<string, { ok: boolean, reason?: string }>} */
@@ -81,6 +81,31 @@ function getThemeCheckStatus() {
   };
 }
 
+function extractMessageText(message) {
+  if (!message) return '';
+  const parts = [];
+  const push = (v) => {
+    if (v == null) return;
+    if (typeof v === 'string') {
+      if (v.trim()) parts.push(v);
+      return;
+    }
+    if (Array.isArray(v)) {
+      for (const p of v) {
+        if (typeof p === 'string') push(p);
+        else if (p && typeof p === 'object') {
+          push(p.text || p.content || p.value);
+        }
+      }
+    }
+  };
+  push(message.content);
+  // Modèles "reasoning" (gpt-oss) : parfois la réponse est ailleurs / vide si max_tokens trop bas
+  push(message.reasoning);
+  push(message.refusal);
+  return parts.join('\n').trim();
+}
+
 function parseYesNo(text) {
   const t = String(text || '')
     .trim()
@@ -88,10 +113,14 @@ function parseYesNo(text) {
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '');
   if (!t) return null;
-  if (/^(oui|yes|o|y|true|1)\b/.test(t)) return true;
-  if (/^(non|no|n|false|0)\b/.test(t)) return false;
-  if (/\boui\b/.test(t) || /\byes\b/.test(t)) return true;
-  if (/\bnon\b/.test(t) || /\bno\b/.test(t)) return false;
+  // Prend la dernière occurrence claire (raisonnement puis verdict)
+  const matches = [...t.matchAll(/\b(oui|yes|non|no)\b/g)];
+  if (matches.length) {
+    const last = matches[matches.length - 1][1];
+    return last === 'oui' || last === 'yes';
+  }
+  if (/^(o|y|true|1)\b/.test(t)) return true;
+  if (/^(n|false|0)\b/.test(t)) return false;
   return null;
 }
 
@@ -104,28 +133,35 @@ async function callOpenAIOnce(cfg, word, theme) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
   try {
+    const body = {
+      model: cfg.model,
+      temperature: 0,
+      // gpt-oss consomme des tokens de raisonnement avant le contenu
+      max_tokens: cfg.provider === 'groq' ? 256 : 32,
+      messages: [
+        {
+          role: 'system',
+          content:
+            'Tu juges si un mot français appartient clairement au thème donné (jeu de société). Réponds uniquement par un seul mot : oui ou non. Pas d’explication.'
+        },
+        {
+          role: 'user',
+          content: `Thème : ${theme}\nMot : ${word}\nRéponds uniquement : oui ou non`
+        }
+      ]
+    };
+    if (cfg.provider === 'groq') {
+      // Réduit le raisonnement pour garder de la place pour la réponse
+      body.reasoning_effort = 'low';
+    }
+
     const res = await fetch(`${cfg.baseUrl}/chat/completions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${cfg.apiKey}`
       },
-      body: JSON.stringify({
-        model: cfg.model,
-        temperature: 0,
-        max_tokens: 16,
-        messages: [
-          {
-            role: 'system',
-            content:
-              'Tu juges si un mot français appartient clairement au thème donné (jeu de société). Réponds uniquement par oui ou non.'
-          },
-          {
-            role: 'user',
-            content: `Thème : ${theme}\nMot : ${word}\nLe mot appartient-il clairement à ce thème ?`
-          }
-        ]
-      }),
+      body: JSON.stringify(body),
       signal: controller.signal
     });
     if (!res.ok) {
@@ -141,11 +177,14 @@ async function callOpenAIOnce(cfg, word, theme) {
       throw err;
     }
     const data = await res.json();
-    const content = data?.choices?.[0]?.message?.content;
+    const message = data?.choices?.[0]?.message;
+    const content = extractMessageText(message);
     const verdict = parseYesNo(content);
     if (verdict === true) return { ok: true };
     if (verdict === false) return { ok: false, reason: 'Hors thème.' };
-    const err = new Error(`bad_verdict:${String(content || '').slice(0, 40)}`);
+    const err = new Error(
+      `bad_verdict:${String(content || JSON.stringify(message || {})).slice(0, 80)}`
+    );
     throw err;
   } finally {
     clearTimeout(timer);
@@ -156,11 +195,14 @@ async function callOpenAI(cfg, word, theme) {
   try {
     return await callOpenAIOnce(cfg, word, theme);
   } catch (e) {
-    // Un seul retry sur timeout / 429 / 5xx
     const status = e?.status;
     const aborted = e?.name === 'AbortError';
+    const badVerdict = String(e?.message || '').startsWith('bad_verdict');
     const retryable =
-      aborted || status === 429 || (typeof status === 'number' && status >= 500);
+      aborted ||
+      badVerdict ||
+      status === 429 ||
+      (typeof status === 'number' && status >= 500);
     if (!retryable) throw e;
     return callOpenAIOnce(cfg, word, theme);
   }
@@ -199,7 +241,6 @@ async function isWordInTheme(word, theme) {
           ? 'timeout'
           : String(e?.message || e).slice(0, 120);
       console.warn('[hot-potato] theme AI failed:', lastAiError);
-      // Avec une clé IA : pas de secours lexique (évite les faux « Hors thème »).
       return {
         ok: false,
         reason:
@@ -210,7 +251,6 @@ async function isWordInTheme(word, theme) {
     }
   }
 
-  // Sans clé IA uniquement : lexique local
   const local = fromLexicon(w, themeLabel);
   cacheSet(key, local);
   return local;
