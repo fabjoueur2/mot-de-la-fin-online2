@@ -14,6 +14,7 @@ let localPhaseEndsAt = null;
 let syncedPhaseEndsAt = null;
 let syncedPhase = null;
 let pendingSoloStart = false;
+let pendingHomeSettings = null;
 
 const escapeHtml =
   typeof window !== 'undefined' && window.escapeHtml
@@ -67,11 +68,23 @@ function guessRatio() {
 function updateGuessUI() {
   const label = $('factor-label');
   if (label) label.textContent = direction === 'moins' ? `÷${factor}` : `×${factor}`;
-  const aVal = state?.question?.a?.value;
+
+  const a = state?.question?.a;
+  const b = state?.question?.b;
+  const target = $('estimate-target');
+  if (target) {
+    target.textContent = b?.label ? `« ${b.label} »` : 'la donnée cachée';
+  }
+  const hint = $('guess-hint');
+  if (hint && a?.label && b?.label) {
+    hint.textContent = `Combien de fois « ${b.label} » est-elle plus grande ou plus petite que « ${a.label} » ?`;
+  }
+
+  const aVal = a?.value;
   const preview = $('estimate-preview');
   if (preview && Number.isFinite(aVal)) {
     const est = aVal * guessRatio();
-    const unit = state.question.a.unit || '';
+    const unit = b?.unit || a?.unit || '';
     preview.textContent = `${formatNum(est)} ${unit}`.trim();
   } else if (preview) {
     preview.textContent = '—';
@@ -97,10 +110,28 @@ function tickTimers() {
 }
 
 function collectSettings() {
+  const homeVisible = $('screen-home')?.classList.contains('active');
+  const rounds = homeVisible ? $('home-rounds') : $('set-rounds');
+  const time = homeVisible ? $('home-time') : $('set-time');
   return {
-    roundCount: parseInt($('set-rounds').value, 10),
-    answerSec: parseInt($('set-time').value, 10)
+    roundCount: parseInt(rounds?.value || $('home-rounds')?.value || '10', 10),
+    answerSec: parseInt(time?.value || $('home-time')?.value || '20', 10)
   };
+}
+
+function syncSettingsToLobby(settings) {
+  if ($('set-rounds') && settings.roundCount != null) {
+    $('set-rounds').value = String(settings.roundCount);
+  }
+  if ($('set-time') && settings.answerSec != null) {
+    $('set-time').value = String(settings.answerSec);
+  }
+  if ($('home-rounds') && settings.roundCount != null) {
+    $('home-rounds').value = String(settings.roundCount);
+  }
+  if ($('home-time') && settings.answerSec != null) {
+    $('home-time').value = String(settings.answerSec);
+  }
 }
 
 function pushSettings() {
@@ -161,13 +192,17 @@ function render(s) {
         ? 'Solo possible · invite des amis pour le multijoueur.'
         : `Minimum ${s.minPlayers} joueur.`;
     $('host-settings').style.display = s.isHost ? 'block' : 'none';
-    if (s.isHost && !document.activeElement?.closest?.('#host-settings')) {
-      $('set-rounds').value = String(s.settings.roundCount);
-      $('set-time').value = String(s.settings.answerSec);
-    }
-    if (pendingSoloStart && s.isHost) {
-      pendingSoloStart = false;
-      socket.emit('fct-start-game', collectSettings());
+    if (s.isHost && pendingHomeSettings) {
+      const settings = pendingHomeSettings;
+      pendingHomeSettings = null;
+      syncSettingsToLobby(settings);
+      socket.emit('fct-update-settings', settings);
+      if (pendingSoloStart) {
+        pendingSoloStart = false;
+        socket.emit('fct-start-game', settings);
+      }
+    } else if (s.isHost && !document.activeElement?.closest?.('#host-settings')) {
+      syncSettingsToLobby(s.settings);
     }
     return;
   }
@@ -272,10 +307,20 @@ function playerName() {
 
 $('btn-create')?.addEventListener('click', () => {
   pendingSoloStart = false;
+  pendingHomeSettings = {
+    roundCount: parseInt($('home-rounds')?.value || '10', 10),
+    answerSec: parseInt($('home-time')?.value || '20', 10)
+  };
+  syncSettingsToLobby(pendingHomeSettings);
   socket.emit('create-room', { playerName: playerName(), gameId: GAME_ID });
 });
 $('btn-solo')?.addEventListener('click', () => {
   pendingSoloStart = true;
+  pendingHomeSettings = {
+    roundCount: parseInt($('home-rounds')?.value || '10', 10),
+    answerSec: parseInt($('home-time')?.value || '20', 10)
+  };
+  syncSettingsToLobby(pendingHomeSettings);
   socket.emit('create-room', { playerName: playerName(), gameId: GAME_ID });
 });
 $('btn-show-join')?.addEventListener('click', () => {

@@ -31,6 +31,20 @@
         <h2>Lancer une partie</h2>
         <label>Votre pseudo</label>
         <input type="text" id="player-name" placeholder="Ex : Léa" maxlength="20" value="">
+        <label>Manches</label>
+        <select id="home-rounds">
+          <option value="5">5</option>
+          <option value="10" selected>10</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+        </select>
+        <label>Temps d’estimation</label>
+        <select id="home-time">
+          <option value="10">10 s</option>
+          <option value="20" selected>20 s</option>
+          <option value="30">30 s</option>
+          <option value="60">60 s</option>
+        </select>
         <div class="row" style="margin-top:8px;">
           <button class="btn btn-primary" id="btn-solo">Jouer solo</button>
           <button class="btn btn-secondary" id="btn-create">Créer un salon</button>
@@ -76,7 +90,7 @@
           <option value="15">15</option>
           <option value="20">20</option>
         </select>
-        <label>Temps par question</label>
+        <label>Temps d’estimation</label>
         <select id="set-time">
           <option value="10">10 s</option>
           <option value="20" selected>20 s</option>
@@ -101,22 +115,28 @@
           <div class="fct-stat-value" id="ans-a-value">—</div>
           <p class="fct-stat-meta" id="ans-a-meta"></p>
         </article>
-        <div class="fct-vs">Combien de fois plus ou moins ?</div>
+        <div class="fct-vs">Par rapport à la référence, la donnée à estimer est…</div>
         <article class="fct-stat fct-stat-b">
-          <div class="fct-stat-kicker">Donnée à estimer</div>
+          <div class="fct-stat-kicker">À estimer (valeur cachée)</div>
           <h3 id="ans-b-label">—</h3>
           <div class="fct-stat-value fct-hidden">???</div>
           <p class="fct-stat-meta" id="ans-b-meta"></p>
         </article>
       </div>
       <div class="card fct-card fct-guess" id="guess-panel">
+        <p class="fct-guess-hint" id="guess-hint">Combien de fois plus grande ou plus petite est la donnée à estimer ?</p>
         <div class="fct-dir">
-          <button type="button" class="fct-dir-btn active" data-dir="plus" id="btn-plus">Plus</button>
-          <button type="button" class="fct-dir-btn" data-dir="moins" id="btn-moins">Moins</button>
+          <button type="button" class="fct-dir-btn active" data-dir="plus" id="btn-plus">Plus grande</button>
+          <button type="button" class="fct-dir-btn" data-dir="moins" id="btn-moins">Plus petite</button>
         </div>
-        <label>Multiplicateur <span id="factor-label">×10</span></label>
+        <label>Facteur <span id="factor-label">×10</span></label>
         <input type="range" id="factor-slider" min="0" max="1000" value="500">
-        <p class="fct-estimate">Tu estimes environ <strong id="estimate-preview">—</strong></p>
+        <p class="fct-estimate">
+          Tu estimes
+          <strong id="estimate-target">la donnée cachée</strong>
+          à environ
+          <strong id="estimate-preview">—</strong>
+        </p>
         <button class="btn btn-primary" id="btn-lock">Valider mon estimation</button>
         <p id="locked-msg" class="share-hint" style="display:none;">Estimation verrouillée — en attente des autres…</p>
       </div>

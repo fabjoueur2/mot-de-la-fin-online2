@@ -152,6 +152,13 @@
   padding: 0.35rem;
 }
 
+.fct-guess-hint {
+  margin: 0 0 0.75rem;
+  font-size: 0.9rem;
+  color: var(--fct-muted);
+  line-height: 1.35;
+}
+
 .fct-dir {
   display: grid;
   grid-template-columns: 1fr 1fr;
