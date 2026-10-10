@@ -1,0 +1,225 @@
+:root {
+  --fct-bg0: #071a1c;
+  --fct-bg1: #0d2e32;
+  --fct-teal: #14b8a6;
+  --fct-teal-dim: #0f766e;
+  --fct-amber: #fbbf24;
+  --fct-cream: #e8f5f3;
+  --fct-muted: #8aada8;
+  --fct-card: rgba(15, 48, 52, 0.92);
+  --fct-danger: #f87171;
+}
+
+.fct-body {
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse 80% 50% at 10% -10%, rgba(20, 184, 166, 0.22), transparent 55%),
+    radial-gradient(ellipse 60% 40% at 90% 10%, rgba(251, 191, 36, 0.12), transparent 50%),
+    linear-gradient(165deg, var(--fct-bg0), var(--fct-bg1) 55%, #061416);
+  color: var(--fct-cream);
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+}
+
+.fct-app header {
+  text-align: center;
+  margin-bottom: 0.75rem;
+}
+
+.fct-brand {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(2.4rem, 8vw, 3.6rem);
+  letter-spacing: 0.08em;
+  margin: 0.25rem 0 0;
+  color: var(--fct-teal);
+  text-shadow: 0 0 40px rgba(20, 184, 166, 0.35);
+}
+
+.fct-tagline {
+  margin: 0.15rem 0 0.5rem;
+  color: var(--fct-amber);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.fct-card {
+  background: var(--fct-card);
+  border: 1px solid rgba(20, 184, 166, 0.28);
+  border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+}
+
+.fct-card h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  color: var(--fct-cream);
+}
+
+.fct-roundbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 700;
+}
+
+.fct-timer {
+  font-size: 1.6rem;
+  color: var(--fct-amber);
+  min-width: 2.5rem;
+  text-align: center;
+}
+
+.fct-reveal-badge {
+  color: var(--fct-teal);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.75rem;
+}
+
+.fct-compare {
+  display: grid;
+  gap: 0.75rem;
+  margin-bottom: 0.85rem;
+}
+
+@media (min-width: 720px) {
+  .fct-compare {
+    grid-template-columns: 1fr auto 1fr;
+    align-items: stretch;
+  }
+  .fct-vs {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    justify-self: center;
+  }
+}
+
+.fct-stat {
+  background: var(--fct-card);
+  border: 1px solid rgba(20, 184, 166, 0.25);
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+}
+
+.fct-stat-b {
+  border-color: rgba(251, 191, 36, 0.35);
+}
+
+.fct-stat-kicker {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--fct-muted);
+  margin: 0 0 0.35rem;
+}
+
+.fct-stat h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.15rem;
+  margin: 0 0 0.5rem;
+  line-height: 1.25;
+}
+
+.fct-stat-value {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: clamp(1.5rem, 5vw, 2.1rem);
+  font-weight: 700;
+  color: var(--fct-teal);
+}
+
+.fct-stat-b .fct-stat-value,
+.fct-hidden {
+  color: var(--fct-amber);
+}
+
+.fct-stat-meta {
+  margin: 0.45rem 0 0;
+  font-size: 0.8rem;
+  color: var(--fct-muted);
+}
+
+.fct-vs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--fct-amber);
+  letter-spacing: 0.04em;
+  padding: 0.35rem;
+}
+
+.fct-dir {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-bottom: 0.85rem;
+}
+
+.fct-dir-btn {
+  border: 1px solid rgba(20, 184, 166, 0.35);
+  background: transparent;
+  color: var(--fct-cream);
+  border-radius: 10px;
+  padding: 0.7rem;
+  font-weight: 700;
+  font-family: 'Space Grotesk', sans-serif;
+  cursor: pointer;
+}
+
+.fct-dir-btn.active {
+  background: var(--fct-teal);
+  color: #042f2e;
+  border-color: var(--fct-teal);
+}
+
+#factor-slider {
+  width: 100%;
+  accent-color: var(--fct-teal);
+  margin: 0.35rem 0 0.75rem;
+}
+
+.fct-estimate {
+  margin: 0 0 0.85rem;
+  color: var(--fct-muted);
+}
+
+.fct-estimate strong {
+  color: var(--fct-amber);
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.fct-ratio {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--fct-amber);
+  margin: 0.5rem 0;
+}
+
+.fct-reveal-value {
+  animation: fctPop 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes fctPop {
+  from {
+    opacity: 0;
+    transform: scale(0.85) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.fct-guess.locked {
+  opacity: 0.72;
+  pointer-events: none;
+}
+
+.fct-body .players-list li {
+  border-color: rgba(20, 184, 166, 0.2);
+}

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>FACTOR — Combien de fois plus ?</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="fct-body">
+  <div class="app fct-app">
+    <header>
+      <a href="/" class="back-to-hub">← Tous les jeux</a>
+      <h1 class="fct-brand">FACTOR</h1>
+      <p class="fct-tagline">Combien de fois plus ?</p>
+      <span class="badge-online">● Multijoueur en ligne</span>
+    </header>
+
+    <div id="connection-status" class="connection-status">Connexion…</div>
+    <div id="room-nav" class="room-nav" style="display:none;">
+      <button type="button" id="btn-salon" class="btn-nav btn-nav-salon">Retour au salon</button>
+      <button type="button" id="btn-menu" class="btn-nav btn-nav-menu">Quitter</button>
+    </div>
+
+    <!-- HOME -->
+    <div id="screen-home" class="screen active">
+      <div class="card fct-card">
+        <h2>Lancer une partie</h2>
+        <label>Votre pseudo</label>
+        <input type="text" id="player-name" placeholder="Ex : Léa" maxlength="20" value="">
+        <div class="row" style="margin-top:8px;">
+          <button class="btn btn-primary" id="btn-solo">Jouer solo</button>
+          <button class="btn btn-secondary" id="btn-create">Créer un salon</button>
+          <button class="btn btn-secondary" id="btn-show-join">Rejoindre</button>
+        </div>
+        <p id="solo-best" class="share-hint" style="margin-top:10px;"></p>
+      </div>
+      <div class="card fct-card" id="join-panel" style="display:none;">
+        <h2>Code de salle</h2>
+        <input type="text" id="join-code" placeholder="K7F2Q" maxlength="6" style="text-transform:uppercase;letter-spacing:4px;font-family:monospace;font-weight:700;">
+        <button class="btn btn-blue" id="btn-join">Entrer</button>
+      </div>
+      <div class="card fct-card">
+        <p><strong>Estime combien de fois</strong> une statistique est plus grande ou plus petite qu’une autre.</p>
+        <p class="muted">Données réelles · révélations surprenantes · score sur 100 par manche.</p>
+      </div>
+    </div>
+
+    <!-- LOBBY -->
+    <div id="screen-lobby" class="screen">
+      <div class="card fct-card">
+        <h2>Salon FACTOR</h2>
+        <div class="room-code-box">
+          <div class="label">Code</div>
+          <div class="code" id="lobby-code">------</div>
+          <div class="copy-row">
+            <button class="btn btn-secondary btn-sm" id="btn-copy-code">Copier le code</button>
+            <button class="btn btn-secondary btn-sm" id="btn-copy-link">Copier le lien</button>
+          </div>
+        </div>
+      </div>
+      <div class="card fct-card">
+        <h2>Joueurs <span id="lobby-player-count" class="muted"></span></h2>
+        <ul id="lobby-players" class="players-list"></ul>
+        <p id="lobby-min-hint" class="share-hint"></p>
+      </div>
+      <div class="card fct-card" id="host-settings">
+        <h2>Réglages (hôte)</h2>
+        <label>Manches</label>
+        <select id="set-rounds">
+          <option value="5">5</option>
+          <option value="10" selected>10</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+        </select>
+        <label>Temps par question</label>
+        <select id="set-time">
+          <option value="10">10 s</option>
+          <option value="20" selected>20 s</option>
+          <option value="30">30 s</option>
+          <option value="60">60 s</option>
+        </select>
+        <button class="btn btn-primary" id="btn-start" style="margin-top:12px;">Lancer la partie</button>
+      </div>
+    </div>
+
+    <!-- ANSWERING -->
+    <div id="screen-answer" class="screen">
+      <div class="fct-roundbar">
+        <span id="ans-round">Manche 1/10</span>
+        <span id="ans-timer" class="fct-timer">20</span>
+        <span id="ans-answered" class="muted">0/1</span>
+      </div>
+      <div class="fct-compare">
+        <article class="fct-stat fct-stat-a">
+          <div class="fct-stat-kicker">Donnée de référence</div>
+          <h3 id="ans-a-label">—</h3>
+          <div class="fct-stat-value" id="ans-a-value">—</div>
+          <p class="fct-stat-meta" id="ans-a-meta"></p>
+        </article>
+        <div class="fct-vs">Combien de fois plus ou moins ?</div>
+        <article class="fct-stat fct-stat-b">
+          <div class="fct-stat-kicker">Donnée à estimer</div>
+          <h3 id="ans-b-label">—</h3>
+          <div class="fct-stat-value fct-hidden">???</div>
+          <p class="fct-stat-meta" id="ans-b-meta"></p>
+        </article>
+      </div>
+      <div class="card fct-card fct-guess" id="guess-panel">
+        <div class="fct-dir">
+          <button type="button" class="fct-dir-btn active" data-dir="plus" id="btn-plus">Plus</button>
+          <button type="button" class="fct-dir-btn" data-dir="moins" id="btn-moins">Moins</button>
+        </div>
+        <label>Multiplicateur <span id="factor-label">×10</span></label>
+        <input type="range" id="factor-slider" min="0" max="1000" value="500">
+        <p class="fct-estimate">Tu estimes environ <strong id="estimate-preview">—</strong></p>
+        <button class="btn btn-primary" id="btn-lock">Valider mon estimation</button>
+        <p id="locked-msg" class="share-hint" style="display:none;">Estimation verrouillée — en attente des autres…</p>
+      </div>
+    </div>
+
+    <!-- REVEAL -->
+    <div id="screen-reveal" class="screen">
+      <div class="fct-roundbar">
+        <span id="rev-round">Manche 1/10</span>
+        <span class="fct-reveal-badge">Révélation</span>
+      </div>
+      <div class="card fct-card fct-reveal-main">
+        <p class="fct-stat-kicker" id="rev-b-label">—</p>
+        <div class="fct-stat-value fct-reveal-value" id="rev-b-value">—</div>
+        <p class="fct-ratio" id="rev-ratio">—</p>
+        <p class="fct-stat-meta" id="rev-sources"></p>
+      </div>
+      <div class="card fct-card">
+        <h2>Scores de la manche</h2>
+        <ul id="rev-results" class="players-list"></ul>
+      </div>
+      <div class="card fct-card">
+        <h2>Classement</h2>
+        <ul id="rev-ranking" class="players-list"></ul>
+      </div>
+    </div>
+
+    <!-- GAME OVER -->
+    <div id="screen-end" class="screen">
+      <div class="card fct-card">
+        <h2>Partie terminée</h2>
+        <p class="fct-ratio" id="end-title">Classement final</p>
+        <ul id="end-ranking" class="players-list"></ul>
+        <p id="end-best" class="share-hint"></p>
+        <div class="row" style="margin-top:12px;">
+          <button class="btn btn-primary" id="btn-rematch">Rejouer</button>
+          <button class="btn btn-secondary" id="btn-end-lobby">Salon</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/escape.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

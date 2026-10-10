@@ -71,6 +71,17 @@ const GAMES = [
     duration: '10–20 min',
     path: '/games/hot-potato/',
     status: 'available'
+  },
+  {
+    id: 'factor',
+    name: 'FACTOR',
+    tagline: 'Combien de fois plus ? — estime le rapport entre deux stats réelles',
+    icon: '×',
+    color: '#14b8a6',
+    players: '1–12 joueurs',
+    duration: '10–25 min',
+    path: '/games/factor/',
+    status: 'available'
   }
 ];
 
