@@ -171,7 +171,11 @@ function broadcastRoom(room) {
   const sockets = io.sockets.adapter.rooms.get(room.code);
   if (!sockets) return;
   for (const socketId of sockets) {
-    io.to(socketId).emit('room-state', engine.sanitizeRoom(room, socketId));
+    try {
+      io.to(socketId).emit('room-state', engine.sanitizeRoom(room, socketId));
+    } catch (err) {
+      console.error(`[broadcast] ${room.gameId}/${room.code}/${socketId}`, err);
+    }
   }
 }
 
@@ -212,37 +216,45 @@ Object.values(gameEngines).forEach((engine) => engine.registerHandlers(io, socke
 
 setInterval(() => {
   for (const room of rooms.values()) {
-    const engine = getEngine(room.gameId);
-    if (!engine?.onTick) continue;
-    const changed = engine.onTick(room);
-    if (changed) broadcastRoom(room);
-    else if (
-      ((room.phase === 'round1' || room.phase === 'round2') &&
-        !room.awaitingMasterStart &&
-        !room.timerPaused &&
-        room.timerEndAt) ||
-      (room.phase === 'bidding' && room.auctionEndsAt) ||
-      (room.phase === 'estimate' && room.estimateEndsAt) ||
-      (room.gameId === 'watchout' &&
-        room.phaseEndsAt &&
-        [
-          'role_reveal',
-          'watching',
-          'discussion',
-          'voting',
-          'tie_break',
-          'reveal',
-          'scoreboard'
-        ].includes(room.phase)) ||
-      (room.gameId === 'hot-potato' &&
-        ((room.potatoEndsAt && room.phase === 'hot') ||
-          (room.phaseEndsAt &&
-            ['round_intro', 'explode', 'scoreboard'].includes(room.phase)))) ||
-      (room.gameId === 'factor' &&
-        room.phaseEndsAt &&
-        ['answering', 'reveal'].includes(room.phase))
-    ) {
-      broadcastRoom(room);
+    try {
+      const engine = getEngine(room.gameId);
+      if (!engine?.onTick) continue;
+      const changed = engine.onTick(room);
+      if (changed === 'delete' || room.players.length === 0) {
+        rooms.delete(room.code);
+        continue;
+      }
+      if (changed) broadcastRoom(room);
+      else if (
+        ((room.phase === 'round1' || room.phase === 'round2') &&
+          !room.awaitingMasterStart &&
+          !room.timerPaused &&
+          room.timerEndAt) ||
+        (room.phase === 'bidding' && room.auctionEndsAt) ||
+        (room.phase === 'estimate' && room.estimateEndsAt) ||
+        (room.gameId === 'watchout' &&
+          room.phaseEndsAt &&
+          [
+            'role_reveal',
+            'watching',
+            'discussion',
+            'voting',
+            'tie_break',
+            'reveal',
+            'scoreboard'
+          ].includes(room.phase)) ||
+        (room.gameId === 'hot-potato' &&
+          ((room.potatoEndsAt && room.phase === 'hot') ||
+            (room.phaseEndsAt &&
+              ['round_intro', 'explode', 'scoreboard'].includes(room.phase)))) ||
+        (room.gameId === 'factor' &&
+          room.phaseEndsAt &&
+          ['answering', 'reveal'].includes(room.phase))
+      ) {
+        broadcastRoom(room);
+      }
+    } catch (err) {
+      console.error(`[tick] ${room?.gameId}/${room?.code}`, err);
     }
   }
 }, 500);
@@ -338,10 +350,14 @@ io.on('connection', (socket) => {
         name,
         teamIndex: 0,
         role: 'devineur',
-        score: 0
+        score: 0,
+        reconnectToken: crypto.randomBytes(16).toString('hex')
       });
     } else {
       existing.name = name;
+      if (!existing.reconnectToken) {
+        existing.reconnectToken = crypto.randomBytes(16).toString('hex');
+      }
     }
     joinSocketToRoom(socket, room);
     broadcastRoom(room);
@@ -352,7 +368,17 @@ io.on('connection', (socket) => {
     socket.emit('left-room');
   });
 
-  socket.on('disconnect', () => leaveRoom(socket));
+  socket.on('disconnect', () => {
+    const code = socketToRoom.get(socket.id);
+    const room = code ? rooms.get(code) : null;
+    const engine = room ? getEngine(room.gameId) : null;
+    if (engine?.softDisconnect?.(room, socket.id)) {
+      socketToRoom.delete(socket.id);
+      broadcastRoom(room);
+      return;
+    }
+    leaveRoom(socket);
+  });
 });
 
 server.listen(PORT, () => {

@@ -4,6 +4,7 @@
  */
 'use strict';
 
+const crypto = require('crypto');
 const { sanitizeDisplayName } = require('../../lib/sanitize');
 const { pickPair, publicStat } = require('./pairs');
 const { guessToRatio, scoreGuess, formatRatio } = require('./score');
@@ -15,6 +16,12 @@ const MAX_PLAYERS = 12;
 const VALID_ROUNDS = [5, 10, 15, 20];
 const VALID_ANSWER_SEC = [10, 20, 30, 60];
 const REVEAL_MS = 8000;
+/** Garde la place après une coupure réseau pour permettre un reclaim. */
+const DISCONNECT_GRACE_MS = 90_000;
+
+function newReconnectToken() {
+  return crypto.randomBytes(16).toString('hex');
+}
 
 const DEFAULT_SETTINGS = {
   roundCount: 10,
@@ -31,7 +38,8 @@ function createInitialRoomState({ hostSocketId, playerName, code }) {
         id: hostSocketId,
         name: sanitizeDisplayName(playerName, 'Joueur'),
         score: 0,
-        lastRoundScore: 0
+        lastRoundScore: 0,
+        reconnectToken: newReconnectToken()
       }
     ],
     settings: { ...DEFAULT_SETTINGS },
@@ -165,12 +173,73 @@ function submitAnswer(room, playerId, payload = {}) {
   return { ok: true };
 }
 
+function activePlayers(room) {
+  return room.players.filter((p) => !p.disconnectedAt);
+}
+
 function allAnswered(room) {
-  return room.players.every((p) => room.answers[p.id]);
+  const alive = activePlayers(room);
+  if (!alive.length) return false;
+  return alive.every((p) => room.answers[p.id]);
+}
+
+function migratePlayerId(room, oldId, newId) {
+  if (!oldId || !newId || oldId === newId) return;
+  const p = getPlayer(room, oldId);
+  if (p) p.id = newId;
+  if (room.hostId === oldId) room.hostId = newId;
+  if (room.answers[oldId]) {
+    room.answers[newId] = room.answers[oldId];
+    delete room.answers[oldId];
+  }
+  if (room.lastReveal?.results) {
+    for (const r of room.lastReveal.results) {
+      if (r.playerId === oldId) r.playerId = newId;
+    }
+  }
+}
+
+/** Pendant answering/reveal, garde le joueur pour un reclaim après coupure. */
+function softDisconnect(room, socketId) {
+  if (!['answering', 'reveal'].includes(room.phase)) return false;
+  const p = getPlayer(room, socketId);
+  if (!p) return false;
+  p.disconnectedAt = Date.now();
+  return true;
+}
+
+function reclaimPlayer(room, token, newSocketId) {
+  if (!token || !newSocketId) return { ok: false, msg: 'Session invalide.' };
+  const p = room.players.find((x) => x.reconnectToken === token);
+  if (!p) return { ok: false, msg: 'Impossible de reprendre la partie.' };
+  if (!p.disconnectedAt && p.id !== newSocketId) {
+    return { ok: false, msg: 'Ce siège est encore connecté.' };
+  }
+  const oldId = p.id;
+  migratePlayerId(room, oldId, newSocketId);
+  delete p.disconnectedAt;
+  if (!p.reconnectToken) p.reconnectToken = newReconnectToken();
+  return { ok: true };
+}
+
+function pruneDisconnected(room) {
+  const now = Date.now();
+  const before = room.players.length;
+  room.players = room.players.filter(
+    (p) => !p.disconnectedAt || now - p.disconnectedAt < DISCONNECT_GRACE_MS
+  );
+  if (room.players.length !== before) {
+    if (room.hostId && !getPlayer(room, room.hostId) && room.players.length) {
+      room.hostId = room.players[0].id;
+    }
+    return true;
+  }
+  return false;
 }
 
 function enterReveal(room) {
   if (!room.pair) return;
+  if (room.phase === 'reveal') return;
   const R = room.pair.realRatio;
   const results = room.players.map((p) => {
     const ans = room.answers[p.id];
@@ -251,6 +320,7 @@ function sanitizeRoom(room, socketId) {
     myId: socketId,
     myName: me?.name || '',
     myScore: me?.score || 0,
+    reconnectToken: me?.reconnectToken || null,
     hostId: room.hostId,
     settings: { ...room.settings },
     players: room.players.map((p) => ({
@@ -259,7 +329,8 @@ function sanitizeRoom(room, socketId) {
       score: p.score || 0,
       lastRoundScore: p.lastRoundScore || 0,
       isHost: p.id === room.hostId,
-      hasAnswered: Boolean(room.answers[p.id])
+      hasAnswered: Boolean(room.answers[p.id]),
+      disconnected: Boolean(p.disconnectedAt)
     })),
     ranking,
     currentRound: room.currentRound,
@@ -292,11 +363,14 @@ function ensureValidMaster(room) {
 }
 
 function onTick(room) {
+  let changed = pruneDisconnected(room);
+  if (room.players.length === 0) return 'delete';
+
   if (room.phase === 'answering' && room.phaseEndsAt && Date.now() >= room.phaseEndsAt) {
     enterReveal(room);
     return true;
   }
-  if (room.phase === 'answering' && allAnswered(room) && room.players.length > 0) {
+  if (room.phase === 'answering' && allAnswered(room) && activePlayers(room).length > 0) {
     enterReveal(room);
     return true;
   }
@@ -304,7 +378,7 @@ function onTick(room) {
     afterReveal(room);
     return true;
   }
-  return false;
+  return changed;
 }
 
 function getRoom(ctx, socket) {
@@ -314,7 +388,7 @@ function getRoom(ctx, socket) {
 }
 
 function registerHandlers(io, ctx) {
-  const { broadcastRoom } = ctx;
+  const { broadcastRoom, joinSocketToRoom, leaveRoom, rooms, socketToRoom } = ctx;
 
   io.on('connection', (socket) => {
     socket.on('fct-update-settings', (settings = {}) => {
@@ -338,7 +412,13 @@ function registerHandlers(io, ctx) {
 
     socket.on('fct-submit', (payload = {}) => {
       const room = getRoom(ctx, socket);
-      if (!room) return;
+      if (!room) {
+        socket.emit(
+          'error-msg',
+          'Tu n’es plus dans une partie — reconnecte ou relance.'
+        );
+        return;
+      }
       const result = submitAnswer(room, socket.id, payload);
       if (!result.ok) {
         socket.emit('error-msg', result.msg);
@@ -347,6 +427,33 @@ function registerHandlers(io, ctx) {
       if (allAnswered(room)) {
         enterReveal(room);
       }
+      broadcastRoom(room);
+    });
+
+    socket.on('fct-reclaim', ({ code, token } = {}) => {
+      const roomCode = String(code || '')
+        .toUpperCase()
+        .replace(/[^A-Z0-9]/g, '')
+        .slice(0, 6);
+      const room = rooms.get(roomCode);
+      if (!room || room.gameId !== GAME_ID) {
+        socket.emit('error-msg', 'Partie introuvable — relance une partie.');
+        return;
+      }
+      if (!['answering', 'reveal'].includes(room.phase)) {
+        socket.emit('error-msg', 'La manche n’est plus reprise automatiquement.');
+        return;
+      }
+      // Quitter une éventuelle autre salle avant de reprendre
+      const prev = socketToRoom.get(socket.id);
+      if (prev && prev !== roomCode) leaveRoom(socket);
+
+      const result = reclaimPlayer(room, token, socket.id);
+      if (!result.ok) {
+        socket.emit('error-msg', result.msg);
+        return;
+      }
+      joinSocketToRoom(socket, room);
       broadcastRoom(room);
     });
 
@@ -375,6 +482,7 @@ module.exports = {
   createInitialRoomState,
   sanitizeRoom,
   ensureValidMaster,
+  softDisconnect,
   onTick,
   registerHandlers,
   MIN_PLAYERS,
