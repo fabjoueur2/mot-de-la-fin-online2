@@ -2,8 +2,18 @@
 
 const STATS = require('./stats.json');
 
+/** Limites absolues du sélecteur (×1/1000 … ×1000). */
 const MIN_RATIO = 1 / 1000;
 const MAX_RATIO = 1000;
+
+/**
+ * Bande « fun » : le facteur réel (plus grand / plus petit) est entre ×2 et ×50.
+ * Trop proche → quiz trop dur ; trop énorme → tout le monde tape ×1000.
+ */
+const FUN_RATIO_MIN = 2;
+const FUN_RATIO_MAX = 50;
+/** Petite dose de paires hors bande pour le choc occasionnel. */
+const WILD_CHANCE = 0.12;
 
 function publicStat(stat, { hideValue = false } = {}) {
   if (!stat) return null;
@@ -24,9 +34,23 @@ function publicStat(stat, { hideValue = false } = {}) {
   return base;
 }
 
+function ratioMagnitude(r) {
+  if (!Number.isFinite(r) || r <= 0) return Infinity;
+  return r >= 1 ? r : 1 / r;
+}
+
+function isFunRatio(r) {
+  const m = ratioMagnitude(r);
+  return m >= FUN_RATIO_MIN && m <= FUN_RATIO_MAX;
+}
+
 function ratioOk(a, b) {
   const r = b.value / a.value;
   return Number.isFinite(r) && r >= MIN_RATIO && r <= MAX_RATIO;
+}
+
+function pairKey(a, b) {
+  return `${a.id}|${b.id}`;
 }
 
 function buildCandidatePairs() {
@@ -44,7 +68,14 @@ function buildCandidatePairs() {
         const a = list[i];
         const b = list[j];
         if (!ratioOk(a, b)) continue;
-        pairs.push({ a, b, differentCategory: a.category !== b.category });
+        const realRatio = b.value / a.value;
+        pairs.push({
+          a,
+          b,
+          realRatio,
+          funBand: isFunRatio(realRatio),
+          differentCategory: a.category !== b.category
+        });
       }
     }
   }
@@ -53,25 +84,39 @@ function buildCandidatePairs() {
 
 const CANDIDATES = buildCandidatePairs();
 
+function firstNonEmpty(...pools) {
+  for (const pool of pools) {
+    if (pool && pool.length) return pool;
+  }
+  return CANDIDATES;
+}
+
 function pickPair(usedKeys = []) {
   const used = new Set(usedKeys);
-  const preferDiff = CANDIDATES.filter(
-    (p) =>
-      p.differentCategory &&
-      !used.has(`${p.a.id}|${p.b.id}`) &&
-      !used.has(`${p.b.id}|${p.a.id}`)
-  );
-  const pool =
-    preferDiff.length > 0
-      ? preferDiff
-      : CANDIDATES.filter((p) => !used.has(`${p.a.id}|${p.b.id}`));
-  const list = pool.length ? pool : CANDIDATES;
-  const pick = list[Math.floor(Math.random() * list.length)];
+  const isFresh = (p) => {
+    const k = pairKey(p.a, p.b);
+    const rev = pairKey(p.b, p.a);
+    return !used.has(k) && !used.has(rev);
+  };
+
+  const fresh = CANDIDATES.filter(isFresh);
+  const funDiff = fresh.filter((p) => p.funBand && p.differentCategory);
+  const funAny = fresh.filter((p) => p.funBand);
+  const wildDiff = fresh.filter((p) => !p.funBand && p.differentCategory);
+  const wildAny = fresh.filter((p) => !p.funBand);
+  const anyDiff = fresh.filter((p) => p.differentCategory);
+
+  const wantWild = Math.random() < WILD_CHANCE;
+  const pool = wantWild
+    ? firstNonEmpty(wildDiff, wildAny, anyDiff, fresh, CANDIDATES)
+    : firstNonEmpty(funDiff, funAny, anyDiff, fresh, CANDIDATES);
+
+  const pick = pool[Math.floor(Math.random() * pool.length)];
   return {
     a: pick.a,
     b: pick.b,
-    key: `${pick.a.id}|${pick.b.id}`,
-    realRatio: pick.b.value / pick.a.value
+    key: pairKey(pick.a, pick.b),
+    realRatio: pick.realRatio
   };
 }
 
@@ -81,5 +126,9 @@ module.exports = {
   pickPair,
   publicStat,
   MIN_RATIO,
-  MAX_RATIO
+  MAX_RATIO,
+  FUN_RATIO_MIN,
+  FUN_RATIO_MAX,
+  isFunRatio,
+  ratioMagnitude
 };
