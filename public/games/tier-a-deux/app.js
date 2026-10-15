@@ -362,12 +362,17 @@ function setupRankScreen(s) {
   const isListing = s.phase === 'listing';
   rankMode = isListing ? 'listing' : 'guessing';
   const isListeur = s.myId === s.listeurId;
+  const everyone = s.playMode === 'everyone_lists';
   const rounds =
     s.roundCount === 'unlimited' ? `${s.currentRound}/∞` : `${s.currentRound}/${s.roundCount}`;
   $('rank-round').textContent = `Manche ${rounds}`;
-  $('rank-phase-label').textContent = isListing ? 'Listeur' : 'Devineurs';
+  $('rank-phase-label').textContent = isListing
+    ? everyone
+      ? 'Chacun liste'
+      : 'Listeur'
+    : 'Devineurs';
 
-  const key = `${s.phase}-${s.currentRound}-${s.listeurId}`;
+  const key = `${s.phase}-${s.currentRound}-${s.listeurId}-${s.playMode}`;
   const needReset = uiRoundKey !== key;
   uiRoundKey = key;
 
@@ -376,7 +381,7 @@ function setupRankScreen(s) {
   const wait = $('rank-waiting');
 
   // Waiting views
-  if (isListing && !isListeur) {
+  if (isListing && !everyone && !isListeur) {
     active.style.display = 'none';
     waitCard.style.display = 'block';
     wait.textContent = `${s.listeurName || 'Le listeur'} compose sa tier-list…`;
@@ -386,7 +391,9 @@ function setupRankScreen(s) {
   if (!isListing && isListeur) {
     active.style.display = 'none';
     waitCard.style.display = 'block';
-    wait.textContent = `Les devineurs réfléchissent… (${s.guessesLockedCount || 0}/${s.guesserCount || 0})`;
+    wait.textContent = `Les autres devinent ta liste… (${s.guessesLockedCount || 0}/${
+      s.guesserCount || 0
+    })`;
     showScreen('screen-rank');
     return;
   }
@@ -404,11 +411,15 @@ function setupRankScreen(s) {
   }
 
   if (isListing) {
-    $('rank-title').textContent = 'Compose ta tier-list';
-    $('rank-hint').textContent = 'Glisse chaque élément dans un rang (un seul par rang).';
+    $('rank-title').textContent = everyone
+      ? 'Compose ta tier-list personnelle'
+      : 'Compose ta tier-list';
+    $('rank-hint').textContent = everyone
+      ? `Ensuite on devra deviner la liste de ${s.listeurName || 'la cible'} cette manche.`
+      : 'Glisse chaque élément dans un rang (un seul par rang).';
     $('btn-lock-rank').textContent = 'Valider mon classement';
   } else {
-    $('rank-title').textContent = `Devine la liste de ${s.listeurName || 'ton partenaire'}`;
+    $('rank-title').textContent = `Devine la liste de ${s.listeurName || 'la cible'}`;
     $('rank-hint').textContent = 'Place les cartes comme tu penses qu’il/elle les a classées.';
     $('btn-lock-rank').textContent = 'Je connais mon partenaire !';
   }
@@ -416,9 +427,15 @@ function setupRankScreen(s) {
   if (lockedLocal) {
     $('btn-lock-rank').style.display = 'none';
     waitCard.style.display = 'block';
-    wait.textContent = isListing
-      ? 'Classement enregistré — les devineurs s’y mettent…'
-      : 'Prédiction enregistrée — en attente des autres…';
+    if (isListing && everyone) {
+      wait.textContent = `Classement enregistré — en attente des autres… (${
+        s.listingsDoneCount || 0
+      }/${s.players?.length || 0})`;
+    } else if (isListing) {
+      wait.textContent = 'Classement enregistré — les devineurs s’y mettent…';
+    } else {
+      wait.textContent = 'Prédiction enregistrée — en attente des autres…';
+    }
   } else {
     $('btn-lock-rank').style.display = 'block';
   }
@@ -500,6 +517,11 @@ function renderRoundResults(s) {
       return `<div class="card tad-card tad-score-col">
         <h3>${escapeHtml(sc.name)}${badge}</h3>
         <p>Prédiction : <strong>${sc.predictionPoints || 0}</strong></p>
+        ${
+          sc.matchPoints
+            ? `<p>Même rang : <strong>${sc.matchPoints}</strong></p>`
+            : ''
+        }
         ${sc.perfectBonus ? `<p>Bonus parfait : <strong>${sc.perfectBonus}</strong></p>` : ''}
         <p>Total manche : <strong>${sc.total || 0}</strong></p>
         <p>Cumul : <strong>${sc.cumulative || 0}</strong></p>
@@ -592,6 +614,7 @@ function readConfigFromForm() {
   );
   const rounds = $('cfg-rounds')?.value;
   return {
+    playMode: $('cfg-play-mode')?.value || 'single_listeur',
     roundCount: rounds === 'unlimited' ? 'unlimited' : parseInt(rounds || '5', 10),
     itemsPerRound: parseInt($('cfg-items')?.value || '5', 10),
     timer: {
@@ -609,6 +632,7 @@ function readConfigFromForm() {
     avoidRepeats: $('cfg-avoid-repeats')?.checked !== false,
     scoring: {
       correctPrediction: parseInt($('cfg-score-pred')?.value || '1', 10),
+      matchingPosition: parseInt($('cfg-score-match')?.value || '2', 10),
       perfectPredictionBonus: parseInt($('cfg-score-perfect')?.value || '0', 10)
     },
     reveal: {
@@ -624,6 +648,7 @@ function readConfigFromForm() {
 function applyConfigToForm(cfg) {
   if (!cfg || !state?.isHost) return;
   if (document.activeElement?.closest?.('#host-config')) return;
+  if ($('cfg-play-mode')) $('cfg-play-mode').value = cfg.playMode || 'single_listeur';
   const rounds = cfg.roundCount === 'unlimited' ? 'unlimited' : String(cfg.roundCount);
   if ($('cfg-rounds')) $('cfg-rounds').value = rounds;
   if ($('cfg-items')) $('cfg-items').value = String(cfg.itemsPerRound);
@@ -640,6 +665,7 @@ function applyConfigToForm(cfg) {
   if ($('cfg-controversial')) $('cfg-controversial').checked = cfg.allowControversial !== false;
   if ($('cfg-avoid-repeats')) $('cfg-avoid-repeats').checked = cfg.avoidRepeats !== false;
   if ($('cfg-score-pred')) $('cfg-score-pred').value = cfg.scoring?.correctPrediction ?? 1;
+  if ($('cfg-score-match')) $('cfg-score-match').value = cfg.scoring?.matchingPosition ?? 2;
   if ($('cfg-score-perfect')) {
     $('cfg-score-perfect').value = cfg.scoring?.perfectPredictionBonus ?? 0;
   }

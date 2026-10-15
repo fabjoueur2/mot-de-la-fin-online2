@@ -164,8 +164,32 @@ function makeRoom(n = 3) {
   ok('reclaim', r.ok && room.players.some((p) => p.id === 'p0b'));
 }
 
+{
+  const room = makeRoom(3);
+  room.config = sanitizeConfig({ ...DEFAULT_CONFIG, playMode: 'everyone_lists' });
+  tad.startGame(room);
+  ok('everyone mode listing', room.phase === 'listing');
+  const ids = [...room.displayOrder];
+  // everyone can list
+  ok('p1 can list', tad.lockListing(room, 'p1', ids).ok);
+  ok('still listing', room.phase === 'listing');
+  tad.lockListing(room, 'p0', ids);
+  tad.lockListing(room, 'p2', [...ids].reverse());
+  ok('everyone → guessing', room.phase === 'guessing');
+  ok('target listing set', Array.isArray(room.listing));
+  // p0 is listeur/target round 1 — cannot guess
+  ok('target no guess', !tad.lockGuess(room, 'p0', ids).ok);
+  tad.lockGuess(room, 'p1', ids);
+  tad.lockGuess(room, 'p2', ids);
+  ok('everyone → reveal', room.phase === 'reveal');
+  // p1 perfect pred + match bonus (same personal as target)
+  const sc = room.lastRoundScore.byPlayer.p1;
+  ok('match bonus applied', sc.matchPoints >= 2 && sc.total >= 7);
+}
+
 ok('bank >= 500', ITEMS.length >= 500);
 ok('pool default >= 400', countAvailable(sanitizeConfig(DEFAULT_CONFIG), []) >= 400);
 ok('max players 8', tad.MAX_PLAYERS === 8);
+ok('default mode single', sanitizeConfig(DEFAULT_CONFIG).playMode === 'single_listeur');
 
 console.log(`\n${passed} assertions passed.`);

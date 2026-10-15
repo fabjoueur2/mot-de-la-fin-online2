@@ -50,9 +50,10 @@ function createInitialRoomState({ hostSocketId, playerName, code }) {
     usedItemIds: [],
     roundItems: [],
     displayOrder: [],
+    listings: {},
     listing: null,
     guesses: {},
-    drafts: { listing: null, guess: {} },
+    drafts: { listing: {}, guess: {} },
     revealAcks: {},
     nextReady: {},
     phaseEndsAt: null,
@@ -106,9 +107,17 @@ function migratePlayerId(room, oldId, newId) {
   if (room.hostId === oldId) room.hostId = newId;
   if (room.listeurId === oldId) room.listeurId = newId;
 
+  if (room.listings?.[oldId] != null) {
+    room.listings[newId] = room.listings[oldId];
+    delete room.listings[oldId];
+  }
   if (room.guesses?.[oldId] != null) {
     room.guesses[newId] = room.guesses[oldId];
     delete room.guesses[oldId];
+  }
+  if (room.drafts?.listing?.[oldId] != null) {
+    room.drafts.listing[newId] = room.drafts.listing[oldId];
+    delete room.drafts.listing[oldId];
   }
   if (room.drafts?.guess?.[oldId] != null) {
     room.drafts.guess[newId] = room.drafts.guess[oldId];
@@ -178,9 +187,10 @@ function resetToLobby(room) {
   room.usedItemIds = [];
   room.roundItems = [];
   room.displayOrder = [];
+  room.listings = {};
   room.listing = null;
   room.guesses = {};
-  room.drafts = { listing: null, guess: {} };
+  room.drafts = { listing: {}, guess: {} };
   room.revealAcks = {};
   room.nextReady = {};
   room.phaseEndsAt = null;
@@ -251,6 +261,17 @@ function randomPermutation(ids) {
   return a;
 }
 
+function isEveryoneMode(room) {
+  return room.config?.playMode === 'everyone_lists';
+}
+
+function allListingsLocked(room) {
+  if (isEveryoneMode(room)) {
+    return room.players.every((p) => room.listings[p.id]);
+  }
+  return Boolean(room.listings[room.listeurId] || room.listing);
+}
+
 function beginRound(room) {
   const picked = pickRoundItems(room.usedItemIds, room.config);
   const ids = picked.map((x) => x.id);
@@ -258,9 +279,10 @@ function beginRound(room) {
   room.roundItems = picked;
   room.displayOrder = [...ids];
   room.listeurId = pickListeurId(room);
+  room.listings = {};
   room.listing = null;
   room.guesses = {};
-  room.drafts = { listing: null, guess: {} };
+  room.drafts = { listing: {}, guess: {} };
   room.revealAcks = {};
   room.nextReady = {};
   room.revealIndex = 0;
@@ -299,18 +321,35 @@ function allGuessersLocked(room) {
   return g.every((p) => room.guesses[p.id]);
 }
 
-function lockListing(room, playerId, ranking) {
-  if (room.phase !== 'listing') return { ok: false, msg: 'Pas le moment.' };
-  if (playerId !== room.listeurId) {
-    return { ok: false, msg: 'Seul le listeur peut valider.' };
-  }
-  if (room.listing) return { ok: false, msg: 'Classement déjà verrouillé.' };
-  const check = validateRanking(room.displayOrder, ranking);
-  if (!check.ok) return check;
-  room.listing = [...ranking];
-  room.drafts.listing = null;
+function advanceToGuessing(room) {
+  room.listing = room.listings[room.listeurId]
+    ? [...room.listings[room.listeurId]]
+    : null;
+  if (!room.listing) return { ok: false, msg: 'Classement cible manquant.' };
   room.phase = 'guessing';
   setPhaseTimer(room, room.config.timer.predictionSeconds);
+  return { ok: true };
+}
+
+function lockListing(room, playerId, ranking) {
+  if (room.phase !== 'listing') return { ok: false, msg: 'Pas le moment.' };
+  if (!isEveryoneMode(room) && playerId !== room.listeurId) {
+    return { ok: false, msg: 'Seul le listeur peut valider.' };
+  }
+  if (room.listings[playerId]) {
+    return { ok: false, msg: 'Classement déjà verrouillé.' };
+  }
+  const check = validateRanking(room.displayOrder, ranking);
+  if (!check.ok) return check;
+  room.listings[playerId] = [...ranking];
+  delete room.drafts.listing[playerId];
+
+  if (!isEveryoneMode(room)) {
+    return advanceToGuessing(room);
+  }
+  if (allListingsLocked(room)) {
+    return advanceToGuessing(room);
+  }
   return { ok: true };
 }
 
@@ -335,12 +374,18 @@ function autoLockDrafts(room) {
   const ids = room.displayOrder;
   let changed = false;
 
-  if (room.phase === 'listing' && !room.listing && room.listeurId) {
-    const draft = room.drafts.listing;
-    const ranking =
-      draft && validateRanking(ids, draft).ok ? draft : randomPermutation(ids);
-    lockListing(room, room.listeurId, ranking);
-    changed = true;
+  if (room.phase === 'listing') {
+    const who = isEveryoneMode(room)
+      ? room.players
+      : room.players.filter((p) => p.id === room.listeurId);
+    for (const p of who) {
+      if (room.listings[p.id]) continue;
+      const draft = room.drafts.listing[p.id];
+      const ranking =
+        draft && validateRanking(ids, draft).ok ? draft : randomPermutation(ids);
+      lockListing(room, p.id, ranking);
+      changed = true;
+    }
   } else if (room.phase === 'guessing') {
     for (const p of guessers(room)) {
       if (room.guesses[p.id]) continue;
@@ -366,13 +411,18 @@ function enterReveal(room) {
   const listeurId = room.listeurId;
   const guids = guessers(room).map((p) => p.id);
 
+  const scoring = { ...room.config.scoring };
+  if (!isEveryoneMode(room)) {
+    scoring.matchingPosition = 0;
+  }
   const scored = scoreGuessersRound({
     listeurId,
     listeurRanking: room.listing,
     guessesByPlayerId: room.guesses,
     guesserIds: guids,
     itemIds: room.displayOrder,
-    scoring: room.config.scoring
+    scoring,
+    personalRankings: isEveryoneMode(room) ? room.listings : null
   });
 
   for (const p of room.players) {
@@ -605,12 +655,13 @@ function sanitizeRoom(room, socketId) {
     room.phase === 'game_results';
 
   const isListeur = socketId === room.listeurId;
-  const role =
-    room.phase === 'lobby' || !room.listeurId
-      ? null
-      : isListeur
-        ? 'listeur'
-        : 'devineur';
+  const everyone = isEveryoneMode(room);
+  let role = null;
+  if (room.phase !== 'lobby' && room.listeurId) {
+    if (room.phase === 'listing' && everyone) role = 'listing';
+    else if (isListeur) role = 'listeur';
+    else role = 'devineur';
+  }
 
   let revealPayload = null;
   if (room.phase === 'reveal' && room.lastReveal) {
@@ -637,6 +688,7 @@ function sanitizeRoom(room, socketId) {
     roundResults = {
       accuracyPercent: room.lastReveal.accuracyPercent,
       reaction: room.lastReveal.reaction,
+      playMode: cfg.playMode,
       listeurId: room.lastReveal.listeurId,
       listeurName: room.lastReveal.listeurName,
       listeurRanking: itemsByIds(room.lastReveal.listeurRanking),
@@ -649,6 +701,9 @@ function sanitizeRoom(room, socketId) {
     };
   }
 
+  const myListingDone = Boolean(room.listings[socketId]);
+  const listingsDoneCount = Object.keys(room.listings || {}).length;
+
   return {
     gameId: room.gameId,
     code: room.code,
@@ -659,6 +714,7 @@ function sanitizeRoom(room, socketId) {
     myScore: me?.score || 0,
     reconnectToken: me?.reconnectToken || null,
     hostId: room.hostId,
+    playMode: cfg.playMode || 'single_listeur',
     listeurId: room.listeurId,
     listeurName: room.listeurId ? getPlayer(room, room.listeurId)?.name || '' : '',
     role,
@@ -679,16 +735,18 @@ function sanitizeRoom(room, socketId) {
       isListeur: p.id === room.listeurId,
       ready: Boolean(p.ready),
       disconnected: Boolean(p.disconnectedAt),
-      listingLocked: p.id === room.listeurId ? Boolean(room.listing) : false,
+      listingLocked: Boolean(room.listings[p.id]),
       guessLocked: Boolean(room.guesses[p.id])
     })),
     currentRound: room.currentRound,
     roundCount: cfg.roundCount,
     itemsPerRound: cfg.itemsPerRound,
     items: room.phase === 'lobby' ? [] : room.roundItems,
-    myListing: isListeur ? room.listing : showSecrets ? room.listing : null,
+    myListing: room.listings[socketId] || null,
     myGuess: room.guesses[socketId] || null,
-    listingLocked: Boolean(room.listing),
+    listingLocked: myListingDone,
+    allListingsLocked: allListingsLocked(room),
+    listingsDoneCount,
     myGuessLocked: Boolean(room.guesses[socketId]),
     guessesLockedCount: Object.keys(room.guesses).length,
     guesserCount: guessers(room).length,
@@ -767,8 +825,10 @@ function registerHandlers(io, ctx) {
     socket.on('tad-sync-draft', ({ kind, ranking } = {}) => {
       const room = getRoom(ctx, socket);
       if (!room || !Array.isArray(ranking)) return;
-      if (kind === 'listing' && socket.id === room.listeurId) {
-        room.drafts.listing = ranking;
+      if (kind === 'listing') {
+        const canList =
+          isEveryoneMode(room) || socket.id === room.listeurId;
+        if (canList) room.drafts.listing[socket.id] = ranking;
       } else if (kind === 'guess' && socket.id !== room.listeurId) {
         room.drafts.guess[socket.id] = ranking;
       }

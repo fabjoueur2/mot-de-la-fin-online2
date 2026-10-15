@@ -31,6 +31,8 @@ const CATEGORY_LABELS = {
 const DEFAULT_CONFIG = {
   roundCount: 5,
   itemsPerRound: 5,
+  /** single_listeur = 1 listeur rotatif ; everyone_lists = tous classent, on devine une cible */
+  playMode: 'single_listeur',
   timer: {
     enabled: false,
     personalRankingSeconds: 60,
@@ -46,6 +48,8 @@ const DEFAULT_CONFIG = {
   avoidRepeats: true,
   scoring: {
     correctPrediction: 1,
+    /** Uniquement en mode everyone_lists (même rang perso vs cible) */
+    matchingPosition: 2,
     perfectPredictionBonus: 0
   },
   reveal: {
@@ -121,6 +125,10 @@ function sanitizeConfig(raw = {}) {
     base.itemsPerRound = clampInt(c.itemsPerRound, 3, 10, DEFAULT_CONFIG.itemsPerRound);
   }
 
+  if (['single_listeur', 'everyone_lists'].includes(c.playMode)) {
+    base.playMode = c.playMode;
+  }
+
   if (c.timer && typeof c.timer === 'object') {
     base.timer.enabled = Boolean(c.timer.enabled);
     base.timer.personalRankingSeconds = clampInt(
@@ -155,7 +163,11 @@ function sanitizeConfig(raw = {}) {
   if (typeof c.avoidRepeats === 'boolean') base.avoidRepeats = c.avoidRepeats;
 
   if (c.scoring && typeof c.scoring === 'object') {
-    for (const key of ['correctPrediction', 'perfectPredictionBonus']) {
+    for (const key of [
+      'correctPrediction',
+      'matchingPosition',
+      'perfectPredictionBonus'
+    ]) {
       if (c.scoring[key] != null) {
         base.scoring[key] = clampInt(c.scoring[key], 0, 20, base.scoring[key]);
       }
@@ -216,15 +228,22 @@ function configSummary(config) {
     c.reveal.mode === 'automatic'
       ? `Révélations auto (${c.reveal.intervalSeconds}s)`
       : 'Révélations manuelles';
+  const modeLabel =
+    c.playMode === 'everyone_lists'
+      ? 'Tout le monde liste · on devine une cible'
+      : '1 listeur rotatif · les autres devinent';
   const lines = [
     rounds,
     `${c.itemsPerRound} éléments par manche`,
-    '1 listeur rotatif · les autres devinent',
+    modeLabel,
     timer,
     `Absurdité : ${c.absurdity}`,
     `Humour : ${c.humorLevel}`,
     `+${c.scoring.correctPrediction} par bonne prédiction`
   ];
+  if (c.playMode === 'everyone_lists' && c.scoring.matchingPosition > 0) {
+    lines.push(`+${c.scoring.matchingPosition} si même rang que la cible`);
+  }
   if (c.scoring.perfectPredictionBonus > 0) {
     lines.push(`+${c.scoring.perfectPredictionBonus} bonus prédiction parfaite`);
   }

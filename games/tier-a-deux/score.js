@@ -43,8 +43,9 @@ function validateRanking(itemIds, ranking) {
 }
 
 /**
- * Score all guessers against the listeur ranking.
- * Listeur scores 0 this round.
+ * Score guessers against the target (listeur) ranking.
+ * Optional personalRankings: match bonus when guesser's personal rank == target rank.
+ * Target scores 0 this round.
  */
 function scoreGuessersRound({
   listeurId,
@@ -52,13 +53,16 @@ function scoreGuessersRound({
   guessesByPlayerId,
   guesserIds,
   itemIds,
-  scoring
+  scoring,
+  personalRankings = null
 }) {
   const s = scoring || {};
   const correctPred = Number(s.correctPrediction) || 0;
+  const matchingPos = Number(s.matchingPosition) || 0;
   const perfectBonus = Number(s.perfectPredictionBonus) || 0;
   const ids = itemIds || listeurRanking || [];
   const listeurMap = positionMap(listeurRanking);
+  const useMatch = matchingPos > 0 && personalRankings;
 
   const byPlayer = {};
   let totalCorrect = 0;
@@ -67,27 +71,36 @@ function scoreGuessersRound({
   for (const gid of guesserIds || []) {
     const guess = guessesByPlayerId?.[gid] || [];
     const predMap = positionMap(guess);
+    const myPersMap = useMatch ? positionMap(personalRankings[gid]) : null;
     const perItem = [];
     let predictionPoints = 0;
+    let matchPoints = 0;
     let correctCount = 0;
 
     for (const id of ids) {
       const realPos = listeurMap.get(id);
       const predPos = predMap.get(id);
-      let pts = 0;
+      let predPts = 0;
+      let matchPts = 0;
       if (realPos != null && predPos === realPos) {
-        pts = correctPred;
-        predictionPoints += pts;
+        predPts = correctPred;
+        predictionPoints += predPts;
         correctCount += 1;
         totalCorrect += 1;
+      }
+      if (useMatch && realPos != null && myPersMap?.get(id) === realPos) {
+        matchPts = matchingPos;
+        matchPoints += matchPts;
       }
       totalPossible += 1;
       perItem.push({
         itemId: id,
         listeurPosition: realPos || null,
         predictedPosition: predPos || null,
-        predictionPoints: pts,
-        total: pts
+        myPersonalPosition: myPersMap?.get(id) || null,
+        predictionPoints: predPts,
+        matchPoints: matchPts,
+        total: predPts + matchPts
       });
     }
 
@@ -99,9 +112,10 @@ function scoreGuessersRound({
     byPlayer[gid] = {
       id: gid,
       predictionPoints,
+      matchPoints,
       perfectBonus: perfect,
       correctPredictions: correctCount,
-      total: predictionPoints + perfect,
+      total: predictionPoints + matchPoints + perfect,
       perItem,
       isListeur: false
     };
@@ -110,6 +124,7 @@ function scoreGuessersRound({
   byPlayer[listeurId] = {
     id: listeurId,
     predictionPoints: 0,
+    matchPoints: 0,
     perfectBonus: 0,
     correctPredictions: 0,
     total: 0,
@@ -117,7 +132,9 @@ function scoreGuessersRound({
       itemId: id,
       listeurPosition: listeurMap.get(id) || null,
       predictedPosition: null,
+      myPersonalPosition: listeurMap.get(id) || null,
       predictionPoints: 0,
+      matchPoints: 0,
       total: 0
     })),
     isListeur: true

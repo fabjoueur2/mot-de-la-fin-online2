@@ -87,6 +87,12 @@
         </div>
         <div class="tad-tab-panel active" data-panel="partie">
           <div class="tad-config-grid">
+            <label>Mode de jeu
+              <select id="cfg-play-mode">
+                <option value="single_listeur" selected>1 listeur (les autres devinent)</option>
+                <option value="everyone_lists">Tout le monde liste (on devine une cible)</option>
+              </select>
+            </label>
             <label>Manches
               <select id="cfg-rounds">
                 <option value="1">1</option>
@@ -160,6 +166,9 @@
           <div class="tad-config-grid">
             <label>Bonne prédiction (0–20)
               <input type="number" id="cfg-score-pred" min="0" max="20" value="1">
+            </label>
+            <label>Même rang que la cible — mode « tout le monde liste » (0–20)
+              <input type="number" id="cfg-score-match" min="0" max="20" value="2">
             </label>
             <label>Bonus prédiction parfaite (0–20)
               <input type="number" id="cfg-score-perfect" min="0" max="20" value="0">
