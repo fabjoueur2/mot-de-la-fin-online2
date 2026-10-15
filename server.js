@@ -35,6 +35,7 @@ const sizeIt = require('./games/size-it');
 const watchout = require('./games/watchout');
 const hotPotato = require('./games/hot-potato');
 const factor = require('./games/factor');
+const tierADeux = require('./games/tier-a-deux');
 
 const PORT = process.env.PORT || 3000;
 const CODE_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -65,7 +66,8 @@ const gameEngines = {
   [sizeIt.id]: sizeIt,
   [watchout.id]: watchout,
   [hotPotato.id]: hotPotato,
-  [factor.id]: factor
+  [factor.id]: factor,
+  [tierADeux.id]: tierADeux
 };
 
 /** Rate limiter mémoire simple (fenêtre glissante par clé). */
@@ -249,7 +251,10 @@ setInterval(() => {
               ['round_intro', 'explode', 'scoreboard'].includes(room.phase)))) ||
         (room.gameId === 'factor' &&
           room.phaseEndsAt &&
-          ['answering', 'reveal'].includes(room.phase))
+          ['answering', 'reveal'].includes(room.phase)) ||
+        (room.gameId === 'tier-a-deux' &&
+          room.phaseEndsAt &&
+          ['personal_ranking', 'partner_prediction', 'reveal'].includes(room.phase))
       ) {
         broadcastRoom(room);
       }
@@ -341,6 +346,10 @@ io.on('connection', (socket) => {
       socket.emit('error-msg', 'Salle pleine (12 joueurs max).');
       return;
     }
+    if (room.gameId === 'tier-a-deux' && room.players.length >= 2) {
+      socket.emit('error-msg', 'Salon plein (2 joueurs).');
+      return;
+    }
 
     const name = sanitizeDisplayName(playerName, 'Joueur');
     const existing = room.players.find((p) => p.id === socket.id);
@@ -351,6 +360,8 @@ io.on('connection', (socket) => {
         teamIndex: 0,
         role: 'devineur',
         score: 0,
+        ready: false,
+        lastRoundScore: 0,
         reconnectToken: crypto.randomBytes(16).toString('hex')
       });
     } else {

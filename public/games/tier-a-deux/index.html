@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>TIER À DEUX — Tu crois vraiment me connaître ?</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="tad-body">
+  <div class="app tad-app">
+    <header>
+      <a href="/" class="back-to-hub">← Tous les jeux</a>
+      <h1 class="tad-brand">TIER À DEUX</h1>
+      <p class="tad-tagline">Tu crois vraiment me connaître ?</p>
+      <span class="badge-online">● Duo en ligne</span>
+    </header>
+
+    <div id="connection-status" class="connection-status">Connexion…</div>
+    <div id="room-nav" class="room-nav" style="display:none;">
+      <button type="button" id="btn-salon" class="btn-nav btn-nav-salon">Retour au salon</button>
+      <button type="button" id="btn-menu" class="btn-nav btn-nav-menu">Quitter</button>
+    </div>
+
+    <!-- HOME -->
+    <div id="screen-home" class="screen active">
+      <div class="card tad-card">
+        <h2>Lancer une partie</h2>
+        <label>Votre pseudo</label>
+        <input type="text" id="player-name" placeholder="Ex : Fabian" maxlength="20" value="">
+        <div class="row" style="margin-top:8px;">
+          <button class="btn btn-primary" id="btn-create">Créer une partie</button>
+          <button class="btn btn-secondary" id="btn-show-join">Rejoindre</button>
+        </div>
+        <p class="share-hint" style="margin-top:10px;">Exactement 2 joueurs · ~10–15 min · zéro compte</p>
+      </div>
+      <div class="card tad-card" id="join-panel" style="display:none;">
+        <h2>Code de salle</h2>
+        <input type="text" id="join-code" placeholder="K7F2QA" maxlength="6" style="text-transform:uppercase;letter-spacing:4px;font-family:monospace;font-weight:700;">
+        <button class="btn btn-blue" id="btn-join">Entrer</button>
+      </div>
+      <div class="card tad-card">
+        <p><strong>Même 5 éléments</strong> pour vous deux. Classe-les, puis devine le classement de ton partenaire.</p>
+        <p class="tad-muted">Humour · surprise · débats garantis.</p>
+      </div>
+    </div>
+
+    <!-- LOBBY -->
+    <div id="screen-lobby" class="screen">
+      <div class="card tad-card">
+        <h2>Salon TIER À DEUX</h2>
+        <div class="room-code-box">
+          <div class="label">Code</div>
+          <div class="code" id="lobby-code">------</div>
+          <div class="copy-row">
+            <button class="btn btn-secondary btn-sm" id="btn-copy-code">Copier le code</button>
+            <button class="btn btn-secondary btn-sm" id="btn-copy-link">Copier le lien</button>
+          </div>
+        </div>
+      </div>
+      <div class="card tad-card">
+        <h2>Joueurs <span id="lobby-player-count" class="tad-muted"></span></h2>
+        <ul id="lobby-players" class="players-list"></ul>
+        <p id="lobby-hint" class="share-hint"></p>
+        <div class="row" style="margin-top:10px;">
+          <button class="btn btn-secondary" id="btn-ready">Je suis prêt</button>
+          <button class="btn btn-primary" id="btn-start" style="display:none;">Lancer la partie</button>
+        </div>
+      </div>
+      <div class="card tad-card" id="host-config" style="display:none;">
+        <h2>Paramètres de la partie</h2>
+        <div class="tad-presets">
+          <button type="button" class="btn btn-secondary btn-sm" data-preset="detente">Détente</button>
+          <button type="button" class="btn btn-secondary btn-sm" data-preset="classique">Classique</button>
+          <button type="button" class="btn btn-secondary btn-sm" data-preset="chaos">Chaos</button>
+          <button type="button" class="btn btn-secondary btn-sm" id="btn-reset-config">Réinitialiser</button>
+        </div>
+        <div class="tad-tabs" id="config-tabs">
+          <button type="button" class="tad-tab active" data-tab="partie">Partie</button>
+          <button type="button" class="tad-tab" data-tab="themes">Thèmes</button>
+          <button type="button" class="tad-tab" data-tab="points">Points</button>
+          <button type="button" class="tad-tab" data-tab="revelations">Révélations</button>
+          <button type="button" class="tad-tab" data-tab="avance">Avancé</button>
+        </div>
+        <div class="tad-tab-panel active" data-panel="partie">
+          <div class="tad-config-grid">
+            <label>Manches
+              <select id="cfg-rounds">
+                <option value="1">1</option>
+                <option value="3">3</option>
+                <option value="5" selected>5</option>
+                <option value="8">8</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="unlimited">Illimité</option>
+              </select>
+            </label>
+            <label>Éléments par manche
+              <select id="cfg-items">
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5" selected>5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="10">10</option>
+              </select>
+            </label>
+            <label>Chronomètre
+              <select id="cfg-timer">
+                <option value="off" selected>Désactivé</option>
+                <option value="30">30 s</option>
+                <option value="60">60 s</option>
+                <option value="90">90 s</option>
+                <option value="120">120 s</option>
+              </select>
+            </label>
+          </div>
+        </div>
+        <div class="tad-tab-panel" data-panel="themes">
+          <div class="tad-config-grid">
+            <label>Absurdité
+              <select id="cfg-absurdity">
+                <option value="low">Faible</option>
+                <option value="medium">Moyen</option>
+                <option value="high">Élevé</option>
+                <option value="chaos" selected>Chaos</option>
+              </select>
+            </label>
+            <label>Humour
+              <select id="cfg-humor">
+                <option value="family">Familial</option>
+                <option value="quirky" selected>Décalé</option>
+                <option value="dark_light">Humour noir léger</option>
+              </select>
+            </label>
+            <label>Mélange
+              <select id="cfg-genmode">
+                <option value="balanced" selected>Équilibré</option>
+                <option value="random">Aléatoire</option>
+              </select>
+            </label>
+            <div>
+              <p class="tad-muted" style="margin:0 0 0.35rem;">Catégories</p>
+              <div class="tad-check-row" id="cfg-categories"></div>
+            </div>
+            <div class="tad-check-row">
+              <label><input type="checkbox" id="cfg-celebs" checked> Personnalités</label>
+              <label><input type="checkbox" id="cfg-awkward" checked> Situations gênantes</label>
+              <label><input type="checkbox" id="cfg-controversial" checked> Controversé léger</label>
+              <label><input type="checkbox" id="cfg-avoid-repeats" checked> Éviter les répétitions</label>
+            </div>
+          </div>
+        </div>
+        <div class="tad-tab-panel" data-panel="points">
+          <div class="tad-config-grid">
+            <label>Bonne prédiction (0–20)
+              <input type="number" id="cfg-score-pred" min="0" max="20" value="1">
+            </label>
+            <label>Même rang personnel (0–20)
+              <input type="number" id="cfg-score-match" min="0" max="20" value="2">
+            </label>
+            <label>Bonus prédiction parfaite (0–20)
+              <input type="number" id="cfg-score-perfect" min="0" max="20" value="0">
+            </label>
+            <label>Bonus classements identiques (0–20)
+              <input type="number" id="cfg-score-identical" min="0" max="20" value="0">
+            </label>
+          </div>
+        </div>
+        <div class="tad-tab-panel" data-panel="revelations">
+          <div class="tad-config-grid">
+            <label>Mode
+              <select id="cfg-reveal-mode">
+                <option value="manual" selected>Manuel</option>
+                <option value="automatic">Automatique</option>
+              </select>
+            </label>
+            <label>Intervalle auto (3–15 s)
+              <input type="number" id="cfg-reveal-interval" min="3" max="15" value="6">
+            </label>
+            <label>Ordre
+              <select id="cfg-reveal-order">
+                <option value="random" selected>Aléatoire</option>
+                <option value="playerA">Ordre joueur A (hôte)</option>
+                <option value="playerB">Ordre joueur B</option>
+              </select>
+            </label>
+          </div>
+        </div>
+        <div class="tad-tab-panel" data-panel="avance">
+          <div class="tad-config-grid">
+            <label>Affichage des scores
+              <select id="cfg-show-scores">
+                <option value="each_round" selected>Chaque manche</option>
+                <option value="end_only">Fin de partie uniquement</option>
+              </select>
+            </label>
+            <div class="tad-check-row">
+              <label><input type="checkbox" id="cfg-auto-submit" checked> Valider auto à expiration du chrono</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card tad-card">
+        <h2>Votre partie</h2>
+        <ul id="config-recap" class="tad-recap"></ul>
+      </div>
+    </div>
+
+    <!-- PERSONAL / PREDICTION -->
+    <div id="screen-rank" class="screen">
+      <div class="tad-roundbar">
+        <span id="rank-round">Manche 1/5</span>
+        <span id="rank-timer" class="tad-timer" style="display:none;">—</span>
+        <span id="rank-phase-label" class="tad-muted">Classement</span>
+      </div>
+      <div class="card tad-card">
+        <h2 id="rank-title">Classe ces éléments selon tes préférences</h2>
+        <p id="rank-hint" class="tad-muted"></p>
+        <ul id="rank-list" class="tad-rank-list"></ul>
+        <p id="rank-waiting" class="tad-waiting" style="display:none;"></p>
+        <button class="btn btn-primary" id="btn-lock-rank" style="margin-top:12px;width:100%;">Valider mon classement</button>
+      </div>
+    </div>
+
+    <!-- REVEAL -->
+    <div id="screen-reveal" class="screen">
+      <div class="tad-roundbar">
+        <span id="rev-round">Manche 1/5</span>
+        <span id="rev-progress" class="tad-muted">1/5</span>
+      </div>
+      <div class="card tad-card tad-reveal-card" id="reveal-box">
+        <p id="rev-suspense" class="tad-reveal-item" style="display:none;">ALORS… VOUS VOUS CONNAISSEZ VRAIMENT ?</p>
+        <div id="rev-detail" style="display:none;">
+          <p class="tad-muted" style="margin:0;">Élément</p>
+          <h2 class="tad-reveal-item" id="rev-item-text">—</h2>
+          <div class="tad-reveal-grid" id="rev-grid"></div>
+          <p class="tad-reaction" id="rev-reaction"></p>
+        </div>
+        <button class="btn btn-primary" id="btn-reveal-continue" style="margin-top:12px;">Continuer</button>
+        <p id="rev-waiting" class="tad-waiting" style="display:none;">En attente de ton partenaire…</p>
+      </div>
+    </div>
+
+    <!-- ROUND RESULTS -->
+    <div id="screen-round" class="screen">
+      <div class="card tad-card">
+        <h2>Manche terminée !</h2>
+        <p id="round-compat" class="tad-reveal-item" style="font-size:1.4rem;"></p>
+        <p id="round-reaction" class="tad-reaction"></p>
+      </div>
+      <div class="tad-compare" id="round-scores"></div>
+      <div class="tad-compare" id="round-rankings"></div>
+      <div class="card tad-card">
+        <div class="row">
+          <button class="btn btn-primary" id="btn-next-round">Manche suivante</button>
+          <button class="btn btn-secondary" id="btn-end-unlimited" style="display:none;">Terminer la partie</button>
+        </div>
+        <p id="next-waiting" class="tad-waiting" style="display:none;"></p>
+      </div>
+    </div>
+
+    <!-- GAME END -->
+    <div id="screen-end" class="screen">
+      <div class="card tad-card">
+        <h2>Partie terminée</h2>
+        <p id="end-winner" class="tad-reveal-item" style="font-size:1.5rem;"></p>
+        <div id="end-titles"></div>
+        <ul id="end-stats" class="players-list"></ul>
+        <p id="end-compat" class="share-hint"></p>
+        <div class="row" style="margin-top:12px;">
+          <button class="btn btn-primary" id="btn-rematch">Rejouer ensemble</button>
+          <button class="btn btn-secondary" id="btn-end-lobby">Retour au lobby</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button type="button" class="tad-sound-toggle" id="btn-mute" title="Son">🔊</button>
+  <div class="tad-confetti" id="confetti" aria-hidden="true"></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/escape.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

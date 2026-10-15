@@ -82,6 +82,17 @@ const GAMES = [
     duration: '10–25 min',
     path: '/games/factor/',
     status: 'available'
+  },
+  {
+    id: 'tier-a-deux',
+    name: 'TIER À DEUX',
+    tagline: 'Tu crois vraiment me connaître ? — classe, devine, débattez',
+    icon: '🏆',
+    color: '#ff6b6b',
+    players: '2 joueurs',
+    duration: '10–15 min',
+    path: '/games/tier-a-deux/',
+    status: 'available'
   }
 ];
 

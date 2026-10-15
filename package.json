@@ -6,6 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
+    "test:tier-a-deux": "node scripts/test-tier-a-deux.js",
+    "build:tier-items": "node scripts/build-tier-items.js",
     "sync-animals": "node scripts/sync-animal-sprites.js",
     "build-size-it-bank": "node scripts/build-size-it-bank.js",
     "fetch-size-it-assets": "node scripts/fetch-size-it-assets.js",

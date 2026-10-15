@@ -1,0 +1,4916 @@
+[
+  {
+    "id": "item_001",
+    "text": "Les lingettes nettoyantes jetables",
+    "category": "daily_life",
+    "absurdity": 1,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_002",
+    "text": "Les chaussettes mouillées",
+    "category": "daily_life",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_003",
+    "text": "Un aspirateur robot",
+    "category": "daily_life",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_004",
+    "text": "Les toilettes publiques",
+    "category": "daily_life",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_005",
+    "text": "Le bruit d’un moustique pendant la nuit",
+    "category": "daily_life",
+    "absurdity": 3,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_006",
+    "text": "Les gens qui applaudissent à l’atterrissage",
+    "category": "daily_life",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_007",
+    "text": "Se réveiller cinq minutes avant son réveil",
+    "category": "daily_life",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_008",
+    "text": "Un chargeur universel qui ne marche jamais",
+    "category": "daily_life",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_009",
+    "text": "Les couvertures trop courtes",
+    "category": "daily_life",
+    "absurdity": 5,
+    "controversy": 1,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_010",
+    "text": "Le tiroir à câbles",
+    "category": "daily_life",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_011",
+    "text": "Une serviette encore humide",
+    "category": "daily_life",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_012",
+    "text": "Le dernier carré de papier toilette",
+    "category": "daily_life",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_013",
+    "text": "Les chaussures trop neuves",
+    "category": "daily_life",
+    "absurdity": 2,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_014",
+    "text": "Un parapluie retourné par le vent",
+    "category": "daily_life",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_015",
+    "text": "La lumière du frigo à 3 h",
+    "category": "daily_life",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_016",
+    "text": "Les oreillers trop plats",
+    "category": "daily_life",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_017",
+    "text": "Un cintre qui tombe tout seul",
+    "category": "daily_life",
+    "absurdity": 4,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_018",
+    "text": "La pile de linge propre non pliée",
+    "category": "daily_life",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_019",
+    "text": "Les clés introuvables",
+    "category": "daily_life",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_020",
+    "text": "Un stylo qui écrit plus",
+    "category": "daily_life",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_021",
+    "text": "Les lunettes embuées",
+    "category": "daily_life",
+    "absurdity": 1,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_022",
+    "text": "Un lit parfaitement refait",
+    "category": "daily_life",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_023",
+    "text": "La douche trop chaude",
+    "category": "daily_life",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_024",
+    "text": "La douche trop froide",
+    "category": "daily_life",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_025",
+    "text": "Un radiateur qui claque",
+    "category": "daily_life",
+    "absurdity": 3,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_026",
+    "text": "Les volets qui coincent",
+    "category": "daily_life",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_027",
+    "text": "Une prise multiple saturée",
+    "category": "daily_life",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_028",
+    "text": "Le mode avion oublié",
+    "category": "daily_life",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_029",
+    "text": "Les notifications à 7 h",
+    "category": "daily_life",
+    "absurdity": 5,
+    "controversy": 1,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_030",
+    "text": "Un silence gênant dans l’ascenseur",
+    "category": "daily_life",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_031",
+    "text": "Les chaussettes dépareillées",
+    "category": "daily_life",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_032",
+    "text": "Un canapé qui avale la télécommande",
+    "category": "daily_life",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_033",
+    "text": "La poussière sous le lit",
+    "category": "daily_life",
+    "absurdity": 2,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_034",
+    "text": "Un miroir embué",
+    "category": "daily_life",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_035",
+    "text": "Les tongs en hiver",
+    "category": "daily_life",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_036",
+    "text": "Un parapluie oublié dans le métro",
+    "category": "daily_life",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_037",
+    "text": "La porte qui grince",
+    "category": "daily_life",
+    "absurdity": 4,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_038",
+    "text": "Un interrupteur douteux",
+    "category": "daily_life",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_039",
+    "text": "Les rideaux trop courts",
+    "category": "daily_life",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_040",
+    "text": "Une étiquette qui gratte",
+    "category": "daily_life",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_041",
+    "text": "Le bruit d’un robinet qui goutte",
+    "category": "daily_life",
+    "absurdity": 1,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_042",
+    "text": "Un matelas trop ferme",
+    "category": "daily_life",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_043",
+    "text": "Les pantoufles perdues",
+    "category": "daily_life",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_044",
+    "text": "Une boîte à outils mystérieuse",
+    "category": "daily_life",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_045",
+    "text": "Le calendrier encore sur 2023",
+    "category": "daily_life",
+    "absurdity": 3,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_046",
+    "text": "Un ventilateur bruyant",
+    "category": "daily_life",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_047",
+    "text": "Les sacs plastiques réutilisés",
+    "category": "daily_life",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_048",
+    "text": "Une éponge douteuse",
+    "category": "daily_life",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_049",
+    "text": "Le fond du tiroir à épices",
+    "category": "daily_life",
+    "absurdity": 5,
+    "controversy": 1,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_050",
+    "text": "Un miroir grossissant impitoyable",
+    "category": "daily_life",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_051",
+    "text": "Le fromage",
+    "category": "food",
+    "absurdity": 5,
+    "controversy": 1,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_052",
+    "text": "Un kebab à 3 heures du matin",
+    "category": "food",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_053",
+    "text": "Les cornichons",
+    "category": "food",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_054",
+    "text": "La mayonnaise en tube",
+    "category": "food",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_055",
+    "text": "Un café tiède",
+    "category": "food",
+    "absurdity": 2,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_056",
+    "text": "Les chips dans le lit",
+    "category": "food",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_057",
+    "text": "La raclette en août",
+    "category": "food",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_058",
+    "text": "Un smoothie vert douteux",
+    "category": "food",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_059",
+    "text": "Les olives dénoyautées",
+    "category": "food",
+    "absurdity": 4,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_060",
+    "text": "Un burger qui se désagrège",
+    "category": "food",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_061",
+    "text": "La pizza ananas",
+    "category": "food",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_062",
+    "text": "Un thé trop infusé",
+    "category": "food",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_063",
+    "text": "Les bonbons acidulés",
+    "category": "food",
+    "absurdity": 1,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_064",
+    "text": "Un croissant industriél",
+    "category": "food",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_065",
+    "text": "La soupe en sachet",
+    "category": "food",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_066",
+    "text": "Un steak saignant",
+    "category": "food",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_067",
+    "text": "Les sushis froids",
+    "category": "food",
+    "absurdity": 3,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_068",
+    "text": "Un milkshake trop épais",
+    "category": "food",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_069",
+    "text": "La fondue qui file",
+    "category": "food",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_070",
+    "text": "Un œuf trop cuit",
+    "category": "food",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_071",
+    "text": "Les frites molles",
+    "category": "food",
+    "absurdity": 5,
+    "controversy": 1,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_072",
+    "text": "Un soda plat",
+    "category": "food",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_073",
+    "text": "La confiture figée",
+    "category": "food",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_074",
+    "text": "Un avocat trop mûr",
+    "category": "food",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_075",
+    "text": "Les nouilles instantanées",
+    "category": "food",
+    "absurdity": 2,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_076",
+    "text": "Un vin en brique",
+    "category": "food",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_077",
+    "text": "La crème fouettée en spray",
+    "category": "food",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_078",
+    "text": "Un pain de mie toasté",
+    "category": "food",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_079",
+    "text": "Les gâteaux apéro",
+    "category": "food",
+    "absurdity": 4,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_080",
+    "text": "Un smoothie bowl Instagram",
+    "category": "food",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_081",
+    "text": "La bière tiède",
+    "category": "food",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_082",
+    "text": "Un hot-dog de stadium",
+    "category": "food",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_083",
+    "text": "Les pickles",
+    "category": "food",
+    "absurdity": 1,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_084",
+    "text": "Un tiramisu de supermarché",
+    "category": "food",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_085",
+    "text": "La fondue chinoise",
+    "category": "food",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_086",
+    "text": "Un smoothie protéiné",
+    "category": "food",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_087",
+    "text": "Les scrapers de fond de yaourt",
+    "category": "food",
+    "absurdity": 3,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_088",
+    "text": "Un espresso trop court",
+    "category": "food",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_089",
+    "text": "La glace qui fond trop vite",
+    "category": "food",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_090",
+    "text": "Un wrap qui fuit",
+    "category": "food",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_091",
+    "text": "Les cacahuètes d’avion",
+    "category": "food",
+    "absurdity": 5,
+    "controversy": 1,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_092",
+    "text": "Un burger végétarien trompeur",
+    "category": "food",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_093",
+    "text": "La raclette party improvisée",
+    "category": "food",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_094",
+    "text": "Un muffin “healthy”",
+    "category": "food",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_095",
+    "text": "Les sushis de station-service",
+    "category": "food",
+    "absurdity": 2,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_096",
+    "text": "Un milk-shake vanille",
+    "category": "food",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_097",
+    "text": "La tartiflette",
+    "category": "food",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_098",
+    "text": "Un café filtre de bureau",
+    "category": "food",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_099",
+    "text": "Les chips wasabi",
+    "category": "food",
+    "absurdity": 4,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_100",
+    "text": "Un dessert “fait maison” douteux",
+    "category": "food",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_101",
+    "text": "Kim Jong-un",
+    "category": "celebrities",
+    "absurdity": 2,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_102",
+    "text": "Un milliardaire qui fait du camping",
+    "category": "celebrities",
+    "absurdity": 5,
+    "controversy": 2,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_103",
+    "text": "Un influenceur en crise",
+    "category": "celebrities",
+    "absurdity": 3,
+    "controversy": 3,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_104",
+    "text": "Un présentateur météo trop enthousiaste",
+    "category": "celebrities",
+    "absurdity": 1,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_105",
+    "text": "Une star qui “reste humble”",
+    "category": "celebrities",
+    "absurdity": 4,
+    "controversy": 2,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_106",
+    "text": "Un politicien en short",
+    "category": "celebrities",
+    "absurdity": 2,
+    "controversy": 3,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_107",
+    "text": "Un footballeur en conférence de presse",
+    "category": "celebrities",
+    "absurdity": 5,
+    "controversy": 1,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_108",
+    "text": "Une star TikTok à la retraite à 19 ans",
+    "category": "celebrities",
+    "absurdity": 3,
+    "controversy": 2,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_109",
+    "text": "Un critique gastronomique en fast-food",
+    "category": "celebrities",
+    "absurdity": 1,
+    "controversy": 3,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_110",
+    "text": "Un coach de vie trop motivé",
+    "category": "celebrities",
+    "absurdity": 4,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_111",
+    "text": "Une célébrité en mode “incognito”",
+    "category": "celebrities",
+    "absurdity": 2,
+    "controversy": 2,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_112",
+    "text": "Un DJ à un mariage",
+    "category": "celebrities",
+    "absurdity": 5,
+    "controversy": 3,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_113",
+    "text": "Un acteur en promo forcée",
+    "category": "celebrities",
+    "absurdity": 3,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_114",
+    "text": "Une star qui lance sa marque d’eau",
+    "category": "celebrities",
+    "absurdity": 1,
+    "controversy": 2,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_115",
+    "text": "Un humoriste en panne de punchline",
+    "category": "celebrities",
+    "absurdity": 4,
+    "controversy": 3,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_116",
+    "text": "Un mannequin qui mange un kebab",
+    "category": "celebrities",
+    "absurdity": 2,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_117",
+    "text": "Un astronaute en télétravail",
+    "category": "celebrities",
+    "absurdity": 5,
+    "controversy": 2,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_118",
+    "text": "Un royal en supermarché",
+    "category": "celebrities",
+    "absurdity": 3,
+    "controversy": 3,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_119",
+    "text": "Un milliardaire qui fait la queue",
+    "category": "celebrities",
+    "absurdity": 1,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_120",
+    "text": "Un chef étoilé au micro-ondes",
+    "category": "celebrities",
+    "absurdity": 4,
+    "controversy": 2,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_121",
+    "text": "Une star qui perd aux échecs",
+    "category": "celebrities",
+    "absurdity": 2,
+    "controversy": 3,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_122",
+    "text": "Un youtubeur “unboxing”",
+    "category": "celebrities",
+    "absurdity": 5,
+    "controversy": 1,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_123",
+    "text": "Un animateur radio trop matinal",
+    "category": "celebrities",
+    "absurdity": 3,
+    "controversy": 2,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_124",
+    "text": "Une star qui lit les conditions générales",
+    "category": "celebrities",
+    "absurdity": 1,
+    "controversy": 3,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_125",
+    "text": "Un réalisateur en retard",
+    "category": "celebrities",
+    "absurdity": 4,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_126",
+    "text": "Un chanteur en playback raté",
+    "category": "celebrities",
+    "absurdity": 2,
+    "controversy": 2,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_127",
+    "text": "Une célébrité en scoot",
+    "category": "celebrities",
+    "absurdity": 5,
+    "controversy": 3,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_128",
+    "text": "Un coach sportif sans abdos",
+    "category": "celebrities",
+    "absurdity": 3,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_129",
+    "text": "Un critique cinéma qui pleure",
+    "category": "celebrities",
+    "absurdity": 1,
+    "controversy": 2,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_130",
+    "text": "Une star qui adore les supers",
+    "category": "celebrities",
+    "absurdity": 4,
+    "controversy": 3,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_131",
+    "text": "Un streamer sans chat",
+    "category": "celebrities",
+    "absurdity": 2,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_132",
+    "text": "Un présentateur qui dit “du coup”",
+    "category": "celebrities",
+    "absurdity": 5,
+    "controversy": 2,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_133",
+    "text": "Une influenceuse sans filtre",
+    "category": "celebrities",
+    "absurdity": 3,
+    "controversy": 3,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_134",
+    "text": "Un milliardaire en vélib",
+    "category": "celebrities",
+    "absurdity": 1,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_135",
+    "text": "Un footballeur qui rate un penalty",
+    "category": "celebrities",
+    "absurdity": 4,
+    "controversy": 2,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_136",
+    "text": "Une star qui range son Ikea",
+    "category": "celebrities",
+    "absurdity": 2,
+    "controversy": 3,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_137",
+    "text": "Un politicien sur TikTok",
+    "category": "celebrities",
+    "absurdity": 5,
+    "controversy": 1,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_138",
+    "text": "Un astronaute qui a le mal de l’espace",
+    "category": "celebrities",
+    "absurdity": 3,
+    "controversy": 2,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_139",
+    "text": "Un chef qui brûle des toasts",
+    "category": "celebrities",
+    "absurdity": 1,
+    "controversy": 3,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_140",
+    "text": "Une star qui rate son Zoom",
+    "category": "celebrities",
+    "absurdity": 4,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_141",
+    "text": "Un humoriste sérieux",
+    "category": "celebrities",
+    "absurdity": 2,
+    "controversy": 2,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_142",
+    "text": "Un mannequin en pantoufles",
+    "category": "celebrities",
+    "absurdity": 5,
+    "controversy": 3,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_143",
+    "text": "Un DJ sans casque",
+    "category": "celebrities",
+    "absurdity": 3,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_144",
+    "text": "Une star qui prend le bus",
+    "category": "celebrities",
+    "absurdity": 1,
+    "controversy": 2,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_145",
+    "text": "Un youtubeur sans miniature",
+    "category": "celebrities",
+    "absurdity": 4,
+    "controversy": 3,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_146",
+    "text": "Un coach qui doute",
+    "category": "celebrities",
+    "absurdity": 2,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_147",
+    "text": "Une célébrité en salle d’attente",
+    "category": "celebrities",
+    "absurdity": 5,
+    "controversy": 2,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_148",
+    "text": "Un présentateur sans prompteur",
+    "category": "celebrities",
+    "absurdity": 3,
+    "controversy": 3,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_149",
+    "text": "Un milliardaire qui perd ses clés",
+    "category": "celebrities",
+    "absurdity": 1,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_150",
+    "text": "Une star qui adore les lingettes",
+    "category": "celebrities",
+    "absurdity": 4,
+    "controversy": 2,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_151",
+    "text": "Un pigeon agressif",
+    "category": "animals",
+    "absurdity": 3,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_152",
+    "text": "Un chat qui juge",
+    "category": "animals",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_153",
+    "text": "Un chien trop enthousiaste",
+    "category": "animals",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_154",
+    "text": "Une mouette voleuse de frites",
+    "category": "animals",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_155",
+    "text": "Un hamster stressé",
+    "category": "animals",
+    "absurdity": 5,
+    "controversy": 1,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_156",
+    "text": "Un chaton qui miaule à 4 h",
+    "category": "animals",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_157",
+    "text": "Un chien qui mange les chaussettes",
+    "category": "animals",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_158",
+    "text": "Une abeille trop proche",
+    "category": "animals",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_159",
+    "text": "Un renard urbain",
+    "category": "animals",
+    "absurdity": 2,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_160",
+    "text": "Un poisson rouge amnésique",
+    "category": "animals",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_161",
+    "text": "Un perroquet trop bavard",
+    "category": "animals",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_162",
+    "text": "Une tortue pressée",
+    "category": "animals",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_163",
+    "text": "Un chat qui marche sur le clavier",
+    "category": "animals",
+    "absurdity": 4,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_164",
+    "text": "Un chien qui aboie au facteur",
+    "category": "animals",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_165",
+    "text": "Une mouche persistante",
+    "category": "animals",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_166",
+    "text": "Un écureuil trop confiant",
+    "category": "animals",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_167",
+    "text": "Un chat qui vomit sur le tapis",
+    "category": "animals",
+    "absurdity": 1,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_168",
+    "text": "Un chien qui secoue l’eau partout",
+    "category": "animals",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_169",
+    "text": "Une chouette nocturne",
+    "category": "animals",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_170",
+    "text": "Un lapin qui grignote les câbles",
+    "category": "animals",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_171",
+    "text": "Un canard en ville",
+    "category": "animals",
+    "absurdity": 3,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_172",
+    "text": "Un chat qui ignore les interdictions",
+    "category": "animals",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_173",
+    "text": "Un chien qui tire en laisse",
+    "category": "animals",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_174",
+    "text": "Une araignée dans la douche",
+    "category": "animals",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_175",
+    "text": "Un hérisson surprise",
+    "category": "animals",
+    "absurdity": 5,
+    "controversy": 1,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_176",
+    "text": "Un chat qui préfère le carton",
+    "category": "animals",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_177",
+    "text": "Un chien qui a peur des orages",
+    "category": "animals",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_178",
+    "text": "Une guêpe au pique-nique",
+    "category": "animals",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_179",
+    "text": "Un chat qui fait tomber un verre",
+    "category": "animals",
+    "absurdity": 2,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_180",
+    "text": "Un chien qui digue dans le salon",
+    "category": "animals",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_181",
+    "text": "Un pigeon dans le métro",
+    "category": "animals",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_182",
+    "text": "Un chat qui dort sur le linge propre",
+    "category": "animals",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_183",
+    "text": "Un chien qui vole le canapé",
+    "category": "animals",
+    "absurdity": 4,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_184",
+    "text": "Une mouette qui crie",
+    "category": "animals",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_185",
+    "text": "Un chat qui juge ton dating",
+    "category": "animals",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_186",
+    "text": "Un chien qui aime les chaussettes sales",
+    "category": "animals",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_187",
+    "text": "Un hamster qui s’échappe",
+    "category": "animals",
+    "absurdity": 1,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_188",
+    "text": "Un chat qui ouvre les placards",
+    "category": "animals",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_189",
+    "text": "Un chien qui “sourit”",
+    "category": "animals",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_190",
+    "text": "Une abeille dans la voiture",
+    "category": "animals",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_191",
+    "text": "Un chat qui préfère les invités",
+    "category": "animals",
+    "absurdity": 3,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_192",
+    "text": "Un chien qui mange un livre",
+    "category": "animals",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_193",
+    "text": "Un pigeon qui te fixe",
+    "category": "animals",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_194",
+    "text": "Un chat qui refuse le vétérinaire",
+    "category": "animals",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_195",
+    "text": "Un chien qui a peur de l’aspirateur",
+    "category": "animals",
+    "absurdity": 5,
+    "controversy": 1,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_196",
+    "text": "Une tortue plus cool que toi",
+    "category": "animals",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_197",
+    "text": "Un chat qui vole ta place",
+    "category": "animals",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_198",
+    "text": "Un chien qui aime les câlins gênants",
+    "category": "animals",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_199",
+    "text": "Une mouche au cinéma",
+    "category": "animals",
+    "absurdity": 2,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_200",
+    "text": "Un chat qui “aide” à plier",
+    "category": "animals",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_201",
+    "text": "Embrasser tout le monde",
+    "category": "actions",
+    "absurdity": 3,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_202",
+    "text": "Danser sans musique",
+    "category": "actions",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_203",
+    "text": "Mentir sur son âge",
+    "category": "actions",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_204",
+    "text": "Rire trop fort au cinéma",
+    "category": "actions",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_205",
+    "text": "Arriver pile à l’heure",
+    "category": "actions",
+    "absurdity": 5,
+    "controversy": 1,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_206",
+    "text": "Partir sans dire au revoir",
+    "category": "actions",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_207",
+    "text": "Répondre à un mail en majuscules",
+    "category": "actions",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_208",
+    "text": "Faire un toast improvisé",
+    "category": "actions",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_209",
+    "text": "Chanter sous la douche trop fort",
+    "category": "actions",
+    "absurdity": 2,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_210",
+    "text": "Prendre la dernière frite",
+    "category": "actions",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_211",
+    "text": "Couper la parole",
+    "category": "actions",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_212",
+    "text": "Faire un câlin surprise",
+    "category": "actions",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_213",
+    "text": "Regarder son téléphone en marchant",
+    "category": "actions",
+    "absurdity": 4,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_214",
+    "text": "Faire semblant d’avoir compris",
+    "category": "actions",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_215",
+    "text": "Demander l’addition trop tôt",
+    "category": "actions",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_216",
+    "text": "Refaire son lit chez les autres",
+    "category": "actions",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_217",
+    "text": "Goûter avant de servir",
+    "category": "actions",
+    "absurdity": 1,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_218",
+    "text": "Prendre des notes pendant un film",
+    "category": "actions",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_219",
+    "text": "Applaudir trop longtemps",
+    "category": "actions",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_220",
+    "text": "Faire un selfie de groupe",
+    "category": "actions",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_221",
+    "text": "Changer de sujet brutalement",
+    "category": "actions",
+    "absurdity": 3,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_222",
+    "text": "Offrir un cadeau recyclé",
+    "category": "actions",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_223",
+    "text": "Faire un compliment douteux",
+    "category": "actions",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_224",
+    "text": "Raconter la même anecdote",
+    "category": "actions",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_225",
+    "text": "S’asseoir trop près",
+    "category": "actions",
+    "absurdity": 5,
+    "controversy": 1,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_226",
+    "text": "Faire un clin d’œil raté",
+    "category": "actions",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_227",
+    "text": "Partager un secret trop tôt",
+    "category": "actions",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_228",
+    "text": "Faire semblant d’être busy",
+    "category": "actions",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_229",
+    "text": "Liker un vieux post",
+    "category": "actions",
+    "absurdity": 2,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_230",
+    "text": "Envoyer un vocal de 4 minutes",
+    "category": "actions",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_231",
+    "text": "Répondre “on verra”",
+    "category": "actions",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_232",
+    "text": "Faire un plan sur 12 groupes WhatsApp",
+    "category": "actions",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_233",
+    "text": "Oublier le prénom",
+    "category": "actions",
+    "absurdity": 4,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_234",
+    "text": "Faire un toast avec de l’eau",
+    "category": "actions",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_235",
+    "text": "Danser sur une chaise",
+    "category": "actions",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_236",
+    "text": "Dire “du coup” vingt fois",
+    "category": "actions",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_237",
+    "text": "Faire un bisou social raté",
+    "category": "actions",
+    "absurdity": 1,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_238",
+    "text": "Prendre la couverture entière",
+    "category": "actions",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_239",
+    "text": "Faire un podcast improvisé",
+    "category": "actions",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_240",
+    "text": "Mentir sur sa disponibilité",
+    "category": "actions",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_241",
+    "text": "Faire un “on est où ?”",
+    "category": "actions",
+    "absurdity": 3,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_242",
+    "text": "Ranger le frigo des autres",
+    "category": "actions",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_243",
+    "text": "Faire un pari stupide",
+    "category": "actions",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_244",
+    "text": "Dire “je te rappelle”",
+    "category": "actions",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_245",
+    "text": "Faire un toast trop long",
+    "category": "actions",
+    "absurdity": 5,
+    "controversy": 1,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_246",
+    "text": "Partir en manteau trop tôt",
+    "category": "actions",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_247",
+    "text": "Faire un “no spoiler” puis spoiler",
+    "category": "actions",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_248",
+    "text": "Embrasser un inconnu (théoriquement)",
+    "category": "actions",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_249",
+    "text": "Faire un câlin à un cactus",
+    "category": "actions",
+    "absurdity": 2,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_250",
+    "text": "Dire “c’était mieux avant”",
+    "category": "actions",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_251",
+    "text": "Les réunions qui auraient pu être des emails",
+    "category": "awkward",
+    "absurdity": 3,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_252",
+    "text": "Dire bonjour à quelqu’un qui ne vous a pas vu",
+    "category": "awkward",
+    "absurdity": 4,
+    "controversy": 3,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_253",
+    "text": "Un silence dans l’ascenseur",
+    "category": "awkward",
+    "absurdity": 2,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_254",
+    "text": "Applaudir tout seul",
+    "category": "awkward",
+    "absurdity": 5,
+    "controversy": 2,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_255",
+    "text": "Se tromper de prénom",
+    "category": "awkward",
+    "absurdity": 3,
+    "controversy": 3,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_256",
+    "text": "Un micro encore allumé",
+    "category": "awkward",
+    "absurdity": 1,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_257",
+    "text": "Arriver trop tôt à une fête",
+    "category": "awkward",
+    "absurdity": 4,
+    "controversy": 2,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_258",
+    "text": "Partir trop tôt d’une fête",
+    "category": "awkward",
+    "absurdity": 2,
+    "controversy": 3,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_259",
+    "text": "Un message envoyé au mauvais chat",
+    "category": "awkward",
+    "absurdity": 5,
+    "controversy": 1,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_260",
+    "text": "Un appel FaceTime accidentel",
+    "category": "awkward",
+    "absurdity": 3,
+    "controversy": 2,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_261",
+    "text": "Se coincer dans une conversation",
+    "category": "awkward",
+    "absurdity": 1,
+    "controversy": 3,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_262",
+    "text": "Rire d’une blague qu’on n’a pas comprise",
+    "category": "awkward",
+    "absurdity": 4,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_263",
+    "text": "Un câlin non réciproque",
+    "category": "awkward",
+    "absurdity": 2,
+    "controversy": 2,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_264",
+    "text": "Dire “toi aussi” au caissier",
+    "category": "awkward",
+    "absurdity": 5,
+    "controversy": 3,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_265",
+    "text": "Un zoom avec le filtre oignon",
+    "category": "awkward",
+    "absurdity": 3,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_266",
+    "text": "Oublier d’être en sourdine",
+    "category": "awkward",
+    "absurdity": 1,
+    "controversy": 2,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_267",
+    "text": "Un toast qui tombe beurre en bas",
+    "category": "awkward",
+    "absurdity": 4,
+    "controversy": 3,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_268",
+    "text": "Se présenter deux fois",
+    "category": "awkward",
+    "absurdity": 2,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_269",
+    "text": "Un compliment maladroit",
+    "category": "awkward",
+    "absurdity": 5,
+    "controversy": 2,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_270",
+    "text": "Un “on se connaît ?” raté",
+    "category": "awkward",
+    "absurdity": 3,
+    "controversy": 3,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_271",
+    "text": "Un sourire trop long",
+    "category": "awkward",
+    "absurdity": 1,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_272",
+    "text": "Un “bonne soirée” à 11 h",
+    "category": "awkward",
+    "absurdity": 4,
+    "controversy": 2,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_273",
+    "text": "Un “tu as maigri” douteux",
+    "category": "awkward",
+    "absurdity": 2,
+    "controversy": 3,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_274",
+    "text": "Un cadeau déjà ouvert",
+    "category": "awkward",
+    "absurdity": 5,
+    "controversy": 1,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_275",
+    "text": "Un silence après une punchline",
+    "category": "awkward",
+    "absurdity": 3,
+    "controversy": 2,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_276",
+    "text": "Un “je t’explique” non demandé",
+    "category": "awkward",
+    "absurdity": 1,
+    "controversy": 3,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_277",
+    "text": "Un appel pendant un film",
+    "category": "awkward",
+    "absurdity": 4,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_278",
+    "text": "Un “t’es libre ?” ambigu",
+    "category": "awkward",
+    "absurdity": 2,
+    "controversy": 2,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_279",
+    "text": "Un “on est d’accord” forcé",
+    "category": "awkward",
+    "absurdity": 5,
+    "controversy": 3,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_280",
+    "text": "Un “c’est une blague” trop tard",
+    "category": "awkward",
+    "absurdity": 3,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_281",
+    "text": "Un “je te laisse” qui dure",
+    "category": "awkward",
+    "absurdity": 1,
+    "controversy": 2,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_282",
+    "text": "Un “à tout à l’heure” sans suite",
+    "category": "awkward",
+    "absurdity": 4,
+    "controversy": 3,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_283",
+    "text": "Un “tu vas bien ?” trop intense",
+    "category": "awkward",
+    "absurdity": 2,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_284",
+    "text": "Un “bravo” sarcastique",
+    "category": "awkward",
+    "absurdity": 5,
+    "controversy": 2,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_285",
+    "text": "Un “pas grave” qui est grave",
+    "category": "awkward",
+    "absurdity": 3,
+    "controversy": 3,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_286",
+    "text": "Un “on en reparle” jamais reparlé",
+    "category": "awkward",
+    "absurdity": 1,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_287",
+    "text": "Un “je suis coincé” social",
+    "category": "awkward",
+    "absurdity": 4,
+    "controversy": 2,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_288",
+    "text": "Un “t’inquiète” inquiétant",
+    "category": "awkward",
+    "absurdity": 2,
+    "controversy": 3,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_289",
+    "text": "Un “c’est toi qui vois”",
+    "category": "awkward",
+    "absurdity": 5,
+    "controversy": 1,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_290",
+    "text": "Un “comme tu veux” qui n’est pas vrai",
+    "category": "awkward",
+    "absurdity": 3,
+    "controversy": 2,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_291",
+    "text": "Un “on verra demain”",
+    "category": "awkward",
+    "absurdity": 1,
+    "controversy": 3,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_292",
+    "text": "Un “je te jure” inutile",
+    "category": "awkward",
+    "absurdity": 4,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_293",
+    "text": "Un “nan mais attends”",
+    "category": "awkward",
+    "absurdity": 2,
+    "controversy": 2,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_294",
+    "text": "Un “du coup voilà”",
+    "category": "awkward",
+    "absurdity": 5,
+    "controversy": 3,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_295",
+    "text": "Un “bref” de 10 minutes",
+    "category": "awkward",
+    "absurdity": 3,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_296",
+    "text": "Un “en vrai” 40 fois",
+    "category": "awkward",
+    "absurdity": 1,
+    "controversy": 2,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_297",
+    "text": "Un “pas pour juger mais…”",
+    "category": "awkward",
+    "absurdity": 4,
+    "controversy": 3,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_298",
+    "text": "Un “sans vouloir être méchant”",
+    "category": "awkward",
+    "absurdity": 2,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_299",
+    "text": "Un “je dis ça je dis rien”",
+    "category": "awkward",
+    "absurdity": 5,
+    "controversy": 2,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_300",
+    "text": "Le concept de lundi",
+    "category": "abstract",
+    "absurdity": 4,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_301",
+    "text": "La productivité toxique",
+    "category": "abstract",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_302",
+    "text": "Le karma du Wi-Fi",
+    "category": "abstract",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_303",
+    "text": "La nostalgie d’un mémoire RAM",
+    "category": "abstract",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_304",
+    "text": "Le doute existentiel à 2 h",
+    "category": "abstract",
+    "absurdity": 1,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_305",
+    "text": "La motivation du 2 janvier",
+    "category": "abstract",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_306",
+    "text": "Le temps qui filait trop vite",
+    "category": "abstract",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_307",
+    "text": "La peur de manquer (FOMO)",
+    "category": "abstract",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_308",
+    "text": "Le confort de la zone de confort",
+    "category": "abstract",
+    "absurdity": 3,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_309",
+    "text": "L’ambition un dimanche soir",
+    "category": "abstract",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_310",
+    "text": "La culpabilité du canapé",
+    "category": "abstract",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_311",
+    "text": "Le sens de la vie en promo",
+    "category": "abstract",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_312",
+    "text": "La liberté d’un week-end pluvieux",
+    "category": "abstract",
+    "absurdity": 5,
+    "controversy": 1,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_313",
+    "text": "Le chaos organisé",
+    "category": "abstract",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_314",
+    "text": "La synchronisation cosmique",
+    "category": "abstract",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_315",
+    "text": "Le destin en mode avion",
+    "category": "abstract",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_316",
+    "text": "La sérénité introuvable",
+    "category": "abstract",
+    "absurdity": 2,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_317",
+    "text": "Le courage d’envoyer un SMS",
+    "category": "abstract",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_318",
+    "text": "La patience en file d’attente",
+    "category": "abstract",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_319",
+    "text": "L’espoir d’un “vu”",
+    "category": "abstract",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_320",
+    "text": "La jalousie soft",
+    "category": "abstract",
+    "absurdity": 4,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_321",
+    "text": "Le doute sur le “on”",
+    "category": "abstract",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_322",
+    "text": "La confiance en soi après café",
+    "category": "abstract",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_323",
+    "text": "Le vide après une série",
+    "category": "abstract",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_324",
+    "text": "La pression du “réponds vite”",
+    "category": "abstract",
+    "absurdity": 1,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_325",
+    "text": "Le karma des chaussettes",
+    "category": "abstract",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_326",
+    "text": "La légèreté d’un jour férié",
+    "category": "abstract",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_327",
+    "text": "Le poids d’un “on devrait”",
+    "category": "abstract",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_328",
+    "text": "La magie d’un plan qui marche",
+    "category": "abstract",
+    "absurdity": 3,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_329",
+    "text": "Le mystère du second sock",
+    "category": "abstract",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_330",
+    "text": "La théorie du complot des cintre",
+    "category": "abstract",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_331",
+    "text": "Le multilinguisme des emojis",
+    "category": "abstract",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_332",
+    "text": "La démocratie du groupe WhatsApp",
+    "category": "abstract",
+    "absurdity": 5,
+    "controversy": 1,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_333",
+    "text": "Le capitalisme des stickers",
+    "category": "abstract",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_334",
+    "text": "La spiritualité du brunch",
+    "category": "abstract",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_335",
+    "text": "Le minimalisme impossible",
+    "category": "abstract",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_336",
+    "text": "Le maximalisme du frigo",
+    "category": "abstract",
+    "absurdity": 2,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_337",
+    "text": "La philosophie du “bof”",
+    "category": "abstract",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_338",
+    "text": "L’esthétique du désordre",
+    "category": "abstract",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_339",
+    "text": "Le romantisme d’un partage Uber",
+    "category": "abstract",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_340",
+    "text": "La tragédie d’un onglet perdu",
+    "category": "abstract",
+    "absurdity": 4,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_341",
+    "text": "Le sublime d’un silence Wi-Fi",
+    "category": "abstract",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_342",
+    "text": "La vertige d’un scroll infini",
+    "category": "abstract",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_343",
+    "text": "Le nirvana d’une notification off",
+    "category": "abstract",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_344",
+    "text": "La renaissance d’un chargeur trouvé",
+    "category": "abstract",
+    "absurdity": 1,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_345",
+    "text": "Le deuil d’une série annulée",
+    "category": "abstract",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_346",
+    "text": "L’extase d’un parking libre",
+    "category": "abstract",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_347",
+    "text": "La mélancolie d’un MP3",
+    "category": "abstract",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_348",
+    "text": "L’optimisme d’un “bientôt”",
+    "category": "abstract",
+    "absurdity": 3,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_349",
+    "text": "Le nihilisme d’un CAPTCHA",
+    "category": "abstract",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_350",
+    "text": "Scroller au lit",
+    "category": "habits",
+    "absurdity": 2,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_351",
+    "text": "Vérifier le frigo toutes les 20 minutes",
+    "category": "habits",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_352",
+    "text": "Dire “après le prochain épisode”",
+    "category": "habits",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_353",
+    "text": "Reporter le rangement",
+    "category": "habits",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_354",
+    "text": "Acheter trop de plantes",
+    "category": "habits",
+    "absurdity": 4,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_355",
+    "text": "Mettre 12 alarmes",
+    "category": "habits",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_356",
+    "text": "Googler ses symptômes",
+    "category": "habits",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_357",
+    "text": "Ranger pour procrastiner",
+    "category": "habits",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_358",
+    "text": "Compter les calories mentalement",
+    "category": "habits",
+    "absurdity": 1,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_359",
+    "text": "Relire les vieux messages",
+    "category": "habits",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_360",
+    "text": "Faire des listes qui s’allongent",
+    "category": "habits",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_361",
+    "text": "Changer de série toutes les 10 minutes",
+    "category": "habits",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_362",
+    "text": "Boire de l’eau “parce qu’il faut”",
+    "category": "habits",
+    "absurdity": 3,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_363",
+    "text": "Vérifier trois fois la porte",
+    "category": "habits",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_364",
+    "text": "Acheter des carnets jamais utilisés",
+    "category": "habits",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_365",
+    "text": "Planifier des vacances imaginaires",
+    "category": "habits",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_366",
+    "text": "Mettre des vêtements “provisoires”",
+    "category": "habits",
+    "absurdity": 5,
+    "controversy": 1,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_367",
+    "text": "Manger debout",
+    "category": "habits",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_368",
+    "text": "Répondre “je suis en route” trop tôt",
+    "category": "habits",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_369",
+    "text": "Garder des onglets “importants”",
+    "category": "habits",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_370",
+    "text": "Mettre le volume trop fort puis trop bas",
+    "category": "habits",
+    "absurdity": 2,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_371",
+    "text": "Se coucher “dans 5 minutes”",
+    "category": "habits",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_372",
+    "text": "Acheter des bons plans inutiles",
+    "category": "habits",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_373",
+    "text": "Comparer les prix pendant 40 minutes",
+    "category": "habits",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_374",
+    "text": "Faire du sport “demain”",
+    "category": "habits",
+    "absurdity": 4,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_375",
+    "text": "Photographier son plat",
+    "category": "habits",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_376",
+    "text": "Dire “je range ce week-end”",
+    "category": "habits",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_377",
+    "text": "Changer de fond d’écran trop souvent",
+    "category": "habits",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_378",
+    "text": "Garder des cartons “au cas où”",
+    "category": "habits",
+    "absurdity": 1,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_379",
+    "text": "Mettre des rappels puis les ignorer",
+    "category": "habits",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_380",
+    "text": "Acheter un organisateur puis l’oublier",
+    "category": "habits",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_381",
+    "text": "Se motiver avec un café puis un second",
+    "category": "habits",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_382",
+    "text": "Relancer un groupe mort",
+    "category": "habits",
+    "absurdity": 3,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_383",
+    "text": "Faire semblant de méditer",
+    "category": "habits",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_384",
+    "text": "Compter les marches",
+    "category": "habits",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_385",
+    "text": "Vérifier la météo obsessivement",
+    "category": "habits",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_386",
+    "text": "Changer de playlist toutes les 2 chansons",
+    "category": "habits",
+    "absurdity": 5,
+    "controversy": 1,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_387",
+    "text": "Garder des tickets “pour les impôts”",
+    "category": "habits",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_388",
+    "text": "Dire “je commence lundi”",
+    "category": "habits",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_389",
+    "text": "Acheter des sacs pour ranger des sacs",
+    "category": "habits",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_390",
+    "text": "Mettre des Post-it partout",
+    "category": "habits",
+    "absurdity": 2,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_391",
+    "text": "Se parler tout seul en cuisine",
+    "category": "habits",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_392",
+    "text": "Faire un “cheat day” permanent",
+    "category": "habits",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_393",
+    "text": "Ranger le bureau pour éviter le travail",
+    "category": "habits",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_394",
+    "text": "Ouvrir le frigo sans faim",
+    "category": "habits",
+    "absurdity": 4,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_395",
+    "text": "Fermer les onglets… demain",
+    "category": "habits",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_396",
+    "text": "Mettre des alarmes nommées bizarrement",
+    "category": "habits",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_397",
+    "text": "Relire un mail 12 fois avant d’envoyer",
+    "category": "habits",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_398",
+    "text": "Dire “je vais juste checker”",
+    "category": "habits",
+    "absurdity": 1,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_399",
+    "text": "Promettre “plus de doomscroll”",
+    "category": "habits",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_400",
+    "text": "Un avocat trop enthousiaste",
+    "category": "jobs",
+    "absurdity": 5,
+    "controversy": 1,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_401",
+    "text": "Un dentiste qui aime plaisanter",
+    "category": "jobs",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_402",
+    "text": "Un plombier philosophe",
+    "category": "jobs",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_403",
+    "text": "Un RH en team building",
+    "category": "jobs",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_404",
+    "text": "Un développeur sans café",
+    "category": "jobs",
+    "absurdity": 2,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_405",
+    "text": "Un livreur pressé",
+    "category": "jobs",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_406",
+    "text": "Un prof qui dit “c’était dans le polycopié”",
+    "category": "jobs",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_407",
+    "text": "Un serveur qui “revient tout de suite”",
+    "category": "jobs",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_408",
+    "text": "Un commercial trop souriant",
+    "category": "jobs",
+    "absurdity": 4,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_409",
+    "text": "Un architecte minimaliste",
+    "category": "jobs",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_410",
+    "text": "Un journaliste en live raté",
+    "category": "jobs",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_411",
+    "text": "Un agent immobilier trop lyrique",
+    "category": "jobs",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_412",
+    "text": "Un chauffeur de bus zen",
+    "category": "jobs",
+    "absurdity": 1,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_413",
+    "text": "Un chef de projet “agile”",
+    "category": "jobs",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_414",
+    "text": "Un stagiaire trop motivé",
+    "category": "jobs",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_415",
+    "text": "Un manager “porte ouverte”",
+    "category": "jobs",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_416",
+    "text": "Un consultant en jargon",
+    "category": "jobs",
+    "absurdity": 3,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_417",
+    "text": "Un caissier trop rapide",
+    "category": "jobs",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_418",
+    "text": "Un médecin qui dit “c’est la saison”",
+    "category": "jobs",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_419",
+    "text": "Un pharmacien qui conseille tout",
+    "category": "jobs",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_420",
+    "text": "Un barman confesseur",
+    "category": "jobs",
+    "absurdity": 5,
+    "controversy": 1,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_421",
+    "text": "Un gardien de nuit lecteur",
+    "category": "jobs",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_422",
+    "text": "Un contrôleur SNCF patient",
+    "category": "jobs",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_423",
+    "text": "Un agent d’accueil saturé",
+    "category": "jobs",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_424",
+    "text": "Un graphiste sans InDesign",
+    "category": "jobs",
+    "absurdity": 2,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_425",
+    "text": "Un community manager en crise",
+    "category": "jobs",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_426",
+    "text": "Un data analyst qui aime les camemberts",
+    "category": "jobs",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_427",
+    "text": "Un avocat du diable professionnel",
+    "category": "jobs",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_428",
+    "text": "Un coach agile sans Post-it",
+    "category": "jobs",
+    "absurdity": 4,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_429",
+    "text": "Un chef cuisinier à domicile",
+    "category": "jobs",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_430",
+    "text": "Un moniteur de ski trop cool",
+    "category": "jobs",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_431",
+    "text": "Un pompier en pause café",
+    "category": "jobs",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_432",
+    "text": "Un astronaute RH",
+    "category": "jobs",
+    "absurdity": 1,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_433",
+    "text": "Un boulanger à 4 h",
+    "category": "jobs",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_434",
+    "text": "Un critique de réunions",
+    "category": "jobs",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_435",
+    "text": "Un expert Excel",
+    "category": "jobs",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_436",
+    "text": "Un influencer “corporate”",
+    "category": "jobs",
+    "absurdity": 3,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_437",
+    "text": "Un traducteur de jargon",
+    "category": "jobs",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_438",
+    "text": "Un testeur de chaises de bureau",
+    "category": "jobs",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_439",
+    "text": "Un spécialiste CAPTCHA",
+    "category": "jobs",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_440",
+    "text": "Un auditeur de silence",
+    "category": "jobs",
+    "absurdity": 5,
+    "controversy": 1,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_441",
+    "text": "Un manager de plantes de bureau",
+    "category": "jobs",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_442",
+    "text": "Un responsable “synergie”",
+    "category": "jobs",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_443",
+    "text": "Un expert en “on verra”",
+    "category": "jobs",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_444",
+    "text": "Un chef de “quick wins”",
+    "category": "jobs",
+    "absurdity": 2,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_445",
+    "text": "Un consultant “mindset”",
+    "category": "jobs",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_446",
+    "text": "Un auditor de snacks",
+    "category": "jobs",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_447",
+    "text": "Un coach de “deep work”",
+    "category": "jobs",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_448",
+    "text": "Un spécialiste out-of-office",
+    "category": "jobs",
+    "absurdity": 4,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_449",
+    "text": "Un architecte de plans abandonnés",
+    "category": "jobs",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_450",
+    "text": "Les notifications push",
+    "category": "tech",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_451",
+    "text": "Un CAPTCHA impossible",
+    "category": "tech",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_452",
+    "text": "La mise à jour forcée",
+    "category": "tech",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_453",
+    "text": "Un Wi-Fi public douteux",
+    "category": "tech",
+    "absurdity": 2,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_454",
+    "text": "Les cookies “nécessaires”",
+    "category": "tech",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_455",
+    "text": "Un assistant vocal trop à l’écoute",
+    "category": "tech",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_456",
+    "text": "La batterie à 1 %",
+    "category": "tech",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_457",
+    "text": "Un algorithme trop sûr de lui",
+    "category": "tech",
+    "absurdity": 4,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_458",
+    "text": "Les conditions générales",
+    "category": "tech",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_459",
+    "text": "Un QR code flou",
+    "category": "tech",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_460",
+    "text": "La reconnaissance faciale ratée",
+    "category": "tech",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_461",
+    "text": "Un cloud “presque synchronisé”",
+    "category": "tech",
+    "absurdity": 1,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_462",
+    "text": "Les publicités personnalisées trop bien",
+    "category": "tech",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_463",
+    "text": "Un bug “introuvable”",
+    "category": "tech",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_464",
+    "text": "La double authentification oubliée",
+    "category": "tech",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_465",
+    "text": "Un clavier sans fil mort",
+    "category": "tech",
+    "absurdity": 3,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_466",
+    "text": "Les emojis mal interprétés",
+    "category": "tech",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_467",
+    "text": "Un filtre beauté trop fort",
+    "category": "tech",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_468",
+    "text": "La mode sombre partout",
+    "category": "tech",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_469",
+    "text": "Un lien “bit.ly” suspect",
+    "category": "tech",
+    "absurdity": 5,
+    "controversy": 1,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_470",
+    "text": "Les suggestions “pour vous”",
+    "category": "tech",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_471",
+    "text": "Un podcast accéléré à 2×",
+    "category": "tech",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_472",
+    "text": "La mémoire pleine",
+    "category": "tech",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_473",
+    "text": "Un airpod perdu",
+    "category": "tech",
+    "absurdity": 2,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_474",
+    "text": "Les mises à jour de CGU",
+    "category": "tech",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_475",
+    "text": "Un deepfake de ton boss",
+    "category": "tech",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_476",
+    "text": "La correction automatique traître",
+    "category": "tech",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_477",
+    "text": "Un VPN “gratuit”",
+    "category": "tech",
+    "absurdity": 4,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_478",
+    "text": "Les smart lights capricieuses",
+    "category": "tech",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_479",
+    "text": "Un chatbot empathique",
+    "category": "tech",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_480",
+    "text": "La 5G dans un ascenseur",
+    "category": "tech",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_481",
+    "text": "Un smart fridge jugeant",
+    "category": "tech",
+    "absurdity": 1,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_482",
+    "text": "Les threads de 40 tweets",
+    "category": "tech",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_483",
+    "text": "Un like accidentel",
+    "category": "tech",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_484",
+    "text": "La story vue sans répondre",
+    "category": "tech",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_485",
+    "text": "Un screenshot compromettant",
+    "category": "tech",
+    "absurdity": 3,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_486",
+    "text": "Les groupes Discord morts",
+    "category": "tech",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_487",
+    "text": "Un NFT de ton chat",
+    "category": "tech",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_488",
+    "text": "La blockchain expliquée mal",
+    "category": "tech",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_489",
+    "text": "Un metaverse vide",
+    "category": "tech",
+    "absurdity": 5,
+    "controversy": 1,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_490",
+    "text": "Les dark patterns",
+    "category": "tech",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_491",
+    "text": "Un abonnement oublié",
+    "category": "tech",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_492",
+    "text": "La facture cloud",
+    "category": "tech",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_493",
+    "text": "Un “reply all” catastrophique",
+    "category": "tech",
+    "absurdity": 2,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_494",
+    "text": "Les onglets “à lire plus tard”",
+    "category": "tech",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_495",
+    "text": "Un zoom avec écho",
+    "category": "tech",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_496",
+    "text": "La qualité “auto” pourrie",
+    "category": "tech",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_497",
+    "text": "Un smartwatch trop urgente",
+    "category": "tech",
+    "absurdity": 4,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_498",
+    "text": "Les prompts ChatGPT douteux",
+    "category": "tech",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_499",
+    "text": "Un mariage sous la pluie",
+    "category": "events",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_500",
+    "text": "Une soirée “jeux” trop compétitive",
+    "category": "events",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_501",
+    "text": "Un enterrement de vie de garçon sage",
+    "category": "events",
+    "absurdity": 4,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_502",
+    "text": "Une réunion parents-profs",
+    "category": "events",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_503",
+    "text": "Un vernissage sans vin",
+    "category": "events",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_504",
+    "text": "Une soldes à l’ouverture",
+    "category": "events",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_505",
+    "text": "Un barbecue sous orage",
+    "category": "events",
+    "absurdity": 1,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_506",
+    "text": "Une soirée déguisée ratée",
+    "category": "events",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_507",
+    "text": "Un concert où on ne voit rien",
+    "category": "events",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_508",
+    "text": "Une rétrospective photo gênante",
+    "category": "events",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_509",
+    "text": "Un brunch qui dure 4 heures",
+    "category": "events",
+    "absurdity": 3,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_510",
+    "text": "Une agape de bureau",
+    "category": "events",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_511",
+    "text": "Un après-midi Ikea",
+    "category": "events",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_512",
+    "text": "Une soirée Blind Test injuste",
+    "category": "events",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_513",
+    "text": "Un escape game qui fâche",
+    "category": "events",
+    "absurdity": 5,
+    "controversy": 1,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_514",
+    "text": "Une randonnée “facile”",
+    "category": "events",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_515",
+    "text": "Un apéro qui devient dîner",
+    "category": "events",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_516",
+    "text": "Une soirée karaoke forcée",
+    "category": "events",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_517",
+    "text": "Un mariage Zoom",
+    "category": "events",
+    "absurdity": 2,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_518",
+    "text": "Une fête d’anniversaire surprise ratée",
+    "category": "events",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_519",
+    "text": "Un pot de départ trop long",
+    "category": "events",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_520",
+    "text": "Une soirée pyjama adulte",
+    "category": "events",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_521",
+    "text": "Un pique-nique sans nappe",
+    "category": "events",
+    "absurdity": 4,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_522",
+    "text": "Une soirée “vins naturels”",
+    "category": "events",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_523",
+    "text": "Un match regardé avec retardateur",
+    "category": "events",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_524",
+    "text": "Une conférence motivante",
+    "category": "events",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_525",
+    "text": "Un atelier pottery date",
+    "category": "events",
+    "absurdity": 1,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_526",
+    "text": "Une soirée jeux de société toxique",
+    "category": "events",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_527",
+    "text": "Un week-end “digital detox” raté",
+    "category": "events",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_528",
+    "text": "Une chasse aux œufs compétitive",
+    "category": "events",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_529",
+    "text": "Un réveillon trop tôt",
+    "category": "events",
+    "absurdity": 3,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_530",
+    "text": "Une soirée raclette sans fin",
+    "category": "events",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_531",
+    "text": "Un festival de boue",
+    "category": "events",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_532",
+    "text": "Une visite IKEA stratégique",
+    "category": "events",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_533",
+    "text": "Un course Relais trop sérieux",
+    "category": "events",
+    "absurdity": 5,
+    "controversy": 1,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_534",
+    "text": "Une soirée “on joue à TIER”",
+    "category": "events",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_535",
+    "text": "Un brunch Instagrammable",
+    "category": "events",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_536",
+    "text": "Une soirée “thème années 2000”",
+    "category": "events",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_537",
+    "text": "Un secret Santa injuste",
+    "category": "events",
+    "absurdity": 2,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_538",
+    "text": "Une crémaillère sans meubles",
+    "category": "events",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_539",
+    "text": "Un afterwork obligatoire",
+    "category": "events",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_540",
+    "text": "Une soirée “films nuls”",
+    "category": "events",
+    "absurdity": 1,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_541",
+    "text": "Un picnic sous pollen",
+    "category": "events",
+    "absurdity": 4,
+    "controversy": 1,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_542",
+    "text": "Une soirée “faits divers”",
+    "category": "events",
+    "absurdity": 2,
+    "controversy": 0,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_543",
+    "text": "Un speed dating de chats",
+    "category": "events",
+    "absurdity": 5,
+    "controversy": 0,
+    "humorLevel": "dark_light",
+    "enabled": true
+  },
+  {
+    "id": "item_544",
+    "text": "Une soirée “on range”",
+    "category": "events",
+    "absurdity": 3,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  },
+  {
+    "id": "item_545",
+    "text": "Un road trip sans playlist",
+    "category": "events",
+    "absurdity": 1,
+    "controversy": 1,
+    "humorLevel": "family",
+    "enabled": true
+  },
+  {
+    "id": "item_546",
+    "text": "Une soirée “on se connaît vraiment ?”",
+    "category": "events",
+    "absurdity": 4,
+    "controversy": 0,
+    "humorLevel": "quirky",
+    "enabled": true
+  }
+]
