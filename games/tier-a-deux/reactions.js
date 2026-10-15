@@ -1,11 +1,11 @@
 'use strict';
 
-const MATCH_REACTIONS = [
-  'Vous partagez visiblement le même cerveau.',
-  'Une synchronisation presque inquiétante.',
-  'Couleurs assorties, goûts assortis.',
-  'Vous avez collé collé sur celui-là.',
-  'Télépathie de salon confirmée.'
+const HIT_REACTIONS = [
+  'Télépathie de salon confirmée.',
+  'Tu le connais trop bien.',
+  'Lecture d’esprit niveau expert.',
+  'Dans le mille.',
+  'Couleurs assorties, goûts assortis.'
 ];
 
 const MISS_REACTIONS = [
@@ -25,9 +25,9 @@ const MIXED_REACTIONS = [
 ];
 
 const ROUND_HIGH = [
-  'Vous êtes en mise à jour synchronisée.',
+  'Le groupe lit dans les pensées.',
   'Compatibilité suspectement élevée.',
-  'Le duo de la soirée se confirme.'
+  'Les devineurs sont en feu.'
 ];
 
 const ROUND_LOW = [
@@ -40,47 +40,55 @@ function pick(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-function reactionForItem({ matchedPersonal, correctPredA, correctPredB }) {
-  if (matchedPersonal) return pick(MATCH_REACTIONS);
-  if (!correctPredA && !correctPredB) return pick(MISS_REACTIONS);
+/** hits = number of guessers who got this item right */
+function reactionForItem({ hits, guesserCount }) {
+  if (guesserCount <= 0) return pick(MIXED_REACTIONS);
+  if (hits >= guesserCount) return pick(HIT_REACTIONS);
+  if (hits === 0) return pick(MISS_REACTIONS);
   return pick(MIXED_REACTIONS);
 }
 
-function reactionForRound(compatPercent) {
-  if (compatPercent >= 60) return pick(ROUND_HIGH);
-  if (compatPercent <= 20) return pick(ROUND_LOW);
+function reactionForRound(accuracyPercent) {
+  if (accuracyPercent >= 60) return pick(ROUND_HIGH);
+  if (accuracyPercent <= 20) return pick(ROUND_LOW);
   return pick(MIXED_REACTIONS);
 }
 
-function endTitles({
-  playerA,
-  playerB,
-  scoreA,
-  scoreB,
-  correctPredA,
-  correctPredB,
-  globalCompat
-}) {
+function endTitles({ players, correctById, scoresById, globalAccuracy }) {
   const titles = [];
-  if (correctPredA > correctPredB) {
-    titles.push({ playerId: playerA, title: 'Télépathe officiel' });
-  } else if (correctPredB > correctPredA) {
-    titles.push({ playerId: playerB, title: 'Télépathe officiel' });
-  } else {
-    titles.push({ playerId: playerA, title: 'Double télépathie' });
-    titles.push({ playerId: playerB, title: 'Double télépathie' });
+  const sorted = [...players].sort(
+    (a, b) => (correctById[b.id] || 0) - (correctById[a.id] || 0)
+  );
+  if (sorted.length) {
+    const top = sorted[0];
+    const topScore = correctById[top.id] || 0;
+    const tied = sorted.filter((p) => (correctById[p.id] || 0) === topScore);
+    if (tied.length === 1) {
+      titles.push({ playerId: top.id, title: 'Télépathe officiel' });
+    } else {
+      for (const p of tied) {
+        titles.push({ playerId: p.id, title: 'Double télépathie' });
+      }
+    }
   }
 
-  if (globalCompat >= 60) {
+  if (globalAccuracy >= 60) {
     titles.push({ playerId: null, title: 'Même cerveau' });
-  } else if (globalCompat <= 20) {
+  } else if (globalAccuracy <= 20) {
     titles.push({ playerId: null, title: 'Deux univers parallèles' });
   }
 
-  const gap = Math.abs(scoreA - scoreB);
-  if (gap >= 10) {
-    const winner = scoreA > scoreB ? playerA : playerB;
-    titles.push({ playerId: winner, title: 'Je te connais mieux que toi-même' });
+  const byScore = [...players].sort(
+    (a, b) => (scoresById[b.id] || 0) - (scoresById[a.id] || 0)
+  );
+  if (byScore.length >= 2) {
+    const gap = (scoresById[byScore[0].id] || 0) - (scoresById[byScore[1].id] || 0);
+    if (gap >= 10) {
+      titles.push({
+        playerId: byScore[0].id,
+        title: 'Je te connais mieux que toi-même'
+      });
+    }
   }
 
   return titles;
@@ -90,6 +98,6 @@ module.exports = {
   reactionForItem,
   reactionForRound,
   endTitles,
-  MATCH_REACTIONS,
+  HIT_REACTIONS,
   MISS_REACTIONS
 };

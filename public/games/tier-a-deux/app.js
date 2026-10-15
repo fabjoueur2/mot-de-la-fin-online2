@@ -1,4 +1,4 @@
-/* TIER À DEUX client */
+/* TIER À DEUX — 1 listeur + N devineurs, pool → slots */
 const GAME_ID = 'tier-a-deux';
 const GAME_PATH = '/games/tier-a-deux/';
 const SESSION_KEY = 'tad-session';
@@ -9,16 +9,20 @@ const $ = (id) => document.getElementById(id);
 const params = new URLSearchParams(location.search);
 
 let state = null;
-let order = [];
+/** @type {(string|null)[]} slots[i] = itemId at rank i+1 */
+let slots = [];
+/** @type {string[]} */
+let pool = [];
 let itemsById = new Map();
 let lockedLocal = false;
-let rankMode = 'personal'; // personal | prediction
+let rankMode = 'listing'; // listing | guessing
 let muted = localStorage.getItem(MUTE_KEY) === '1';
 let localPhaseEndsAt = null;
 let syncedPhaseEndsAt = null;
 let syncedPhase = null;
 let configPushTimer = null;
 let dragId = null;
+let uiRoundKey = null;
 
 const escapeHtml =
   typeof window !== 'undefined' && window.escapeHtml
@@ -49,8 +53,7 @@ function showToast(msg) {
 
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach((el) => el.classList.remove('active'));
-  const s = $(id);
-  if (s) s.classList.add('active');
+  $(id)?.classList.add('active');
 }
 
 function setStatus(text, ok) {
@@ -139,11 +142,10 @@ function playerName() {
 
 function syncTimers(s) {
   if (s.phase !== syncedPhase || s.phaseEndsAt !== syncedPhaseEndsAt) {
-    if (typeof s.phaseRemainingMs === 'number') {
-      localPhaseEndsAt = Date.now() + s.phaseRemainingMs;
-    } else {
-      localPhaseEndsAt = s.phaseEndsAt || null;
-    }
+    localPhaseEndsAt =
+      typeof s.phaseRemainingMs === 'number'
+        ? Date.now() + s.phaseRemainingMs
+        : s.phaseEndsAt || null;
     syncedPhaseEndsAt = s.phaseEndsAt;
   }
   syncedPhase = s.phase;
@@ -153,17 +155,402 @@ function tickTimers() {
   const el = $('rank-timer');
   if (!el) return;
   const timed =
-    state &&
-    state.config?.timer?.enabled &&
-    (state.phase === 'personal_ranking' || state.phase === 'partner_prediction') &&
+    state?.config?.timer?.enabled &&
+    (state.phase === 'listing' || state.phase === 'guessing') &&
     localPhaseEndsAt != null;
   if (!timed) {
     el.style.display = 'none';
     return;
   }
   el.style.display = 'inline';
-  const left = Math.max(0, localPhaseEndsAt - Date.now());
-  el.textContent = String(Math.ceil(left / 1000));
+  el.textContent = String(Math.ceil(Math.max(0, localPhaseEndsAt - Date.now()) / 1000));
+}
+
+function currentRanking() {
+  return slots.every(Boolean) ? [...slots] : null;
+}
+
+function syncDraft() {
+  if (lockedLocal || !state) return;
+  const ranking = currentRanking();
+  if (!ranking) return;
+  const kind = rankMode === 'guessing' ? 'guess' : 'listing';
+  socket.emit('tad-sync-draft', { kind, ranking });
+}
+
+function updateLockButton() {
+  const btn = $('btn-lock-rank');
+  if (!btn) return;
+  const full = slots.length > 0 && slots.every(Boolean);
+  btn.disabled = lockedLocal || !full;
+}
+
+function findItem(id) {
+  return itemsById.get(id);
+}
+
+function removeFromSlots(id) {
+  const i = slots.indexOf(id);
+  if (i >= 0) slots[i] = null;
+}
+
+function removeFromPool(id) {
+  pool = pool.filter((x) => x !== id);
+}
+
+function placeInSlot(id, slotIndex) {
+  if (lockedLocal) return;
+  const existing = slots[slotIndex];
+  removeFromSlots(id);
+  removeFromPool(id);
+  if (existing && existing !== id) {
+    pool.push(existing);
+  }
+  slots[slotIndex] = id;
+  beep(420, 0.05);
+  renderTierBoard();
+  syncDraft();
+}
+
+function returnToPool(id) {
+  if (lockedLocal) return;
+  removeFromSlots(id);
+  if (!pool.includes(id)) pool.push(id);
+  beep(360, 0.05);
+  renderTierBoard();
+  syncDraft();
+}
+
+function bindCardDrag(card) {
+  const id = card.dataset.id;
+  card.addEventListener('dragstart', (e) => {
+    if (lockedLocal) return;
+    dragId = id;
+    card.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', id);
+  });
+  card.addEventListener('dragend', () => {
+    card.classList.remove('dragging');
+    dragId = null;
+    document.querySelectorAll('.drag-over').forEach((el) => el.classList.remove('drag-over'));
+  });
+
+  let touchY = null;
+  let touchSlot = null;
+  card.addEventListener(
+    'touchstart',
+    (e) => {
+      if (lockedLocal) return;
+      dragId = id;
+      touchY = e.touches[0].clientY;
+      touchSlot = null;
+    },
+    { passive: true }
+  );
+  card.addEventListener(
+    'touchmove',
+    (e) => {
+      if (lockedLocal || !dragId) return;
+      const t = e.touches[0];
+      const el = document.elementFromPoint(t.clientX, t.clientY);
+      const zone = el?.closest?.('[data-slot], #tier-pool');
+      document.querySelectorAll('.drag-over').forEach((x) => x.classList.remove('drag-over'));
+      zone?.classList.add('drag-over');
+      touchSlot = zone;
+      touchY = t.clientY;
+    },
+    { passive: true }
+  );
+  card.addEventListener('touchend', () => {
+    if (lockedLocal || !dragId) return;
+    if (touchSlot?.id === 'tier-pool') returnToPool(dragId);
+    else if (touchSlot?.dataset?.slot != null) {
+      placeInSlot(dragId, parseInt(touchSlot.dataset.slot, 10));
+    }
+    document.querySelectorAll('.drag-over').forEach((x) => x.classList.remove('drag-over'));
+    dragId = null;
+    touchY = null;
+    touchSlot = null;
+  });
+}
+
+function makeCard(id, { inSlot } = {}) {
+  const item = findItem(id);
+  const card = document.createElement('div');
+  card.className = 'tad-item-card';
+  card.draggable = !lockedLocal;
+  card.dataset.id = id;
+  card.innerHTML = `<span>${escapeHtml(item?.text || id)}</span>`;
+  if (inSlot && !lockedLocal) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'tad-unslot';
+    btn.setAttribute('aria-label', 'Retirer');
+    btn.textContent = '×';
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      returnToPool(id);
+    });
+    card.appendChild(btn);
+  }
+  if (!lockedLocal) bindCardDrag(card);
+  return card;
+}
+
+function bindDropZone(el, onDrop) {
+  el.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    el.classList.add('drag-over');
+  });
+  el.addEventListener('dragleave', () => el.classList.remove('drag-over'));
+  el.addEventListener('drop', (e) => {
+    e.preventDefault();
+    el.classList.remove('drag-over');
+    const id = e.dataTransfer.getData('text/plain') || dragId;
+    if (id) onDrop(id);
+  });
+}
+
+function renderTierBoard() {
+  const slotsEl = $('tier-slots');
+  const poolEl = $('tier-pool');
+  if (!slotsEl || !poolEl) return;
+  const n = slots.length;
+  slotsEl.classList.toggle('tad-locked', lockedLocal);
+  poolEl.classList.toggle('tad-locked', lockedLocal);
+
+  slotsEl.innerHTML = '';
+  for (let i = 0; i < n; i++) {
+    const row = document.createElement('div');
+    row.className = 'tad-tier-row';
+    row.dataset.rank = String(i + 1);
+    const badge = document.createElement('div');
+    badge.className = 'tad-rank-badge';
+    badge.textContent = rankLabel(i, n);
+    const zone = document.createElement('div');
+    zone.className = `tad-drop-zone${slots[i] ? '' : ' empty'}`;
+    zone.dataset.slot = String(i);
+    if (slots[i]) zone.appendChild(makeCard(slots[i], { inSlot: true }));
+    if (!lockedLocal) bindDropZone(zone, (id) => placeInSlot(id, i));
+    row.appendChild(badge);
+    row.appendChild(zone);
+    slotsEl.appendChild(row);
+  }
+
+  poolEl.innerHTML = '';
+  if (!lockedLocal) bindDropZone(poolEl, (id) => returnToPool(id));
+  for (const id of pool) {
+    poolEl.appendChild(makeCard(id, { inSlot: false }));
+  }
+  updateLockButton();
+}
+
+function initBoardFromItems(items, lockedRanking) {
+  itemsById = new Map((items || []).map((it) => [it.id, it]));
+  const n = items?.length || 0;
+  if (lockedRanking?.length === n) {
+    slots = [...lockedRanking];
+    pool = [];
+  } else {
+    slots = Array(n).fill(null);
+    pool = (items || []).map((x) => x.id);
+  }
+}
+
+function setupRankScreen(s) {
+  const isListing = s.phase === 'listing';
+  rankMode = isListing ? 'listing' : 'guessing';
+  const isListeur = s.myId === s.listeurId;
+  const rounds =
+    s.roundCount === 'unlimited' ? `${s.currentRound}/∞` : `${s.currentRound}/${s.roundCount}`;
+  $('rank-round').textContent = `Manche ${rounds}`;
+  $('rank-phase-label').textContent = isListing ? 'Listeur' : 'Devineurs';
+
+  const key = `${s.phase}-${s.currentRound}-${s.listeurId}`;
+  const needReset = uiRoundKey !== key;
+  uiRoundKey = key;
+
+  const active = $('rank-active');
+  const waitCard = $('rank-waiting-card');
+  const wait = $('rank-waiting');
+
+  // Waiting views
+  if (isListing && !isListeur) {
+    active.style.display = 'none';
+    waitCard.style.display = 'block';
+    wait.textContent = `${s.listeurName || 'Le listeur'} compose sa tier-list…`;
+    showScreen('screen-rank');
+    return;
+  }
+  if (!isListing && isListeur) {
+    active.style.display = 'none';
+    waitCard.style.display = 'block';
+    wait.textContent = `Les devineurs réfléchissent… (${s.guessesLockedCount || 0}/${s.guesserCount || 0})`;
+    showScreen('screen-rank');
+    return;
+  }
+
+  // Active ranking
+  active.style.display = 'block';
+  waitCard.style.display = 'none';
+
+  lockedLocal = isListing ? Boolean(s.listingLocked) : Boolean(s.myGuessLocked);
+
+  if (needReset || (!lockedLocal && slots.length !== (s.items || []).length)) {
+    initBoardFromItems(s.items, lockedLocal ? (isListing ? s.myListing : s.myGuess) : null);
+  } else if (lockedLocal) {
+    initBoardFromItems(s.items, isListing ? s.myListing : s.myGuess);
+  }
+
+  if (isListing) {
+    $('rank-title').textContent = 'Compose ta tier-list';
+    $('rank-hint').textContent = 'Glisse chaque élément dans un rang (un seul par rang).';
+    $('btn-lock-rank').textContent = 'Valider mon classement';
+  } else {
+    $('rank-title').textContent = `Devine la liste de ${s.listeurName || 'ton partenaire'}`;
+    $('rank-hint').textContent = 'Place les cartes comme tu penses qu’il/elle les a classées.';
+    $('btn-lock-rank').textContent = 'Je connais mon partenaire !';
+  }
+
+  if (lockedLocal) {
+    $('btn-lock-rank').style.display = 'none';
+    waitCard.style.display = 'block';
+    wait.textContent = isListing
+      ? 'Classement enregistré — les devineurs s’y mettent…'
+      : 'Prédiction enregistrée — en attente des autres…';
+  } else {
+    $('btn-lock-rank').style.display = 'block';
+  }
+
+  renderTierBoard();
+  showScreen('screen-rank');
+}
+
+function renderReveal(s) {
+  showScreen('screen-reveal');
+  const rounds =
+    s.roundCount === 'unlimited' ? `${s.currentRound}/∞` : `${s.currentRound}/${s.roundCount}`;
+  $('rev-round').textContent = `Manche ${rounds}`;
+  const rev = s.reveal;
+  if (!rev) return;
+  $('rev-progress').textContent = `${Math.min(rev.index + 1, rev.total)}/${rev.total}`;
+
+  const detail = $('rev-detail');
+  const suspense = $('rev-suspense');
+  const btn = $('btn-reveal-continue');
+  const wait = $('rev-waiting');
+  const box = $('reveal-box');
+  const item = rev.item;
+
+  suspense.style.display = 'none';
+  if (!item) {
+    detail.style.display = 'none';
+    return;
+  }
+  detail.style.display = 'block';
+  $('rev-item-text').textContent = item.text;
+  const guessLines = (item.guesses || [])
+    .map(
+      (g) =>
+        `<div><strong>${escapeHtml(g.name)}</strong> avait prédit : #${
+          g.predictedPosition ?? '—'
+        } ${g.correct ? '✓' : ''} · +${g.points} pts</div>`
+    )
+    .join('');
+  $('rev-grid').innerHTML = `
+    <div><strong>${escapeHtml(rev.listeurName || 'Listeur')}</strong> l’a placé : #${
+      item.listeurPosition
+    }</div>
+    ${guessLines}
+  `;
+  $('rev-reaction').textContent = item.reaction || '';
+  box.classList.toggle('tad-match-flash', item.hits > 0 && item.hits === (item.guesses || []).length);
+  if (item.hits > 0) {
+    beep(660, 0.08);
+    if (item.hits === (item.guesses || []).length) confettiBurst();
+  }
+
+  if (rev.iAcked) {
+    btn.style.display = 'none';
+    wait.style.display = 'block';
+  } else {
+    btn.style.display = 'inline-block';
+    wait.style.display = 'none';
+  }
+}
+
+function renderRoundResults(s) {
+  showScreen('screen-round');
+  const rr = s.roundResults;
+  if (!rr) {
+    $('round-compat').textContent = 'Scores masqués jusqu’à la fin';
+    $('round-reaction').textContent = '';
+    $('round-listeur').textContent = '';
+    $('round-scores').innerHTML = '';
+    return;
+  }
+  $('round-compat').textContent = `Précision du groupe : ${rr.accuracyPercent} %`;
+  $('round-reaction').textContent = rr.reaction || '';
+  $('round-listeur').textContent = `Listeur : ${rr.listeurName}`;
+
+  $('round-scores').innerHTML = (rr.playerScores || [])
+    .map((sc) => {
+      const badge = sc.isListeur ? ' · listeur' : '';
+      return `<div class="card tad-card tad-score-col">
+        <h3>${escapeHtml(sc.name)}${badge}</h3>
+        <p>Prédiction : <strong>${sc.predictionPoints || 0}</strong></p>
+        ${sc.perfectBonus ? `<p>Bonus parfait : <strong>${sc.perfectBonus}</strong></p>` : ''}
+        <p>Total manche : <strong>${sc.total || 0}</strong></p>
+        <p>Cumul : <strong>${sc.cumulative || 0}</strong></p>
+      </div>`;
+    })
+    .join('');
+
+  $('round-ranking-title').textContent = `Liste de ${rr.listeurName}`;
+  $('round-ranking-list').innerHTML = (rr.listeurRanking || [])
+    .map((it, i) => `<li>#${i + 1} ${escapeHtml(it.text)}</li>`)
+    .join('');
+
+  const meReady = rr.nextReady?.find((p) => p.id === s.myId)?.ready;
+  if (meReady) {
+    $('btn-next-round').style.display = 'none';
+    $('next-waiting').style.display = 'block';
+    $('next-waiting').textContent = 'En attente des autres…';
+  } else {
+    $('btn-next-round').style.display = 'inline-block';
+    $('next-waiting').style.display = 'none';
+  }
+  $('btn-end-unlimited').style.display =
+    s.isHost && s.roundCount === 'unlimited' ? 'inline-block' : 'none';
+}
+
+function renderEnd(s) {
+  clearSession();
+  showScreen('screen-end');
+  const g = s.gameStats;
+  if (!g) return;
+  const winner = g.scores?.find((x) => x.id === g.winnerId);
+  $('end-winner').textContent = winner ? `${winner.name} gagne !` : 'Égalité !';
+  $('end-titles').innerHTML = (g.titles || [])
+    .map((t) => {
+      const who = t.playerId
+        ? g.scores.find((x) => x.id === t.playerId)?.name || ''
+        : 'Groupe';
+      return `<span class="tad-title-pill">${escapeHtml(t.title)}${
+        who ? ` · ${escapeHtml(who)}` : ''
+      }</span>`;
+    })
+    .join('');
+  $('end-stats').innerHTML = (g.scores || [])
+    .map((p) => {
+      const pred = g.correctPredictions?.[p.id] || 0;
+      return `<li><strong>${escapeHtml(p.name)}</strong> — ${p.score} pts · ${pred} bonnes prédictions</li>`;
+    })
+    .join('');
+  $('end-compat').textContent = `Précision globale : ${g.globalAccuracyPercent} % · ${g.correctTotal}/${g.possibleTotal} · ${g.roundsPlayed} manches`;
+  confettiBurst();
+  beep(720, 0.12);
 }
 
 function renderPlayers(el, players) {
@@ -173,8 +560,9 @@ function renderPlayers(el, players) {
       const bits = [
         escapeHtml(p.name),
         p.isHost ? 'hôte' : null,
-        p.ready ? 'prêt ✓' : 'pas prêt',
-        p.disconnected ? '⚠ déco' : null
+        p.isListeur ? 'listeur' : null,
+        p.ready ? 'prêt ✓' : null,
+        p.disconnected ? '⚠' : null
       ].filter(Boolean);
       return `<li>${bits.join(' · ')}</li>`;
     })
@@ -184,8 +572,7 @@ function renderPlayers(el, players) {
 function fillCategories(labels) {
   const box = $('cfg-categories');
   if (!box || box.dataset.ready) return;
-  const cats = Object.keys(labels || {});
-  box.innerHTML = cats
+  box.innerHTML = Object.keys(labels || {})
     .map(
       (id) =>
         `<label><input type="checkbox" data-cat="${id}" checked> ${escapeHtml(
@@ -215,21 +602,19 @@ function readConfigFromForm() {
     categories: cats.length ? cats : undefined,
     generationMode: $('cfg-genmode')?.value || 'balanced',
     absurdity: $('cfg-absurdity')?.value || 'chaos',
-    humorLevel: $('cfg-humor')?.value || 'quirky',
+    humorLevel: $('cfg-humor')?.value || 'dark_light',
     allowCelebrities: $('cfg-celebs')?.checked !== false,
     allowAwkward: $('cfg-awkward')?.checked !== false,
     allowControversial: $('cfg-controversial')?.checked !== false,
     avoidRepeats: $('cfg-avoid-repeats')?.checked !== false,
     scoring: {
       correctPrediction: parseInt($('cfg-score-pred')?.value || '1', 10),
-      matchingPosition: parseInt($('cfg-score-match')?.value || '2', 10),
-      perfectPredictionBonus: parseInt($('cfg-score-perfect')?.value || '0', 10),
-      identicalRankingBonus: parseInt($('cfg-score-identical')?.value || '0', 10)
+      perfectPredictionBonus: parseInt($('cfg-score-perfect')?.value || '0', 10)
     },
     reveal: {
       mode: $('cfg-reveal-mode')?.value || 'manual',
       intervalSeconds: parseInt($('cfg-reveal-interval')?.value || '6', 10),
-      order: $('cfg-reveal-order')?.value || 'random'
+      order: $('cfg-reveal-order')?.value || 'listeur'
     },
     showScores: $('cfg-show-scores')?.value || 'each_round',
     autoSubmitOnTimeout: $('cfg-auto-submit')?.checked !== false
@@ -239,7 +624,6 @@ function readConfigFromForm() {
 function applyConfigToForm(cfg) {
   if (!cfg || !state?.isHost) return;
   if (document.activeElement?.closest?.('#host-config')) return;
-
   const rounds = cfg.roundCount === 'unlimited' ? 'unlimited' : String(cfg.roundCount);
   if ($('cfg-rounds')) $('cfg-rounds').value = rounds;
   if ($('cfg-items')) $('cfg-items').value = String(cfg.itemsPerRound);
@@ -253,26 +637,19 @@ function applyConfigToForm(cfg) {
   if ($('cfg-genmode')) $('cfg-genmode').value = cfg.generationMode;
   if ($('cfg-celebs')) $('cfg-celebs').checked = cfg.allowCelebrities !== false;
   if ($('cfg-awkward')) $('cfg-awkward').checked = cfg.allowAwkward !== false;
-  if ($('cfg-controversial')) {
-    $('cfg-controversial').checked = cfg.allowControversial !== false;
-  }
+  if ($('cfg-controversial')) $('cfg-controversial').checked = cfg.allowControversial !== false;
   if ($('cfg-avoid-repeats')) $('cfg-avoid-repeats').checked = cfg.avoidRepeats !== false;
   if ($('cfg-score-pred')) $('cfg-score-pred').value = cfg.scoring?.correctPrediction ?? 1;
-  if ($('cfg-score-match')) $('cfg-score-match').value = cfg.scoring?.matchingPosition ?? 2;
   if ($('cfg-score-perfect')) {
     $('cfg-score-perfect').value = cfg.scoring?.perfectPredictionBonus ?? 0;
-  }
-  if ($('cfg-score-identical')) {
-    $('cfg-score-identical').value = cfg.scoring?.identicalRankingBonus ?? 0;
   }
   if ($('cfg-reveal-mode')) $('cfg-reveal-mode').value = cfg.reveal?.mode || 'manual';
   if ($('cfg-reveal-interval')) {
     $('cfg-reveal-interval').value = cfg.reveal?.intervalSeconds ?? 6;
   }
-  if ($('cfg-reveal-order')) $('cfg-reveal-order').value = cfg.reveal?.order || 'random';
+  if ($('cfg-reveal-order')) $('cfg-reveal-order').value = cfg.reveal?.order || 'listeur';
   if ($('cfg-show-scores')) $('cfg-show-scores').value = cfg.showScores || 'each_round';
   if ($('cfg-auto-submit')) $('cfg-auto-submit').checked = cfg.autoSubmitOnTimeout !== false;
-
   const set = new Set(cfg.categories || []);
   document.querySelectorAll('#cfg-categories input[data-cat]').forEach((el) => {
     el.checked = set.size ? set.has(el.dataset.cat) : true;
@@ -293,329 +670,27 @@ function renderRecap(lines) {
   el.innerHTML = (lines || []).map((l) => `<li>${escapeHtml(l)}</li>`).join('');
 }
 
-function moveItem(id, dir) {
-  if (lockedLocal) return;
-  const i = order.indexOf(id);
-  const j = i + dir;
-  if (i < 0 || j < 0 || j >= order.length) return;
-  [order[i], order[j]] = [order[j], order[i]];
-  beep(400, 0.05);
-  renderRankList();
-  syncDraft();
-}
-
-function syncDraft() {
-  if (lockedLocal || !state) return;
-  const kind = rankMode === 'prediction' ? 'prediction' : 'personal';
-  socket.emit('tad-sync-draft', { kind, ranking: order });
-}
-
-function renderRankList() {
-  const list = $('rank-list');
-  if (!list) return;
-  const n = order.length;
-  list.classList.toggle('tad-locked', lockedLocal);
-  list.innerHTML = order
-    .map((id, i) => {
-      const item = itemsById.get(id);
-      const text = item?.text || id;
-      return `<li class="tad-rank-slot" data-rank="${i + 1}" data-id="${escapeHtml(id)}">
-        <div class="tad-rank-badge">${escapeHtml(rankLabel(i, n))}</div>
-        <div class="tad-item-card" draggable="${lockedLocal ? 'false' : 'true'}" data-id="${escapeHtml(id)}">${escapeHtml(text)}</div>
-        <div class="tad-move-btns">
-          <button type="button" data-up="${escapeHtml(id)}" ${lockedLocal || i === 0 ? 'disabled' : ''} aria-label="Monter">↑</button>
-          <button type="button" data-down="${escapeHtml(id)}" ${lockedLocal || i === n - 1 ? 'disabled' : ''} aria-label="Descendre">↓</button>
-        </div>
-      </li>`;
-    })
-    .join('');
-
-  list.querySelectorAll('[data-up]').forEach((btn) => {
-    btn.addEventListener('click', () => moveItem(btn.getAttribute('data-up'), -1));
-  });
-  list.querySelectorAll('[data-down]').forEach((btn) => {
-    btn.addEventListener('click', () => moveItem(btn.getAttribute('data-down'), 1));
-  });
-
-  list.querySelectorAll('.tad-item-card').forEach((card) => {
-    card.addEventListener('dragstart', (e) => {
-      if (lockedLocal) return;
-      dragId = card.dataset.id;
-      card.classList.add('dragging');
-      e.dataTransfer.effectAllowed = 'move';
-    });
-    card.addEventListener('dragend', () => {
-      card.classList.remove('dragging');
-      dragId = null;
-      list.querySelectorAll('.drag-over').forEach((el) => el.classList.remove('drag-over'));
-    });
-    card.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      card.classList.add('drag-over');
-    });
-    card.addEventListener('dragleave', () => card.classList.remove('drag-over'));
-    card.addEventListener('drop', (e) => {
-      e.preventDefault();
-      card.classList.remove('drag-over');
-      const targetId = card.dataset.id;
-      if (!dragId || dragId === targetId || lockedLocal) return;
-      const from = order.indexOf(dragId);
-      const to = order.indexOf(targetId);
-      if (from < 0 || to < 0) return;
-      order.splice(from, 1);
-      order.splice(to, 0, dragId);
-      beep(440, 0.05);
-      renderRankList();
-      syncDraft();
-    });
-
-    // Touch simple: tap + swipe via buttons primarily; long-press reorder via touch move
-    let touchY = null;
-    card.addEventListener(
-      'touchstart',
-      (e) => {
-        if (lockedLocal) return;
-        touchY = e.touches[0].clientY;
-        dragId = card.dataset.id;
-      },
-      { passive: true }
-    );
-    card.addEventListener(
-      'touchmove',
-      (e) => {
-        if (lockedLocal || touchY == null || !dragId) return;
-        const dy = e.touches[0].clientY - touchY;
-        if (Math.abs(dy) > 36) {
-          moveItem(dragId, dy > 0 ? 1 : -1);
-          touchY = e.touches[0].clientY;
-        }
-      },
-      { passive: true }
-    );
-    card.addEventListener('touchend', () => {
-      touchY = null;
-      dragId = null;
-    });
-  });
-}
-
-function setupRankScreen(s, mode) {
-  rankMode = mode;
-  itemsById = new Map((s.items || []).map((it) => [it.id, it]));
-  const locked =
-    mode === 'personal' ? Boolean(s.myPersonalLocked) : Boolean(s.myPredictionLocked);
-  lockedLocal = locked;
-
-  if (locked) {
-    order =
-      mode === 'personal'
-        ? [...(s.myPersonal || [])]
-        : [...(s.myPrediction || s.displayOrder || s.items.map((x) => x.id))];
-  } else if (!order.length || order.length !== (s.items || []).length) {
-    order = (s.items || []).map((x) => x.id);
-  } else {
-    // keep local order if still valid
-    const ids = new Set((s.items || []).map((x) => x.id));
-    if (order.some((id) => !ids.has(id)) || order.length !== ids.size) {
-      order = (s.items || []).map((x) => x.id);
-    }
-  }
-
-  const rounds =
-    s.roundCount === 'unlimited' ? `${s.currentRound}/∞` : `${s.currentRound}/${s.roundCount}`;
-  $('rank-round').textContent = `Manche ${rounds}`;
-  $('rank-phase-label').textContent =
-    mode === 'personal' ? 'Ton classement' : 'Sa prédiction';
-
-  if (mode === 'personal') {
-    $('rank-title').textContent = 'Classe ces éléments selon tes préférences personnelles.';
-    $('btn-lock-rank').textContent = 'Valider mon classement';
-  } else {
-    $('rank-title').textContent = 'MAINTENANT, DEVINE SON CLASSEMENT !';
-    $('btn-lock-rank').textContent = 'Je connais mon partenaire !';
-  }
-
-  const waiting = $('rank-waiting');
-  const btn = $('btn-lock-rank');
-  if (locked) {
-    btn.style.display = 'none';
-    waiting.style.display = 'block';
-    waiting.textContent =
-      mode === 'personal'
-        ? 'Ton classement est enregistré ! Ton partenaire réfléchit encore…'
-        : 'Prédiction enregistrée — en attente de ton partenaire…';
-  } else {
-    btn.style.display = 'block';
-    btn.disabled = false;
-    waiting.style.display = 'none';
-  }
-
-  renderRankList();
-  showScreen('screen-rank');
-}
-
-function renderReveal(s) {
-  showScreen('screen-reveal');
-  const rounds =
-    s.roundCount === 'unlimited' ? `${s.currentRound}/∞` : `${s.currentRound}/${s.roundCount}`;
-  $('rev-round').textContent = `Manche ${rounds}`;
-  const rev = s.reveal;
-  if (!rev) return;
-  $('rev-progress').textContent = `${Math.min(rev.index + 1, rev.total)}/${rev.total}`;
-
-  const suspense = $('rev-suspense');
-  const detail = $('rev-detail');
-  const btn = $('btn-reveal-continue');
-  const wait = $('rev-waiting');
-  const box = $('reveal-box');
-
-  if (rev.index === 0 && !rev.iAcked && !rev.item) {
-    // shouldn't happen
-  }
-
-  const showItem = rev.item;
-  if (!rev.iAcked && rev.index === 0 && showItem) {
-    // first item still show suspense briefly on first paint — skip, show item
-  }
-
-  if (!showItem) {
-    suspense.style.display = 'block';
-    detail.style.display = 'none';
-  } else {
-    suspense.style.display = rev.index === 0 && !rev.iAcked ? 'none' : 'none';
-    detail.style.display = 'block';
-    $('rev-item-text').textContent = showItem.text;
-    const nameA = s.players?.[0]?.name || 'Joueur A';
-    const nameB = s.players?.[1]?.name || 'Joueur B';
-    const aId = s.players?.[0]?.id;
-    const ptsA = showItem.pointsA;
-    const ptsB = showItem.pointsB;
-    $('rev-grid').innerHTML = `
-      <div><strong>${escapeHtml(nameA)}</strong> l’a placé : #${showItem.positionA}</div>
-      <div><strong>${escapeHtml(nameB)}</strong> l’a placé : #${showItem.positionB}</div>
-      <div>${escapeHtml(nameA)} avait prédit : #${showItem.predictionA}</div>
-      <div>${escapeHtml(nameB)} avait prédit : #${showItem.predictionB}</div>
-      <div>${escapeHtml(nameA)} : +${ptsA?.total || 0} pts · ${escapeHtml(nameB)} : +${ptsB?.total || 0} pts</div>
-    `;
-    $('rev-reaction').textContent = showItem.reaction || '';
-    box.classList.toggle('tad-match-flash', Boolean(showItem.matchedPersonal));
-    if (showItem.matchedPersonal) {
-      beep(660, 0.1);
-      confettiBurst();
-    }
-  }
-
-  if (rev.iAcked) {
-    btn.style.display = 'none';
-    wait.style.display = 'block';
-  } else {
-    btn.style.display = 'inline-block';
-    wait.style.display = 'none';
-  }
-}
-
-function renderRoundResults(s) {
-  showScreen('screen-round');
-  const rr = s.roundResults;
-  if (!rr) {
-    $('round-compat').textContent = 'Scores masqués jusqu’à la fin';
-    $('round-reaction').textContent = '';
-    $('round-scores').innerHTML = '';
-    $('round-rankings').innerHTML = '';
-  } else {
-    $('round-compat').textContent = `Compatibilité : ${rr.compatibilityPercent} %`;
-    $('round-reaction').textContent = rr.reaction || '';
-    const col = (sc) => `
-      <div class="card tad-card tad-score-col">
-        <h3>${escapeHtml(sc.name)}</h3>
-        <p>Prédiction : <strong>${sc.predictionPoints}</strong></p>
-        <p>Compatibilité : <strong>${sc.matchPoints}</strong></p>
-        ${sc.perfectBonus ? `<p>Bonus parfait : <strong>${sc.perfectBonus}</strong></p>` : ''}
-        ${sc.identicalBonus ? `<p>Bonus identiques : <strong>${sc.identicalBonus}</strong></p>` : ''}
-        <p>Total manche : <strong>${sc.total}</strong></p>
-        <p>Cumul : <strong>${sc.cumulative}</strong></p>
-      </div>`;
-    $('round-scores').innerHTML = col(rr.scoreA) + col(rr.scoreB);
-    const rankCol = (r) => `
-      <div class="card tad-card">
-        <h3>${escapeHtml(r.name)}</h3>
-        <ol>${(r.order || [])
-          .map((it, i) => `<li>#${i + 1} ${escapeHtml(it.text)}</li>`)
-          .join('')}</ol>
-      </div>`;
-    $('round-rankings').innerHTML = rankCol(rr.rankingA) + rankCol(rr.rankingB);
-  }
-
-  const waiting = $('next-waiting');
-  const meReady = rr?.nextReady?.find((p) => p.id === s.myId)?.ready;
-  if (meReady) {
-    $('btn-next-round').style.display = 'none';
-    waiting.style.display = 'block';
-    waiting.textContent = 'En attente de ton partenaire…';
-  } else {
-    $('btn-next-round').style.display = 'inline-block';
-    waiting.style.display = 'none';
-  }
-
-  const endBtn = $('btn-end-unlimited');
-  if (endBtn) {
-    endBtn.style.display = s.isHost && s.roundCount === 'unlimited' ? 'inline-block' : 'none';
-  }
-}
-
-function renderEnd(s) {
-  clearSession();
-  showScreen('screen-end');
-  const g = s.gameStats;
-  if (!g) return;
-  const winner = g.scores?.find((x) => x.id === g.winnerId);
-  $('end-winner').textContent = winner
-    ? `${winner.name} gagne !`
-    : 'Égalité parfaite !';
-  $('end-titles').innerHTML = (g.titles || [])
-    .map((t) => {
-      const who = t.playerId
-        ? g.scores.find((x) => x.id === t.playerId)?.name || ''
-        : 'Duo';
-      return `<span class="tad-title-pill">${escapeHtml(t.title)}${
-        who ? ` · ${escapeHtml(who)}` : ''
-      }</span>`;
-    })
-    .join('');
-  $('end-stats').innerHTML = (g.scores || [])
-    .map((p) => {
-      const pred = g.correctPredictions?.[p.id] || 0;
-      return `<li><strong>${escapeHtml(p.name)}</strong> — ${p.score} pts · ${pred} bonnes prédictions</li>`;
-    })
-    .join('');
-  $('end-compat').textContent = `Compatibilité globale : ${g.globalCompatibilityPercent} % · ${g.matchingPositionsTotal} positions identiques · ${g.roundsPlayed} manches`;
-  confettiBurst();
-  beep(720, 0.12);
-}
-
 function render(s) {
   state = s;
   const nav = $('room-nav');
   if (nav) nav.style.display = s.phase === 'lobby' ? 'none' : 'flex';
-
   fillCategories(s.categoryLabels);
   renderRecap(s.configSummary);
 
   if (s.phase === 'lobby') {
     clearSession();
-    order = [];
-    lockedLocal = false;
+    uiRoundKey = null;
     showScreen('screen-lobby');
     $('lobby-code').textContent = s.code || '------';
-    $('lobby-player-count').textContent = `(${s.players?.length || 0}/2)`;
+    $('lobby-player-count').textContent = `(${s.players?.length || 0}/${s.maxPlayers || 8})`;
     renderPlayers($('lobby-players'), s.players);
     const me = s.players?.find((p) => p.id === s.myId);
     $('lobby-hint').textContent =
       s.players?.length < 2
-        ? 'En attente du deuxième joueur…'
-        : bothReady(s)
+        ? 'En attente d’au moins un autre joueur…'
+        : s.players.every((p) => p.ready)
           ? 'Tout le monde est prêt !'
-          : 'Cliquez sur « Je suis prêt » pour lancer.';
+          : 'Chacun clique sur « Je suis prêt ».';
     $('btn-ready').textContent = me?.ready ? 'Pas prêt' : 'Je suis prêt';
     $('btn-start').style.display = s.isHost ? 'inline-block' : 'none';
     $('host-config').style.display = s.isHost ? 'block' : 'none';
@@ -625,14 +700,8 @@ function render(s) {
 
   saveSession(s);
 
-  if (s.phase === 'personal_ranking') {
-    setupRankScreen(s, 'personal');
-    return;
-  }
-  if (s.phase === 'partner_prediction') {
-    // reset order when entering prediction fresh
-    if (rankMode !== 'prediction') order = [];
-    setupRankScreen(s, 'prediction');
+  if (s.phase === 'listing' || s.phase === 'guessing') {
+    setupRankScreen(s);
     return;
   }
   if (s.phase === 'reveal') {
@@ -646,10 +715,6 @@ function render(s) {
   if (s.phase === 'game_results') {
     renderEnd(s);
   }
-}
-
-function bothReady(s) {
-  return s.players?.length === 2 && s.players.every((p) => p.ready);
 }
 
 socket.on('connect', () => {
@@ -716,9 +781,7 @@ document.querySelectorAll('[data-preset]').forEach((btn) => {
     socket.emit('tad-apply-preset', { preset: btn.dataset.preset });
   });
 });
-$('btn-reset-config')?.addEventListener('click', () => {
-  socket.emit('tad-reset-config');
-});
+$('btn-reset-config')?.addEventListener('click', () => socket.emit('tad-reset-config'));
 
 $('config-tabs')?.addEventListener('click', (e) => {
   const tab = e.target.closest('.tad-tab');
@@ -740,9 +803,13 @@ $('btn-lock-rank')?.addEventListener('click', () => {
     return;
   }
   if (lockedLocal) return;
-  const evt =
-    rankMode === 'prediction' ? 'tad-submit-prediction' : 'tad-submit-personal';
-  socket.emit(evt, { ranking: order });
+  const ranking = currentRanking();
+  if (!ranking) {
+    showToast('Place tous les éléments avant de valider.');
+    return;
+  }
+  const evt = rankMode === 'guessing' ? 'tad-submit-guess' : 'tad-submit-listing';
+  socket.emit(evt, { ranking });
   beep(500, 0.08);
 });
 
@@ -750,9 +817,7 @@ $('btn-reveal-continue')?.addEventListener('click', () => {
   socket.emit('tad-reveal-continue');
   beep(480, 0.06);
 });
-$('btn-next-round')?.addEventListener('click', () => {
-  socket.emit('tad-next-round');
-});
+$('btn-next-round')?.addEventListener('click', () => socket.emit('tad-next-round'));
 $('btn-end-unlimited')?.addEventListener('click', () => {
   if (state?.isHost) socket.emit('tad-end-game');
 });

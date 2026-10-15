@@ -254,7 +254,7 @@ setInterval(() => {
           ['answering', 'reveal'].includes(room.phase)) ||
         (room.gameId === 'tier-a-deux' &&
           room.phaseEndsAt &&
-          ['personal_ranking', 'partner_prediction', 'reveal'].includes(room.phase))
+          ['listing', 'guessing', 'reveal'].includes(room.phase))
       ) {
         broadcastRoom(room);
       }
@@ -346,8 +346,8 @@ io.on('connection', (socket) => {
       socket.emit('error-msg', 'Salle pleine (12 joueurs max).');
       return;
     }
-    if (room.gameId === 'tier-a-deux' && room.players.length >= 2) {
-      socket.emit('error-msg', 'Salon plein (2 joueurs).');
+    if (room.gameId === 'tier-a-deux' && room.players.length >= 8) {
+      socket.emit('error-msg', 'Salon plein (8 joueurs).');
       return;
     }
 

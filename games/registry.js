@@ -86,11 +86,11 @@ const GAMES = [
   {
     id: 'tier-a-deux',
     name: 'TIER À DEUX',
-    tagline: 'Tu crois vraiment me connaître ? — classe, devine, débattez',
+    tagline: '1 listeur, les autres devinent — tu crois vraiment me connaître ?',
     icon: '🏆',
     color: '#ff6b6b',
-    players: '2 joueurs',
-    duration: '10–15 min',
+    players: '2–8 joueurs',
+    duration: '10–20 min',
     path: '/games/tier-a-deux/',
     status: 'available'
   }

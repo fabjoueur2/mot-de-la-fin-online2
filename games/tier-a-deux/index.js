@@ -1,5 +1,5 @@
 /**
- * TIER À DEUX — Classement & déduction à deux.
+ * TIER À DEUX — 1 listeur rotatif + N devineurs.
  */
 'use strict';
 
@@ -15,12 +15,12 @@ const {
   PRESETS
 } = require('./config');
 const { pickRoundItems, countAvailable, itemsByIds, getItemById } = require('./pick');
-const { validateRanking, scoreRound } = require('./score');
+const { validateRanking, scoreGuessersRound, positionMap } = require('./score');
 const { reactionForItem, reactionForRound, endTitles } = require('./reactions');
 
 const GAME_ID = 'tier-a-deux';
 const MIN_PLAYERS = 2;
-const MAX_PLAYERS = 2;
+const MAX_PLAYERS = 8;
 const DISCONNECT_GRACE_MS = 120_000;
 
 function newReconnectToken() {
@@ -46,12 +46,13 @@ function createInitialRoomState({ hostSocketId, playerName, code }) {
     configFrozen: false,
     phase: 'lobby',
     currentRound: 0,
+    listeurId: null,
     usedItemIds: [],
     roundItems: [],
     displayOrder: [],
-    personal: {},
-    predictions: {},
-    drafts: { personal: {}, prediction: {} },
+    listing: null,
+    guesses: {},
+    drafts: { listing: null, guess: {} },
     revealAcks: {},
     nextReady: {},
     phaseEndsAt: null,
@@ -62,8 +63,8 @@ function createInitialRoomState({ hostSocketId, playerName, code }) {
     history: [],
     totals: {
       correctPredictions: {},
-      matchingPositions: 0,
-      placementsCompared: 0
+      correctTotal: 0,
+      possibleTotal: 0
     },
     gameStats: null
   };
@@ -77,25 +78,19 @@ function isHost(room, socketId) {
   return room.hostId === socketId;
 }
 
-function otherPlayer(room, socketId) {
-  return room.players.find((p) => p.id !== socketId) || null;
+function guessers(room) {
+  return room.players.filter((p) => p.id !== room.listeurId);
 }
 
-function activePlayers(room) {
-  return room.players.filter((p) => !p.disconnectedAt);
-}
-
-function bothReady(room) {
-  return room.players.length === 2 && room.players.every((p) => p.ready);
+function pickListeurId(room) {
+  if (!room.players.length) return null;
+  const idx = (Math.max(1, room.currentRound) - 1) % room.players.length;
+  return room.players[idx].id;
 }
 
 function ensureTotals(room) {
   if (!room.totals) {
-    room.totals = {
-      correctPredictions: {},
-      matchingPositions: 0,
-      placementsCompared: 0
-    };
+    room.totals = { correctPredictions: {}, correctTotal: 0, possibleTotal: 0 };
   }
   for (const p of room.players) {
     if (room.totals.correctPredictions[p.id] == null) {
@@ -109,35 +104,32 @@ function migratePlayerId(room, oldId, newId) {
   const p = getPlayer(room, oldId);
   if (p) p.id = newId;
   if (room.hostId === oldId) room.hostId = newId;
+  if (room.listeurId === oldId) room.listeurId = newId;
 
-  for (const bag of [room.personal, room.predictions, room.revealAcks, room.nextReady]) {
-    if (bag && bag[oldId] != null) {
+  if (room.guesses?.[oldId] != null) {
+    room.guesses[newId] = room.guesses[oldId];
+    delete room.guesses[oldId];
+  }
+  if (room.drafts?.guess?.[oldId] != null) {
+    room.drafts.guess[newId] = room.drafts.guess[oldId];
+    delete room.drafts.guess[oldId];
+  }
+  for (const bag of [room.revealAcks, room.nextReady]) {
+    if (bag?.[oldId] != null) {
       bag[newId] = bag[oldId];
       delete bag[oldId];
-    }
-  }
-  if (room.drafts) {
-    for (const kind of ['personal', 'prediction']) {
-      if (room.drafts[kind]?.[oldId] != null) {
-        room.drafts[kind][newId] = room.drafts[kind][oldId];
-        delete room.drafts[kind][oldId];
-      }
     }
   }
   if (room.totals?.correctPredictions?.[oldId] != null) {
     room.totals.correctPredictions[newId] = room.totals.correctPredictions[oldId];
     delete room.totals.correctPredictions[oldId];
   }
-  if (room.lastRoundScore) {
-    if (room.lastRoundScore.playerA?.id === oldId) room.lastRoundScore.playerA.id = newId;
-    if (room.lastRoundScore.playerB?.id === oldId) room.lastRoundScore.playerB.id = newId;
+  if (room.lastRoundScore?.byPlayer?.[oldId]) {
+    room.lastRoundScore.byPlayer[newId] = room.lastRoundScore.byPlayer[oldId];
+    room.lastRoundScore.byPlayer[newId].id = newId;
+    delete room.lastRoundScore.byPlayer[oldId];
   }
-  if (room.lastReveal?.items) {
-    for (const it of room.lastReveal.items) {
-      if (it.pointsA?.playerId === oldId) it.pointsA.playerId = newId;
-      if (it.pointsB?.playerId === oldId) it.pointsB.playerId = newId;
-    }
-  }
+  if (room.lastReveal?.listeurId === oldId) room.lastReveal.listeurId = newId;
 }
 
 function softDisconnect(room, socketId) {
@@ -155,8 +147,7 @@ function reclaimPlayer(room, token, newSocketId) {
   if (!p.disconnectedAt && p.id !== newSocketId) {
     return { ok: false, msg: 'Ce siège est encore connecté.' };
   }
-  const oldId = p.id;
-  migratePlayerId(room, oldId, newSocketId);
+  migratePlayerId(room, p.id, newSocketId);
   delete p.disconnectedAt;
   if (!p.reconnectToken) p.reconnectToken = newReconnectToken();
   return { ok: true };
@@ -172,6 +163,9 @@ function pruneDisconnected(room) {
     if (room.hostId && !getPlayer(room, room.hostId) && room.players.length) {
       room.hostId = room.players[0].id;
     }
+    if (room.listeurId && !getPlayer(room, room.listeurId) && room.players.length) {
+      room.listeurId = pickListeurId(room);
+    }
     return true;
   }
   return false;
@@ -180,12 +174,13 @@ function pruneDisconnected(room) {
 function resetToLobby(room) {
   room.phase = 'lobby';
   room.currentRound = 0;
+  room.listeurId = null;
   room.usedItemIds = [];
   room.roundItems = [];
   room.displayOrder = [];
-  room.personal = {};
-  room.predictions = {};
-  room.drafts = { personal: {}, prediction: {} };
+  room.listing = null;
+  room.guesses = {};
+  room.drafts = { listing: null, guess: {} };
   room.revealAcks = {};
   room.nextReady = {};
   room.phaseEndsAt = null;
@@ -194,11 +189,7 @@ function resetToLobby(room) {
   room.lastReveal = null;
   room.lastRoundScore = null;
   room.history = [];
-  room.totals = {
-    correctPredictions: {},
-    matchingPositions: 0,
-    placementsCompared: 0
-  };
+  room.totals = { correctPredictions: {}, correctTotal: 0, possibleTotal: 0 };
   room.gameStats = null;
   room.configFrozen = false;
   room.players.forEach((p) => {
@@ -208,15 +199,19 @@ function resetToLobby(room) {
   });
 }
 
+function bothReady(room) {
+  return room.players.length >= MIN_PLAYERS && room.players.every((p) => p.ready);
+}
+
 function canStart(room) {
   if (room.players.length < MIN_PLAYERS) {
-    return { ok: false, msg: 'Il faut exactement 2 joueurs.' };
+    return { ok: false, msg: `Minimum ${MIN_PLAYERS} joueurs.` };
   }
   if (room.players.length > MAX_PLAYERS) {
-    return { ok: false, msg: 'Salon plein (2 joueurs).' };
+    return { ok: false, msg: `Maximum ${MAX_PLAYERS} joueurs.` };
   }
   if (!bothReady(room)) {
-    return { ok: false, msg: 'Les deux joueurs doivent être prêts.' };
+    return { ok: false, msg: 'Tous les joueurs doivent être prêts.' };
   }
   const cfg = room.config;
   const need =
@@ -233,7 +228,7 @@ function canStart(room) {
   if (cfg.avoidRepeats && cfg.roundCount !== 'unlimited' && available < need) {
     return {
       ok: false,
-      msg: `Banque trop petite pour ${cfg.roundCount} manches × ${cfg.itemsPerRound} (dispo : ${available}). Élargis les thèmes ou réduis les manches.`
+      msg: `Banque trop petite pour ${cfg.roundCount} manches × ${cfg.itemsPerRound} (dispo : ${available}).`
     };
   }
   return { ok: true };
@@ -247,22 +242,32 @@ function setPhaseTimer(room, seconds) {
   }
 }
 
+function randomPermutation(ids) {
+  const a = [...ids];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 function beginRound(room) {
   const picked = pickRoundItems(room.usedItemIds, room.config);
   const ids = picked.map((x) => x.id);
   room.usedItemIds.push(...ids);
   room.roundItems = picked;
   room.displayOrder = [...ids];
-  room.personal = {};
-  room.predictions = {};
-  room.drafts = { personal: {}, prediction: {} };
+  room.listeurId = pickListeurId(room);
+  room.listing = null;
+  room.guesses = {};
+  room.drafts = { listing: null, guess: {} };
   room.revealAcks = {};
   room.nextReady = {};
   room.revealIndex = 0;
   room.revealOrder = [];
   room.lastReveal = null;
   room.lastRoundScore = null;
-  room.phase = 'personal_ranking';
+  room.phase = 'listing';
   setPhaseTimer(room, room.config.timer.personalRankingSeconds);
   room.players.forEach((p) => {
     p.lastRoundScore = 0;
@@ -278,11 +283,7 @@ function startGame(room) {
   room.currentRound = 1;
   room.usedItemIds = [];
   room.history = [];
-  room.totals = {
-    correctPredictions: {},
-    matchingPositions: 0,
-    placementsCompared: 0
-  };
+  room.totals = { correctPredictions: {}, correctTotal: 0, possibleTotal: 0 };
   room.players.forEach((p) => {
     p.score = 0;
     p.lastRoundScore = 0;
@@ -292,79 +293,61 @@ function startGame(room) {
   return { ok: true };
 }
 
-function bothHave(map, room) {
-  return room.players.every((p) => map[p.id]);
+function allGuessersLocked(room) {
+  const g = guessers(room);
+  if (!g.length) return false;
+  return g.every((p) => room.guesses[p.id]);
 }
 
-function randomPermutation(ids) {
-  const a = [...ids];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
+function lockListing(room, playerId, ranking) {
+  if (room.phase !== 'listing') return { ok: false, msg: 'Pas le moment.' };
+  if (playerId !== room.listeurId) {
+    return { ok: false, msg: 'Seul le listeur peut valider.' };
   }
-  return a;
-}
-
-function lockPersonal(room, playerId, ranking) {
-  if (room.phase !== 'personal_ranking') {
-    return { ok: false, msg: 'Pas le moment.' };
-  }
-  if (room.personal[playerId]) {
-    return { ok: false, msg: 'Classement déjà verrouillé.' };
-  }
-  const ids = room.displayOrder;
-  const check = validateRanking(ids, ranking);
+  if (room.listing) return { ok: false, msg: 'Classement déjà verrouillé.' };
+  const check = validateRanking(room.displayOrder, ranking);
   if (!check.ok) return check;
-  room.personal[playerId] = [...ranking];
-  delete room.drafts.personal[playerId];
-
-  if (bothHave(room.personal, room)) {
-    room.phase = 'partner_prediction';
-    setPhaseTimer(room, room.config.timer.predictionSeconds);
-  }
+  room.listing = [...ranking];
+  room.drafts.listing = null;
+  room.phase = 'guessing';
+  setPhaseTimer(room, room.config.timer.predictionSeconds);
   return { ok: true };
 }
 
-function lockPrediction(room, playerId, ranking) {
-  if (room.phase !== 'partner_prediction') {
-    return { ok: false, msg: 'Pas le moment.' };
+function lockGuess(room, playerId, ranking) {
+  if (room.phase !== 'guessing') return { ok: false, msg: 'Pas le moment.' };
+  if (playerId === room.listeurId) {
+    return { ok: false, msg: 'Le listeur ne prédit pas.' };
   }
-  if (room.predictions[playerId]) {
+  if (room.guesses[playerId]) {
     return { ok: false, msg: 'Prédiction déjà verrouillée.' };
   }
-  const ids = room.displayOrder;
-  const check = validateRanking(ids, ranking);
+  const check = validateRanking(room.displayOrder, ranking);
   if (!check.ok) return check;
-  room.predictions[playerId] = [...ranking];
-  delete room.drafts.prediction[playerId];
-
-  if (bothHave(room.predictions, room)) {
-    enterReveal(room);
-  }
+  room.guesses[playerId] = [...ranking];
+  delete room.drafts.guess[playerId];
+  if (allGuessersLocked(room)) enterReveal(room);
   return { ok: true };
 }
 
 function autoLockDrafts(room) {
-  if (!room.config.autoSubmitOnTimeout && !room.config.timer?.enabled) return false;
-  let changed = false;
+  if (!room.config.timer?.enabled) return false;
   const ids = room.displayOrder;
+  let changed = false;
 
-  if (room.phase === 'personal_ranking') {
-    for (const p of room.players) {
-      if (room.personal[p.id]) continue;
-      const draft = room.drafts.personal[p.id];
+  if (room.phase === 'listing' && !room.listing && room.listeurId) {
+    const draft = room.drafts.listing;
+    const ranking =
+      draft && validateRanking(ids, draft).ok ? draft : randomPermutation(ids);
+    lockListing(room, room.listeurId, ranking);
+    changed = true;
+  } else if (room.phase === 'guessing') {
+    for (const p of guessers(room)) {
+      if (room.guesses[p.id]) continue;
+      const draft = room.drafts.guess[p.id];
       const ranking =
         draft && validateRanking(ids, draft).ok ? draft : randomPermutation(ids);
-      lockPersonal(room, p.id, ranking);
-      changed = true;
-    }
-  } else if (room.phase === 'partner_prediction') {
-    for (const p of room.players) {
-      if (room.predictions[p.id]) continue;
-      const draft = room.drafts.prediction[p.id];
-      const ranking =
-        draft && validateRanking(ids, draft).ok ? draft : randomPermutation(ids);
-      lockPrediction(room, p.id, ranking);
+      lockGuess(room, p.id, ranking);
       changed = true;
     }
   }
@@ -372,96 +355,97 @@ function autoLockDrafts(room) {
 }
 
 function buildRevealOrder(room) {
-  const [a, b] = room.players;
-  const orderMode = room.config.reveal?.order || 'random';
-  if (orderMode === 'playerA' && room.personal[a.id]) return [...room.personal[a.id]];
-  if (orderMode === 'playerB' && room.personal[b.id]) return [...room.personal[b.id]];
+  const orderMode = room.config.reveal?.order || 'listeur';
+  if (orderMode === 'listeur' && room.listing) return [...room.listing];
   return randomPermutation(room.displayOrder);
 }
 
 function enterReveal(room) {
   if (room.phase === 'reveal') return;
-  const [a, b] = room.players;
   ensureTotals(room);
+  const listeurId = room.listeurId;
+  const guids = guessers(room).map((p) => p.id);
 
-  const scored = scoreRound({
-    playerA: a.id,
-    playerB: b.id,
-    rankingA: room.personal[a.id],
-    rankingB: room.personal[b.id],
-    predictionA: room.predictions[a.id],
-    predictionB: room.predictions[b.id],
+  const scored = scoreGuessersRound({
+    listeurId,
+    listeurRanking: room.listing,
+    guessesByPlayerId: room.guesses,
+    guesserIds: guids,
     itemIds: room.displayOrder,
     scoring: room.config.scoring
   });
 
-  a.lastRoundScore = scored.playerA.total;
-  b.lastRoundScore = scored.playerB.total;
-  a.score = (a.score || 0) + scored.playerA.total;
-  b.score = (b.score || 0) + scored.playerB.total;
-
-  room.totals.correctPredictions[a.id] =
-    (room.totals.correctPredictions[a.id] || 0) + scored.playerA.correctPredictions;
-  room.totals.correctPredictions[b.id] =
-    (room.totals.correctPredictions[b.id] || 0) + scored.playerB.correctPredictions;
-  room.totals.matchingPositions += scored.matchingPositions;
-  room.totals.placementsCompared += room.displayOrder.length;
+  for (const p of room.players) {
+    const sc = scored.byPlayer[p.id];
+    const pts = sc?.total || 0;
+    p.lastRoundScore = pts;
+    p.score = (p.score || 0) + pts;
+    if (sc && !sc.isListeur) {
+      room.totals.correctPredictions[p.id] =
+        (room.totals.correctPredictions[p.id] || 0) + (sc.correctPredictions || 0);
+    }
+  }
+  room.totals.correctTotal += scored.correctPredictionsTotal;
+  room.totals.possibleTotal += scored.possiblePredictions;
 
   const revealOrder = buildRevealOrder(room);
   room.revealOrder = revealOrder;
+  const listeurMap = positionMap(room.listing);
+  const guesserCount = guids.length;
 
   const items = revealOrder.map((itemId) => {
     const item = getItemById(itemId);
-    const perA = scored.playerA.perItem.find((x) => x.itemId === itemId);
-    const perB = scored.playerB.perItem.find((x) => x.itemId === itemId);
-    const matchedPersonal = perA?.myPosition === perA?.partnerPosition;
+    const listeurPos = listeurMap.get(itemId);
+    const guesses = guids.map((gid) => {
+      const sc = scored.byPlayer[gid];
+      const per = sc?.perItem?.find((x) => x.itemId === itemId);
+      const pl = getPlayer(room, gid);
+      return {
+        playerId: gid,
+        name: pl?.name || '?',
+        predictedPosition: per?.predictedPosition || null,
+        points: per?.total || 0,
+        correct: per?.predictedPosition === listeurPos
+      };
+    });
+    const hits = guesses.filter((g) => g.correct).length;
     return {
       itemId,
       text: item?.text || itemId,
       category: item?.category,
-      positionA: perA?.myPosition,
-      positionB: perB?.myPosition,
-      predictionA: perA?.predictedPosition,
-      predictionB: perB?.predictedPosition,
-      pointsA: {
-        playerId: a.id,
-        prediction: perA?.predictionPoints || 0,
-        match: perA?.matchPoints || 0,
-        total: perA?.total || 0
-      },
-      pointsB: {
-        playerId: b.id,
-        prediction: perB?.predictionPoints || 0,
-        match: perB?.matchPoints || 0,
-        total: perB?.total || 0
-      },
-      matchedPersonal,
-      reaction: reactionForItem({
-        matchedPersonal,
-        correctPredA: (perA?.predictionPoints || 0) > 0,
-        correctPredB: (perB?.predictionPoints || 0) > 0
-      })
+      listeurPosition: listeurPos,
+      guesses,
+      hits,
+      reaction: reactionForItem({ hits, guesserCount })
     };
   });
 
+  const playerScores = room.players.map((p) => ({
+    playerId: p.id,
+    name: p.name,
+    ...(scored.byPlayer[p.id] || { total: 0 }),
+    cumulative: p.score,
+    isListeur: p.id === listeurId
+  }));
+
   room.lastReveal = {
     items,
-    scoreA: scored.playerA,
-    scoreB: scored.playerB,
-    compatibilityPercent: scored.compatibilityPercent,
-    reaction: reactionForRound(scored.compatibilityPercent),
-    rankingA: room.personal[a.id],
-    rankingB: room.personal[b.id],
-    playerAId: a.id,
-    playerBId: b.id
+    listeurId,
+    listeurName: getPlayer(room, listeurId)?.name || 'Listeur',
+    listeurRanking: room.listing,
+    accuracyPercent: scored.accuracyPercent,
+    reaction: reactionForRound(scored.accuracyPercent),
+    playerScores
   };
   room.lastRoundScore = scored;
   room.history.push({
     round: room.currentRound,
+    listeurId,
     itemIds: [...room.displayOrder],
-    compatibilityPercent: scored.compatibilityPercent,
-    scoreA: scored.playerA.total,
-    scoreB: scored.playerB.total
+    accuracyPercent: scored.accuracyPercent,
+    scores: Object.fromEntries(
+      room.players.map((p) => [p.id, scored.byPlayer[p.id]?.total || 0])
+    )
   });
 
   room.phase = 'reveal';
@@ -506,52 +490,49 @@ function isLastRound(room) {
 }
 
 function buildGameStats(room) {
-  const [a, b] = room.players;
   ensureTotals(room);
-  const placements = Math.max(1, room.totals.placementsCompared);
-  const globalCompat = Math.round((room.totals.matchingPositions / placements) * 100);
+  const possible = Math.max(1, room.totals.possibleTotal);
+  const globalAccuracy = Math.round((room.totals.correctTotal / possible) * 100);
 
-  // Plus gros désaccords / meilleures prédictions sur last history reveals — simplifié
   const disagreements = [];
-  const bestPredictions = [];
+  const bestRounds = [];
   for (const h of room.history) {
-    // stored lightly; pull from lastReveal style not kept — use history compat
-    if (h.compatibilityPercent <= 20) {
-      disagreements.push({ round: h.round, compatibilityPercent: h.compatibilityPercent });
+    if (h.accuracyPercent <= 20) {
+      disagreements.push({ round: h.round, accuracyPercent: h.accuracyPercent });
     }
-    if (h.compatibilityPercent >= 80) {
-      bestPredictions.push({ round: h.round, compatibilityPercent: h.compatibilityPercent });
+    if (h.accuracyPercent >= 80) {
+      bestRounds.push({ round: h.round, accuracyPercent: h.accuracyPercent });
     }
   }
 
+  const scoresById = Object.fromEntries(room.players.map((p) => [p.id, p.score || 0]));
+  const correctById = { ...room.totals.correctPredictions };
   const titles = endTitles({
-    playerA: a.id,
-    playerB: b.id,
-    scoreA: a.score || 0,
-    scoreB: b.score || 0,
-    correctPredA: room.totals.correctPredictions[a.id] || 0,
-    correctPredB: room.totals.correctPredictions[b.id] || 0,
-    globalCompat
+    players: room.players.map((p) => ({ id: p.id, name: p.name })),
+    correctById,
+    scoresById,
+    globalAccuracy
   });
 
+  const sorted = [...room.players].sort((a, b) => (b.score || 0) - (a.score || 0));
   let winnerId = null;
-  if ((a.score || 0) > (b.score || 0)) winnerId = a.id;
-  else if ((b.score || 0) > (a.score || 0)) winnerId = b.id;
+  if (sorted.length && (sorted[0].score || 0) > (sorted[1]?.score || 0)) {
+    winnerId = sorted[0].id;
+  }
 
   return {
     winnerId,
-    scores: [
-      { id: a.id, name: a.name, score: a.score || 0 },
-      { id: b.id, name: b.name, score: b.score || 0 }
-    ],
-    correctPredictions: {
-      [a.id]: room.totals.correctPredictions[a.id] || 0,
-      [b.id]: room.totals.correctPredictions[b.id] || 0
-    },
-    matchingPositionsTotal: room.totals.matchingPositions,
-    globalCompatibilityPercent: globalCompat,
+    scores: room.players.map((p) => ({
+      id: p.id,
+      name: p.name,
+      score: p.score || 0
+    })),
+    correctPredictions: correctById,
+    globalAccuracyPercent: globalAccuracy,
+    correctTotal: room.totals.correctTotal,
+    possibleTotal: room.totals.possibleTotal,
     disagreements,
-    bestRounds: bestPredictions,
+    bestRounds,
     titles,
     roundsPlayed: room.history.length
   };
@@ -594,7 +575,7 @@ function onTick(room) {
   if (
     room.phaseEndsAt &&
     now >= room.phaseEndsAt &&
-    (room.phase === 'personal_ranking' || room.phase === 'partner_prediction')
+    (room.phase === 'listing' || room.phase === 'guessing')
   ) {
     if (room.config.timer?.enabled) {
       autoLockDrafts(room);
@@ -617,17 +598,19 @@ function onTick(room) {
 
 function sanitizeRoom(room, socketId) {
   const me = getPlayer(room, socketId);
-  const partner = otherPlayer(room, socketId);
   const cfg = room.config;
   const showSecrets =
     room.phase === 'reveal' ||
     room.phase === 'round_results' ||
     room.phase === 'game_results';
 
-  const myPersonal = room.personal[socketId] || null;
-  const myPrediction = room.predictions[socketId] || null;
-  const partnerPersonalLocked = partner ? Boolean(room.personal[partner.id]) : false;
-  const partnerPredictionLocked = partner ? Boolean(room.predictions[partner.id]) : false;
+  const isListeur = socketId === room.listeurId;
+  const role =
+    room.phase === 'lobby' || !room.listeurId
+      ? null
+      : isListeur
+        ? 'listeur'
+        : 'devineur';
 
   let revealPayload = null;
   if (room.phase === 'reveal' && room.lastReveal) {
@@ -635,13 +618,13 @@ function sanitizeRoom(room, socketId) {
     revealPayload = {
       index: room.revealIndex,
       total: room.lastReveal.items.length,
-      suspense: room.revealIndex === 0 && !room.revealAcks[socketId],
       item,
-      waitingPartner: !room.revealAcks[socketId]
-        ? false
-        : !room.players.every((p) => room.revealAcks[p.id]),
+      waitingPartner: Boolean(room.revealAcks[socketId])
+        ? !room.players.every((p) => room.revealAcks[p.id])
+        : false,
       iAcked: Boolean(room.revealAcks[socketId]),
-      compatibilityPercent: room.lastReveal.compatibilityPercent
+      accuracyPercent: room.lastReveal.accuracyPercent,
+      listeurName: room.lastReveal.listeurName
     };
   }
 
@@ -651,32 +634,13 @@ function sanitizeRoom(room, socketId) {
     room.lastReveal &&
     (cfg.showScores === 'each_round' || room.phase === 'game_results')
   ) {
-    const [a, b] = room.players;
     roundResults = {
-      compatibilityPercent: room.lastReveal.compatibilityPercent,
+      accuracyPercent: room.lastReveal.accuracyPercent,
       reaction: room.lastReveal.reaction,
-      rankingA: {
-        playerId: a.id,
-        name: a.name,
-        order: itemsByIds(room.lastReveal.rankingA)
-      },
-      rankingB: {
-        playerId: b.id,
-        name: b.name,
-        order: itemsByIds(room.lastReveal.rankingB)
-      },
-      scoreA: {
-        playerId: a.id,
-        name: a.name,
-        ...room.lastReveal.scoreA,
-        cumulative: a.score
-      },
-      scoreB: {
-        playerId: b.id,
-        name: b.name,
-        ...room.lastReveal.scoreB,
-        cumulative: b.score
-      },
+      listeurId: room.lastReveal.listeurId,
+      listeurName: room.lastReveal.listeurName,
+      listeurRanking: itemsByIds(room.lastReveal.listeurRanking),
+      playerScores: room.lastReveal.playerScores,
       nextReady: room.players.map((p) => ({
         id: p.id,
         name: p.name,
@@ -695,6 +659,9 @@ function sanitizeRoom(room, socketId) {
     myScore: me?.score || 0,
     reconnectToken: me?.reconnectToken || null,
     hostId: room.hostId,
+    listeurId: room.listeurId,
+    listeurName: room.listeurId ? getPlayer(room, room.listeurId)?.name || '' : '',
+    role,
     config: sanitizeConfig(cfg),
     configSummary: configSummary(cfg),
     configFrozen: room.configFrozen,
@@ -709,24 +676,24 @@ function sanitizeRoom(room, socketId) {
       score: p.score || 0,
       lastRoundScore: p.lastRoundScore || 0,
       isHost: p.id === room.hostId,
+      isListeur: p.id === room.listeurId,
       ready: Boolean(p.ready),
       disconnected: Boolean(p.disconnectedAt),
-      personalLocked: Boolean(room.personal[p.id]),
-      predictionLocked: Boolean(room.predictions[p.id])
+      listingLocked: p.id === room.listeurId ? Boolean(room.listing) : false,
+      guessLocked: Boolean(room.guesses[p.id])
     })),
     currentRound: room.currentRound,
     roundCount: cfg.roundCount,
     itemsPerRound: cfg.itemsPerRound,
     items: room.phase === 'lobby' ? [] : room.roundItems,
-    myPersonal,
-    myPrediction,
-    partnerPersonalLocked,
-    partnerPredictionLocked,
-    myPersonalLocked: Boolean(myPersonal),
-    myPredictionLocked: Boolean(myPrediction),
-    // Secrets only after reveal
-    partnerPersonal: showSecrets && partner ? room.personal[partner.id] || null : null,
-    partnerPrediction: showSecrets && partner ? room.predictions[partner.id] || null : null,
+    myListing: isListeur ? room.listing : showSecrets ? room.listing : null,
+    myGuess: room.guesses[socketId] || null,
+    listingLocked: Boolean(room.listing),
+    myGuessLocked: Boolean(room.guesses[socketId]),
+    guessesLockedCount: Object.keys(room.guesses).length,
+    guesserCount: guessers(room).length,
+    listeurRanking: showSecrets ? room.listing : null,
+    allGuesses: showSecrets ? room.guesses : null,
     reveal: revealPayload,
     roundResults,
     gameStats: room.phase === 'game_results' ? room.gameStats : null,
@@ -738,11 +705,9 @@ function sanitizeRoom(room, socketId) {
     minPlayers: MIN_PLAYERS,
     maxPlayers: MAX_PLAYERS,
     historyCount: (room.history || []).length,
-    globalCompatibilityPercent:
-      room.totals && room.totals.placementsCompared
-        ? Math.round(
-            (room.totals.matchingPositions / room.totals.placementsCompared) * 100
-          )
+    globalAccuracyPercent:
+      room.totals && room.totals.possibleTotal
+        ? Math.round((room.totals.correctTotal / room.totals.possibleTotal) * 100)
         : null
   };
 }
@@ -801,20 +766,21 @@ function registerHandlers(io, ctx) {
 
     socket.on('tad-sync-draft', ({ kind, ranking } = {}) => {
       const room = getRoom(ctx, socket);
-      if (!room) return;
-      if (kind !== 'personal' && kind !== 'prediction') return;
-      if (!Array.isArray(ranking)) return;
-      if (!room.drafts[kind]) room.drafts[kind] = {};
-      room.drafts[kind][socket.id] = ranking;
+      if (!room || !Array.isArray(ranking)) return;
+      if (kind === 'listing' && socket.id === room.listeurId) {
+        room.drafts.listing = ranking;
+      } else if (kind === 'guess' && socket.id !== room.listeurId) {
+        room.drafts.guess[socket.id] = ranking;
+      }
     });
 
-    socket.on('tad-submit-personal', ({ ranking } = {}) => {
+    socket.on('tad-submit-listing', ({ ranking } = {}) => {
       const room = getRoom(ctx, socket);
       if (!room) {
         socket.emit('error-msg', 'Tu n’es plus dans une partie.');
         return;
       }
-      const result = lockPersonal(room, socket.id, ranking);
+      const result = lockListing(room, socket.id, ranking);
       if (!result.ok) {
         socket.emit('error-msg', result.msg);
         return;
@@ -822,13 +788,13 @@ function registerHandlers(io, ctx) {
       broadcastRoom(room);
     });
 
-    socket.on('tad-submit-prediction', ({ ranking } = {}) => {
+    socket.on('tad-submit-guess', ({ ranking } = {}) => {
       const room = getRoom(ctx, socket);
       if (!room) {
         socket.emit('error-msg', 'Tu n’es plus dans une partie.');
         return;
       }
-      const result = lockPrediction(room, socket.id, ranking);
+      const result = lockGuess(room, socket.id, ranking);
       if (!result.ok) {
         socket.emit('error-msg', result.msg);
         return;
@@ -928,17 +894,15 @@ module.exports = {
   registerHandlers,
   MIN_PLAYERS,
   MAX_PLAYERS,
-  // exported for tests
   startGame,
-  lockPersonal,
-  lockPrediction,
+  lockListing,
+  lockGuess,
   enterReveal,
-  validateRanking: require('./score').validateRanking,
-  scoreRound: require('./score').scoreRound,
-  pickRoundItems,
+  pickListeurId,
+  reclaimPlayer,
+  resetToLobby,
   sanitizeConfig,
   DEFAULT_CONFIG,
-  resetToLobby,
-  reclaimPlayer,
-  migratePlayerId
+  scoreGuessersRound,
+  validateRanking
 };

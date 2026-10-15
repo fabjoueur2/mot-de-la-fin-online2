@@ -79,21 +79,18 @@
   text-align: center;
 }
 
-.tad-rank-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.tad-tier-slots {
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
+  gap: 0.4rem;
+  margin-bottom: 0.85rem;
 }
 
-.tad-rank-slot {
+.tad-tier-row {
   display: grid;
-  grid-template-columns: 3.2rem 1fr auto;
-  gap: 0.45rem;
-  align-items: stretch;
-  min-height: 3.4rem;
+  grid-template-columns: 4.2rem 1fr;
+  gap: 0.4rem;
+  min-height: 3.2rem;
 }
 
 .tad-rank-badge {
@@ -103,31 +100,79 @@
   border-radius: 12px;
   font-family: 'Fredoka', sans-serif;
   font-weight: 700;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   text-align: center;
   padding: 0.25rem;
   line-height: 1.15;
   color: #1a1025;
 }
 
-.tad-rank-slot[data-rank='1'] .tad-rank-badge { background: var(--tad-rank1); }
-.tad-rank-slot[data-rank='2'] .tad-rank-badge { background: var(--tad-rank2); }
-.tad-rank-slot[data-rank='3'] .tad-rank-badge { background: var(--tad-rank3); }
-.tad-rank-slot[data-rank='4'] .tad-rank-badge { background: var(--tad-rank4); }
-.tad-rank-slot[data-rank='5'] .tad-rank-badge { background: var(--tad-rank5); }
-.tad-rank-slot[data-rank='6'] .tad-rank-badge,
-.tad-rank-slot[data-rank='7'] .tad-rank-badge,
-.tad-rank-slot[data-rank='8'] .tad-rank-badge,
-.tad-rank-slot[data-rank='9'] .tad-rank-badge,
-.tad-rank-slot[data-rank='10'] .tad-rank-badge {
+.tad-tier-row[data-rank='1'] .tad-rank-badge { background: var(--tad-rank1); }
+.tad-tier-row[data-rank='2'] .tad-rank-badge { background: var(--tad-rank2); }
+.tad-tier-row[data-rank='3'] .tad-rank-badge { background: var(--tad-rank3); }
+.tad-tier-row[data-rank='4'] .tad-rank-badge { background: var(--tad-rank4); }
+.tad-tier-row[data-rank='5'] .tad-rank-badge { background: var(--tad-rank5); }
+.tad-tier-row[data-rank='6'] .tad-rank-badge,
+.tad-tier-row[data-rank='7'] .tad-rank-badge,
+.tad-tier-row[data-rank='8'] .tad-rank-badge,
+.tad-tier-row[data-rank='9'] .tad-rank-badge,
+.tad-tier-row[data-rank='10'] .tad-rank-badge {
   background: #adb5bd;
 }
 
-.tad-item-card {
-  background: rgba(255, 246, 232, 0.08);
-  border: 1px solid rgba(255, 246, 232, 0.18);
+.tad-drop-zone {
+  border: 2px dashed rgba(255, 246, 232, 0.22);
   border-radius: 12px;
-  padding: 0.7rem 0.8rem;
+  min-height: 3.2rem;
+  padding: 0.25rem;
+  display: flex;
+  align-items: stretch;
+  background: rgba(0, 0, 0, 0.15);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.tad-drop-zone.drag-over {
+  border-color: var(--tad-gold);
+  background: rgba(255, 217, 61, 0.08);
+}
+
+.tad-drop-zone.empty::after {
+  content: 'Déposer ici';
+  margin: auto;
+  color: var(--tad-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.tad-pool-label {
+  margin: 0 0 0.4rem;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--tad-muted);
+  font-weight: 800;
+}
+
+.tad-tier-pool {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  min-height: 3.2rem;
+  padding: 0.55rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 246, 232, 0.15);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.tad-tier-pool.drag-over {
+  outline: 2px dashed var(--tad-sky);
+}
+
+.tad-item-card {
+  background: rgba(255, 246, 232, 0.1);
+  border: 1px solid rgba(255, 246, 232, 0.22);
+  border-radius: 12px;
+  padding: 0.65rem 0.75rem;
   cursor: grab;
   user-select: none;
   touch-action: none;
@@ -135,6 +180,15 @@
   font-weight: 700;
   display: flex;
   align-items: center;
+  gap: 0.35rem;
+  width: 100%;
+  animation: tadPop 0.28s ease;
+}
+
+.tad-tier-pool .tad-item-card {
+  width: auto;
+  max-width: 100%;
+  flex: 1 1 140px;
 }
 
 .tad-item-card:active,
@@ -145,30 +199,20 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
 }
 
-.tad-item-card.drag-over {
-  outline: 2px dashed var(--tad-gold);
-}
-
-.tad-move-btns {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-}
-
-.tad-move-btns button {
-  border: 1px solid rgba(255, 217, 61, 0.35);
+.tad-item-card .tad-unslot {
+  margin-left: auto;
+  border: none;
   background: transparent;
-  color: var(--tad-cream);
-  border-radius: 8px;
-  width: 2rem;
-  height: 1.55rem;
+  color: var(--tad-muted);
+  font-size: 1.1rem;
   cursor: pointer;
-  font-weight: 700;
+  padding: 0 0.25rem;
+  line-height: 1;
 }
 
-.tad-move-btns button:disabled {
-  opacity: 0.35;
+.tad-locked .tad-item-card {
   cursor: default;
+  opacity: 0.8;
 }
 
 .tad-waiting {

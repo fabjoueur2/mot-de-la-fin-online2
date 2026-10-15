@@ -46,14 +46,12 @@ const DEFAULT_CONFIG = {
   avoidRepeats: true,
   scoring: {
     correctPrediction: 1,
-    matchingPosition: 2,
-    perfectPredictionBonus: 0,
-    identicalRankingBonus: 0
+    perfectPredictionBonus: 0
   },
   reveal: {
     mode: 'manual',
     intervalSeconds: 6,
-    order: 'random'
+    order: 'listeur'
   },
   showScores: 'each_round',
   autoSubmitOnTimeout: true
@@ -157,12 +155,7 @@ function sanitizeConfig(raw = {}) {
   if (typeof c.avoidRepeats === 'boolean') base.avoidRepeats = c.avoidRepeats;
 
   if (c.scoring && typeof c.scoring === 'object') {
-    for (const key of [
-      'correctPrediction',
-      'matchingPosition',
-      'perfectPredictionBonus',
-      'identicalRankingBonus'
-    ]) {
+    for (const key of ['correctPrediction', 'perfectPredictionBonus']) {
       if (c.scoring[key] != null) {
         base.scoring[key] = clampInt(c.scoring[key], 0, 20, base.scoring[key]);
       }
@@ -176,7 +169,7 @@ function sanitizeConfig(raw = {}) {
     if (c.reveal.intervalSeconds != null) {
       base.reveal.intervalSeconds = clampInt(c.reveal.intervalSeconds, 3, 15, 6);
     }
-    if (['random', 'playerA', 'playerB'].includes(c.reveal.order)) {
+    if (['random', 'listeur'].includes(c.reveal.order)) {
       base.reveal.order = c.reveal.order;
     }
   }
@@ -223,16 +216,20 @@ function configSummary(config) {
     c.reveal.mode === 'automatic'
       ? `Révélations auto (${c.reveal.intervalSeconds}s)`
       : 'Révélations manuelles';
-  return [
+  const lines = [
     rounds,
     `${c.itemsPerRound} éléments par manche`,
+    '1 listeur rotatif · les autres devinent',
     timer,
     `Absurdité : ${c.absurdity}`,
     `Humour : ${c.humorLevel}`,
-    `+${c.scoring.correctPrediction} par bonne prédiction`,
-    `+${c.scoring.matchingPosition} par position identique`,
-    reveal
+    `+${c.scoring.correctPrediction} par bonne prédiction`
   ];
+  if (c.scoring.perfectPredictionBonus > 0) {
+    lines.push(`+${c.scoring.perfectPredictionBonus} bonus prédiction parfaite`);
+  }
+  lines.push(reveal);
+  return lines;
 }
 
 module.exports = {

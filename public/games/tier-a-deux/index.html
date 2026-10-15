@@ -35,7 +35,7 @@
           <button class="btn btn-primary" id="btn-create">Créer une partie</button>
           <button class="btn btn-secondary" id="btn-show-join">Rejoindre</button>
         </div>
-        <p class="share-hint" style="margin-top:10px;">Exactement 2 joueurs · ~10–15 min · zéro compte</p>
+        <p class="share-hint" style="margin-top:10px;">2 à 8 joueurs · 1 listeur qui tourne · ~10–20 min</p>
       </div>
       <div class="card tad-card" id="join-panel" style="display:none;">
         <h2>Code de salle</h2>
@@ -43,8 +43,8 @@
         <button class="btn btn-blue" id="btn-join">Entrer</button>
       </div>
       <div class="card tad-card">
-        <p><strong>Même 5 éléments</strong> pour vous deux. Classe-les, puis devine le classement de ton partenaire.</p>
-        <p class="tad-muted">Humour · surprise · débats garantis.</p>
+        <p><strong>Un listeur</strong> compose sa tier-list. <strong>Les autres</strong> essaient de la deviner.</p>
+        <p class="tad-muted">Glisse les cartes dans les rangs · humour · débats garantis.</p>
       </div>
     </div>
 
@@ -161,14 +161,8 @@
             <label>Bonne prédiction (0–20)
               <input type="number" id="cfg-score-pred" min="0" max="20" value="1">
             </label>
-            <label>Même rang personnel (0–20)
-              <input type="number" id="cfg-score-match" min="0" max="20" value="2">
-            </label>
             <label>Bonus prédiction parfaite (0–20)
               <input type="number" id="cfg-score-perfect" min="0" max="20" value="0">
-            </label>
-            <label>Bonus classements identiques (0–20)
-              <input type="number" id="cfg-score-identical" min="0" max="20" value="0">
             </label>
           </div>
         </div>
@@ -185,9 +179,8 @@
             </label>
             <label>Ordre
               <select id="cfg-reveal-order">
-                <option value="random" selected>Aléatoire</option>
-                <option value="playerA">Ordre joueur A (hôte)</option>
-                <option value="playerB">Ordre joueur B</option>
+                <option value="listeur" selected>Ordre du listeur</option>
+                <option value="random">Aléatoire</option>
               </select>
             </label>
           </div>
@@ -212,19 +205,23 @@
       </div>
     </div>
 
-    <!-- PERSONAL / PREDICTION -->
+    <!-- LISTING / GUESSING -->
     <div id="screen-rank" class="screen">
       <div class="tad-roundbar">
         <span id="rank-round">Manche 1/5</span>
         <span id="rank-timer" class="tad-timer" style="display:none;">—</span>
         <span id="rank-phase-label" class="tad-muted">Classement</span>
       </div>
-      <div class="card tad-card">
-        <h2 id="rank-title">Classe ces éléments selon tes préférences</h2>
-        <p id="rank-hint" class="tad-muted"></p>
-        <ul id="rank-list" class="tad-rank-list"></ul>
-        <p id="rank-waiting" class="tad-waiting" style="display:none;"></p>
-        <button class="btn btn-primary" id="btn-lock-rank" style="margin-top:12px;width:100%;">Valider mon classement</button>
+      <div class="card tad-card" id="rank-active">
+        <h2 id="rank-title">Compose ta tier-list</h2>
+        <p id="rank-hint" class="tad-muted">Glisse chaque carte dans un rang.</p>
+        <div id="tier-slots" class="tad-tier-slots"></div>
+        <p class="tad-pool-label">À placer</p>
+        <div id="tier-pool" class="tad-tier-pool"></div>
+        <button class="btn btn-primary" id="btn-lock-rank" style="margin-top:12px;width:100%;" disabled>Valider</button>
+      </div>
+      <div class="card tad-card" id="rank-waiting-card" style="display:none;">
+        <p id="rank-waiting" class="tad-waiting"></p>
       </div>
     </div>
 
@@ -253,9 +250,13 @@
         <h2>Manche terminée !</h2>
         <p id="round-compat" class="tad-reveal-item" style="font-size:1.4rem;"></p>
         <p id="round-reaction" class="tad-reaction"></p>
+        <p id="round-listeur" class="tad-muted"></p>
       </div>
-      <div class="tad-compare" id="round-scores"></div>
-      <div class="tad-compare" id="round-rankings"></div>
+      <div id="round-scores"></div>
+      <div class="card tad-card" id="round-ranking-card">
+        <h3 id="round-ranking-title">Liste du listeur</h3>
+        <ol id="round-ranking-list"></ol>
+      </div>
       <div class="card tad-card">
         <div class="row">
           <button class="btn btn-primary" id="btn-next-round">Manche suivante</button>

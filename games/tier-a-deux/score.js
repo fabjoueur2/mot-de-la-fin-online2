@@ -20,114 +20,6 @@ function countMatchingPositions(rankingA, rankingB) {
   return n;
 }
 
-function compatibilityPercent(rankingA, rankingB) {
-  const n = Math.max((rankingA || []).length, 1);
-  return Math.round((countMatchingPositions(rankingA, rankingB) / n) * 100);
-}
-
-/**
- * Score one player for a round.
- * @returns {{ predictionPoints, matchPoints, perfectBonus, identicalBonus, total, perItem }}
- */
-function scorePlayerRound({
-  myPersonal,
-  partnerPersonal,
-  myPrediction,
-  scoring,
-  itemIds
-}) {
-  const s = scoring || {};
-  const correctPred = Number(s.correctPrediction) || 0;
-  const matchingPos = Number(s.matchingPosition) || 0;
-  const perfectBonus = Number(s.perfectPredictionBonus) || 0;
-  const identicalBonus = Number(s.identicalRankingBonus) || 0;
-
-  const partnerMap = positionMap(partnerPersonal);
-  const myPersMap = positionMap(myPersonal);
-  const predMap = positionMap(myPrediction);
-
-  const ids = itemIds || myPersonal || [];
-  const perItem = [];
-  let predictionPoints = 0;
-  let matchPoints = 0;
-  let correctCount = 0;
-
-  for (const id of ids) {
-    const partnerPos = partnerMap.get(id);
-    const myPos = myPersMap.get(id);
-    const predPos = predMap.get(id);
-    let predPts = 0;
-    let matchPts = 0;
-    if (partnerPos != null && predPos === partnerPos) {
-      predPts = correctPred;
-      predictionPoints += predPts;
-      correctCount += 1;
-    }
-    if (partnerPos != null && myPos === partnerPos) {
-      matchPts = matchingPos;
-      matchPoints += matchPts;
-    }
-    perItem.push({
-      itemId: id,
-      myPosition: myPos || null,
-      partnerPosition: partnerPos || null,
-      predictedPosition: predPos || null,
-      predictionPoints: predPts,
-      matchPoints: matchPts,
-      total: predPts + matchPts
-    });
-  }
-
-  let perfect = 0;
-  if (perfectBonus > 0 && ids.length > 0 && correctCount === ids.length) {
-    perfect = perfectBonus;
-  }
-
-  let identical = 0;
-  if (
-    identicalBonus > 0 &&
-    ids.length > 0 &&
-    countMatchingPositions(myPersonal, partnerPersonal) === ids.length
-  ) {
-    identical = identicalBonus;
-  }
-
-  return {
-    predictionPoints,
-    matchPoints,
-    perfectBonus: perfect,
-    identicalBonus: identical,
-    correctPredictions: correctCount,
-    matchingPositions: countMatchingPositions(myPersonal, partnerPersonal),
-    total: predictionPoints + matchPoints + perfect + identical,
-    perItem
-  };
-}
-
-function scoreRound({ playerA, playerB, rankingA, rankingB, predictionA, predictionB, itemIds, scoring }) {
-  const scoreA = scorePlayerRound({
-    myPersonal: rankingA,
-    partnerPersonal: rankingB,
-    myPrediction: predictionA,
-    scoring,
-    itemIds
-  });
-  const scoreB = scorePlayerRound({
-    myPersonal: rankingB,
-    partnerPersonal: rankingA,
-    myPrediction: predictionB,
-    scoring,
-    itemIds
-  });
-  const matches = countMatchingPositions(rankingA, rankingB);
-  return {
-    playerA: { id: playerA, ...scoreA },
-    playerB: { id: playerB, ...scoreB },
-    matchingPositions: matches,
-    compatibilityPercent: compatibilityPercent(rankingA, rankingB)
-  };
-}
-
 function validateRanking(itemIds, ranking) {
   if (!Array.isArray(ranking)) return { ok: false, msg: 'Classement invalide.' };
   if (ranking.length !== itemIds.length) {
@@ -150,11 +42,102 @@ function validateRanking(itemIds, ranking) {
   return { ok: true };
 }
 
+/**
+ * Score all guessers against the listeur ranking.
+ * Listeur scores 0 this round.
+ */
+function scoreGuessersRound({
+  listeurId,
+  listeurRanking,
+  guessesByPlayerId,
+  guesserIds,
+  itemIds,
+  scoring
+}) {
+  const s = scoring || {};
+  const correctPred = Number(s.correctPrediction) || 0;
+  const perfectBonus = Number(s.perfectPredictionBonus) || 0;
+  const ids = itemIds || listeurRanking || [];
+  const listeurMap = positionMap(listeurRanking);
+
+  const byPlayer = {};
+  let totalCorrect = 0;
+  let totalPossible = 0;
+
+  for (const gid of guesserIds || []) {
+    const guess = guessesByPlayerId?.[gid] || [];
+    const predMap = positionMap(guess);
+    const perItem = [];
+    let predictionPoints = 0;
+    let correctCount = 0;
+
+    for (const id of ids) {
+      const realPos = listeurMap.get(id);
+      const predPos = predMap.get(id);
+      let pts = 0;
+      if (realPos != null && predPos === realPos) {
+        pts = correctPred;
+        predictionPoints += pts;
+        correctCount += 1;
+        totalCorrect += 1;
+      }
+      totalPossible += 1;
+      perItem.push({
+        itemId: id,
+        listeurPosition: realPos || null,
+        predictedPosition: predPos || null,
+        predictionPoints: pts,
+        total: pts
+      });
+    }
+
+    let perfect = 0;
+    if (perfectBonus > 0 && ids.length > 0 && correctCount === ids.length) {
+      perfect = perfectBonus;
+    }
+
+    byPlayer[gid] = {
+      id: gid,
+      predictionPoints,
+      perfectBonus: perfect,
+      correctPredictions: correctCount,
+      total: predictionPoints + perfect,
+      perItem,
+      isListeur: false
+    };
+  }
+
+  byPlayer[listeurId] = {
+    id: listeurId,
+    predictionPoints: 0,
+    perfectBonus: 0,
+    correctPredictions: 0,
+    total: 0,
+    perItem: ids.map((id) => ({
+      itemId: id,
+      listeurPosition: listeurMap.get(id) || null,
+      predictedPosition: null,
+      predictionPoints: 0,
+      total: 0
+    })),
+    isListeur: true
+  };
+
+  const accuracyPercent =
+    totalPossible > 0 ? Math.round((totalCorrect / totalPossible) * 100) : 0;
+
+  return {
+    byPlayer,
+    listeurId,
+    correctPredictionsTotal: totalCorrect,
+    possiblePredictions: totalPossible,
+    accuracyPercent
+  };
+}
+
 module.exports = {
   positionMap,
   countMatchingPositions,
-  compatibilityPercent,
-  scorePlayerRound,
-  scoreRound,
-  validateRanking
+  validateRanking,
+  scoreGuessersRound
 };
