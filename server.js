@@ -114,7 +114,15 @@ const io = new Server(server, {
   pingInterval: 25000
 });
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(
+  express.static(path.join(__dirname, 'public'), {
+    setHeaders(res, filePath) {
+      if (filePath.endsWith('.html')) {
+        res.setHeader('Cache-Control', 'no-cache');
+      }
+    }
+  })
+);
 app.use(
   '/games/size-it/assets',
   express.static(path.join(__dirname, 'games', 'size-it', 'bank', 'assets'), {

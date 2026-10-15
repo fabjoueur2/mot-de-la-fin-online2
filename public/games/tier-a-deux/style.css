@@ -366,6 +366,64 @@
   margin-bottom: 0.65rem;
 }
 
+.tad-mode-picker {
+  margin: 0 0 0.85rem;
+}
+
+.tad-mode-label {
+  margin: 0 0 0.4rem;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--tad-muted);
+  font-weight: 800;
+}
+
+.tad-mode-btns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.45rem;
+}
+
+.tad-mode-btn {
+  border: 2px solid rgba(255, 217, 61, 0.35);
+  background: rgba(0, 0, 0, 0.22);
+  color: var(--tad-cream);
+  border-radius: 14px;
+  padding: 0.75rem 0.65rem;
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  text-align: left;
+  line-height: 1.2;
+}
+
+.tad-mode-btn span {
+  display: block;
+  margin-top: 0.3rem;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--tad-muted);
+}
+
+.tad-mode-btn.active {
+  border-color: var(--tad-coral);
+  background: rgba(255, 107, 107, 0.22);
+  box-shadow: 0 0 0 1px var(--tad-coral);
+}
+
+.tad-mode-btn.active span {
+  color: var(--tad-cream);
+}
+
+@media (max-width: 520px) {
+  .tad-mode-btns {
+    grid-template-columns: 1fr;
+  }
+}
+
 .tad-sound-toggle {
   position: fixed;
   right: 0.75rem;

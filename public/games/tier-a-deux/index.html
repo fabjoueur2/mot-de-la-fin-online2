@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=playmode2">
 </head>
 <body class="tad-body">
   <div class="app tad-app">
@@ -78,6 +78,23 @@
           <button type="button" class="btn btn-secondary btn-sm" data-preset="chaos">Chaos</button>
           <button type="button" class="btn btn-secondary btn-sm" id="btn-reset-config">Réinitialiser</button>
         </div>
+        <div class="tad-mode-picker" id="mode-picker">
+          <p class="tad-mode-label">Mode de jeu</p>
+          <div class="tad-mode-btns">
+            <button type="button" class="tad-mode-btn active" data-play-mode="single_listeur" id="mode-single">
+              1 listeur
+              <span>Les autres devinent sa liste</span>
+            </button>
+            <button type="button" class="tad-mode-btn" data-play-mode="everyone_lists" id="mode-everyone">
+              Tout le monde liste
+              <span>Puis on devine une cible</span>
+            </button>
+          </div>
+          <select id="cfg-play-mode" hidden aria-hidden="true">
+            <option value="single_listeur" selected>1 listeur</option>
+            <option value="everyone_lists">Tout le monde liste</option>
+          </select>
+        </div>
         <div class="tad-tabs" id="config-tabs">
           <button type="button" class="tad-tab active" data-tab="partie">Partie</button>
           <button type="button" class="tad-tab" data-tab="themes">Thèmes</button>
@@ -87,12 +104,6 @@
         </div>
         <div class="tad-tab-panel active" data-panel="partie">
           <div class="tad-config-grid">
-            <label>Mode de jeu
-              <select id="cfg-play-mode">
-                <option value="single_listeur" selected>1 listeur (les autres devinent)</option>
-                <option value="everyone_lists">Tout le monde liste (on devine une cible)</option>
-              </select>
-            </label>
             <label>Manches
               <select id="cfg-rounds">
                 <option value="1">1</option>
@@ -296,6 +307,6 @@
 
   <script src="/socket.io/socket.io.js"></script>
   <script src="/js/escape.js"></script>
-  <script src="app.js"></script>
+  <script src="app.js?v=playmode2"></script>
 </body>
 </html>

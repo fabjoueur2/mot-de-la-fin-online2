@@ -645,10 +645,18 @@ function readConfigFromForm() {
   };
 }
 
+function syncModeButtons(mode) {
+  const m = mode || 'single_listeur';
+  if ($('cfg-play-mode')) $('cfg-play-mode').value = m;
+  document.querySelectorAll('.tad-mode-btn').forEach((btn) => {
+    btn.classList.toggle('active', btn.dataset.playMode === m);
+  });
+}
+
 function applyConfigToForm(cfg) {
   if (!cfg || !state?.isHost) return;
   if (document.activeElement?.closest?.('#host-config')) return;
-  if ($('cfg-play-mode')) $('cfg-play-mode').value = cfg.playMode || 'single_listeur';
+  syncModeButtons(cfg.playMode || 'single_listeur');
   const rounds = cfg.roundCount === 'unlimited' ? 'unlimited' : String(cfg.roundCount);
   if ($('cfg-rounds')) $('cfg-rounds').value = rounds;
   if ($('cfg-items')) $('cfg-items').value = String(cfg.itemsPerRound);
@@ -808,6 +816,14 @@ document.querySelectorAll('[data-preset]').forEach((btn) => {
   });
 });
 $('btn-reset-config')?.addEventListener('click', () => socket.emit('tad-reset-config'));
+
+document.querySelectorAll('.tad-mode-btn').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    if (!state?.isHost || state.phase !== 'lobby') return;
+    syncModeButtons(btn.dataset.playMode);
+    pushConfigSoon();
+  });
+});
 
 $('config-tabs')?.addEventListener('click', (e) => {
   const tab = e.target.closest('.tad-tab');
